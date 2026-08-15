@@ -1,0 +1,38 @@
+name: Verify Phase1 Fetches (throwaway — delete after use)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Check VIX + Delivery fetch
+        run: |
+          python3 -c "
+          from market.volatility import fetch_india_vix
+          from data.delivery_data import DeliveryDataProvider
+
+          vix = fetch_india_vix()
+          print(f'VIX RESULT: {vix}')
+          print('=> LIKELY REAL' if vix != 20.0 else '=> FALLBACK (check warning above)')
+
+          data = DeliveryDataProvider().fetch_latest()
+          print(f'DELIVERY RESULT: {len(data)} symbols fetched')
+          if data:
+              sample = list(data.items())[:5]
+              print(f'Sample: {sample}')
+              print('=> LIKELY REAL')
+          else:
+              print('=> EMPTY (check warning above — likely NSE blocked the request)')
+          "
