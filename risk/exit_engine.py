@@ -289,9 +289,21 @@ class ExitEngine:
             action = "EXIT" if exit_score >= self.EXIT_THRESHOLD else "HOLD"
             reasons.append(f"Exit score {exit_score:.1f}/100 (threshold {self.EXIT_THRESHOLD}) -> {action}.")
 
+        # Single greppable line per position per cycle — this is what you
+        # check in the real GitHub Actions logs (paper_trading.yml) to
+        # confirm live behavior, since this can't be fetch-tested from
+        # here: shows the full component breakdown AND, when a hard-risk
+        # exit fires, exactly which one (stop/target/risk-engine/max-hold)
+        # so the priority order is directly visible, not just the final
+        # action.
         logger.info(
-            "Exit evaluation for %s (%s): score=%.1f action=%s hard_risk=%s",
-            position.get("symbol", "?"), direction, exit_score, action, hard_risk_triggered,
+            "Exit evaluation for %s (%s): action=%s exit_score=%.1f/100 (threshold=%.0f) | "
+            "technical=%.1f fundamental=%.1f news=%.1f risk=%.1f institutional=%.1f | "
+            "hard_risk=%s%s",
+            position.get("symbol", "?"), direction, action, exit_score, self.EXIT_THRESHOLD,
+            technical_exit, fundamental_exit, news_exit, risk_exit, institutional_exit,
+            hard_risk_triggered,
+            f" ({hard_risk_reason})" if hard_risk_triggered else "",
         )
 
         return ExitEvaluation(
