@@ -92,6 +92,8 @@ class SellStrategyEngine:
 
     REQUIRED_COLUMNS = {
         "close",
+        "open",
+        "high",
         "ema_20",
         "ema_50",
         "ema_200",
@@ -129,6 +131,7 @@ class SellStrategyEngine:
         "gap_day",
         "is_breakdown",
         "is_pullback",
+        "bb_lower",
     }
 
     def evaluate(
@@ -253,15 +256,10 @@ class SellStrategyEngine:
 
             reasons.append("Bearish MACD crossover.")
 
-        # --------------------------------------------------
-        # MACD HISTOGRAM
-        # --------------------------------------------------
-
-        checks["macd_histogram"] = row["macd_histogram"] < 0
-
-        if checks["macd_histogram"]:
-
-            reasons.append("Negative MACD histogram.")
+        # NOTE: a "macd_histogram < 0" check used to live here — removed
+        # for the same reason as the BUY-side mirror (see
+        # strategy/buy_strategy.py): macd_histogram = macd - macd_signal,
+        # so "< 0" is mathematically identical to "macd_cross" above.
 
         # --------------------------------------------------
         # ADX
@@ -444,15 +442,10 @@ class SellStrategyEngine:
 
             reasons.append("Below Bollinger middle band.")
 
-        # --------------------------------------------------
-        # KELTNER
-        # --------------------------------------------------
-
-        checks["keltner"] = row["close"] < row["kc_middle"]
-
-        if checks["keltner"]:
-
-            reasons.append("Below Keltner middle channel.")
+        # NOTE: a "keltner" check used to live here (close < kc_middle) —
+        # removed for the same reason as the BUY-side mirror (see
+        # strategy/buy_strategy.py): kc_middle = ema_20, byte-identical
+        # to "price_below_ema20" above.
 
         # --------------------------------------------------
         # DONCHIAN
@@ -560,29 +553,45 @@ class SellStrategyEngine:
 
         was_squeezed = bool((prior_bb_width < SQUEEZE_BB_WIDTH_THRESHOLD).all()) if len(prior_bb_width) > 0 else False
 
-        checks["squeeze_breakout"] = was_squeezed and checks["breakdown"] and checks["volume_spike"]
+        # Breakdown trigger is the actual Bollinger lower band (close <
+        # bb_lower), not the existing is_breakdown flag (a 20-day-low
+        # Donchian breakdown — a different, unrelated definition). Mirror
+        # of the BUY side's same fix (see strategy/buy_strategy.py).
+        checks["squeeze_breakout"] = (
+            was_squeezed and row["close"] < row["bb_lower"] and checks["volume_spike"]
+        )
 
         if checks["squeeze_breakout"]:
 
-            reasons.append("Breakdown from a prior low-volatility consolidation (not a chased move).")
+            reasons.append("Breakdown below the Bollinger lower band from a prior low-volatility squeeze.")
 
         # --------------------------------------------------
         # RELIEF-RALLY REJECTION (shorted a failed bounce within an
-        # established downtrend, instead of a fresh low)
+        # established downtrend, instead of a fresh low) — price was
+        # WITHIN 1.5% of EMA20 yesterday (relief-rallied up to
+        # resistance) and today closes back below EMA20 on a bearish
+        # rejection candle (close < open), mirroring the BUY side's
+        # pullback_entry exactly (see strategy/buy_strategy.py).
         # --------------------------------------------------
 
+        PULLBACK_PROXIMITY_PERCENT = 1.5
+
         prev_row = dataframe.iloc[-2] if len(dataframe) >= 2 else row
+        prev_ema20 = float(prev_row["ema_20"])
+        prev_proximity_percent = (
+            abs(float(prev_row["close"]) - prev_ema20) / prev_ema20 * 100 if prev_ema20 else 100.0
+        )
 
         checks["pullback_entry"] = bool(
-            prev_row["high"] >= prev_row["ema_20"]
+            row["close"] < row["ema_200"]
+            and prev_proximity_percent <= PULLBACK_PROXIMITY_PERCENT
             and row["close"] < row["ema_20"]
             and row["close"] < row["open"]
-            and row["close"] < row["ema_200"]
         )
 
         if checks["pullback_entry"]:
 
-            reasons.append("Relief-rally rejection within an established downtrend.")
+            reasons.append("Relief-rally to EMA20 resistance (within 1.5%) followed by a bearish rejection candle.")
 
         # --------------------------------------------------
         # OVEREXTENSION CAP (HARD REJECT below, not just a vote) —

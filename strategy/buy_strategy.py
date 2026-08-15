@@ -92,6 +92,7 @@ class BuyStrategyEngine:
 
     REQUIRED_COLUMNS = {
         "close",
+        "open",
         "ema_20",
         "ema_50",
         "ema_200",
@@ -113,6 +114,7 @@ class BuyStrategyEngine:
         "volatility_state",
         "is_breakout",
         "is_pullback",
+        "bb_upper",
     }
 
     def evaluate(
@@ -237,15 +239,13 @@ class BuyStrategyEngine:
 
             reasons.append("Bullish MACD crossover.")
 
-        # --------------------------------------------------
-        # MACD HISTOGRAM
-        # --------------------------------------------------
-
-        checks["macd_histogram"] = row["macd_histogram"] > 0
-
-        if checks["macd_histogram"]:
-
-            reasons.append("Positive MACD histogram.")
+        # NOTE: a "macd_histogram > 0" check used to live here, but
+        # macd_histogram is computed as `macd - macd_signal`
+        # (features/indicators/momentum.py), so "> 0" is mathematically
+        # identical to "macd_cross" above (macd > macd_signal) — same
+        # condition, counted as a second independent vote. Removed for
+        # the same reason as the vwap_confirmation/bull_market
+        # duplicates removed earlier (see NOTEs elsewhere in this file).
 
         # --------------------------------------------------
         # ADX
@@ -424,15 +424,11 @@ class BuyStrategyEngine:
 
             reasons.append("Above Bollinger middle band.")
 
-        # --------------------------------------------------
-        # KELTNER
-        # --------------------------------------------------
-
-        checks["keltner"] = row["close"] > row["kc_middle"]
-
-        if checks["keltner"]:
-
-            reasons.append("Above Keltner middle channel.")
+        # NOTE: a "keltner" check used to live here (close > kc_middle),
+        # but kc_middle is computed as the 20-period EMA of close
+        # (features/indicators/volatility.py: `kc_middle = ema20`) —
+        # byte-identical to "ema_20" used in "price_above_ema20" above.
+        # Same duplicate-vote reasoning as the other NOTEs in this file.
 
         # --------------------------------------------------
         # DONCHIAN
@@ -545,22 +541,46 @@ class BuyStrategyEngine:
 
         was_squeezed = bool((prior_bb_width < SQUEEZE_BB_WIDTH_THRESHOLD).all()) if len(prior_bb_width) > 0 else False
 
-        checks["squeeze_breakout"] = was_squeezed and checks["breakout"] and checks["volume_spike"]
+        # Breakout trigger is the actual Bollinger upper band (close >
+        # bb_upper), not the existing is_breakout flag (which is a
+        # 20-day-high Donchian breakout — a different, unrelated
+        # definition). A squeeze is specifically a Bollinger-Band
+        # concept, so the breakout confirming it should be too.
+        checks["squeeze_breakout"] = (
+            was_squeezed and row["close"] > row["bb_upper"] and checks["volume_spike"]
+        )
 
         if checks["squeeze_breakout"]:
 
-            reasons.append("Breakout from a prior low-volatility consolidation (not a chased move).")
+            reasons.append("Breakout above the Bollinger upper band from a prior low-volatility squeeze.")
 
         # --------------------------------------------------
         # PULLBACK-IN-TREND ENTRY (bought the dip within an
-        # established uptrend, instead of a fresh high)
+        # established uptrend, instead of a fresh high) — price was
+        # WITHIN 1.5% of EMA20 yesterday (touched support) and today
+        # closes back above EMA20 on a bullish reversal candle
+        # (close > open), not just "low dipped under EMA20 at some
+        # point today" (the old is_pullback-based approximation).
         # --------------------------------------------------
 
-        checks["pullback_entry"] = bool(row["is_pullback"]) and row["close"] > row["ema_200"]
+        PULLBACK_PROXIMITY_PERCENT = 1.5
+
+        prev_row = dataframe.iloc[-2] if len(dataframe) >= 2 else row
+        prev_ema20 = float(prev_row["ema_20"])
+        prev_proximity_percent = (
+            abs(float(prev_row["close"]) - prev_ema20) / prev_ema20 * 100 if prev_ema20 else 100.0
+        )
+
+        checks["pullback_entry"] = bool(
+            row["close"] > row["ema_200"]
+            and prev_proximity_percent <= PULLBACK_PROXIMITY_PERCENT
+            and row["close"] > row["ema_20"]
+            and row["close"] > row["open"]
+        )
 
         if checks["pullback_entry"]:
 
-            reasons.append("Pullback entry within an established uptrend.")
+            reasons.append("Pullback to EMA20 support (within 1.5%) followed by a bullish reversal candle.")
 
         # --------------------------------------------------
         # OVEREXTENSION CAP (HARD REJECT below, not just a vote) —
