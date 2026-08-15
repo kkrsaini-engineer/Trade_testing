@@ -9,6 +9,7 @@ Architecture (as specified):
     Fundamental Exit
     News Exit
     Risk Exit
+    Institutional Exit (FII/DII market-wide flow)
         |
     Exit Score (0-100)
         |
@@ -50,6 +51,7 @@ class ExitEvaluation:
     fundamental_exit: float
     news_exit: float
     risk_exit: float
+    institutional_exit: float
     hard_risk_triggered: bool
     hard_risk_reason: str | None
     reasons: list[str] = field(default_factory=list)
@@ -73,10 +75,15 @@ class ExitEngine:
     # Weights are a starting point (mirroring the entry engines' documented
     # philosophy) — Phase 2's Learning Engine / Optimizer should validate
     # and refine these once enough closed trades exist.
-    TECHNICAL_WEIGHT = 0.35
+    # INSTITUTIONAL_WEIGHT (FII/DII flow, added later) took its 0.10 from
+    # TECHNICAL (0.35->0.30) and RISK (0.30->0.25) — the two largest
+    # weights — rather than from FUNDAMENTAL/NEWS, which were already
+    # the smaller, secondary components.
+    TECHNICAL_WEIGHT = 0.30
     FUNDAMENTAL_WEIGHT = 0.20
     NEWS_WEIGHT = 0.15
-    RISK_WEIGHT = 0.30
+    RISK_WEIGHT = 0.25
+    INSTITUTIONAL_WEIGHT = 0.10
 
     EXIT_THRESHOLD = 60.0
 
@@ -90,6 +97,7 @@ class ExitEngine:
         position: dict[str, Any],
         risk_safe: bool = True,
         holding_days: int = 0,
+        fii_dii_bias: float | None = None,
     ) -> ExitEvaluation:
         """
         position: {"direction": "BUY"/"SELL", "entry_price": float,
@@ -100,6 +108,14 @@ class ExitEngine:
         holding_days: calendar/trading days since entry (from the Trade
                       Diary, since PortfolioPosition doesn't track entry
                       date itself).
+        fii_dii_bias: signed market-wide institutional-flow bias in
+                      [-1, +1] from data/fii_dii_data.py (positive =
+                      net institutional buying), same value already
+                      re-fetched fresh every monitoring cycle inside
+                      execution/scanner.py's _evaluate_market_context().
+                      None means no live/cached data was available that
+                      cycle — treated as neutral (contributes 0 to the
+                      exit score), never fabricated.
         """
         if dataframe.empty:
             raise ValueError("Empty dataframe.")
@@ -233,6 +249,29 @@ class ExitEngine:
             reasons.append(f"Drawdown from peak is significant ({max_dd:.1f}%).")
 
         # ==========================================================
+        # INSTITUTIONAL EXIT — market-wide FII/DII flow working against
+        # the held direction, bidirectional (no data is neutral, same
+        # pattern as NEWS EXIT above, never forces exit on its own).
+        # ==========================================================
+        has_fii_dii = fii_dii_bias is not None
+        if has_fii_dii:
+            # Reuse the same [-1,1] -> [0,100] "bullishness" convention
+            # as news_component(), so the BUY/SELL mirroring formula
+            # below is identical in shape to the NEWS EXIT block above.
+            institutional_bullishness = 50.0 + float(fii_dii_bias) * 50.0
+            institutional_exit = (
+                (100.0 - institutional_bullishness) if direction == "BUY" else institutional_bullishness
+            )
+            if institutional_exit >= 60:
+                reasons.append(
+                    f"Institutional (FII/DII) flow now works against this {direction} "
+                    f"position ({institutional_exit:.0f}/100)."
+                )
+        else:
+            institutional_exit = 0.0  # absent data must not push toward exit
+            reasons.append("No FII/DII data — institutional flow does not contribute to the exit score.")
+
+        # ==========================================================
         # WEIGHTED EXIT SCORE
         # ==========================================================
         exit_score = (
@@ -240,6 +279,7 @@ class ExitEngine:
             + fundamental_exit * self.FUNDAMENTAL_WEIGHT
             + news_exit * self.NEWS_WEIGHT
             + risk_exit * self.RISK_WEIGHT
+            + institutional_exit * self.INSTITUTIONAL_WEIGHT
         )
 
         if hard_risk_triggered:
@@ -262,6 +302,7 @@ class ExitEngine:
             fundamental_exit=round(fundamental_exit, 2),
             news_exit=round(news_exit, 2),
             risk_exit=round(risk_exit, 2),
+            institutional_exit=round(institutional_exit, 2),
             hard_risk_triggered=hard_risk_triggered,
             hard_risk_reason=hard_risk_reason,
             reasons=reasons,
