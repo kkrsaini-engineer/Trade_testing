@@ -1,0 +1,22 @@
+name: Diagnose Fundamental Data Coverage (throwaway — delete after use)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run diagnostic (read-only, does not modify anything)
+        run: PYTHONPATH=. python scripts/diagnose_fundamental_coverage.py
