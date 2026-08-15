@@ -31,6 +31,7 @@ from market.market_regime import MarketRegimeEngine
 from market.volatility import fetch_india_vix
 from data.news_data import NewsDataProvider
 from data.delivery_data import DeliveryDataProvider, symbol_without_suffix
+from data.fii_dii_data import FiiDiiDataProvider
 from market import macro_intelligence
 
 logger = get_logger(__name__)
@@ -109,6 +110,12 @@ class MarketScanner:
         self._market_headlines: list[str] | None = None  # lazy-fetched, shared across all symbols in a scan run
         self._delivery_provider = DeliveryDataProvider()
         self._delivery_data: dict[str, float] | None = None  # lazy-fetched, shared across all symbols in a scan run
+        self._fii_dii_provider = FiiDiiDataProvider()
+        self._fii_dii_data: dict[str, Any] | None = None
+        # Separate from `is None` on the dict above, since a completed
+        # fetch that legitimately found nothing is ALSO `None` — this
+        # flag is what actually prevents re-hitting NSE once per symbol.
+        self._fii_dii_fetched: bool = False
 
         logger.info("Market Scanner Engine initialized under professional pipeline contracts.")
 
@@ -176,6 +183,21 @@ class MarketScanner:
                 logger.warning("Delivery data fetch failed: %s", exc)
                 self._delivery_data = {}
         return self._delivery_data
+
+    def _get_fii_dii_data(self) -> dict[str, Any] | None:
+        """Fetch NSE-wide FII/DII net activity once per scan run and
+        cache it (same reasoning as _get_delivery_data() — one market-
+        wide value covers every symbol). Returns None when unavailable;
+        callers must treat that as "no signal" and skip the nudge, not
+        substitute a fabricated bias."""
+        if not self._fii_dii_fetched:
+            try:
+                self._fii_dii_data = self._fii_dii_provider.fetch_latest()
+            except Exception as exc:
+                logger.warning("FII/DII data fetch failed: %s", exc)
+                self._fii_dii_data = None
+            self._fii_dii_fetched = True
+        return self._fii_dii_data
 
     def _evaluate_market_context(self, symbol: str, bundle: Any = None) -> dict[str, Any]:
         """
@@ -278,6 +300,24 @@ class MarketScanner:
             latest_regime, 50.0
         )
         diagnostics["market_regime"] = latest_regime
+
+        # FII/DII INSTITUTIONAL FLOW — market-wide context nudge on top
+        # of the per-stock regime score above, not a replacement for it.
+        # This automatically reaches BOTH buy_strat and sell_strat below
+        # (sell_strategy.py already inverts market_score for its own
+        # tier3 calc), so heavy institutional buying nudges BUY
+        # confidence up / SELL confidence down and vice versa, with no
+        # separate BUY/SELL-side code needed. Weight (10.0) is kept
+        # deliberately smaller than macro_bias's nudge on news_score
+        # (20.0, see below) — market_score already carries a strong
+        # per-stock trend signal; FII/DII is secondary context on top
+        # of it, not the primary driver.
+        fii_dii = self._get_fii_dii_data()
+        if fii_dii is not None:
+            fii_dii_bias = fii_dii.get("bias", 0.0)
+            market_score = max(0.0, min(100.0, market_score + fii_dii_bias * 10.0))
+            diagnostics["fii_dii_bias"] = fii_dii_bias
+            diagnostics["fii_dii_net_cr"] = fii_dii.get("combined_net_cr")
 
         # Internal passthrough (not used by the report) so callers
         # like the Paper Trading Engine can re-evaluate an existing
