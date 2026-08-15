@@ -1,6 +1,6 @@
 {
-  "scan_date": "2026-08-14",
-  "scan_timestamp": "2026-08-14T23:37:10.060062+00:00",
+  "scan_date": "2026-08-15",
+  "scan_timestamp": "2026-08-15T17:27:15.173771+00:00",
   "candidates": [
     {
       "symbol": "ELGIEQUIP.NS",
@@ -14,7 +14,7 @@
       "overall_score": 75.7,
       "ranking": 84.3,
       "sector": "Industrials",
-      "scan_date": "2026-08-14"
+      "scan_date": "2026-08-15"
     },
     {
       "symbol": "HEG.NS",
@@ -28,7 +28,7 @@
       "overall_score": 74.5,
       "ranking": 83.28,
       "sector": "Industrials",
-      "scan_date": "2026-08-14"
+      "scan_date": "2026-08-15"
     },
     {
       "symbol": "POONAWALLA.NS",
@@ -42,21 +42,7 @@
       "overall_score": 73.75,
       "ranking": 82.62,
       "sector": "Financial Services",
-      "scan_date": "2026-08-14"
-    },
-    {
-      "symbol": "ENGINERSIN.NS",
-      "direction": "BUY",
-      "prev_close": 243.68,
-      "atr_14": 7.63,
-      "atr_percent": null,
-      "stop_loss": 228.42,
-      "target1": 258.94,
-      "target2": 270.38,
-      "overall_score": 72.54,
-      "ranking": 81.52,
-      "sector": "Industrials",
-      "scan_date": "2026-08-14"
+      "scan_date": "2026-08-15"
     },
     {
       "symbol": "SWANCORP.NS",
@@ -70,7 +56,7 @@
       "overall_score": 72.26,
       "ranking": 81.26,
       "sector": "Industrials",
-      "scan_date": "2026-08-14"
+      "scan_date": "2026-08-15"
     },
     {
       "symbol": "HONASA.NS",
@@ -84,21 +70,7 @@
       "overall_score": 71.77,
       "ranking": 80.79,
       "sector": "Consumer Defensive",
-      "scan_date": "2026-08-14"
-    },
-    {
-      "symbol": "GLENMARK.NS",
-      "direction": "BUY",
-      "prev_close": 2318.4,
-      "atr_14": 53.4,
-      "atr_percent": null,
-      "stop_loss": 2211.6,
-      "target1": 2425.2,
-      "target2": 2505.3,
-      "overall_score": 71.45,
-      "ranking": 80.48,
-      "sector": "Healthcare",
-      "scan_date": "2026-08-14"
+      "scan_date": "2026-08-15"
     },
     {
       "symbol": "NATIONALUM.NS",
@@ -112,7 +84,21 @@
       "overall_score": 70.9,
       "ranking": 79.94,
       "sector": "Basic Materials",
-      "scan_date": "2026-08-14"
+      "scan_date": "2026-08-15"
+    },
+    {
+      "symbol": "ENGINERSIN.NS",
+      "direction": "BUY",
+      "prev_close": 243.68,
+      "atr_14": 7.63,
+      "atr_percent": null,
+      "stop_loss": 228.42,
+      "target1": 258.94,
+      "target2": 270.38,
+      "overall_score": 70.88,
+      "ranking": 79.92,
+      "sector": "Industrials",
+      "scan_date": "2026-08-15"
     },
     {
       "symbol": "NBCC.NS",
@@ -126,7 +112,7 @@
       "overall_score": 70.4,
       "ranking": 79.44,
       "sector": "Industrials",
-      "scan_date": "2026-08-14"
+      "scan_date": "2026-08-15"
     },
     {
       "symbol": "AARTIIND.NS",
@@ -140,7 +126,7 @@
       "overall_score": 70.0,
       "ranking": 79.04,
       "sector": "Basic Materials",
-      "scan_date": "2026-08-14"
+      "scan_date": "2026-08-15"
     },
     {
       "symbol": "NSLNISP.NS",
@@ -154,7 +140,21 @@
       "overall_score": 69.86,
       "ranking": 78.9,
       "sector": "Basic Materials",
-      "scan_date": "2026-08-14"
+      "scan_date": "2026-08-15"
+    },
+    {
+      "symbol": "GLENMARK.NS",
+      "direction": "BUY",
+      "prev_close": 2318.4,
+      "atr_14": 51.29,
+      "atr_percent": null,
+      "stop_loss": 2215.82,
+      "target1": 2420.98,
+      "target2": 2497.91,
+      "overall_score": 69.7,
+      "ranking": 78.73,
+      "sector": "Healthcare",
+      "scan_date": "2026-08-15"
     },
     {
       "symbol": "HDFCAMC.NS",
@@ -168,7 +168,7 @@
       "overall_score": 69.44,
       "ranking": 78.46,
       "sector": "Financial Services",
-      "scan_date": "2026-08-14"
+      "scan_date": "2026-08-15"
     },
     {
       "symbol": "BELRISE.NS",
@@ -182,7 +182,21 @@
       "overall_score": 69.33,
       "ranking": 78.34,
       "sector": "Consumer Cyclical",
-      "scan_date": "2026-08-14"
+      "scan_date": "2026-08-15"
+    },
+    {
+      "symbol": "NETWEB.NS",
+      "direction": "BUY",
+      "prev_close": 5007.2,
+      "atr_14": 225.25,
+      "atr_percent": null,
+      "stop_loss": 4556.7,
+      "target1": 5457.7,
+      "target2": 5795.57,
+      "overall_score": 69.2,
+      "ranking": 78.2,
+      "sector": "Technology",
+      "scan_date": "2026-08-15"
     },
     {
       "symbol": "SBIN.NS",
@@ -196,7 +210,7 @@
       "overall_score": 68.67,
       "ranking": 77.64,
       "sector": "Financial Services",
-      "scan_date": "2026-08-14"
+      "scan_date": "2026-08-15"
     },
     {
       "symbol": "HUDCO.NS",
@@ -210,21 +224,21 @@
       "overall_score": 68.52,
       "ranking": 77.48,
       "sector": "Financial Services",
-      "scan_date": "2026-08-14"
+      "scan_date": "2026-08-15"
     },
     {
-      "symbol": "BERGEPAINT.NS",
+      "symbol": "TECHM.NS",
       "direction": "BUY",
-      "prev_close": 545.1,
-      "atr_14": 18.45,
+      "prev_close": 1632.8,
+      "atr_14": 38.44,
       "atr_percent": null,
-      "stop_loss": 508.2,
-      "target1": 582.0,
-      "target2": 609.68,
-      "overall_score": 68.2,
-      "ranking": 77.13,
-      "sector": "Basic Materials",
-      "scan_date": "2026-08-14"
+      "stop_loss": 1555.92,
+      "target1": 1709.68,
+      "target2": 1767.34,
+      "overall_score": 68.1,
+      "ranking": 77.02,
+      "sector": "Technology",
+      "scan_date": "2026-08-15"
     },
     {
       "symbol": "SHRIRAMFIN.NS",
@@ -238,7 +252,7 @@
       "overall_score": 67.93,
       "ranking": 76.83,
       "sector": "Financial Services",
-      "scan_date": "2026-08-14"
+      "scan_date": "2026-08-15"
     },
     {
       "symbol": "UNIONBANK.NS",
@@ -252,7 +266,7 @@
       "overall_score": 67.77,
       "ranking": 76.65,
       "sector": "Financial Services",
-      "scan_date": "2026-08-14"
+      "scan_date": "2026-08-15"
     },
     {
       "symbol": "PNBHOUSING.NS",
@@ -266,21 +280,7 @@
       "overall_score": 67.67,
       "ranking": 76.54,
       "sector": "Financial Services",
-      "scan_date": "2026-08-14"
-    },
-    {
-      "symbol": "AUROPHARMA.NS",
-      "direction": "BUY",
-      "prev_close": 1622.1,
-      "atr_14": 40.9,
-      "atr_percent": null,
-      "stop_loss": 1540.3,
-      "target1": 1703.9,
-      "target2": 1765.25,
-      "overall_score": 67.6,
-      "ranking": 76.46,
-      "sector": "Healthcare",
-      "scan_date": "2026-08-14"
+      "scan_date": "2026-08-15"
     }
   ]
 }

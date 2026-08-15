@@ -1,28 +1,6 @@
 {
-  "2026-08-14": [
-    "morning_exec::2026-08-14::09:16:49.324016",
-    "paper_trading_started::2026-08-14::09:17:31.820136",
-    "monitoring_summary::2026-08-14::09:17:54.600393",
-    "holding_status::2026-08-14::part1::09:17:55.167659",
-    "holding_status::2026-08-14::part2::09:17:55.763184",
-    "holding_status::2026-08-14::part3::09:17:56.343291",
-    "portfolio_summary::2026-08-14::09:17:56.934363",
-    "analysis_summary::2026-08-14::09:17:57.782244",
-    "learning_summary::2026-08-14::09:17:59.699072",
-    "optimizer_recommendation::2026-08-14::09:18:00.522788",
-    "paper_trading_started::2026-08-14::14:10:57.267575",
-    "monitoring_summary::2026-08-14::14:11:14.700475",
-    "holding_status::2026-08-14::part1::14:11:15.226459",
-    "holding_status::2026-08-14::part2::14:11:15.774166",
-    "holding_status::2026-08-14::part3::14:11:16.309141",
-    "portfolio_summary::2026-08-14::14:11:16.853131",
-    "analysis_summary::2026-08-14::14:11:17.703450",
-    "learning_summary::2026-08-14::14:11:19.658496",
-    "optimizer_recommendation::2026-08-14::14:11:20.575487",
-    "news::BLUESTARCO.NS::Blue Star Ltd (BOM:500067) (Q1 2027) Earnings Call Highlights: Strong Revenue Growth and Record ...",
-    "mi_summary::2026-08-14 20:11:16.293143",
-    "scan_started::2026-08-14::23:37:10.060062",
-    "scan_completed::2026-08-14::23:48:40.739259",
-    "mi_summary::2026-08-15 03:32:02.697847"
+  "2026-08-15": [
+    "scan_started::2026-08-15::17:27:15.173771",
+    "scan_completed::2026-08-15::17:35:38.090528"
   ]
 }
