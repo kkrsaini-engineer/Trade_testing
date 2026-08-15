@@ -21,6 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from core.logger import get_logger  # noqa: E402
 from data.watchlist import WatchlistManager  # noqa: E402
 from execution.scanner import MarketScanner  # noqa: E402
+from market.volatility import fetch_india_vix  # noqa: E402
 
 logger = get_logger(__name__)
 
@@ -46,7 +47,15 @@ def run_scan(symbols: list[str]) -> list[dict]:
         "open_positions": {},
     }
     broker_status = {"status": "ONLINE", "mode": "SCAN", "connected": True, "order_allowed": True, "available_margin": 100000.0}
-    market_state = {"max_trade_candidates": 20, "max_watchlist": 50, "market_open": True, "holiday": False}
+    # See scripts/generate_full_report.py for why "vix" is fetched live
+    # here instead of being absent/hardcoded.
+    market_state = {
+        "max_trade_candidates": 20,
+        "max_watchlist": 50,
+        "market_open": True,
+        "holiday": False,
+        "vix": fetch_india_vix(),
+    }
 
     # NOTE: scanner.scan_symbols() intentionally filters down to only
     # executable BUY/SELL candidates (that's what the orchestrator needs

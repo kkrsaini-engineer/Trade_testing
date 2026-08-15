@@ -28,7 +28,9 @@ from risk.portfolio_rules import PortfolioRulesEngine
 from fundamental.fundamental import FundamentalEngine
 from news.sentiment_engine import SentimentEngine
 from market.market_regime import MarketRegimeEngine
+from market.volatility import fetch_india_vix
 from data.news_data import NewsDataProvider
+from data.delivery_data import DeliveryDataProvider, symbol_without_suffix
 from market import macro_intelligence
 
 logger = get_logger(__name__)
@@ -105,6 +107,8 @@ class MarketScanner:
         self.regime = MarketRegimeEngine()
         self._news_provider = NewsDataProvider()
         self._market_headlines: list[str] | None = None  # lazy-fetched, shared across all symbols in a scan run
+        self._delivery_provider = DeliveryDataProvider()
+        self._delivery_data: dict[str, float] | None = None  # lazy-fetched, shared across all symbols in a scan run
 
         logger.info("Market Scanner Engine initialized under professional pipeline contracts.")
 
@@ -131,7 +135,13 @@ class MarketScanner:
 
         # Dummy/Mock state matching for global evaluation criteria
         broker_status = {"status": "ONLINE", "connected": True, "order_allowed": True, "available_margin": 100000.0}
-        market_state = {"max_trade_candidates": 20, "max_watchlist": 50, "market_open": True, "holiday": False}
+        market_state = {
+            "max_trade_candidates": 20,
+            "max_watchlist": 50,
+            "market_open": True,
+            "holiday": False,
+            "vix": fetch_india_vix(),
+        }
 
         return self.scan_symbols(
             symbols=symbols,
@@ -151,6 +161,21 @@ class MarketScanner:
                 logger.warning("Market news fetch failed: %s", exc)
                 self._market_headlines = []
         return self._market_headlines
+
+    def _get_delivery_data(self) -> dict[str, float]:
+        """Fetch the NSE-wide delivery-percentage bhavcopy once per scan
+        run and cache it (same reasoning as _get_market_headlines() —
+        one file covers every symbol, so there's no reason to hit NSE
+        once per symbol). Returns {} on total failure; callers must
+        treat that as "no live data" and fall back gracefully, not
+        substitute a fabricated number."""
+        if self._delivery_data is None:
+            try:
+                self._delivery_data = self._delivery_provider.fetch_latest()
+            except Exception as exc:
+                logger.warning("Delivery data fetch failed: %s", exc)
+                self._delivery_data = {}
+        return self._delivery_data
 
     def _evaluate_market_context(self, symbol: str, bundle: Any = None) -> dict[str, Any]:
         """
@@ -197,6 +222,20 @@ class MarketScanner:
         diagnostics["latest_close"] = round(float(latest["close"]), 2)
         diagnostics["latest_high"] = round(float(latest["high"]), 2)
         diagnostics["latest_low"] = round(float(latest["low"]), 2)
+
+        # 2a. DELIVERY PERCENTAGE — was previously ALWAYS absent from
+        # this dataframe, so validation_engine.py's
+        # `latest.get("delivery_percentage", 100.0)` liquidity check
+        # could never fail (100.0 >= 20.0 always). Only set the column
+        # when a real NSE reading is available for this symbol; if the
+        # fetch failed or this symbol isn't covered, leave the column
+        # unset so validation_engine.py's own default/fallback behavior
+        # is unchanged (no regression when live data is unreachable).
+        deliv_lookup = self._get_delivery_data()
+        deliv_value = deliv_lookup.get(symbol_without_suffix(symbol))
+        if deliv_value is not None:
+            dataframe.loc[dataframe.index[-1], "delivery_percentage"] = deliv_value
+            diagnostics["delivery_percentage"] = deliv_value
 
         # 2b. FUNDAMENTALS / NEWS SENTIMENT / MARKET REGIME
         # These feed the strategy + scoring engines (news_score / market_score /

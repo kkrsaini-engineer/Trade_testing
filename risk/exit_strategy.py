@@ -529,8 +529,51 @@ class ExitStrategyEngine:
             exit_reason = "Stop-loss triggered."
 
         # ==========================================================
+        # FINAL TARGET
+        # ==========================================================
+        # Profit-target checks were moved ABOVE trend_reversal/news/
+        # volatility/time exits (they used to sit below all of them).
+        # Previously, a noisy single-bar trend_reversal (ema_20 <
+        # ema_50 for BUY) could FULL_EXIT a position the moment it
+        # crossed, even on the exact bar it also reached final_target —
+        # capping the win at whatever trend_reversal's confidence/label
+        # was instead of recording it as a target hit. Stop-loss still
+        # protects capital first (unchanged above); once capital is
+        # safe, "did we already win" is checked before "is the trend
+        # getting shaky", so a trade that reached its target is never
+        # silently reclassified as a reversal-exit.
+
+        elif final_exit:
+
+            action = FULL_EXIT
+
+            exit_percent = 100.0
+
+            confidence = 95.0
+
+            exit_reason = "Final target achieved."
+
+        # ==========================================================
+        # PARTIAL TARGET
+        # ==========================================================
+
+        elif partial_exit:
+
+            action = PARTIAL_EXIT
+
+            exit_percent = 50.0
+
+            confidence = 85.0
+
+            exit_reason = "Partial target achieved."
+
+        # ==========================================================
         # TREND REVERSAL
         # ==========================================================
+        # Still fires BEFORE news/volatility/time exits — a confirmed
+        # reversal that hasn't yet reached a profit target is real risk
+        # and should exit ahead of softer signals, just not ahead of a
+        # target that's already been hit (see above).
 
         elif trend_reversal:
 
@@ -583,34 +626,6 @@ class ExitStrategyEngine:
             confidence = 75.0
 
             exit_reason = "Maximum holding period."
-
-        # ==========================================================
-        # FINAL TARGET
-        # ==========================================================
-
-        elif final_exit:
-
-            action = FULL_EXIT
-
-            exit_percent = 100.0
-
-            confidence = 95.0
-
-            exit_reason = "Final target achieved."
-
-        # ==========================================================
-        # PARTIAL TARGET
-        # ==========================================================
-
-        elif partial_exit:
-
-            action = PARTIAL_EXIT
-
-            exit_percent = 50.0
-
-            confidence = 85.0
-
-            exit_reason = "Partial target achieved."
 
         # ==========================================================
         # HOLD

@@ -371,15 +371,10 @@ class SellStrategyEngine:
 
             reasons.append("Money Flow Index indicates distribution.")
 
-        # --------------------------------------------------
-        # VWAP CONFIRMATION
-        # --------------------------------------------------
-
-        checks["vwap_confirmation"] = row["close"] < row["vwap"]
-
-        if checks["vwap_confirmation"]:
-
-            reasons.append("VWAP confirms bearish pressure.")
+        # NOTE: a "VWAP confirmation" check used to live here, but it was
+        # `row["close"] < row["vwap"]` — byte-identical to
+        # "price_below_vwap" above. Removed for the same reason as the
+        # BUY-side mirror (see strategy/buy_strategy.py).
 
         # --------------------------------------------------
         # DISTRIBUTION
@@ -496,15 +491,10 @@ class SellStrategyEngine:
         # MARKET FILTER
         # ==========================================================
 
-        # --------------------------------------------------
-        # MARKET REGIME
-        # --------------------------------------------------
-
-        checks["bear_market"] = row["market_regime"] == "BEAR"
-
-        if checks["bear_market"]:
-
-            reasons.append("Bear market confirmed.")
+        # NOTE: a "bear_market" tier2 check used to live here, but it was
+        # `row["market_regime"] == "BEAR"` — byte-identical to the
+        # "market_trend" Tier 1 check below. Removed for the same reason
+        # as the BUY-side mirror (see strategy/buy_strategy.py).
 
         # --------------------------------------------------
         # VOLATILITY

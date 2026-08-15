@@ -26,6 +26,7 @@ from execution.scanner import (
 )  # Fixed: Imported correct class matching folder
 from execution.broker import BrokerEngine, OrderRequest
 from execution.tracker import PositionTracker
+from market.volatility import fetch_india_vix
 from portfolio.portfolio import PortfolioEngine, PortfolioState
 from storage.trades.trade_store import TradeStore
 from output.report_generator import ReportGenerator
@@ -100,7 +101,11 @@ class WiredOrchestrator:
             "max_trade_candidates": 20,
             "max_watchlist": 50,
             "event_day": False,
-            "vix": 20,
+            # Was hardcoded to 20 (a "calm market" placeholder) — meaning
+            # risk_manager.py's vix >= 30 / vix >= 35 risk-off checks
+            # could never fire. Now fetched live each cycle (falls back
+            # to 20.0 itself, with a logged warning, if the fetch fails).
+            "vix": fetch_india_vix(),
             # CRITICAL: without these two keys, ValidationEngine defaults
             # market_open to False and rejects EVERY trade with "Market is
             # closed" — meaning portfolio_allowed was permanently stuck at

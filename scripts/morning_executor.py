@@ -80,22 +80,25 @@ def _signed_news_bias(scored_item: dict[str, Any]) -> float:
     return 0.0
 
 
-def check_overnight_news(symbol: str, direction: str, scan_timestamp: str | None) -> tuple[bool, str]:
-    """Returns (news_ok, reason). news_ok=False means the overnight
-    news strongly contradicts the trade direction and this candidate
-    should be skipped regardless of the gap-band result.
+def _check_symbol_news(symbol: str, direction: str, scan_timestamp: str | None) -> tuple[bool, str]:
+    """Company-specific overnight news check (original behavior).
 
     Only considers headlines published AFTER scan_timestamp (last
     night's scan time) — without this filter, the exact same
     headlines the scanner already scored would be re-evaluated here,
     which is redundant and can produce a DIFFERENT bias by chance
     (rounding/model variance) than what the scanner already factored
-    into the Overall Score, causing an inconsistent decision."""
+    into the Overall Score, causing an inconsistent decision.
+
+    LIMITATION this does NOT cover: broad macro/geopolitical shocks
+    (war, crisis) that don't specifically mention this company by name
+    won't show up in ITS news feed at all — see _check_macro_news()
+    below, which is the check that catches those."""
     try:
         provider = NewsDataProvider()
         headlines = provider.fetch(symbol=symbol, limit=20)
         if not headlines:
-            return True, "No news available."
+            return True, "No company-specific news available."
 
         if scan_timestamp:
             cutoff = datetime.fromisoformat(scan_timestamp)
@@ -112,19 +115,76 @@ def check_overnight_news(symbol: str, direction: str, scan_timestamp: str | None
             headlines = fresh_headlines
 
         if not headlines:
-            return True, "No NEW overnight news since last night's scan."
+            return True, "No NEW company-specific overnight news since last night's scan."
 
         engine = SentimentEngine()
         scored = engine.evaluate(headlines)
         avg_bias = sum(_signed_news_bias(i) for i in scored) / len(scored)
         if direction == "BUY" and avg_bias <= -CONFIG.news_skip_bias_threshold:
-            return False, f"{len(headlines)} NEW overnight headline(s), bias {avg_bias:.2f} — strongly negative against a BUY."
+            return False, f"{len(headlines)} NEW company headline(s), bias {avg_bias:.2f} — strongly negative against a BUY."
         if direction == "SELL" and avg_bias >= CONFIG.news_skip_bias_threshold:
-            return False, f"{len(headlines)} NEW overnight headline(s), bias {avg_bias:.2f} — strongly positive against a SELL."
-        return True, f"{len(headlines)} new overnight headline(s), bias {avg_bias:.2f} — not a blocker."
+            return False, f"{len(headlines)} NEW company headline(s), bias {avg_bias:.2f} — strongly positive against a SELL."
+        return True, f"{len(headlines)} new company headline(s), bias {avg_bias:.2f} — not a blocker."
     except Exception as exc:
-        logger.warning("News check failed for %s: %s — proceeding without it.", symbol, exc)
-        return True, f"News check unavailable ({exc}) — proceeded without it."
+        logger.warning("Company news check failed for %s: %s — proceeding without it.", symbol, exc)
+        return True, f"Company news check unavailable ({exc}) — proceeded without it."
+
+
+def _check_macro_news(direction: str) -> tuple[bool, str]:
+    """Broad market/macro overnight news check (war, crisis, oil shocks,
+    rate decisions, etc.) — this is the check that was MISSING here
+    before: _check_symbol_news() above only ever sees headlines tagged
+    to one specific company, so a genuine market-wide shock overnight
+    (that doesn't name this stock) previously passed through silently
+    regardless of how severe it was.
+
+    Reuses the same broad-market headline source already used by the
+    evening scan (data/news_data.py's fetch_market_news(), consumed by
+    market/macro_intelligence.py) — no new data source.
+
+    KNOWN LIMITATION: fetch_market_news() returns titles only (no
+    publish timestamps), so unlike _check_symbol_news() this cannot
+    filter to "published after last night's scan" — it scores whatever
+    macro headlines are current right now. In practice this means a
+    macro event the evening scan already saw and priced in could
+    re-trigger this check with the same bias; that's an acceptable
+    false-positive rate for a safety check (it can unnecessarily skip
+    a trade) versus the alternative it replaces (silently executing
+    into a live crisis)."""
+    try:
+        provider = NewsDataProvider()
+        headlines = provider.fetch_market_news(limit=20)
+        if not headlines:
+            return True, "No macro headlines available."
+
+        engine = SentimentEngine()
+        scored = engine.evaluate([{"title": h} for h in headlines])
+        avg_bias = sum(_signed_news_bias(i) for i in scored) / len(scored)
+        if direction == "BUY" and avg_bias <= -CONFIG.news_skip_bias_threshold:
+            return False, f"{len(headlines)} macro headline(s), bias {avg_bias:.2f} — strongly negative against a BUY."
+        if direction == "SELL" and avg_bias >= CONFIG.news_skip_bias_threshold:
+            return False, f"{len(headlines)} macro headline(s), bias {avg_bias:.2f} — strongly positive against a SELL."
+        return True, f"{len(headlines)} macro headline(s), bias {avg_bias:.2f} — not a blocker."
+    except Exception as exc:
+        logger.warning("Macro news check failed: %s — proceeding without it.", exc)
+        return True, f"Macro news check unavailable ({exc}) — proceeded without it."
+
+
+def check_overnight_news(symbol: str, direction: str, scan_timestamp: str | None) -> tuple[bool, str]:
+    """Returns (news_ok, reason). news_ok=False means overnight news —
+    either company-specific OR broad macro/geopolitical — strongly
+    contradicts the trade direction and this candidate should be
+    skipped regardless of the gap-band result. Checks both sources;
+    either one failing is enough to block."""
+    symbol_ok, symbol_reason = _check_symbol_news(symbol, direction, scan_timestamp)
+    if not symbol_ok:
+        return False, symbol_reason
+
+    macro_ok, macro_reason = _check_macro_news(direction)
+    if not macro_ok:
+        return False, macro_reason
+
+    return True, f"{symbol_reason} | {macro_reason}"
 
 
 def fetch_open_price(symbol: str, max_retries: int = 3, retry_delay_seconds: int = 30) -> tuple[float | None, str]:

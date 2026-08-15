@@ -28,6 +28,7 @@ from core.rejection_classifier import classify_tier4_block  # noqa: E402
 from core.trading_calendar import is_trading_day, now_ist, skip_reason  # noqa: E402
 from data.watchlist import WatchlistManager  # noqa: E402
 from execution.scanner import MarketScanner  # noqa: E402
+from market.volatility import fetch_india_vix  # noqa: E402
 from storage.trades.trade_store import TradeStore  # noqa: E402
 
 logger = get_logger(__name__)
@@ -284,7 +285,19 @@ def main() -> None:
         "open_positions": {},
     }
     broker_status = {"status": "ONLINE", "mode": "SCAN", "connected": True, "order_allowed": True, "available_margin": 100000.0}
-    market_state = {"max_trade_candidates": 20, "max_watchlist": 50, "market_open": True, "holiday": False}
+    # "vix" used to be entirely absent from this dict, so
+    # risk_manager.py's market.get("vix", 20.0) always fell through to
+    # its hardcoded default — meaning the vix >= 30 / vix >= 35 risk-off
+    # checks could never fire regardless of real market conditions.
+    # fetch_india_vix() pulls a live reading once per scan run (falls
+    # back to 20.0 itself, with a logged warning, if the fetch fails).
+    market_state = {
+        "max_trade_candidates": 20,
+        "max_watchlist": 50,
+        "market_open": True,
+        "holiday": False,
+        "vix": fetch_india_vix(),
+    }
 
     out_path = "reports/full_report.csv"
     Path("reports").mkdir(exist_ok=True)

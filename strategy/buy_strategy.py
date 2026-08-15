@@ -355,15 +355,11 @@ class BuyStrategyEngine:
 
             reasons.append("Money Flow Index supports accumulation.")
 
-        # --------------------------------------------------
-        # VWAP CONFIRMATION
-        # --------------------------------------------------
-
-        checks["vwap_confirmation"] = row["close"] > row["vwap"]
-
-        if checks["vwap_confirmation"]:
-
-            reasons.append("VWAP confirms buying strength.")
+        # NOTE: a "VWAP confirmation" check used to live here, but it was
+        # `row["close"] > row["vwap"]` — byte-identical to "price_above_vwap"
+        # above. Counting the same condition twice inflated tier2_score
+        # without adding independent signal, so it was removed rather than
+        # kept as a duplicate vote.
 
         # --------------------------------------------------
         # ACCUMULATION
@@ -475,15 +471,12 @@ class BuyStrategyEngine:
         # MARKET FILTER
         # ==========================================================
 
-        # --------------------------------------------------
-        # MARKET REGIME
-        # --------------------------------------------------
-
-        checks["bull_market"] = row["market_regime"] == "BULL"
-
-        if checks["bull_market"]:
-
-            reasons.append("Bull market confirmed.")
+        # NOTE: a "bull_market" tier2 check used to live here, but it was
+        # `row["market_regime"] == "BULL"` — byte-identical to the
+        # "market_trend" Tier 1 check below. Counting the same regime
+        # condition as both a Tier 1 gate AND a Tier 2 vote double-counted
+        # one signal as if it were two independent confirmations, so the
+        # Tier 2 copy was removed.
 
         # --------------------------------------------------
         # VOLATILITY
