@@ -74,6 +74,15 @@ class SellDecision:
     tier1_passed: bool = False
     tier2_score: float = 0.0
     tier3_score: float = 0.0
+    # Tier 2 factor-score breakdown (see the restructuring NOTE at the
+    # Tier 2 computation site) — kept on the decision object so live
+    # production logs/diagnostics can show *why* tier2_score landed
+    # where it did, not just the final blended number.
+    trend_factor_score: float = 0.0
+    momentum_factor_score: float = 0.0
+    volume_factor_score: float = 0.0
+    volatility_factor_score: float = 0.0
+    adx_regime: str = ""
     fundamental_weakness: float = 0.0
     news_negativity: float | None = None
     overall_score: float = 0.0
@@ -738,20 +747,70 @@ class SellStrategyEngine:
         tier1_passed = sum(tier1_checks.values()) >= 2
 
         # --------------------------------------------------
-        # TIER 2 — TECHNICAL CONFIRMATION (weighted contribution, not a gate)
+        # TIER 2 — TECHNICAL CONFIRMATION: 4 regime-conditionally-weighted
+        # category factor scores (Trend / Momentum / Volume / Volatility),
+        # mirroring the BUY-side restructuring exactly (see
+        # strategy/buy_strategy.py for the full rationale). breadth/sector
+        # move to Tier 3's market blend below; not_overextended stays a
+        # HARD reject only (see the overextension cap section above), no
+        # longer double-counted as a graded Tier 2 vote too.
+        #
+        # NOTE on asymmetry: SELL's breakdown-engine section tracks
+        # "breakdown" + "failed_breakout" where BUY tracks "breakout" +
+        # "pullback" — these are NOT literal 1:1 mirrors (pre-existing,
+        # not introduced by this restructuring). "failed_breakout" is
+        # grouped into VOLATILITY-diagnostic (same bucket as
+        # "breakdown"/BUY's "breakout") since it's a breakout-pattern
+        # concept, not a trend-support one.
         # --------------------------------------------------
 
         tier1_and_context_keys = {
             "ema_alignment", "market_trend", "sma_alignment",
             "fundamental", "news", "market_score",
+            "breadth", "sector", "not_overextended",
         }
         tier2_checks = {
             key: value for key, value in checks.items()
             if key not in tier1_and_context_keys
         }
+
+        TREND_CORE = [
+            "price_below_ema20", "supertrend", "ichimoku",
+            "adx", "ema_fresh_cross", "pullback_entry",
+        ]
+        MOMENTUM_CORE = ["rsi", "macd_cross", "rsi_fresh_cross"]
+        VOLUME_CORE = ["volume_spike", "obv", "distribution"]
+        VOLATILITY_CORE = ["squeeze_breakout", "confirmed_breakdown", "atr_filter", "volatility"]
+
+        def _factor_score(core_keys: list[str]) -> float:
+            values = [checks[key] for key in core_keys]
+            return (sum(values) / len(values)) * 100 if values else 50.0
+
+        trend_factor_score = _factor_score(TREND_CORE)
+        momentum_factor_score = _factor_score(MOMENTUM_CORE)
+        volume_factor_score = _factor_score(VOLUME_CORE)
+        volatility_factor_score = _factor_score(VOLATILITY_CORE)
+
+        # Regime-conditional weights, same ADX thresholds as the BUY side
+        # (trend strength is direction-agnostic).
+        adx_value = float(row["adx_14"])
+
+        if adx_value >= 25:
+            adx_regime = "TRENDING"
+            factor_weights = {"trend": 0.35, "momentum": 0.30, "volume": 0.20, "volatility": 0.15}
+        elif adx_value < 20:
+            adx_regime = "RANGE_BOUND"
+            factor_weights = {"trend": 0.20, "momentum": 0.20, "volume": 0.20, "volatility": 0.40}
+        else:
+            adx_regime = "BASELINE"
+            factor_weights = {"trend": 0.30, "momentum": 0.25, "volume": 0.25, "volatility": 0.20}
+
         tier2_score = (
-            sum(tier2_checks.values()) / max(len(tier2_checks), 1)
-        ) * 100
+            trend_factor_score * factor_weights["trend"]
+            + momentum_factor_score * factor_weights["momentum"]
+            + volume_factor_score * factor_weights["volume"]
+            + volatility_factor_score * factor_weights["volatility"]
+        )
 
         # --------------------------------------------------
         # TIER 3 — CONTEXT (weak fundamentals + negative news + market, weighted)
@@ -761,19 +820,37 @@ class SellStrategyEngine:
 
         inverted_market = 100.0 - min(max(market_score, 0.0), 100.0)
 
+        # Market-context blend for the Tier 3 "market" slot — mirrors the
+        # BUY side, direction-inverted: WEAK breadth favors SELL (not
+        # STRONG). sector_score is NOT inverted here — same convention as
+        # the existing checks["sector"] gate above (both BUY and SELL
+        # test sector_score >= 70 directly), meaning the caller is
+        # expected to pass a direction-appropriate sector_score already.
+        #
+        # NOTE (real-data caveat, same as BUY side): execution/scanner.py
+        # currently hardcodes sector_score=50.0 and dataframe["breadth"]=
+        # 50.0 (a FLOAT, not a "STRONG"/"WEAK" string) for every real
+        # scan — this blend is correct and forward-compatible but is
+        # numerically inert (flat 50.0) until that data is wired in.
+        breadth_state = row.get("breadth", "NEUTRAL")
+        breadth_value = {"WEAK": 75.0, "STRONG": 25.0}.get(breadth_state, 50.0)
+        sector_value = min(max(sector_score, 0.0), 100.0)
+        market_context_score = (
+            inverted_market * 0.50
+            + breadth_value * 0.25
+            + sector_value * 0.25
+        )
+
         if has_news:
             tier3_score = (
                 fundamental_weakness * 0.55
                 + news_negativity * 0.30
-                # market_score is BUY-oriented (BULL=75, BEAR=25) — invert
-                # it here, since a BEAR market should score HIGH for a
-                # SELL setup, not low.
-                + inverted_market * 0.15
+                + market_context_score * 0.15
             )
         else:
             tier3_score = (
                 fundamental_weakness * (0.55 / 0.70)
-                + inverted_market * (0.15 / 0.70)
+                + market_context_score * (0.15 / 0.70)
             )
 
         # --------------------------------------------------
@@ -823,6 +900,12 @@ class SellStrategyEngine:
 
         reasons.append(f"Technical confirmation: {optional_passed}/{optional_total}")
 
+        reasons.append(
+            f"Tier2 factors [{adx_regime}]: Trend={trend_factor_score:.0f} "
+            f"Momentum={momentum_factor_score:.0f} Volume={volume_factor_score:.0f} "
+            f"Volatility={volatility_factor_score:.0f} -> Tier2={tier2_score:.2f}"
+        )
+
         reasons.append(f"Weighted score: {overall_score:.2f}/100 (need >= {QUALIFY_THRESHOLD:.0f})")
 
         if not checks["not_overextended"]:
@@ -849,11 +932,20 @@ class SellStrategyEngine:
         reasons.append(f"Checks Failed : {failed_checks}")
 
         logger.info(
-            "SELL Strategy | Action=%s | Confidence=%.2f | Passed=%d/%d",
+            "SELL Strategy | Action=%s | Confidence=%.2f | Passed=%d/%d | "
+            "ADXRegime=%s | Trend=%.1f Momentum=%.1f Volume=%.1f Volatility=%.1f | "
+            "Tier2=%.2f Tier3=%.2f",
             action,
             confidence,
             passed_checks,
             len(checks),
+            adx_regime,
+            trend_factor_score,
+            momentum_factor_score,
+            volume_factor_score,
+            volatility_factor_score,
+            tier2_score,
+            tier3_score,
         )
 
         # ==========================================================
@@ -870,6 +962,11 @@ class SellStrategyEngine:
             tier1_passed=tier1_passed,
             tier2_score=round(tier2_score, 2),
             tier3_score=round(tier3_score, 2),
+            trend_factor_score=round(trend_factor_score, 2),
+            momentum_factor_score=round(momentum_factor_score, 2),
+            volume_factor_score=round(volume_factor_score, 2),
+            volatility_factor_score=round(volatility_factor_score, 2),
+            adx_regime=adx_regime,
             fundamental_weakness=round(fundamental_weakness, 2),
             news_negativity=round(news_negativity, 2) if has_news else None,
             overall_score=round(overall_score, 2),

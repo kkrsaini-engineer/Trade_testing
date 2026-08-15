@@ -426,12 +426,18 @@ class MarketScanner:
         diagnostics["sell_decision_confidence"] = round(sell_decision.confidence, 2)
 
         # 4. SCORING MATRIX
+        # buy_decision/sell_decision (already computed above by
+        # BuyStrategyEngine/SellStrategyEngine) are now passed through so
+        # BuyScoringEngine/SellScoringEngine can delegate their technical
+        # component to tier2_score instead of an independent duplicate
+        # implementation — see the NOTE in strategy/buy_scoring.py.
         buy_score = self.buy_score.score(
             dataframe=dataframe,
             fundamentals=fundamentals,
             news_score=news_score,
             market_score=market_score,
             sector_score=sector_score,
+            buy_decision=buy_decision,
         )
         sell_score = self.sell_score.score(
             dataframe=dataframe,
@@ -439,6 +445,7 @@ class MarketScanner:
             news_score=news_score,
             market_score=market_score,
             sector_score=sector_score,
+            sell_decision=sell_decision,
         )
         diagnostics["buy_score"] = round(buy_score.overall, 2)
         diagnostics["sell_score"] = round(sell_score.overall, 2)

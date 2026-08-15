@@ -74,6 +74,15 @@ class BuyDecision:
     tier1_passed: bool = False
     tier2_score: float = 0.0
     tier3_score: float = 0.0
+    # Tier 2 factor-score breakdown (see the restructuring NOTE at the
+    # Tier 2 computation site) — kept on the decision object so live
+    # production logs/diagnostics can show *why* tier2_score landed
+    # where it did, not just the final blended number.
+    trend_factor_score: float = 0.0
+    momentum_factor_score: float = 0.0
+    volume_factor_score: float = 0.0
+    volatility_factor_score: float = 0.0
+    adx_regime: str = ""
     fundamental_health: float = 0.0
     news_health: float | None = None
     overall_score: float = 0.0
@@ -725,20 +734,71 @@ class BuyStrategyEngine:
         tier1_passed = sum(tier1_checks.values()) >= 2
 
         # --------------------------------------------------
-        # TIER 2 — TECHNICAL CONFIRMATION (weighted contribution, not a gate)
+        # TIER 2 — TECHNICAL CONFIRMATION: 4 regime-conditionally-weighted
+        # category factor scores (Trend / Momentum / Volume / Volatility),
+        # replacing the old flat average-of-~30-checks. A flat average let
+        # a category with many near-duplicate checks (e.g. bollinger +
+        # donchian + pivot all essentially voting "price above a support
+        # line") silently drown out a category with few checks — this
+        # weights by CATEGORY instead, and each category's score is built
+        # from a curated non-redundant "core" subset, not every check in
+        # it. breadth/sector move to Tier 3's market blend below (they're
+        # market-wide context, not stock-technical signal); not_overextended
+        # stays a HARD reject only (see the overextension cap section
+        # above) — it was previously double-counted as ALSO a graded Tier 2
+        # vote, which this removes.
         # --------------------------------------------------
 
         tier1_and_context_keys = {
             "ema_alignment", "market_trend", "sma_alignment",
             "fundamental", "news", "market_score",
+            "breadth", "sector", "not_overextended",
         }
         tier2_checks = {
             key: value for key, value in checks.items()
             if key not in tier1_and_context_keys
         }
+
+        TREND_CORE = [
+            "price_above_ema20", "supertrend", "ichimoku",
+            "adx", "ema_fresh_cross", "pullback_entry",
+        ]
+        MOMENTUM_CORE = ["rsi", "macd_cross", "rsi_fresh_cross"]
+        VOLUME_CORE = ["volume_spike", "obv", "accumulation"]
+        VOLATILITY_CORE = ["squeeze_breakout", "confirmed_breakout", "atr_filter", "volatility"]
+
+        def _factor_score(core_keys: list[str]) -> float:
+            values = [checks[key] for key in core_keys]
+            return (sum(values) / len(values)) * 100 if values else 50.0
+
+        trend_factor_score = _factor_score(TREND_CORE)
+        momentum_factor_score = _factor_score(MOMENTUM_CORE)
+        volume_factor_score = _factor_score(VOLUME_CORE)
+        volatility_factor_score = _factor_score(VOLATILITY_CORE)
+
+        # Regime-conditional weights, driven by the RAW ADX reading (not
+        # the boolean "adx" check) — a trending market (ADX >= 25) leans
+        # on Trend+Momentum; a range-bound one (ADX < 20) leans on
+        # Volatility, since squeeze/breakout timing matters more than
+        # "is there a trend" when there mostly isn't one.
+        adx_value = float(row["adx_14"])
+
+        if adx_value >= 25:
+            adx_regime = "TRENDING"
+            factor_weights = {"trend": 0.35, "momentum": 0.30, "volume": 0.20, "volatility": 0.15}
+        elif adx_value < 20:
+            adx_regime = "RANGE_BOUND"
+            factor_weights = {"trend": 0.20, "momentum": 0.20, "volume": 0.20, "volatility": 0.40}
+        else:
+            adx_regime = "BASELINE"
+            factor_weights = {"trend": 0.30, "momentum": 0.25, "volume": 0.25, "volatility": 0.20}
+
         tier2_score = (
-            sum(tier2_checks.values()) / max(len(tier2_checks), 1)
-        ) * 100
+            trend_factor_score * factor_weights["trend"]
+            + momentum_factor_score * factor_weights["momentum"]
+            + volume_factor_score * factor_weights["volume"]
+            + volatility_factor_score * factor_weights["volatility"]
+        )
 
         # --------------------------------------------------
         # TIER 3 — CONTEXT (fundamentals + news + market, weighted)
@@ -748,16 +808,42 @@ class BuyStrategyEngine:
         # fundamental signal isn't watered down by an absent one.
         # --------------------------------------------------
 
+        # Market-context blend for the Tier 3 "market" slot — was plain
+        # market_score alone; now also folds in breadth and sector
+        # (moved out of the Tier 2 technical-factor framework above).
+        # market_score keeps the largest share since it's the one macro
+        # signal actually driven by real regime data today.
+        #
+        # NOTE (real-data caveat, found while wiring this): as of this
+        # restructuring, execution/scanner.py hardcodes sector_score=50.0
+        # and dataframe["breadth"]=50.0 (a FLOAT, not a "STRONG"/
+        # "NEUTRAL"/"WEAK" string) for every real scan — neither
+        # cross-symbol sector-rotation nor market-wide breadth data is
+        # wired into the per-symbol pipeline yet (see the NOTEs at
+        # execution/scanner.py's sector_score/breadth assignment). So
+        # today this blend numerically contributes a flat, inert 50.0 for
+        # both terms below — moving them here is correct and
+        # forward-compatible, it just won't change real behavior until
+        # that data is actually wired in.
+        breadth_state = row.get("breadth", "NEUTRAL")
+        breadth_value = {"STRONG": 75.0, "WEAK": 25.0}.get(breadth_state, 50.0)
+        sector_value = min(max(sector_score, 0.0), 100.0)
+        market_context_score = (
+            min(max(market_score, 0.0), 100.0) * 0.50
+            + breadth_value * 0.25
+            + sector_value * 0.25
+        )
+
         if has_news:
             tier3_score = (
                 fundamental_health * 0.55
                 + news_health * 0.30
-                + min(max(market_score, 0.0), 100.0) * 0.15
+                + market_context_score * 0.15
             )
         else:
             tier3_score = (
                 fundamental_health * (0.55 / 0.70)
-                + min(max(market_score, 0.0), 100.0) * (0.15 / 0.70)
+                + market_context_score * (0.15 / 0.70)
             )
 
         # --------------------------------------------------
@@ -808,6 +894,12 @@ class BuyStrategyEngine:
 
         reasons.append(f"Technical confirmation: {optional_passed}/{optional_total}")
 
+        reasons.append(
+            f"Tier2 factors [{adx_regime}]: Trend={trend_factor_score:.0f} "
+            f"Momentum={momentum_factor_score:.0f} Volume={volume_factor_score:.0f} "
+            f"Volatility={volatility_factor_score:.0f} -> Tier2={tier2_score:.2f}"
+        )
+
         reasons.append(f"Weighted score: {overall_score:.2f}/100 (need >= {QUALIFY_THRESHOLD:.0f})")
 
         if not checks["not_overextended"]:
@@ -834,11 +926,20 @@ class BuyStrategyEngine:
         reasons.append(f"Checks Failed : {failed_checks}")
 
         logger.info(
-            "BUY Strategy | Action=%s | Confidence=%.2f | Passed=%d/%d",
+            "BUY Strategy | Action=%s | Confidence=%.2f | Passed=%d/%d | "
+            "ADXRegime=%s | Trend=%.1f Momentum=%.1f Volume=%.1f Volatility=%.1f | "
+            "Tier2=%.2f Tier3=%.2f",
             action,
             confidence,
             passed_checks,
             len(checks),
+            adx_regime,
+            trend_factor_score,
+            momentum_factor_score,
+            volume_factor_score,
+            volatility_factor_score,
+            tier2_score,
+            tier3_score,
         )
 
         # ==========================================================
@@ -855,6 +956,11 @@ class BuyStrategyEngine:
             tier1_passed=tier1_passed,
             tier2_score=round(tier2_score, 2),
             tier3_score=round(tier3_score, 2),
+            trend_factor_score=round(trend_factor_score, 2),
+            momentum_factor_score=round(momentum_factor_score, 2),
+            volume_factor_score=round(volume_factor_score, 2),
+            volatility_factor_score=round(volatility_factor_score, 2),
+            adx_regime=adx_regime,
             fundamental_health=round(fundamental_health, 2),
             news_health=round(news_health, 2) if has_news else None,
             overall_score=round(overall_score, 2),

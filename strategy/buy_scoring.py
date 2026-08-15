@@ -32,6 +32,7 @@ import pandas as pd
 from core.logger import get_logger
 from core.exceptions import StrategyError
 from strategy.fundamental_scoring import buy_fundamental_score
+from strategy.buy_strategy import BuyDecision
 
 logger = get_logger(__name__)
 
@@ -131,6 +132,7 @@ class BuyScoringEngine:
         news_score: float | None,
         market_score: float,
         sector_score: float,
+        buy_decision: BuyDecision,
     ) -> BuyScore:
 
         if dataframe.empty:
@@ -140,7 +142,27 @@ class BuyScoringEngine:
 
         result = BuyScore()
 
-        result.technical = self._technical_score(latest)
+        # UNIFICATION (was: an independent duplicate point-based
+        # implementation — see the removed _technical_score() method's
+        # git history). This engine used to hand-roll its own ~14-check
+        # technical score from scratch, separate from
+        # strategy/buy_strategy.py's checks — which meant every technical
+        # fix made there (duplicate-vote removal, the exact-formula
+        # early-entry checks, the regime-conditional Trend/Momentum/
+        # Volume/Volatility factor-score restructuring) never reached
+        # this engine, even though THIS engine's overall/technical score
+        # is what actually drives buy_strength (50% weight) in
+        # decision/decision_engine.py — i.e. what decides BUY-vs-SELL
+        # conflict resolution and the final trade ranking in
+        # scripts/generate_full_report.py. The old point-system also
+        # still had the macd_cross + macd_histogram duplicate-vote bug
+        # that was already fixed in buy_strategy.py. Delegating to
+        # BuyStrategyEngine's tier2_score (already computed once per
+        # symbol scan — see execution/scanner.py's call order) fixes
+        # both problems: one technical-scoring implementation instead of
+        # two drifting independently, and every future technical fix
+        # automatically reaches ranking too.
+        result.technical = buy_decision.tier2_score
 
         result.fundamental = self._fundamental_score(fundamentals)
 
@@ -193,110 +215,9 @@ class BuyScoringEngine:
     # ==========================================================
     # TECHNICAL SCORE
     # ==========================================================
-
-    def _technical_score(
-        self,
-        row: pd.Series,
-    ) -> float:
-
-        score = 0.0
-
-        max_points = 20
-        # --------------------------------------------------
-        # EMA Trend
-        # --------------------------------------------------
-
-        if row["ema_20"] > row["ema_50"]:
-            score += 2
-
-        if row["ema_50"] > row["ema_200"]:
-            score += 2
-
-        # --------------------------------------------------
-        # SMA Trend
-        # --------------------------------------------------
-
-        if row["sma_20"] > row["sma_50"]:
-            score += 1
-
-        if row["sma_50"] > row["sma_200"]:
-            score += 1
-
-        # --------------------------------------------------
-        # RSI
-        # --------------------------------------------------
-
-        rsi = row["rsi_14"]
-
-        if 55 <= rsi <= 70:
-            score += 2
-
-        elif 45 <= rsi < 55:
-            score += 1
-
-        # --------------------------------------------------
-        # MACD
-        # --------------------------------------------------
-
-        if row["macd"] > row["macd_signal"]:
-            score += 2
-
-        if row["macd_histogram"] > 0:
-            score += 1
-
-        # --------------------------------------------------
-        # Volume
-        # --------------------------------------------------
-
-        if row["volume"] > row["volume_sma_20"]:
-            score += 2
-
-        # --------------------------------------------------
-        # VWAP
-        # --------------------------------------------------
-
-        if row["close"] > row["vwap"]:
-            score += 1
-
-        # --------------------------------------------------
-        # OBV
-        # --------------------------------------------------
-
-        if row["obv"] > 0:
-            score += 1
-
-        # --------------------------------------------------
-        # CMF
-        # --------------------------------------------------
-
-        if row["cmf_20"] > 0:
-            score += 1
-
-        # --------------------------------------------------
-        # Bollinger
-        # --------------------------------------------------
-
-        if row["close"] > row["bb_middle"]:
-            score += 1
-
-        # --------------------------------------------------
-        # Breakout
-        # --------------------------------------------------
-
-        if row["is_breakout"]:
-            score += 2
-
-        # --------------------------------------------------
-        # Pullback
-        # --------------------------------------------------
-
-        if row["is_pullback"]:
-            score += 1
-
-        return round(
-            (score / max_points) * 100,
-            2,
-        )
+    # (removed: the independent point-based _technical_score() —
+    # result.technical now delegates to BuyStrategyEngine's tier2_score,
+    # see the NOTE at the score() call site above.)
 
     # ==========================================================
     # FUNDAMENTAL SCORE

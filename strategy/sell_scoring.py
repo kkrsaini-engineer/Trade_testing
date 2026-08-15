@@ -29,6 +29,7 @@ import pandas as pd
 from core.logger import get_logger
 from core.exceptions import StrategyError
 from strategy.fundamental_scoring import sell_fundamental_score
+from strategy.sell_strategy import SellDecision
 
 logger = get_logger(__name__)
 
@@ -97,6 +98,7 @@ class SellScoringEngine:
         news_score: float | None,
         market_score: float,
         sector_score: float,
+        sell_decision: SellDecision,
     ) -> SellScore:
 
         if dataframe.empty:
@@ -106,7 +108,21 @@ class SellScoringEngine:
 
         result = SellScore()
 
-        result.technical = self._technical_score(latest)
+        # UNIFICATION (was: an independent duplicate point-based
+        # implementation, mirroring buy_scoring.py's same fix — see the
+        # removed _technical_score() method's git history). This
+        # engine's own technical score used to be a separate ~14-check
+        # point system (with its own now-corrected max_points=22
+        # calibration bug, see the removed method's old comment) that
+        # never reflected any of strategy/sell_strategy.py's technical
+        # fixes (duplicate-vote removal, exact-formula early-entry,
+        # regime-conditional factor-score restructuring) — even though
+        # THIS engine's score is what actually drives sell_strength (50%
+        # weight) in decision/decision_engine.py, i.e. what decides
+        # BUY-vs-SELL conflict resolution and the final trade ranking.
+        # Delegating to SellStrategyEngine's tier2_score (already
+        # computed once per symbol scan) fixes both problems.
+        result.technical = sell_decision.tier2_score
 
         result.fundamental = self._fundamental_score(fundamentals)
 
@@ -156,128 +172,9 @@ class SellScoringEngine:
     # ==========================================================
     # TECHNICAL SCORE
     # ==========================================================
-
-    def _technical_score(
-        self,
-        row: pd.Series,
-    ) -> float:
-
-        score = 0.0
-
-        max_points = 22  # CONFIRMED BUG FIX: this method awards up to 22
-        # raw points (14 checks totaling 22, including the Ichimoku
-        # cloud_trend check below) but was dividing by 20 — proven via
-        # direct test to let the final score reach 110.0 (all-bearish
-        # inputs), uncapped, since result.technical = self._technical_score(...)
-        # is assigned directly without going through _normalize(). The
-        # BUY-side equivalent has no Ichimoku check in its technical
-        # score (14 checks totaling 20 points) so its max_points=20 is
-        # correctly calibrated and does not need this fix.
-        # --------------------------------------------------
-        # EMA Trend
-        # --------------------------------------------------
-
-        if row["ema_20"] < row["ema_50"]:
-            score += 2
-
-        if row["ema_50"] < row["ema_200"]:
-            score += 2
-
-        # --------------------------------------------------
-        # SMA Trend
-        # --------------------------------------------------
-
-        if row["sma_20"] < row["sma_50"]:
-            score += 1
-
-        if row["sma_50"] < row["sma_200"]:
-            score += 1
-
-        # --------------------------------------------------
-        # RSI
-        # --------------------------------------------------
-
-        rsi = row["rsi_14"]
-
-        if 30 <= rsi <= 45:
-            score += 2
-
-        elif 45 < rsi <= 55:
-            score += 1
-
-        elif rsi < 30:
-            score += 1
-
-        # --------------------------------------------------
-        # MACD
-        # --------------------------------------------------
-
-        if row["macd"] < row["macd_signal"]:
-            score += 2
-
-        if row["macd_histogram"] < 0:
-            score += 1
-
-        # --------------------------------------------------
-        # Volume
-        # --------------------------------------------------
-
-        if row["volume"] > row["volume_sma_20"]:
-            score += 2
-
-        # --------------------------------------------------
-        # VWAP
-        # --------------------------------------------------
-
-        if row["close"] < row["vwap"]:
-            score += 1
-
-        # --------------------------------------------------
-        # OBV
-        # --------------------------------------------------
-
-        if row["obv"] < 0:
-            score += 1
-
-        # --------------------------------------------------
-        # CMF
-        # --------------------------------------------------
-
-        if row["cmf_20"] < 0:
-            score += 1
-
-        # --------------------------------------------------
-        # Bollinger
-        # --------------------------------------------------
-
-        if row["close"] < row["bb_middle"]:
-            score += 1
-
-        # --------------------------------------------------
-        # Breakdown
-        # --------------------------------------------------
-
-        if row["is_breakdown"]:
-            score += 2
-
-        # --------------------------------------------------
-        # Failed Breakout
-        # --------------------------------------------------
-
-        if row.get("failed_breakout", False):
-            score += 1
-
-        # --------------------------------------------------
-        # Ichimoku
-        # --------------------------------------------------
-
-        if row.get("cloud_trend") == "BEAR":
-            score += 2
-
-        return round(
-            (score / max_points) * 100,
-            2,
-        )
+    # (removed: the independent point-based _technical_score() —
+    # result.technical now delegates to SellStrategyEngine's tier2_score,
+    # see the NOTE at the score() call site above.)
 
     # ==========================================================
     # FUNDAMENTAL SCORE
