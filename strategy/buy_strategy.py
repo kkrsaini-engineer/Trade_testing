@@ -467,6 +467,126 @@ class BuyStrategyEngine:
         if checks["confirmed_breakout"]:
 
             reasons.append("High conviction breakout confirmed by volume.")
+
+        # ==========================================================
+        # EARLY-ENTRY ENGINE
+        # Catches a trend near its START instead of after it's already
+        # extended. Before this, qualification leaned on EMA/SMA being
+        # ALREADY fully stacked and RSI ALREADY sitting in 55-70 — both
+        # true only once a move is well underway, which is why entries
+        # were landing late/at highs. These checks look for the MOMENT
+        # a trend starts (a fresh cross, a dip-buy, a breakout out of a
+        # tight range) instead of its already-established state.
+        # ==========================================================
+
+        # --------------------------------------------------
+        # FRESH EMA CROSS (crossed bullish within the last few bars,
+        # not "has been stacked for weeks")
+        # --------------------------------------------------
+
+        EMA_CROSS_LOOKBACK = 3
+
+        lookback_n = min(len(dataframe), EMA_CROSS_LOOKBACK + 1)
+        recent = dataframe.iloc[-lookback_n:]
+
+        ema_fresh_cross = False
+
+        for i in range(1, len(recent)):
+
+            prev_below = recent["ema_20"].iloc[i - 1] <= recent["ema_50"].iloc[i - 1]
+
+            now_above = recent["ema_20"].iloc[i] > recent["ema_50"].iloc[i]
+
+            if prev_below and now_above:
+
+                ema_fresh_cross = True
+
+                break
+
+        checks["ema_fresh_cross"] = ema_fresh_cross
+
+        if checks["ema_fresh_cross"]:
+
+            reasons.append("Fresh bullish EMA20/EMA50 cross (early trend, not chasing).")
+
+        # --------------------------------------------------
+        # RSI FRESH MIDLINE CROSS (just crossed above 50, not
+        # "already sitting" in the 55-70 zone for a while)
+        # --------------------------------------------------
+
+        RSI_CROSS_LOOKBACK = 2
+
+        recent_rsi = dataframe["rsi_14"].iloc[-min(len(dataframe), RSI_CROSS_LOOKBACK):]
+
+        rsi_fresh_cross = (
+            len(recent_rsi) >= 2
+            and recent_rsi.iloc[-2] < 50 <= recent_rsi.iloc[-1]
+            and recent_rsi.iloc[-1] <= 65
+        )
+
+        checks["rsi_fresh_cross"] = bool(rsi_fresh_cross)
+
+        if checks["rsi_fresh_cross"]:
+
+            reasons.append("RSI freshly crossed above the 50 momentum midline.")
+
+        # --------------------------------------------------
+        # SQUEEZE BREAKOUT (breakout FROM a prior low-volatility
+        # consolidation, not a move that's already run far)
+        # --------------------------------------------------
+
+        SQUEEZE_LOOKBACK = 5
+
+        SQUEEZE_BB_WIDTH_THRESHOLD = 0.04
+
+        squeeze_n = min(len(dataframe), SQUEEZE_LOOKBACK + 1)
+
+        prior_bb_width = dataframe["bb_width"].iloc[-squeeze_n:-1] if squeeze_n > 1 else dataframe["bb_width"].iloc[0:0]
+
+        was_squeezed = bool((prior_bb_width < SQUEEZE_BB_WIDTH_THRESHOLD).all()) if len(prior_bb_width) > 0 else False
+
+        checks["squeeze_breakout"] = was_squeezed and checks["breakout"] and checks["volume_spike"]
+
+        if checks["squeeze_breakout"]:
+
+            reasons.append("Breakout from a prior low-volatility consolidation (not a chased move).")
+
+        # --------------------------------------------------
+        # PULLBACK-IN-TREND ENTRY (bought the dip within an
+        # established uptrend, instead of a fresh high)
+        # --------------------------------------------------
+
+        checks["pullback_entry"] = bool(row["is_pullback"]) and row["close"] > row["ema_200"]
+
+        if checks["pullback_entry"]:
+
+            reasons.append("Pullback entry within an established uptrend.")
+
+        # --------------------------------------------------
+        # OVEREXTENSION CAP (HARD REJECT below, not just a vote) —
+        # price already too far above EMA20 means the easy part of
+        # the move is over; treat it as a chase-risk filter, not a
+        # confirmation to weigh in with everything else.
+        # --------------------------------------------------
+
+        OVEREXTENSION_CAP_PERCENT = 8.0
+
+        ema20_value = float(row["ema_20"])
+
+        extension_percent = (
+            ((float(row["close"]) - ema20_value) / ema20_value) * 100
+            if ema20_value
+            else 0.0
+        )
+
+        checks["not_overextended"] = extension_percent <= OVEREXTENSION_CAP_PERCENT
+
+        if not checks["not_overextended"]:
+
+            reasons.append(
+                f"Price {extension_percent:.1f}% above EMA20 (cap {OVEREXTENSION_CAP_PERCENT:.0f}%) — too extended, chase risk."
+            )
+
         # ==========================================================
         # MARKET FILTER
         # ==========================================================
@@ -637,7 +757,14 @@ class BuyStrategyEngine:
 
         QUALIFY_THRESHOLD = 58.0
 
-        qualified = tier1_passed and overall_score >= QUALIFY_THRESHOLD
+        # not_overextended is a HARD reject, not just a weighted vote —
+        # even a strong score elsewhere shouldn't override "we are
+        # chasing an already-extended move".
+        qualified = (
+            tier1_passed
+            and overall_score >= QUALIFY_THRESHOLD
+            and checks["not_overextended"]
+        )
 
         # --------------------------------------------------
         # CONFIDENCE
@@ -662,6 +789,10 @@ class BuyStrategyEngine:
         reasons.append(f"Technical confirmation: {optional_passed}/{optional_total}")
 
         reasons.append(f"Weighted score: {overall_score:.2f}/100 (need >= {QUALIFY_THRESHOLD:.0f})")
+
+        if not checks["not_overextended"]:
+
+            reasons.append("Rejected: overextension cap breached (chase risk), regardless of score.")
 
         reasons.append(f"Confidence: {confidence:.2f}%")
 
