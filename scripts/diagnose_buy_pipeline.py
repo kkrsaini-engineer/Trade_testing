@@ -29,6 +29,7 @@ from core.logger import get_logger  # noqa: E402
 from data.watchlist import WatchlistManager  # noqa: E402
 from decision.validation_engine import ValidationEngine  # noqa: E402
 from execution.scanner import MarketScanner  # noqa: E402
+from market.volatility import fetch_india_vix  # noqa: E402
 from paper_trading.virtual_portfolio import VirtualPortfolio  # noqa: E402
 
 logger = get_logger(__name__)
@@ -73,9 +74,15 @@ def trace_one_buy_candidate() -> None:
         "status": "ONLINE", "mode": "DIAGNOSTIC",
         "connected": True, "order_allowed": True, "available_margin": 1e12,
     }
+    # BUG FIX: this diagnostic previously never set "vix", so
+    # RiskManager.evaluate() during this trace always saw the hardcoded
+    # 20.0 fallback instead of the real market condition — misleading
+    # for a tool whose whole purpose is showing exactly what production
+    # would see. Same fix as paper_trading_engine.py's monitoring loop.
     market_state = {
         "max_trade_candidates": 20, "max_watchlist": 50,
         "market_open": True, "holiday": False,
+        "vix": fetch_india_vix(),
     }
 
     found = None

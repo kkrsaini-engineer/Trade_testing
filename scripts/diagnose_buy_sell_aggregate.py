@@ -27,6 +27,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from core.logger import get_logger  # noqa: E402
 from data.watchlist import WatchlistManager  # noqa: E402
 from execution.scanner import MarketScanner  # noqa: E402
+from market.volatility import fetch_india_vix  # noqa: E402
 from paper_trading.virtual_portfolio import VirtualPortfolio  # noqa: E402
 
 logger = get_logger(__name__)
@@ -76,9 +77,13 @@ def main() -> None:
         "status": "ONLINE", "mode": "DIAGNOSTIC",
         "connected": True, "order_allowed": True, "available_margin": 1e12,
     }
+    # BUG FIX: same as diagnose_buy_pipeline.py — this diagnostic never
+    # set "vix", so RiskManager.evaluate() always saw the hardcoded 20.0
+    # fallback during this audit instead of the real market condition.
     market_state = {
         "max_trade_candidates": 20, "max_watchlist": 50,
         "market_open": True, "holiday": False,
+        "vix": fetch_india_vix(),
     }
 
     buy_results = []
