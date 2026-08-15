@@ -26,6 +26,7 @@ from core.logger import get_logger
 from core.notifications import notify, severity_from_magnitude
 from core.trading_calendar import is_trading_day, now_ist
 from execution.scanner import MarketScanner
+from market.volatility import fetch_india_vix
 from paper_trading.virtual_portfolio import VirtualPortfolio
 from risk.exit_engine import ExitEngine
 from storage.trades.trade_diary import TradeDiary
@@ -72,9 +73,20 @@ class PaperTradingEngine:
             "status": "ONLINE", "mode": "PAPER",
             "connected": True, "order_allowed": True, "available_margin": 1e12,
         }
+        # BUG FIX: this dict previously had no "vix" key at all, so every
+        # RiskManager.evaluate() call made during DAILY MONITORING of an
+        # already-open position (below) fell back to risk_manager.py's
+        # hardcoded default (vix=20.0) regardless of the real market —
+        # meaning the vix>=30/vix>=35 hard-risk exit trigger could never
+        # fire for a held position for the entire holding period, only
+        # at the original entry-time scan (a separate code path that did
+        # fetch real VIX). Fetched once per cycle (not per symbol) since
+        # VIX is a single market-wide value, same reasoning as the other
+        # once-per-run fetches in execution/scanner.py.
         market_state = {
             "max_trade_candidates": 20, "max_watchlist": 50,
             "market_open": True, "holiday": False,
+            "vix": fetch_india_vix(),
         }
 
         open_symbols = set(self.portfolio.engine.state.open_positions.keys())
@@ -221,6 +233,7 @@ class PaperTradingEngine:
                     dataframe=dataframe, fundamentals=fundamentals, news_score=news_score,
                     position=position_input, risk_safe=result.diagnostics.get("risk_safe", True),
                     holding_days=holding_days,
+                    fii_dii_bias=result.diagnostics.get("fii_dii_bias"),
                 )
             except Exception as exc:
                 logger.exception("Exit Logic stage failed for %s — REVIEW REQUIRED", symbol)
