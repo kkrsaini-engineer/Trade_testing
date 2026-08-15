@@ -1,0 +1,736 @@
+diff --git a/data/delivery_data.py b/data/delivery_data.py
+new file mode 100644
+index 0000000..99b1778
+--- /dev/null
++++ b/data/delivery_data.py
+@@ -0,0 +1,182 @@
++"""
++NSE Delivery Data Provider.
++
++Responsibilities:
++- Fetch the daily NSE "Security-wise Delivery Position" bhavcopy
++  (one CSV covering every EQ-series symbol for a trading day).
++- Return a {symbol: delivery_percentage} lookup.
++- No strategy/decision logic.
++
++Context: decision/validation_engine.py reads
++`latest.get("delivery_percentage", 100.0)` — that field previously had
++NO producer anywhere in the codebase, so the default (100.0, always
++passes the `>= 20.0` liquidity gate) was the only value it could ever
++see. This module gives it a real value when the fetch succeeds, and
++deliberately does NOT force a fake number when it fails — see
++DeliveryDataProvider.fetch_latest() for why.
++"""
++
++from __future__ import annotations
++
++import json
++import time
++from datetime import date, timedelta
++from pathlib import Path
++from typing import Any
++
++import pandas as pd
++import requests
++
++from core.logger import get_logger
++
++logger = get_logger(__name__)
++
++_BHAVCOPY_URL = "https://archives.nseindia.com/products/content/sec_bhavdata_full_{ddmmyyyy}.csv"
++_WARMUP_URL = "https://www.nseindia.com"
++
++_HEADERS = {
++    "User-Agent": (
++        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
++        "(KHTML, like Gecko) Chrome/124.0 Safari/537.36"
++    ),
++    "Accept-Language": "en-US,en;q=0.9",
++    "Accept": "text/csv,application/csv,text/plain,*/*",
++}
++
++# How many calendar days back to try before giving up (covers weekends/
++# holidays and the file not being published yet if run early evening).
++_MAX_DAYS_BACK = 5
++_REQUEST_TIMEOUT_SECONDS = 15
++_RETRY_ATTEMPTS = 2
++
++_DELIVERY_CACHE_PATH = "storage/reports/delivery_data_cache.json"
++
++
++class DeliveryDataProvider:
++    """Fetch NSE-wide delivery-percentage data, once per call, for the
++    most recent trading day that has a published bhavcopy."""
++
++    def fetch_latest(self) -> dict[str, float]:
++        """Returns {symbol_without_suffix: delivery_percent}.
++
++        Returns {} (empty, NOT a fabricated default) if every attempt
++        fails — callers must treat an empty dict as "no live delivery
++        data available" and fall back to whatever they were already
++        doing (validation_engine.py's own `.get(..., 100.0)` default),
++        rather than this module inventing a number. Forcing a fake
++        value here would just move the "always passes" problem instead
++        of fixing it.
++        """
++        session = requests.Session()
++        session.headers.update(_HEADERS)
++
++        # NSE's archive endpoints reliably 403 without cookies from a
++        # prior visit to the main site — this warm-up request is not
++        # optional. If it fails, the CSV fetch below will very likely
++        # also fail, but we still try (some environments/CDN nodes
++        # don't enforce this).
++        try:
++            session.get(_WARMUP_URL, timeout=_REQUEST_TIMEOUT_SECONDS)
++        except Exception as exc:
++            logger.warning("NSE warm-up request failed (%s) — attempting bhavcopy fetch anyway.", exc)
++
++        today = date.today()
++        for days_back in range(_MAX_DAYS_BACK):
++            target_date = today - timedelta(days=days_back)
++            data = self._fetch_for_date(session, target_date)
++            if data:
++                self._write_cache(data, target_date)
++                return data
++
++        logger.warning(
++            "NSE delivery data unavailable after trying %d day(s) back — "
++            "falling back to last cached snapshot, if any.",
++            _MAX_DAYS_BACK,
++        )
++        return self._read_cache()
++
++    def _fetch_for_date(self, session: requests.Session, target_date: date) -> dict[str, float]:
++        url = _BHAVCOPY_URL.format(ddmmyyyy=target_date.strftime("%d%m%Y"))
++
++        for attempt in range(1, _RETRY_ATTEMPTS + 1):
++            try:
++                resp = session.get(url, timeout=_REQUEST_TIMEOUT_SECONDS)
++                if resp.status_code == 404:
++                    # No bhavcopy for this date (holiday/weekend/not yet
++                    # published) — not an error, just try an earlier date.
++                    return {}
++                resp.raise_for_status()
++                return self._parse_csv(resp.text)
++            except Exception as exc:
++                logger.warning(
++                    "Delivery data fetch attempt %d/%d for %s failed: %s",
++                    attempt, _RETRY_ATTEMPTS, target_date.isoformat(), exc,
++                )
++                if attempt < _RETRY_ATTEMPTS:
++                    time.sleep(2.0)
++
++        return {}
++
++    @staticmethod
++    def _parse_csv(raw_text: str) -> dict[str, float]:
++        from io import StringIO
++
++        df = pd.read_csv(StringIO(raw_text))
++        df.columns = [c.strip().upper() for c in df.columns]
++
++        required = {"SYMBOL", "SERIES", "DELIV_PER"}
++        missing = required.difference(df.columns)
++        if missing:
++            logger.warning("Delivery bhavcopy missing expected columns: %s", sorted(missing))
++            return {}
++
++        # SERIES == "EQ" -> ordinary equity delivery-based trading only
++        # (excludes BE/BZ/derivatives-linked series with different
++        # delivery semantics).
++        df["SERIES"] = df["SERIES"].astype(str).str.strip()
++        df = df[df["SERIES"] == "EQ"]
++
++        result: dict[str, float] = {}
++        for _, row in df.iterrows():
++            symbol = str(row["SYMBOL"]).strip()
++            raw_deliv = str(row["DELIV_PER"]).strip()
++            if raw_deliv in ("", "-"):
++                continue
++            try:
++                result[symbol] = float(raw_deliv)
++            except ValueError:
++                continue
++
++        return result
++
++    @staticmethod
++    def _write_cache(data: dict[str, float], as_of: date) -> None:
++        try:
++            path = Path(_DELIVERY_CACHE_PATH)
++            path.parent.mkdir(parents=True, exist_ok=True)
++            with open(path, "w") as f:
++                json.dump({"as_of": as_of.isoformat(), "data": data}, f)
++        except Exception as exc:
++            logger.warning("Failed to write delivery data cache: %s", exc)
++
++    @staticmethod
++    def _read_cache() -> dict[str, float]:
++        try:
++            path = Path(_DELIVERY_CACHE_PATH)
++            if not path.exists():
++                return {}
++            with open(path) as f:
++                payload = json.load(f)
++            logger.warning(
++                "Using cached delivery data from %s (live fetch failed today).",
++                payload.get("as_of", "unknown date"),
++            )
++            return payload.get("data", {})
++        except Exception as exc:
++            logger.warning("Failed to read delivery data cache: %s", exc)
++            return {}
++
++
++def symbol_without_suffix(symbol: str) -> str:
++    """'RELIANCE.NS' -> 'RELIANCE' (NSE bhavcopy symbols have no suffix)."""
++    return symbol.split(".")[0].upper()
+diff --git a/execution/scanner.py b/execution/scanner.py
+index 7d51f78..12357e3 100644
+--- a/execution/scanner.py
++++ b/execution/scanner.py
+@@ -28,7 +28,9 @@ from risk.portfolio_rules import PortfolioRulesEngine
+ from fundamental.fundamental import FundamentalEngine
+ from news.sentiment_engine import SentimentEngine
+ from market.market_regime import MarketRegimeEngine
++from market.volatility import fetch_india_vix
+ from data.news_data import NewsDataProvider
++from data.delivery_data import DeliveryDataProvider, symbol_without_suffix
+ from market import macro_intelligence
+ 
+ logger = get_logger(__name__)
+@@ -105,6 +107,8 @@ class MarketScanner:
+         self.regime = MarketRegimeEngine()
+         self._news_provider = NewsDataProvider()
+         self._market_headlines: list[str] | None = None  # lazy-fetched, shared across all symbols in a scan run
++        self._delivery_provider = DeliveryDataProvider()
++        self._delivery_data: dict[str, float] | None = None  # lazy-fetched, shared across all symbols in a scan run
+ 
+         logger.info("Market Scanner Engine initialized under professional pipeline contracts.")
+ 
+@@ -131,7 +135,13 @@ class MarketScanner:
+ 
+         # Dummy/Mock state matching for global evaluation criteria
+         broker_status = {"status": "ONLINE", "connected": True, "order_allowed": True, "available_margin": 100000.0}
+-        market_state = {"max_trade_candidates": 20, "max_watchlist": 50, "market_open": True, "holiday": False}
++        market_state = {
++            "max_trade_candidates": 20,
++            "max_watchlist": 50,
++            "market_open": True,
++            "holiday": False,
++            "vix": fetch_india_vix(),
++        }
+ 
+         return self.scan_symbols(
+             symbols=symbols,
+@@ -152,6 +162,21 @@ class MarketScanner:
+                 self._market_headlines = []
+         return self._market_headlines
+ 
++    def _get_delivery_data(self) -> dict[str, float]:
++        """Fetch the NSE-wide delivery-percentage bhavcopy once per scan
++        run and cache it (same reasoning as _get_market_headlines() —
++        one file covers every symbol, so there's no reason to hit NSE
++        once per symbol). Returns {} on total failure; callers must
++        treat that as "no live data" and fall back gracefully, not
++        substitute a fabricated number."""
++        if self._delivery_data is None:
++            try:
++                self._delivery_data = self._delivery_provider.fetch_latest()
++            except Exception as exc:
++                logger.warning("Delivery data fetch failed: %s", exc)
++                self._delivery_data = {}
++        return self._delivery_data
++
+     def _evaluate_market_context(self, symbol: str, bundle: Any = None) -> dict[str, Any]:
+         """
+         SINGLE SOURCE OF TRUTH for market analysis: data fetch, feature
+@@ -198,6 +223,20 @@ class MarketScanner:
+         diagnostics["latest_high"] = round(float(latest["high"]), 2)
+         diagnostics["latest_low"] = round(float(latest["low"]), 2)
+ 
++        # 2a. DELIVERY PERCENTAGE — was previously ALWAYS absent from
++        # this dataframe, so validation_engine.py's
++        # `latest.get("delivery_percentage", 100.0)` liquidity check
++        # could never fail (100.0 >= 20.0 always). Only set the column
++        # when a real NSE reading is available for this symbol; if the
++        # fetch failed or this symbol isn't covered, leave the column
++        # unset so validation_engine.py's own default/fallback behavior
++        # is unchanged (no regression when live data is unreachable).
++        deliv_lookup = self._get_delivery_data()
++        deliv_value = deliv_lookup.get(symbol_without_suffix(symbol))
++        if deliv_value is not None:
++            dataframe.loc[dataframe.index[-1], "delivery_percentage"] = deliv_value
++            diagnostics["delivery_percentage"] = deliv_value
++
+         # 2b. FUNDAMENTALS / NEWS SENTIMENT / MARKET REGIME
+         # These feed the strategy + scoring engines (news_score / market_score /
+         # sector_score are 0-100 normalized inputs).
+diff --git a/market/volatility.py b/market/volatility.py
+index d13619a..3c7a8fa 100644
+--- a/market/volatility.py
++++ b/market/volatility.py
+@@ -6,6 +6,7 @@ Responsibilities:
+ - ATR Regime
+ - Volatility Percentile
+ - Volatility State
++- India VIX fetch (live, real-data — see fetch_india_vix())
+ 
+ No strategy or decision logic.
+ """
+@@ -20,6 +21,65 @@ from core.logger import get_logger
+ 
+ logger = get_logger(__name__)
+ 
++# Fallback used ONLY when the live fetch genuinely fails (network error,
++# empty response, etc.) — 20.0 is a neutral/"calm market" placeholder,
++# same value that used to be hardcoded everywhere. It must stay clearly
++# distinguishable from a real reading in logs, which is why every call
++# site logs a warning when this path is hit instead of silently
++# proceeding as if it were live data.
++_VIX_FALLBACK = 20.0
++
++_VIX_TICKER = "^INDIAVIX"
++
++
++def fetch_india_vix() -> float:
++    """Fetch the latest India VIX close from yfinance.
++
++    Previously every market_state dict in this codebase hardcoded
++    "vix": 20 — meaning risk_manager.py's VIX-based risk checks
++    (vix >= 30 / vix >= 35) could never fire regardless of actual
++    market conditions. This fetches a real, current value using the
++    same yfinance path already used for every other symbol in this
++    repo (no new dependency).
++    """
++    try:
++        # Local import to avoid making yfinance a hard import-time
++        # dependency of this module for callers that never need VIX
++        # (e.g. backtest replays that already have a vix column).
++        from data.market_data import MarketDataProvider
++
++        provider = MarketDataProvider()
++        df = provider.fetch(symbol=_VIX_TICKER, interval="1d", period="5d")
++        if df.empty:
++            logger.warning(
++                "India VIX fetch returned no data — using fallback value %.1f.",
++                _VIX_FALLBACK,
++            )
++            return _VIX_FALLBACK
++
++        vix_value = float(df["close"].iloc[-1])
++        if vix_value <= 0:
++            logger.warning(
++                "India VIX fetch returned a non-positive value (%.2f) — "
++                "using fallback value %.1f.",
++                vix_value,
++                _VIX_FALLBACK,
++            )
++            return _VIX_FALLBACK
++
++        logger.info("India VIX fetched: %.2f", vix_value)
++        return round(vix_value, 2)
++
++    except Exception as exc:
++        logger.warning(
++            "India VIX fetch failed (%s) — using fallback value %.1f. "
++            "Risk checks that depend on VIX will run against this "
++            "fallback, not a live reading.",
++            exc,
++            _VIX_FALLBACK,
++        )
++        return _VIX_FALLBACK
++
+ 
+ class MarketVolatilityEngine:
+     """Analyze market volatility."""
+diff --git a/orchestrator.py b/orchestrator.py
+index 0aa00f6..80f75eb 100644
+--- a/orchestrator.py
++++ b/orchestrator.py
+@@ -26,6 +26,7 @@ from execution.scanner import (
+ )  # Fixed: Imported correct class matching folder
+ from execution.broker import BrokerEngine, OrderRequest
+ from execution.tracker import PositionTracker
++from market.volatility import fetch_india_vix
+ from portfolio.portfolio import PortfolioEngine, PortfolioState
+ from storage.trades.trade_store import TradeStore
+ from output.report_generator import ReportGenerator
+@@ -100,7 +101,11 @@ class WiredOrchestrator:
+             "max_trade_candidates": 20,
+             "max_watchlist": 50,
+             "event_day": False,
+-            "vix": 20,
++            # Was hardcoded to 20 (a "calm market" placeholder) — meaning
++            # risk_manager.py's vix >= 30 / vix >= 35 risk-off checks
++            # could never fire. Now fetched live each cycle (falls back
++            # to 20.0 itself, with a logged warning, if the fetch fails).
++            "vix": fetch_india_vix(),
+             # CRITICAL: without these two keys, ValidationEngine defaults
+             # market_open to False and rejects EVERY trade with "Market is
+             # closed" — meaning portfolio_allowed was permanently stuck at
+diff --git a/risk/exit_strategy.py b/risk/exit_strategy.py
+index 1bca08e..8282119 100644
+--- a/risk/exit_strategy.py
++++ b/risk/exit_strategy.py
+@@ -528,9 +528,52 @@ class ExitStrategyEngine:
+ 
+             exit_reason = "Stop-loss triggered."
+ 
++        # ==========================================================
++        # FINAL TARGET
++        # ==========================================================
++        # Profit-target checks were moved ABOVE trend_reversal/news/
++        # volatility/time exits (they used to sit below all of them).
++        # Previously, a noisy single-bar trend_reversal (ema_20 <
++        # ema_50 for BUY) could FULL_EXIT a position the moment it
++        # crossed, even on the exact bar it also reached final_target —
++        # capping the win at whatever trend_reversal's confidence/label
++        # was instead of recording it as a target hit. Stop-loss still
++        # protects capital first (unchanged above); once capital is
++        # safe, "did we already win" is checked before "is the trend
++        # getting shaky", so a trade that reached its target is never
++        # silently reclassified as a reversal-exit.
++
++        elif final_exit:
++
++            action = FULL_EXIT
++
++            exit_percent = 100.0
++
++            confidence = 95.0
++
++            exit_reason = "Final target achieved."
++
++        # ==========================================================
++        # PARTIAL TARGET
++        # ==========================================================
++
++        elif partial_exit:
++
++            action = PARTIAL_EXIT
++
++            exit_percent = 50.0
++
++            confidence = 85.0
++
++            exit_reason = "Partial target achieved."
++
+         # ==========================================================
+         # TREND REVERSAL
+         # ==========================================================
++        # Still fires BEFORE news/volatility/time exits — a confirmed
++        # reversal that hasn't yet reached a profit target is real risk
++        # and should exit ahead of softer signals, just not ahead of a
++        # target that's already been hit (see above).
+ 
+         elif trend_reversal:
+ 
+@@ -584,34 +627,6 @@ class ExitStrategyEngine:
+ 
+             exit_reason = "Maximum holding period."
+ 
+-        # ==========================================================
+-        # FINAL TARGET
+-        # ==========================================================
+-
+-        elif final_exit:
+-
+-            action = FULL_EXIT
+-
+-            exit_percent = 100.0
+-
+-            confidence = 95.0
+-
+-            exit_reason = "Final target achieved."
+-
+-        # ==========================================================
+-        # PARTIAL TARGET
+-        # ==========================================================
+-
+-        elif partial_exit:
+-
+-            action = PARTIAL_EXIT
+-
+-            exit_percent = 50.0
+-
+-            confidence = 85.0
+-
+-            exit_reason = "Partial target achieved."
+-
+         # ==========================================================
+         # HOLD
+         # ==========================================================
+diff --git a/scripts/daily_scan.py b/scripts/daily_scan.py
+index 409ad05..77ee653 100644
+--- a/scripts/daily_scan.py
++++ b/scripts/daily_scan.py
+@@ -21,6 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+ from core.logger import get_logger  # noqa: E402
+ from data.watchlist import WatchlistManager  # noqa: E402
+ from execution.scanner import MarketScanner  # noqa: E402
++from market.volatility import fetch_india_vix  # noqa: E402
+ 
+ logger = get_logger(__name__)
+ 
+@@ -46,7 +47,15 @@ def run_scan(symbols: list[str]) -> list[dict]:
+         "open_positions": {},
+     }
+     broker_status = {"status": "ONLINE", "mode": "SCAN", "connected": True, "order_allowed": True, "available_margin": 100000.0}
+-    market_state = {"max_trade_candidates": 20, "max_watchlist": 50, "market_open": True, "holiday": False}
++    # See scripts/generate_full_report.py for why "vix" is fetched live
++    # here instead of being absent/hardcoded.
++    market_state = {
++        "max_trade_candidates": 20,
++        "max_watchlist": 50,
++        "market_open": True,
++        "holiday": False,
++        "vix": fetch_india_vix(),
++    }
+ 
+     # NOTE: scanner.scan_symbols() intentionally filters down to only
+     # executable BUY/SELL candidates (that's what the orchestrator needs
+diff --git a/scripts/generate_full_report.py b/scripts/generate_full_report.py
+index 1e2d1ca..daf4a86 100644
+--- a/scripts/generate_full_report.py
++++ b/scripts/generate_full_report.py
+@@ -28,6 +28,7 @@ from core.rejection_classifier import classify_tier4_block  # noqa: E402
+ from core.trading_calendar import is_trading_day, now_ist, skip_reason  # noqa: E402
+ from data.watchlist import WatchlistManager  # noqa: E402
+ from execution.scanner import MarketScanner  # noqa: E402
++from market.volatility import fetch_india_vix  # noqa: E402
+ from storage.trades.trade_store import TradeStore  # noqa: E402
+ 
+ logger = get_logger(__name__)
+@@ -284,7 +285,19 @@ def main() -> None:
+         "open_positions": {},
+     }
+     broker_status = {"status": "ONLINE", "mode": "SCAN", "connected": True, "order_allowed": True, "available_margin": 100000.0}
+-    market_state = {"max_trade_candidates": 20, "max_watchlist": 50, "market_open": True, "holiday": False}
++    # "vix" used to be entirely absent from this dict, so
++    # risk_manager.py's market.get("vix", 20.0) always fell through to
++    # its hardcoded default — meaning the vix >= 30 / vix >= 35 risk-off
++    # checks could never fire regardless of real market conditions.
++    # fetch_india_vix() pulls a live reading once per scan run (falls
++    # back to 20.0 itself, with a logged warning, if the fetch fails).
++    market_state = {
++        "max_trade_candidates": 20,
++        "max_watchlist": 50,
++        "market_open": True,
++        "holiday": False,
++        "vix": fetch_india_vix(),
++    }
+ 
+     out_path = "reports/full_report.csv"
+     Path("reports").mkdir(exist_ok=True)
+diff --git a/scripts/morning_executor.py b/scripts/morning_executor.py
+index e878178..11c7b45 100644
+--- a/scripts/morning_executor.py
++++ b/scripts/morning_executor.py
+@@ -80,22 +80,25 @@ def _signed_news_bias(scored_item: dict[str, Any]) -> float:
+     return 0.0
+ 
+ 
+-def check_overnight_news(symbol: str, direction: str, scan_timestamp: str | None) -> tuple[bool, str]:
+-    """Returns (news_ok, reason). news_ok=False means the overnight
+-    news strongly contradicts the trade direction and this candidate
+-    should be skipped regardless of the gap-band result.
++def _check_symbol_news(symbol: str, direction: str, scan_timestamp: str | None) -> tuple[bool, str]:
++    """Company-specific overnight news check (original behavior).
+ 
+     Only considers headlines published AFTER scan_timestamp (last
+     night's scan time) — without this filter, the exact same
+     headlines the scanner already scored would be re-evaluated here,
+     which is redundant and can produce a DIFFERENT bias by chance
+     (rounding/model variance) than what the scanner already factored
+-    into the Overall Score, causing an inconsistent decision."""
++    into the Overall Score, causing an inconsistent decision.
++
++    LIMITATION this does NOT cover: broad macro/geopolitical shocks
++    (war, crisis) that don't specifically mention this company by name
++    won't show up in ITS news feed at all — see _check_macro_news()
++    below, which is the check that catches those."""
+     try:
+         provider = NewsDataProvider()
+         headlines = provider.fetch(symbol=symbol, limit=20)
+         if not headlines:
+-            return True, "No news available."
++            return True, "No company-specific news available."
+ 
+         if scan_timestamp:
+             cutoff = datetime.fromisoformat(scan_timestamp)
+@@ -112,19 +115,76 @@ def check_overnight_news(symbol: str, direction: str, scan_timestamp: str | None
+             headlines = fresh_headlines
+ 
+         if not headlines:
+-            return True, "No NEW overnight news since last night's scan."
++            return True, "No NEW company-specific overnight news since last night's scan."
+ 
+         engine = SentimentEngine()
+         scored = engine.evaluate(headlines)
+         avg_bias = sum(_signed_news_bias(i) for i in scored) / len(scored)
+         if direction == "BUY" and avg_bias <= -CONFIG.news_skip_bias_threshold:
+-            return False, f"{len(headlines)} NEW overnight headline(s), bias {avg_bias:.2f} — strongly negative against a BUY."
++            return False, f"{len(headlines)} NEW company headline(s), bias {avg_bias:.2f} — strongly negative against a BUY."
++        if direction == "SELL" and avg_bias >= CONFIG.news_skip_bias_threshold:
++            return False, f"{len(headlines)} NEW company headline(s), bias {avg_bias:.2f} — strongly positive against a SELL."
++        return True, f"{len(headlines)} new company headline(s), bias {avg_bias:.2f} — not a blocker."
++    except Exception as exc:
++        logger.warning("Company news check failed for %s: %s — proceeding without it.", symbol, exc)
++        return True, f"Company news check unavailable ({exc}) — proceeded without it."
++
++
++def _check_macro_news(direction: str) -> tuple[bool, str]:
++    """Broad market/macro overnight news check (war, crisis, oil shocks,
++    rate decisions, etc.) — this is the check that was MISSING here
++    before: _check_symbol_news() above only ever sees headlines tagged
++    to one specific company, so a genuine market-wide shock overnight
++    (that doesn't name this stock) previously passed through silently
++    regardless of how severe it was.
++
++    Reuses the same broad-market headline source already used by the
++    evening scan (data/news_data.py's fetch_market_news(), consumed by
++    market/macro_intelligence.py) — no new data source.
++
++    KNOWN LIMITATION: fetch_market_news() returns titles only (no
++    publish timestamps), so unlike _check_symbol_news() this cannot
++    filter to "published after last night's scan" — it scores whatever
++    macro headlines are current right now. In practice this means a
++    macro event the evening scan already saw and priced in could
++    re-trigger this check with the same bias; that's an acceptable
++    false-positive rate for a safety check (it can unnecessarily skip
++    a trade) versus the alternative it replaces (silently executing
++    into a live crisis)."""
++    try:
++        provider = NewsDataProvider()
++        headlines = provider.fetch_market_news(limit=20)
++        if not headlines:
++            return True, "No macro headlines available."
++
++        engine = SentimentEngine()
++        scored = engine.evaluate([{"title": h} for h in headlines])
++        avg_bias = sum(_signed_news_bias(i) for i in scored) / len(scored)
++        if direction == "BUY" and avg_bias <= -CONFIG.news_skip_bias_threshold:
++            return False, f"{len(headlines)} macro headline(s), bias {avg_bias:.2f} — strongly negative against a BUY."
+         if direction == "SELL" and avg_bias >= CONFIG.news_skip_bias_threshold:
+-            return False, f"{len(headlines)} NEW overnight headline(s), bias {avg_bias:.2f} — strongly positive against a SELL."
+-        return True, f"{len(headlines)} new overnight headline(s), bias {avg_bias:.2f} — not a blocker."
++            return False, f"{len(headlines)} macro headline(s), bias {avg_bias:.2f} — strongly positive against a SELL."
++        return True, f"{len(headlines)} macro headline(s), bias {avg_bias:.2f} — not a blocker."
+     except Exception as exc:
+-        logger.warning("News check failed for %s: %s — proceeding without it.", symbol, exc)
+-        return True, f"News check unavailable ({exc}) — proceeded without it."
++        logger.warning("Macro news check failed: %s — proceeding without it.", exc)
++        return True, f"Macro news check unavailable ({exc}) — proceeded without it."
++
++
++def check_overnight_news(symbol: str, direction: str, scan_timestamp: str | None) -> tuple[bool, str]:
++    """Returns (news_ok, reason). news_ok=False means overnight news —
++    either company-specific OR broad macro/geopolitical — strongly
++    contradicts the trade direction and this candidate should be
++    skipped regardless of the gap-band result. Checks both sources;
++    either one failing is enough to block."""
++    symbol_ok, symbol_reason = _check_symbol_news(symbol, direction, scan_timestamp)
++    if not symbol_ok:
++        return False, symbol_reason
++
++    macro_ok, macro_reason = _check_macro_news(direction)
++    if not macro_ok:
++        return False, macro_reason
++
++    return True, f"{symbol_reason} | {macro_reason}"
+ 
+ 
+ def fetch_open_price(symbol: str, max_retries: int = 3, retry_delay_seconds: int = 30) -> tuple[float | None, str]:
+diff --git a/strategy/buy_strategy.py b/strategy/buy_strategy.py
+index 7013b99..2c74b07 100644
+--- a/strategy/buy_strategy.py
++++ b/strategy/buy_strategy.py
+@@ -355,15 +355,11 @@ class BuyStrategyEngine:
+ 
+             reasons.append("Money Flow Index supports accumulation.")
+ 
+-        # --------------------------------------------------
+-        # VWAP CONFIRMATION
+-        # --------------------------------------------------
+-
+-        checks["vwap_confirmation"] = row["close"] > row["vwap"]
+-
+-        if checks["vwap_confirmation"]:
+-
+-            reasons.append("VWAP confirms buying strength.")
++        # NOTE: a "VWAP confirmation" check used to live here, but it was
++        # `row["close"] > row["vwap"]` — byte-identical to "price_above_vwap"
++        # above. Counting the same condition twice inflated tier2_score
++        # without adding independent signal, so it was removed rather than
++        # kept as a duplicate vote.
+ 
+         # --------------------------------------------------
+         # ACCUMULATION
+@@ -475,15 +471,12 @@ class BuyStrategyEngine:
+         # MARKET FILTER
+         # ==========================================================
+ 
+-        # --------------------------------------------------
+-        # MARKET REGIME
+-        # --------------------------------------------------
+-
+-        checks["bull_market"] = row["market_regime"] == "BULL"
+-
+-        if checks["bull_market"]:
+-
+-            reasons.append("Bull market confirmed.")
++        # NOTE: a "bull_market" tier2 check used to live here, but it was
++        # `row["market_regime"] == "BULL"` — byte-identical to the
++        # "market_trend" Tier 1 check below. Counting the same regime
++        # condition as both a Tier 1 gate AND a Tier 2 vote double-counted
++        # one signal as if it were two independent confirmations, so the
++        # Tier 2 copy was removed.
+ 
+         # --------------------------------------------------
+         # VOLATILITY
+diff --git a/strategy/sell_strategy.py b/strategy/sell_strategy.py
+index be5b512..594e606 100644
+--- a/strategy/sell_strategy.py
++++ b/strategy/sell_strategy.py
+@@ -371,15 +371,10 @@ class SellStrategyEngine:
+ 
+             reasons.append("Money Flow Index indicates distribution.")
+ 
+-        # --------------------------------------------------
+-        # VWAP CONFIRMATION
+-        # --------------------------------------------------
+-
+-        checks["vwap_confirmation"] = row["close"] < row["vwap"]
+-
+-        if checks["vwap_confirmation"]:
+-
+-            reasons.append("VWAP confirms bearish pressure.")
++        # NOTE: a "VWAP confirmation" check used to live here, but it was
++        # `row["close"] < row["vwap"]` — byte-identical to
++        # "price_below_vwap" above. Removed for the same reason as the
++        # BUY-side mirror (see strategy/buy_strategy.py).
+ 
+         # --------------------------------------------------
+         # DISTRIBUTION
+@@ -496,15 +491,10 @@ class SellStrategyEngine:
+         # MARKET FILTER
+         # ==========================================================
+ 
+-        # --------------------------------------------------
+-        # MARKET REGIME
+-        # --------------------------------------------------
+-
+-        checks["bear_market"] = row["market_regime"] == "BEAR"
+-
+-        if checks["bear_market"]:
+-
+-            reasons.append("Bear market confirmed.")
++        # NOTE: a "bear_market" tier2 check used to live here, but it was
++        # `row["market_regime"] == "BEAR"` — byte-identical to the
++        # "market_trend" Tier 1 check below. Removed for the same reason
++        # as the BUY-side mirror (see strategy/buy_strategy.py).
+ 
+         # --------------------------------------------------
+         # VOLATILITY
