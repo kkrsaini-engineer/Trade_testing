@@ -32,7 +32,7 @@ from __future__ import annotations
 
 import json
 import time
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -82,21 +82,37 @@ class DeliveryDataProvider:
     call, for the most recent trading day that has a published
     bhavcopy."""
 
-    def fetch_latest(self) -> dict[str, dict[str, float]]:
-        """Returns {symbol_without_suffix: {field: value}}.
+    def fetch_latest(self) -> tuple[dict[str, dict[str, float]], date | None]:
+        """Returns ({symbol_without_suffix: {field: value}}, as_of).
 
         Fields (each optional per-symbol — read with .get()):
           - delivery_percent
           - ttl_trd_qnty, no_of_trades, turnover_lacs (liquidity inputs)
           - close_price, prev_close (for Amihud illiquidity)
 
-        Returns {} (empty, NOT a fabricated default) if every attempt
-        fails — callers must treat an empty dict as "no live delivery
-        data available" and fall back to whatever they were already
-        doing (validation_engine.py's own `.get(..., 100.0)` default),
-        rather than this module inventing a number. Forcing a fake
-        value here would just move the "always passes" problem instead
-        of fixing it.
+        `as_of` is the ACTUAL trading day this data is for — which is
+        NOT always today. If today's bhavcopy isn't published yet (NSE
+        can run late, or this runs before market data close), this
+        walks back up to `_MAX_DAYS_BACK` days and returns the most
+        recent day that DOES have a published file — `as_of` tells the
+        caller which day that actually was.
+
+        THIS MATTERS: a caller that persists this data under its own
+        date label (e.g. data/liquidity_history.py's rolling window,
+        via execution/scanner.py) MUST use the returned `as_of`, not
+        date.today(). Using today's date unconditionally would silently
+        mislabel an older day's data as today's — the exact same kind
+        of corruption Phase 18c's DATE1 validation (see _parse_csv())
+        was built to catch, just introduced by the caller instead of by
+        NSE. See PHASE18_NOTES.md Part 5 for the real bug this fixed.
+
+        Returns ({}, None) if every attempt fails (including the cache
+        fallback) — callers must treat an empty dict as "no live
+        delivery data available" and fall back to whatever they were
+        already doing (validation_engine.py's own `.get(..., 100.0)`
+        default), rather than this module inventing a number. Forcing a
+        fake value here would just move the "always passes" problem
+        instead of fixing it.
         """
         session = requests.Session()
         session.headers.update(_HEADERS)
@@ -117,7 +133,14 @@ class DeliveryDataProvider:
             data = self._fetch_for_date(session, target_date)
             if data:
                 self._write_cache(data, target_date)
-                return data
+                if days_back > 0:
+                    logger.warning(
+                        "Today's (%s) bhavcopy not yet available — using %s's instead "
+                        "(%d day(s) old). Callers persisting this data must label it "
+                        "with %s, not today's date.",
+                        today.isoformat(), target_date.isoformat(), days_back, target_date.isoformat(),
+                    )
+                return data, target_date
 
         logger.warning(
             "NSE delivery data unavailable after trying %d day(s) back — "
@@ -198,7 +221,7 @@ class DeliveryDataProvider:
                     # published) — not an error, just try an earlier date.
                     return {}
                 resp.raise_for_status()
-                return self._parse_csv(resp.text)
+                return self._parse_csv(resp.text, expected_date=target_date)
             except Exception as exc:
                 logger.warning(
                     "Delivery data fetch attempt %d/%d for %s failed: %s",
@@ -210,7 +233,7 @@ class DeliveryDataProvider:
         return {}
 
     @staticmethod
-    def _parse_csv(raw_text: str) -> dict[str, dict[str, float]]:
+    def _parse_csv(raw_text: str, expected_date: date | None = None) -> dict[str, dict[str, float]]:
         from io import StringIO
 
         df = pd.read_csv(StringIO(raw_text))
@@ -221,6 +244,32 @@ class DeliveryDataProvider:
         if missing:
             logger.warning("Delivery bhavcopy missing expected columns: %s", sorted(missing))
             return {}
+
+        # BUG FOUND FROM REAL PRODUCTION DATA (Phase 18c): NSE's archive
+        # endpoint has been directly observed returning HTTP 200 with
+        # the PREVIOUS trading day's file — not a 404 — for a date that
+        # has no bhavcopy of its own (confirmed: every Sunday URL in a
+        # 20-day backfill silently returned the prior Friday's numbers
+        # byte-for-byte, under a 200 status, for all 499 watchlist
+        # symbols — Saturdays correctly 404'd, only Sundays did this).
+        # A 200 status and a parseable CSV are NOT proof the data is for
+        # the date that was actually asked for. The bhavcopy's own
+        # DATE1 column is the ground truth — verify every row's DATE1
+        # actually matches `expected_date` before accepting ANY of this
+        # file's data. A mismatch is treated exactly like a 404 (empty
+        # result — the caller tries an earlier date), never silently
+        # accepted as if it were real data for the requested day.
+        if expected_date is not None and "DATE1" in df.columns:
+            raw_dates = set(df["DATE1"].astype(str).str.strip())
+            parsed_dates = {d for d in (_parse_bhavcopy_date(v) for v in raw_dates) if d is not None}
+            if expected_date not in parsed_dates:
+                logger.warning(
+                    "Bhavcopy requested for %s but the file's own DATE1 column says %s — "
+                    "NSE returned stale/wrong-day data without a 404; rejecting rather than "
+                    "silently accepting it as %s's data.",
+                    expected_date.isoformat(), sorted(raw_dates), expected_date.isoformat(),
+                )
+                return {}
 
         # SERIES == "EQ" -> ordinary equity delivery-based trading only
         # (excludes BE/BZ/derivatives-linked series with different
@@ -275,16 +324,23 @@ class DeliveryDataProvider:
             logger.warning("Failed to write delivery data cache: %s", exc)
 
     @staticmethod
-    def _read_cache() -> dict[str, dict[str, float]]:
+    def _read_cache() -> tuple[dict[str, dict[str, float]], date | None]:
         try:
             path = Path(_DELIVERY_CACHE_PATH)
             if not path.exists():
-                return {}
+                return {}, None
             with open(path) as f:
                 payload = json.load(f)
+            as_of_raw = payload.get("as_of")
+            as_of: date | None = None
+            if as_of_raw:
+                try:
+                    as_of = date.fromisoformat(as_of_raw)
+                except ValueError:
+                    as_of = None
             logger.warning(
                 "Using cached delivery data from %s (live fetch failed today).",
-                payload.get("as_of", "unknown date"),
+                as_of_raw or "unknown date",
             )
             data: dict[str, Any] = payload.get("data", {})
             # Backward compatibility: a cache file written before this
@@ -301,12 +357,23 @@ class DeliveryDataProvider:
                         wrapped[symbol] = {"delivery_percent": float(value)}
                     except (TypeError, ValueError):
                         continue
-            return wrapped
+            return wrapped, as_of
         except Exception as exc:
             logger.warning("Failed to read delivery data cache: %s", exc)
-            return {}
+            return {}, None
 
 
 def symbol_without_suffix(symbol: str) -> str:
     """'RELIANCE.NS' -> 'RELIANCE' (NSE bhavcopy symbols have no suffix)."""
     return symbol.split(".")[0].upper()
+
+
+def _parse_bhavcopy_date(raw: str) -> date | None:
+    """Parses NSE bhavcopy's DATE1 column format ('14-AUG-2026',
+    case-insensitive). Returns None (not a fabricated date) for
+    anything unparsable — callers must treat that as "can't verify",
+    not as a match."""
+    try:
+        return datetime.strptime(raw.strip().upper(), "%d-%b-%Y").date()
+    except (ValueError, AttributeError):
+        return None

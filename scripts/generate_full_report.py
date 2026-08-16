@@ -23,9 +23,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from core.logger import get_logger  # noqa: E402
-from core.notifications import notify  # noqa: E402
+from core.notifications import notify, SEVERITY_HIGH, SEVERITY_MEDIUM  # noqa: E402
 from core.rejection_classifier import classify_tier4_block  # noqa: E402
 from core.trading_calendar import is_trading_day, now_ist, skip_reason  # noqa: E402
+from data import bhavcopy_status_log  # noqa: E402
 from data.watchlist import WatchlistManager  # noqa: E402
 from execution.scanner import MarketScanner  # noqa: E402
 from market.volatility import fetch_india_vix  # noqa: E402
@@ -330,6 +331,73 @@ def main() -> None:
         rows.append(build_row(next_id + i, r, trade_lookup.get(symbol)))
         if r.action in ("BUY", "SELL") and r.portfolio_allowed:
             pending_candidates.append(r)
+
+    # BHAVCOPY FETCH STATUS — user-requested: know on which day
+    # delivery%/liquidity data was NOT counted, plus a trailing few-day
+    # audit trail. scanner._delivery_data/_delivery_data_as_of are set
+    # once per run (lazy-fetched on the first symbol, see
+    # execution/scanner.py's _get_delivery_data()) and reflect exactly
+    # what THIS run actually got — read them here, after the scan loop,
+    # rather than re-fetching or guessing.
+    if total > 0:
+        symbols_matched = len(scanner._delivery_data or {})
+        bhavcopy_as_of = scanner._delivery_data_as_of
+        if bhavcopy_as_of is None:
+            bhavcopy_status = bhavcopy_status_log.STATUS_FAILED
+        elif bhavcopy_as_of != today_date:
+            bhavcopy_status = bhavcopy_status_log.STATUS_STALE
+        else:
+            bhavcopy_status = bhavcopy_status_log.STATUS_OK
+
+        status_log = bhavcopy_status_log.record_status(
+            scan_date=today_date,
+            status=bhavcopy_status,
+            as_of=bhavcopy_as_of,
+            symbols_matched=symbols_matched,
+        )
+
+        # Only notify when something's actually wrong — a healthy day
+        # stays silent, same as every other notify() call in this file
+        # (e.g. "daily_scan_skipped" only fires when actually skipped).
+        if bhavcopy_status != bhavcopy_status_log.STATUS_OK:
+            recent = bhavcopy_status_log.recent_entries(status_log, days=4)
+            status_icon = {
+                bhavcopy_status_log.STATUS_OK: "✅",
+                bhavcopy_status_log.STATUS_STALE: "🟡",
+                bhavcopy_status_log.STATUS_FAILED: "❌",
+            }
+            trail_lines = [
+                f"{status_icon.get(entry['status'], '❓')} {d}: {entry['status']} "
+                f"(data as of {entry.get('as_of') or '—'}, {entry['symbols_matched']} symbols matched)"
+                for d, entry in recent
+            ]
+
+            if bhavcopy_status == bhavcopy_status_log.STATUS_FAILED:
+                header = (
+                    "❌ Bhavcopy Fetch Failed — No Delivery%/Liquidity Data Today\n"
+                    f"Date: {today_date.isoformat()}\n"
+                    "NSE bhavcopy could not be fetched (live fetch + cache both "
+                    "failed). Delivery% and liquidity (trade-size/Amihud) scoring "
+                    "fell back to volume-only for EVERY symbol in today's scan — "
+                    "not a crash, just less-informed scoring for today."
+                )
+                severity = SEVERITY_HIGH
+            else:
+                header = (
+                    "🟡 Bhavcopy Data Stale — Using an Earlier Trading Day\n"
+                    f"Date: {today_date.isoformat()}\n"
+                    f"Today's bhavcopy wasn't published yet — used "
+                    f"{bhavcopy_as_of.isoformat()}'s data instead for "
+                    "delivery%/liquidity scoring."
+                )
+                severity = SEVERITY_MEDIUM
+
+            notify(
+                event_type="bhavcopy_status_warning",
+                message=header + "\n\nLast 4 scan days:\n" + "\n".join(trail_lines),
+                severity=severity,
+                dedup_key=f"bhavcopy_status::{today_date.isoformat()}",
+            )
 
     # APPEND mode: this is ONE running file that accumulates a full history
     # (filter by the "Date" column to see any day/month) rather than being

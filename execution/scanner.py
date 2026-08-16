@@ -155,6 +155,13 @@ class MarketScanner:
         # {symbol: {field: value}} — see data/delivery_data.py's
         # fetch_latest() docstring for the field list.
         self._delivery_data: dict[str, dict[str, float]] | None = None
+        # The ACTUAL trading day self._delivery_data is for — not
+        # necessarily today (fetch_latest() walks back if today's
+        # bhavcopy isn't published yet). Any code persisting delivery/
+        # liquidity data under a date label (e.g. liquidity_history's
+        # rolling window, below) MUST use this, never date.today()
+        # unconditionally — see fetch_latest()'s docstring for why.
+        self._delivery_data_as_of: _date | None = None
         # Rolling multi-day liquidity history (trade-count/turnover/
         # price), loaded once per run and appended to per-symbol as
         # _evaluate_market_context() processes each symbol — see
@@ -238,10 +245,11 @@ class MarketScanner:
             return {}
         if self._delivery_data is None:
             try:
-                self._delivery_data = self._delivery_provider.fetch_latest()
+                self._delivery_data, self._delivery_data_as_of = self._delivery_provider.fetch_latest()
             except Exception as exc:
                 logger.warning("Delivery data fetch failed: %s", exc)
                 self._delivery_data = {}
+                self._delivery_data_as_of = None
         return self._delivery_data
 
     def _get_liquidity_history(self) -> dict[str, list[dict[str, Any]]]:
@@ -335,11 +343,20 @@ class MarketScanner:
         deliv_lookup = self._get_delivery_data()
         symbol_key = symbol_without_suffix(symbol)
         deliv_fields = deliv_lookup.get(symbol_key)
+        # PHASE 18d: the day this data is ACTUALLY for — fetch_latest()
+        # walks back to an earlier trading day if today's bhavcopy isn't
+        # published yet (NSE can run late). Surfaced here so the report
+        # shows when delivery/liquidity numbers are stale, instead of
+        # silently presenting an older day's data as if it were today's.
+        bhavcopy_as_of = self._delivery_data_as_of
 
         deliv_value = deliv_fields.get("delivery_percent") if deliv_fields else None
         if deliv_value is not None:
             dataframe.loc[dataframe.index[-1], "delivery_percentage"] = deliv_value
             diagnostics["delivery_percentage"] = deliv_value
+        if bhavcopy_as_of is not None:
+            diagnostics["bhavcopy_as_of"] = bhavcopy_as_of.isoformat()
+            diagnostics["bhavcopy_stale"] = bhavcopy_as_of != _date.today()
 
         # 2b. ROLLING LIQUIDITY HISTORY — the bhavcopy row fetched above
         # (deliv_fields) also carries ttl_trd_qnty/no_of_trades/
@@ -358,9 +375,21 @@ class MarketScanner:
         # falls back to its existing volume-only behavior, exactly as if
         # this feature weren't present, rather than trusting a
         # comparison built from almost no data.
-        if deliv_fields and not self._disable_live_market_context:
+        # PHASE 18d FIX: this used to unconditionally label the history
+        # entry with _date.today() — but deliv_fields can legitimately
+        # be an EARLIER day's data (fetch_latest()'s walk-back fallback
+        # when today's bhavcopy isn't published yet). Labeling that as
+        # "today" would silently create the exact same kind of
+        # duplicate/mislabeled entry Phase 18c's DATE1 validation was
+        # built to catch — just introduced here instead of by NSE. Use
+        # bhavcopy_as_of (the real date fetch_latest() returned) so a
+        # late-bhavcopy day correctly REPLACES that earlier date's
+        # existing entry (append_and_prune() is same-date-safe) instead
+        # of manufacturing a phantom "today" entry with yesterday's
+        # numbers.
+        if deliv_fields and bhavcopy_as_of is not None and not self._disable_live_market_context:
             history = self._get_liquidity_history()
-            liquidity_history.append_and_prune(history, {symbol_key: deliv_fields}, _date.today())
+            liquidity_history.append_and_prune(history, {symbol_key: deliv_fields}, bhavcopy_as_of)
             liquidity_history.save_history(history)
 
             today_quality = liquidity_history.today_trade_quality(deliv_fields)
