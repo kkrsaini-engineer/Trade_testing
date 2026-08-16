@@ -1,0 +1,62 @@
+name: Backfill Liquidity History (one-time)
+
+# Manual-trigger only — no schedule. Run this once from the Actions tab
+# ("Run workflow" button) after uploading scripts/backfill_liquidity_history.py
+# + data/delivery_data.py's fetch_range() addition. Safe to re-run later
+# if needed (append_and_prune() replaces, not duplicates, same-date
+# entries) — it just re-spends NSE requests for no reason.
+on:
+  workflow_dispatch: {}
+
+# Same lock as daily_scan.yml — both jobs write to storage/reports/ and
+# push to the repo, so they must never run concurrently against each
+# other (a race here would mean one job's push gets rejected and has to
+# retry, same as the retry loop below already handles, but sharing the
+# lock avoids the race in the first place).
+concurrency:
+  group: repo-write-lock
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run liquidity-history backfill
+        run: PYTHONPATH=. python scripts/backfill_liquidity_history.py
+
+      - name: Commit backfilled history to repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A -- storage/reports/liquidity_history.json
+          git diff --staged --quiet || git commit -m "Backfill liquidity history: $(date -u +'%Y-%m-%d %H:%M UTC')"
+          PUSH_OK=false
+          for i in $(seq 1 12); do
+            if git push; then
+              PUSH_OK=true
+              break
+            fi
+            echo "Push rejected (likely a concurrent workflow pushed first) — pulling and retrying ($i/12)..."
+            git stash --include-untracked
+            git pull --rebase origin main
+            git stash pop || true
+            sleep 300
+          done
+          if [ "$PUSH_OK" = false ]; then
+            echo "::error::Push failed after 5 attempts — backfilled data exists in this job's workspace but was NOT pushed to remote. Re-run the workflow."
+            exit 1
+          fi
