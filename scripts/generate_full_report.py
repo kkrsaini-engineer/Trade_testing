@@ -111,7 +111,11 @@ def build_row(trade_id: int, r, trade: dict | None = None) -> dict:
         "ADX": d.get("adx_14"),
         "ATR": d.get("atr_14"),
         "VolumeRatio": d.get("volume_ratio"),
-        "RelativeStrength": d.get("relative_strength"),
+        # Column header "RelativeStrength" kept as-is (locked report
+        # schema, see FIELDNAMES comment above) — the underlying value is
+        # price-vs-its-own-20D-mean, NOT vs a benchmark; see the NOTE at
+        # features/indicators/breakout.py's price_vs_20d_mean.
+        "RelativeStrength": d.get("price_vs_20d_mean"),
         "MomentumIndicators": f"RSI:{d.get('rsi_14')} STOCH:{d.get('stoch_k')} ADX:{d.get('adx_14')}",
         "VolatilityIndicator": f"ATR:{d.get('atr_14')}",
         "VolumeIndicators": f"CMF:{d.get('cmf_20')} MFI:{d.get('mfi_14')} VolRatio:{d.get('volume_ratio')}",

@@ -69,9 +69,19 @@ class BreakoutIndicators:
         df["gap_up"] = df["gap_pct"] >= 1.0
         df["gap_down"] = df["gap_pct"] <= -1.0
 
-        # ---------- Relative Strength ----------
-        # Benchmark integration will be added by Data Engine later.
-        df["relative_strength"] = df["close"] / df["close"].rolling(20).mean()
+        # ---------- Price vs 20D Mean ----------
+        # NOT "relative strength" (that term means stock_return vs a
+        # benchmark/index return, e.g. NIFTY) — this is close price
+        # divided by the stock's OWN 20-day rolling mean, a pure
+        # single-stock momentum ratio with no benchmark comparison at
+        # all. Renamed from the old misleading "relative_strength" name
+        # (found during an architecture review — it was also unused by
+        # any BUY/SELL check, only surfaced in diagnostics/reports).
+        # Benchmark-relative strength (stock_return_N / index_return_N)
+        # would need index/sector-index data wired into DataEngine,
+        # which doesn't exist yet — this field is NOT that, and should
+        # not be treated as one until it's built separately.
+        df["price_vs_20d_mean"] = df["close"] / df["close"].rolling(20).mean()
 
         logger.info("Breakout indicators calculated.")
 

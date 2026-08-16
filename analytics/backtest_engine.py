@@ -110,7 +110,25 @@ class BacktestEngine:
     and high/low volatility periods (whatever the input data covers)."""
 
     def __init__(self, scanner: MarketScanner | None = None):
-        self.scanner = scanner or MarketScanner()
+        # FIX #4 (architecture review — backtest contamination): this
+        # scanner instance is reused across the entire day-by-day replay
+        # loop in run() below (hundreds of simulated days from ONE
+        # MarketScanner object). MarketScanner's FII/DII / macro-news /
+        # delivery-percentage lookups are lazy-fetch-once-and-cache —
+        # correct for a single live scan, but here that meant one real
+        # live snapshot (whatever was live on the day the backtest
+        # happened to run) got silently reused for every simulated
+        # historical day. disable_live_market_context=True routes all
+        # three through their already-supported "no live data" fallback
+        # instead — see MarketScanner.__init__'s NOTE for the full
+        # explanation, including a correction of an earlier claim that
+        # VIX also leaked here (it doesn't — VIX was never fetched in
+        # this code path to begin with).
+        #
+        # Only applies when no scanner is explicitly passed in — a
+        # caller supplying its own scanner is assumed to have already
+        # made its own live-data decision.
+        self.scanner = scanner or MarketScanner(disable_live_market_context=True)
 
     def run(
         self,
@@ -125,8 +143,16 @@ class BacktestEngine:
         "timestamp" column plus open/high/low/close/volume, ordered oldest
         to newest, ideally spanning multiple market regimes.
         fundamentals: optional {symbol: dict} — static snapshot used for
-        every day (see note in the class docstring — historical
-        point-in-time fundamentals aren't available from this pipeline).
+        every day. STILL A KNOWN LIMITATION, NOT fixed here: historical
+        point-in-time fundamentals aren't available from this pipeline,
+        so the same fundamentals dict is scored against every simulated
+        day regardless of what the company's actual fundamentals were on
+        that historical date. Fixing this properly needs a real
+        as-reported-on-date fundamentals data source/store — new data
+        infrastructure, not a code change, and out of scope for FIX #4
+        (which addressed the separately-confirmed FII/DII / macro-news
+        / delivery-percentage live-snapshot leakage — see
+        MarketScanner.__init__'s disable_live_market_context NOTE).
         """
         fundamentals = fundamentals or {}
         symbols = list(historical_data.keys())

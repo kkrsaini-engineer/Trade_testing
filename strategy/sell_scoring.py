@@ -49,6 +49,20 @@ RISK_WEIGHT = 0.10
 
 MAX_SCORE = 100.0
 
+# PHASE 18 — _liquidity_score() internal blend (sub-weights of the 5%
+# LIQUIDITY_WEIGHT above, not new top-level weights). Mirrors
+# buy_scoring.py exactly — liquidity/illiquidity is not a directional
+# concept, a thin/block-deal-driven market is equally bad information
+# for an exit decision as for an entry decision, so there is nothing to
+# invert here (unlike e.g. gap_down/gap_up).
+LIQUIDITY_VOLUME_SUBWEIGHT = 0.50
+LIQUIDITY_TRADE_QUALITY_SUBWEIGHT = 0.30
+LIQUIDITY_AMIHUD_SUBWEIGHT = 0.20
+
+LIQUIDITY_RATIO_GOOD = 1.2
+LIQUIDITY_RATIO_BAD = 2.0
+LIQUIDITY_COMPONENT_FLOOR = 40.0
+
 
 # ==========================================================
 # RESULT MODEL
@@ -129,8 +143,26 @@ class SellScoringEngine:
         has_news = news_score is not None
         result.news = self._normalize(news_score) if has_news else 0.0
 
-        result.market = self._normalize(market_score)
+        # market_score is BUY-oriented (BULL regime=75, BEAR regime=25 —
+        # see execution/scanner.py's market_score assignment). For a
+        # SELL setup a BEAR market should score HIGH here, not low —
+        # invert it, mirroring the same fix already applied to
+        # strategy/sell_strategy.py's Tier 3 blend (`inverted_market`).
+        # This was found NOT inverted here during an architecture review
+        # — confirmed real impact: strategy/sell_probability.py's own
+        # reason text ("Overall market supports bearish trades." when
+        # score.market >= 70) already assumed this was inverted; it
+        # wasn't, so that text was firing backwards (on bullish markets)
+        # before this fix.
+        result.market = 100.0 - self._normalize(market_score)
 
+        # FIX #8 (architecture review — sector/breadth placeholders):
+        # mirrors buy_scoring.py's identical fix. sector_score is now
+        # None (not a fabricated 50.0) when unavailable — see
+        # execution/scanner.py's NOTE. self._normalize() falls back to
+        # 50.0 for display; has_sector below excludes it from
+        # result.overall's weighted sum instead.
+        has_sector = sector_score is not None
         result.sector = self._normalize(sector_score)
 
         result.liquidity = self._liquidity_score(latest)
@@ -139,15 +171,19 @@ class SellScoringEngine:
 
         result.risk = self._risk_score(latest)
 
-        scale = 1.0 if has_news else 1.0 / (1.0 - NEWS_WEIGHT)
+        # Generalized from has_news-only to also cover has_sector (FIX #8)
+        # — same redistribution pattern as buy_scoring.py.
+        excluded_weight = (0.0 if has_news else NEWS_WEIGHT) + (0.0 if has_sector else SECTOR_WEIGHT)
+        scale = 1.0 / (1.0 - excluded_weight) if excluded_weight < 1.0 else 1.0
         news_w = NEWS_WEIGHT if has_news else 0.0
+        sector_w = SECTOR_WEIGHT if has_sector else 0.0
 
         result.overall = (
             result.technical * TECHNICAL_WEIGHT * scale
             + result.fundamental * FUNDAMENTAL_WEIGHT * scale
             + result.news * news_w
             + result.market * MARKET_WEIGHT * scale
-            + result.sector * SECTOR_WEIGHT * scale
+            + result.sector * sector_w
             + result.liquidity * LIQUIDITY_WEIGHT * scale
             + result.volatility * VOLATILITY_WEIGHT * scale
             + result.risk * RISK_WEIGHT * scale
@@ -155,7 +191,11 @@ class SellScoringEngine:
 
         result.overall = round(result.overall, 2)
 
-        result.confidence = self._confidence(result)
+        # FIX #11 (architecture review — no-news confidence): mirrors
+        # buy_scoring.py's identical fix — pass has_news through so
+        # _confidence() can exclude the fabricated result.news=0.0 the
+        # same way result.overall already does via scale/news_w.
+        result.confidence = self._confidence(result, has_news=has_news, has_sector=has_sector)
 
         result.reasons = self._reason_generator(
             latest,
@@ -194,9 +234,30 @@ class SellScoringEngine:
         self,
         row: pd.Series,
     ) -> float:
+        """PHASE 18: see buy_scoring.py's _liquidity_score() docstring —
+        identical logic, mirrored (liquidity is non-directional, see
+        the SELL-side note at LIQUIDITY_VOLUME_SUBWEIGHT above)."""
+        volume_component = self._volume_adequacy_component(row)
 
-        score = 0.0
+        weighted = [(volume_component, LIQUIDITY_VOLUME_SUBWEIGHT)]
 
+        trade_quality = self._trade_quality_component(row)
+        if trade_quality is not None:
+            weighted.append((trade_quality, LIQUIDITY_TRADE_QUALITY_SUBWEIGHT))
+
+        amihud_component = self._amihud_component(row)
+        if amihud_component is not None:
+            weighted.append((amihud_component, LIQUIDITY_AMIHUD_SUBWEIGHT))
+
+        total_weight = sum(w for _, w in weighted)
+        score = sum(c * w for c, w in weighted) / total_weight
+
+        return round(score, 2)
+
+    @staticmethod
+    def _volume_adequacy_component(row: pd.Series) -> float:
+        """Original step function, unchanged: today's volume vs this
+        stock's own 20-day average volume."""
         volume = float(row.get("volume", 0))
         avg_volume = float(row.get("volume_sma_20", 0))
 
@@ -206,24 +267,64 @@ class SellScoringEngine:
         ratio = volume / avg_volume
 
         if ratio >= 2.00:
-            score = 100
-
+            score = 100.0
         elif ratio >= 1.50:
-            score = 90
-
+            score = 90.0
         elif ratio >= 1.20:
-            score = 80
-
+            score = 80.0
         elif ratio >= 1.00:
-            score = 70
-
+            score = 70.0
         elif ratio >= 0.80:
-            score = 55
-
+            score = 55.0
         else:
-            score = 35
+            score = 35.0
 
-        return round(score, 2)
+        return score
+
+    @staticmethod
+    def _ratio_component_score(ratio: float) -> float:
+        """Shared interpolation for the two rolling-comparison
+        components below: ratio <= LIQUIDITY_RATIO_GOOD -> 100,
+        ratio >= LIQUIDITY_RATIO_BAD -> LIQUIDITY_COMPONENT_FLOOR,
+        linear in between."""
+        if ratio <= LIQUIDITY_RATIO_GOOD:
+            return 100.0
+        if ratio >= LIQUIDITY_RATIO_BAD:
+            return LIQUIDITY_COMPONENT_FLOOR
+        frac = (ratio - LIQUIDITY_RATIO_GOOD) / (LIQUIDITY_RATIO_BAD - LIQUIDITY_RATIO_GOOD)
+        return 100.0 - frac * (100.0 - LIQUIDITY_COMPONENT_FLOOR)
+
+    @classmethod
+    def _trade_quality_component(cls, row: pd.Series) -> float | None:
+        """Today's average trade size (TTL_TRD_QNTY / NO_OF_TRADES) vs
+        this symbol's own 20-day rolling average — see buy_scoring.py's
+        version for the full explanation. Returns None if the rolling
+        window hasn't built up yet for this symbol."""
+        today = row.get("avg_trade_size_today")
+        rolling = row.get("avg_trade_size_20d")
+        if today is None or rolling is None or pd.isna(today) or pd.isna(rolling):
+            return None
+        rolling = float(rolling)
+        if rolling <= 0:
+            return None
+        ratio = float(today) / rolling
+        return cls._ratio_component_score(ratio)
+
+    @classmethod
+    def _amihud_component(cls, row: pd.Series) -> float | None:
+        """Today's Amihud (2002) illiquidity ratio vs this symbol's own
+        20-day rolling average — see buy_scoring.py's version for the
+        full explanation. Returns None if the rolling window hasn't
+        built up yet for this symbol."""
+        today = row.get("amihud_today")
+        rolling = row.get("avg_amihud_20d")
+        if today is None or rolling is None or pd.isna(today) or pd.isna(rolling):
+            return None
+        rolling = float(rolling)
+        if rolling <= 0:
+            return None
+        ratio = float(today) / rolling
+        return cls._ratio_component_score(ratio)
 
     # ==========================================================
     # VOLATILITY SCORE
@@ -274,23 +375,42 @@ class SellScoringEngine:
 
         score = 100.0
 
+        # RECALIBRATED (user review, mirrors strategy/buy_scoring.py) —
+        # only 3 real, non-duplicate risk inputs remain after removing
+        # market_regime (Phase 16) and gap's dead strategy-file copy
+        # (this phase). Rescaled proportionally so the full 0-100 range
+        # is reachable again (old 25/10/5 summed to only 40, floor was
+        # 60): 25*(100/40)=62.5, 10*(100/40)=25.0, 5*(100/40)=12.5
+        # (sums to exactly 100.0).
+        GAP_UP_PENALTY = 62.5
+        RSI_EXTREME_PENALTY = 25.0
+        LOW_VOLUME_PENALTY = 12.5
+
         if row.get("gap_up", False):
-            score -= 25
+            score -= GAP_UP_PENALTY
 
-        if row.get("market_regime") == "BULL":
-            score -= 25
+        # market_regime (NIFTY BULL/BEAR) penalty REMOVED (user review,
+        # same audit that found the cloud_trend duplicate below). This
+        # was the EXACT same field already voted on live in
+        # strategy/sell_strategy.py's Tier1 hard gate
+        # (checks["market_trend"], part of the 2-of-3 majority). Note:
+        # unlike BUY, SELL's _risk_score() never had a volatility_state
+        # line — nothing to remove there.
 
-        if row.get("cloud_trend") == "BULL":
-            score -= 20
+        # cloud_trend (Ichimoku) penalty REMOVED (user review) — mirrors
+        # strategy/buy_scoring.py. See that file's _risk_score() for the
+        # full rationale (this was a second, previously-undiscovered
+        # place Ichimoku fed a real decision, on top of
+        # strategy/sell_strategy.py's TREND_CORE vote).
 
         if row.get("rsi_14", 50) < 20:
-            score -= 10
+            score -= RSI_EXTREME_PENALTY
 
         if row.get("volume", 0) < row.get(
             "volume_sma_20",
             0,
         ):
-            score -= 5
+            score -= LOW_VOLUME_PENALTY
 
         return max(
             round(score, 2),
@@ -304,21 +424,32 @@ class SellScoringEngine:
     def _confidence(
         self,
         result: SellScore,
+        has_news: bool = True,
+        has_sector: bool = True,
     ) -> float:
 
-        values = np.array(
-            [
-                result.technical,
-                result.fundamental,
-                result.news,
-                result.market,
-                result.sector,
-                result.liquidity,
-                result.volatility,
-                result.risk,
-            ],
-            dtype=float,
-        )
+        # FIX #11: see buy_scoring.py's identical fix for the full
+        # rationale — excludes the fabricated result.news=0.0 from the
+        # confidence calc when there's genuinely no news, mirroring the
+        # has_news-based exclusion result.overall already uses.
+        #
+        # FIX #8: same exclusion for result.sector when sector_score is
+        # unavailable (has_sector=False) — see buy_scoring.py's
+        # identical fix for the full rationale.
+        components = [
+            result.technical,
+            result.fundamental,
+            result.market,
+            result.liquidity,
+            result.volatility,
+            result.risk,
+        ]
+        if has_news:
+            components.append(result.news)
+        if has_sector:
+            components.append(result.sector)
+
+        values = np.array(components, dtype=float)
 
         mean = values.mean()
 

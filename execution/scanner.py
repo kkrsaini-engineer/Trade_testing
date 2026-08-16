@@ -31,7 +31,9 @@ from market.market_regime import MarketRegimeEngine
 from market.volatility import fetch_india_vix
 from data.news_data import NewsDataProvider
 from data.delivery_data import DeliveryDataProvider, symbol_without_suffix
+from data import liquidity_history
 from data.fii_dii_data import FiiDiiDataProvider
+from datetime import date as _date
 from market import macro_intelligence
 
 logger = get_logger(__name__)
@@ -81,7 +83,47 @@ class MarketScanner:
     and session-wide asset analytics for the Orchestrator.
     """
 
-    def __init__(self):
+    def __init__(self, disable_live_market_context: bool = False):
+        # FIX #4 (architecture review — backtest contamination):
+        # analytics/backtest_engine.py builds ONE MarketScanner and
+        # reuses it across an entire multi-year day-by-day replay loop.
+        # _get_market_headlines()/_get_delivery_data()/_get_fii_dii_data()
+        # below are lazy-fetch-once-per-scanner-instance caches — correct
+        # for a single real scan run (one live snapshot IS the point),
+        # but during a backtest that means whatever real value was live
+        # on the day the backtest happened to run gets silently reused
+        # for every single simulated historical day, instead of that
+        # day's actual historical reading.
+        #
+        # CORRECTION to an earlier claim in this review thread: VIX was
+        # also named as leaking the same way. Re-checked against the
+        # actual code before fixing anything — VIX is NOT fetched
+        # anywhere in this class's scan path (_evaluate_market_context()
+        # never calls fetch_india_vix(); only prepare_orders(), which
+        # the backtester does not use, does). risk_manager.py reads
+        # `market.get("vix", 20.0)` from the market_state dict passed
+        # in by the caller, and backtest_engine.py's market_state never
+        # sets "vix" — so backtest VIX is a fixed 20.0 default for the
+        # whole run, not a live-today value. Not a leak; that earlier
+        # claim was wrong and is corrected here rather than "fixed"
+        # (there is nothing to fix for VIX specifically).
+        #
+        # What IS a genuine, confirmed leak: FII/DII net-flow bias,
+        # macro/sector news-headline bias, and NSE delivery-percentage
+        # data — all three via the exact lazy-cache pattern above.
+        #
+        # Fix: an opt-in constructor flag. When True, the three fetch
+        # helpers below short-circuit to the SAME "no live data"
+        # fallback each already supports for a real fetch failure
+        # (empty headlines -> macro_bias 0.0, empty delivery dict ->
+        # column left unset, None FII/DII -> nudge skipped) instead of
+        # ever calling the live-only fetcher. Default is False, so
+        # every existing caller (daily_scan.py, orchestrator.py,
+        # paper_trading_engine.py, prepare_orders(), etc. — all
+        # construct MarketScanner() with no args) is completely
+        # unaffected. Only analytics/backtest_engine.py opts in.
+        self._disable_live_market_context = disable_live_market_context
+
         self._last_full_scan_results: list = []
         # Professional Standard: Use the actual Data Engine for pipeline management, not a single raw dataclass model
         try:
@@ -109,7 +151,17 @@ class MarketScanner:
         self._news_provider = NewsDataProvider()
         self._market_headlines: list[str] | None = None  # lazy-fetched, shared across all symbols in a scan run
         self._delivery_provider = DeliveryDataProvider()
-        self._delivery_data: dict[str, float] | None = None  # lazy-fetched, shared across all symbols in a scan run
+        # lazy-fetched, shared across all symbols in a scan run.
+        # {symbol: {field: value}} — see data/delivery_data.py's
+        # fetch_latest() docstring for the field list.
+        self._delivery_data: dict[str, dict[str, float]] | None = None
+        # Rolling multi-day liquidity history (trade-count/turnover/
+        # price), loaded once per run and appended to per-symbol as
+        # _evaluate_market_context() processes each symbol — see
+        # data/liquidity_history.py. Persisted back to disk after each
+        # append so a mid-run crash doesn't lose already-processed
+        # symbols' updates.
+        self._liquidity_history: dict[str, list[dict[str, Any]]] | None = None
         self._fii_dii_provider = FiiDiiDataProvider()
         self._fii_dii_data: dict[str, Any] | None = None
         # Separate from `is None` on the dict above, since a completed
@@ -161,6 +213,11 @@ class MarketScanner:
         """Fetch broad market/macro headlines once per scan run and cache
         them (not per-symbol — one shared macro news snapshot is enough,
         and avoids hammering the API 500 times)."""
+        # FIX #4: see the disable_live_market_context NOTE in __init__ —
+        # short-circuit to the already-supported "no headlines" fallback
+        # instead of fetching live data that would leak into a backtest.
+        if self._disable_live_market_context:
+            return []
         if self._market_headlines is None:
             try:
                 self._market_headlines = self._news_provider.fetch_market_news()
@@ -169,13 +226,16 @@ class MarketScanner:
                 self._market_headlines = []
         return self._market_headlines
 
-    def _get_delivery_data(self) -> dict[str, float]:
-        """Fetch the NSE-wide delivery-percentage bhavcopy once per scan
+    def _get_delivery_data(self) -> dict[str, dict[str, float]]:
+        """Fetch the NSE-wide delivery/liquidity bhavcopy once per scan
         run and cache it (same reasoning as _get_market_headlines() —
         one file covers every symbol, so there's no reason to hit NSE
         once per symbol). Returns {} on total failure; callers must
         treat that as "no live data" and fall back gracefully, not
         substitute a fabricated number."""
+        # FIX #4: see the disable_live_market_context NOTE in __init__.
+        if self._disable_live_market_context:
+            return {}
         if self._delivery_data is None:
             try:
                 self._delivery_data = self._delivery_provider.fetch_latest()
@@ -184,12 +244,26 @@ class MarketScanner:
                 self._delivery_data = {}
         return self._delivery_data
 
+    def _get_liquidity_history(self) -> dict[str, list[dict[str, Any]]]:
+        """Load the persisted rolling liquidity-history file once per
+        scan run (same lazy-cache reasoning as _get_delivery_data() —
+        one file, read once, mutated in-memory per symbol as the run
+        progresses)."""
+        if self._disable_live_market_context:
+            return {}
+        if self._liquidity_history is None:
+            self._liquidity_history = liquidity_history.load_history()
+        return self._liquidity_history
+
     def _get_fii_dii_data(self) -> dict[str, Any] | None:
         """Fetch NSE-wide FII/DII net activity once per scan run and
         cache it (same reasoning as _get_delivery_data() — one market-
         wide value covers every symbol). Returns None when unavailable;
         callers must treat that as "no signal" and skip the nudge, not
         substitute a fabricated bias."""
+        # FIX #4: see the disable_live_market_context NOTE in __init__.
+        if self._disable_live_market_context:
+            return None
         if not self._fii_dii_fetched:
             try:
                 self._fii_dii_data = self._fii_dii_provider.fetch_latest()
@@ -253,13 +327,61 @@ class MarketScanner:
         # fetch failed or this symbol isn't covered, leave the column
         # unset so validation_engine.py's own default/fallback behavior
         # is unchanged (no regression when live data is unreachable).
+        #
+        # PHASE 18: deliv_lookup values are now {field: value} dicts
+        # (previously a bare float) — see data/delivery_data.py's
+        # fetch_latest() docstring. delivery_percentage wiring below is
+        # unchanged in behavior, just reads it out of the dict.
         deliv_lookup = self._get_delivery_data()
-        deliv_value = deliv_lookup.get(symbol_without_suffix(symbol))
+        symbol_key = symbol_without_suffix(symbol)
+        deliv_fields = deliv_lookup.get(symbol_key)
+
+        deliv_value = deliv_fields.get("delivery_percent") if deliv_fields else None
         if deliv_value is not None:
             dataframe.loc[dataframe.index[-1], "delivery_percentage"] = deliv_value
             diagnostics["delivery_percentage"] = deliv_value
 
-        # 2b. FUNDAMENTALS / NEWS SENTIMENT / MARKET REGIME
+        # 2b. ROLLING LIQUIDITY HISTORY — the bhavcopy row fetched above
+        # (deliv_fields) also carries ttl_trd_qnty/no_of_trades/
+        # turnover_lacs/close_price/prev_close. A single day's numbers
+        # can't tell a "broad-participation" trading day apart from a
+        # "block-deal-driven" one on their own — that needs comparing
+        # today against this symbol's OWN recent history, the same way
+        # volume_sma_20 does for volume. Each run appends today's
+        # numbers to a small persisted history file (data/
+        # liquidity_history.py) and computes the rolling comparison from
+        # it; the file is saved after every symbol so a mid-run crash
+        # doesn't lose already-processed symbols. Cold-start note: for
+        # the first MIN_HISTORY_DAYS days after this ships (and for any
+        # newly-added symbol), there isn't enough history yet — the
+        # columns below are simply left unset and _liquidity_score()
+        # falls back to its existing volume-only behavior, exactly as if
+        # this feature weren't present, rather than trusting a
+        # comparison built from almost no data.
+        if deliv_fields and not self._disable_live_market_context:
+            history = self._get_liquidity_history()
+            liquidity_history.append_and_prune(history, {symbol_key: deliv_fields}, _date.today())
+            liquidity_history.save_history(history)
+
+            today_quality = liquidity_history.today_trade_quality(deliv_fields)
+            rolling = liquidity_history.rolling_liquidity_stats(history, symbol_key)
+
+            if "avg_trade_size" in today_quality:
+                dataframe.loc[dataframe.index[-1], "avg_trade_size_today"] = today_quality["avg_trade_size"]
+                diagnostics["avg_trade_size_today"] = round(today_quality["avg_trade_size"], 2)
+            if "amihud" in today_quality:
+                dataframe.loc[dataframe.index[-1], "amihud_today"] = today_quality["amihud"]
+
+            if rolling is not None:
+                if "avg_trade_size" in rolling:
+                    dataframe.loc[dataframe.index[-1], "avg_trade_size_20d"] = rolling["avg_trade_size"]
+                    diagnostics["avg_trade_size_20d"] = round(rolling["avg_trade_size"], 2)
+                if "avg_amihud" in rolling:
+                    dataframe.loc[dataframe.index[-1], "avg_amihud_20d"] = rolling["avg_amihud"]
+                dataframe.loc[dataframe.index[-1], "liquidity_window_days"] = rolling["window_size"]
+                diagnostics["liquidity_window_days"] = int(rolling["window_size"])
+
+        # 2c. FUNDAMENTALS / NEWS SENTIMENT / MARKET REGIME
         # These feed the strategy + scoring engines (news_score / market_score /
         # sector_score are 0-100 normalized inputs).
         fundamentals = bundle.fundamentals or {}
@@ -340,8 +462,16 @@ class MarketScanner:
         vol = float(latest.get("volume", 0) or 0)
         vol_sma = float(latest.get("volume_sma_20", 0) or 0)
         diagnostics["volume_ratio"] = round(vol / vol_sma, 2) if vol_sma else 0.0
-        diagnostics["relative_strength"] = round(
-            float(latest.get("relative_strength", 0) or 0), 2
+        # Renamed from "relative_strength" (misleading — this is close vs
+        # the stock's OWN 20-day mean, not vs a benchmark/index; see the
+        # NOTE at features/indicators/breakout.py's price_vs_20d_mean).
+        # diagnostics key renamed too; the CSV report's "RelativeStrength"
+        # COLUMN HEADER is left unchanged on purpose (see
+        # scripts/generate_full_report.py's FIELDNAMES comment — it's the
+        # user's own fixed/locked report schema) — only the internal
+        # source-of-truth key is corrected here.
+        diagnostics["price_vs_20d_mean"] = round(
+            float(latest.get("price_vs_20d_mean", 0) or 0), 2
         )
         diagnostics["is_breakout"] = bool(latest.get("is_breakout", False))
         diagnostics["is_pullback"] = bool(latest.get("is_pullback", False))
@@ -353,17 +483,36 @@ class MarketScanner:
         diagnostics["bullish_engulfing"] = bool(latest.get("bullish_engulfing", False))
         diagnostics["bearish_engulfing"] = bool(latest.get("bearish_engulfing", False))
 
-        # NOTE: Sector rotation needs a cross-symbol sector-index dataframe
-        # (see market/sector_rotation.py) which this per-symbol scan does not
-        # have available. Using a neutral placeholder until sector index data
-        # is wired into DataEngine.
-        sector_score = 50.0
+        # FIX #8 (architecture review — sector/breadth placeholders):
+        # was `sector_score = 50.0`. Sector rotation needs a cross-symbol
+        # sector-index dataframe (see market/sector_rotation.py's
+        # SectorRotationEngine — the engine already exists, it's just
+        # never fed real sector-index data by this per-symbol scan) that
+        # this per-symbol scan does not have available. A fabricated
+        # 50.0 was indistinguishable downstream from "measured and
+        # genuinely neutral" — None instead, mirroring the has_news /
+        # news_score=None convention already used above in this same
+        # method, so every consumer can tell "unavailable" apart from
+        # "actually neutral" and redistribute weight instead of quietly
+        # diluting toward 50.
+        sector_score = None
 
-        # NOTE: "breadth" (market breadth) is also a market-wide metric
-        # (see market/market_breadth.py) that needs advance/decline data
-        # across the whole market, not a single symbol. Using a neutral
-        # placeholder for the same reason as sector_score above.
-        dataframe["breadth"] = 50.0
+        # FIX #8: was `dataframe["breadth"] = 50.0`. Same underlying gap
+        # as sector_score above — market breadth needs market-wide
+        # advance/decline data (see market/market_breadth.py's
+        # MarketBreadthEngine, also unwired) that isn't fetched anywhere
+        # in this per-symbol pipeline. None instead of a fabricated
+        # 50.0.
+        #
+        # BONUS BUG found while fixing this: the OLD value was a FLOAT
+        # (50.0), but strategy/buy_strategy.py's/sell_strategy.py's
+        # Tier2 check does `row.get("breadth", "NEUTRAL") == "STRONG"` —
+        # a float can never equal that string, so checks["breadth"] was
+        # unconditionally False in every real scan (not just "neutral",
+        # literally always-false), independent of this None-based fix.
+        # Confirmed via direct read of both strategy files' breadth
+        # check before touching this line.
+        dataframe["breadth"] = None
 
         # 3. STRATEGIES EVALUATION
         buy_decision = self.buy_strat.evaluate(
@@ -392,7 +541,22 @@ class MarketScanner:
         diagnostics["buy_overall_score"] = buy_decision.overall_score
         diagnostics["buy_qualify_threshold"] = buy_decision.qualify_threshold
         diagnostics["buy_fundamental_health"] = buy_decision.fundamental_health
+        # How much of the fundamental_health number above is actually
+        # backed by data (1.0 = all 8 metrics present, 0.0 = none) — see
+        # strategy/fundamental_scoring.py's FundamentalEvidence. Exposed
+        # for visibility/audit only; no gating logic added here.
+        diagnostics["buy_fundamental_coverage"] = buy_decision.fundamental_coverage
         diagnostics["buy_news_health"] = buy_decision.news_health
+        # FIX #15 (architecture review — state-based structure): a
+        # human-readable "MarketState=.../TrendState=.../SetupState=...
+        # /EntryState=..." narrative, purely descriptive of the checks/
+        # scores already above — see BuyDecision.state_narrative's NOTE.
+        diagnostics["buy_state_narrative"] = buy_decision.state_narrative
+        # FIX #10/#16 (architecture review — volume-pressure model):
+        # whether buy_decision.volume_factor_score (part of tier2_score)
+        # includes real NSE delivery-percentage data — see
+        # strategy/buy_strategy.py's volume_factor_score NOTE.
+        diagnostics["buy_volume_pressure_uses_delivery"] = buy_decision.volume_pressure_uses_delivery
 
         diagnostics["sell_tier1_checks"] = sell_decision.tier1_checks
         diagnostics["sell_tier1_passed"] = sell_decision.tier1_passed
@@ -401,7 +565,10 @@ class MarketScanner:
         diagnostics["sell_overall_score"] = sell_decision.overall_score
         diagnostics["sell_qualify_threshold"] = sell_decision.qualify_threshold
         diagnostics["sell_fundamental_weakness"] = sell_decision.fundamental_weakness
+        diagnostics["sell_fundamental_coverage"] = sell_decision.fundamental_coverage
         diagnostics["sell_news_negativity"] = sell_decision.news_negativity
+        diagnostics["sell_state_narrative"] = sell_decision.state_narrative
+        diagnostics["sell_volume_pressure_uses_delivery"] = sell_decision.volume_pressure_uses_delivery
         diagnostics["buy_checks_passed"] = sum(
             bool(v) for v in buy_decision.technical_checks.values()
         )

@@ -1,7 +1,27 @@
 """
 Multi-Timeframe Feature Engine.
 
-Responsibilities:
+*** NOT CURRENTLY WIRED IN (disconnected during an architecture review) ***
+features/feature_engineering.py no longer calls this. Two problems found:
+
+1. Despite the name, this does NOT do real multi-timeframe analysis — no
+   weekly/4H OHLCV resampling happens anywhere in this file. `mtf_sma_20/
+   50/200` below are plain rolling means of the SAME daily close series
+   already used for the regular `sma_20/50/200` columns elsewhere —
+   effectively a relabeled duplicate, not a higher timeframe.
+2. Even when it WAS wired in, `mtf_sma_*`/`mtf_trend` were never read by
+   any BUY/SELL check or any other downstream consumer (verified: zero
+   references anywhere else in the codebase) — dead output, computed
+   every single scan for nothing.
+
+Left in place as a starting point, not as something ready to re-enable.
+Genuine multi-timeframe support would need real weekly/4H OHLCV data
+sourced and resampled (a real DataEngine change, not just this file),
+answering a genuinely different question per timeframe (e.g. weekly =
+macro trend, daily = setup, 4H = entry confirmation) rather than
+recomputing the same daily rolling averages under a different name.
+
+Responsibilities (as originally intended, not as currently implemented):
 - Generate higher timeframe context from normalized OHLCV data.
 - Add derived columns only.
 - No strategy, scoring, or decision logic.
