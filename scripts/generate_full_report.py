@@ -27,9 +27,12 @@ from core.notifications import notify, SEVERITY_HIGH, SEVERITY_MEDIUM  # noqa: E
 from core.rejection_classifier import classify_tier4_block  # noqa: E402
 from core.trading_calendar import is_trading_day, now_ist, skip_reason  # noqa: E402
 from data import bhavcopy_status_log  # noqa: E402
+from data.market_data import MarketDataProvider  # noqa: E402
 from data.watchlist import WatchlistManager  # noqa: E402
 from execution.scanner import MarketScanner  # noqa: E402
 from market.volatility import fetch_india_vix  # noqa: E402
+from paper_trading.virtual_portfolio import VirtualPortfolio  # noqa: E402
+from portfolio.correlation import compute_portfolio_correlation, fetch_correlation_inputs  # noqa: E402
 from storage.trades.trade_store import TradeStore  # noqa: E402
 
 logger = get_logger(__name__)
@@ -50,7 +53,8 @@ FIELDNAMES = [
     "portfolio_allowed", "latest_close", "market_regime",
     "Decision=NO_TRADE/TRADE", "Grade=ACCEPT/REJECT", "Rank=0.00",
     "Confidence=0.00", "PositionSize", "PositionRULE", "StopLoss",
-    "Target1", "Target2", "RiskReward", "ExpectedHoldDays", "HoldingDays",
+    "Target1", "Target2", "Target1_RMultiple", "Target2_RMultiple",
+    "ExpectedHoldDays", "HoldingDays",
     "Return", "MaxProfit", "MaxDrawdown", "TechnicalScore",
     "FundamentalScore", "NewsScore", "OverallScore", "Status",
     "ExitReason", "ExitDate", "AIComment", "AIVersion", "ANALYSIS REPORT",
@@ -153,7 +157,13 @@ def build_row(trade_id: int, r, trade: dict | None = None) -> dict:
         "StopLoss": d.get("stop_loss"),
         "Target1": d.get("target1"),
         "Target2": d.get("target2"),
-        "RiskReward": d.get("risk_reward"),
+        # Fixed R-multiples by construction (risk/stop_target.py), NOT a
+        # per-symbol computed Risk:Reward — see PHASE20_NOTES.md. Same
+        # value on every row; kept as two columns (not one "RiskReward")
+        # so it's clear these are the model's design constants, not a
+        # discriminating per-trade metric.
+        "Target1_RMultiple": d.get("target1_r_multiple"),
+        "Target2_RMultiple": d.get("target2_r_multiple"),
         "ExpectedHoldDays": d.get("expected_hold_days"),
         # Trade-lifecycle fields: filled in from trades_master.csv when this
         # symbol actually has an open/closed trade on record. MaxProfit and
@@ -281,14 +291,40 @@ def main() -> None:
 
     scanner = MarketScanner()
     trade_lookup = latest_trade_by_symbol(TradeStore())
-    portfolio = {
-        "equity": 100000.0,
-        "total_capital": 100000.0,
-        "total_pnl": 0.0,
-        "exposure": 0.0,
-        "available_capital": 100000.0,
-        "open_positions": {},
-    }
+
+    # Phase 26 (see PHASE26_NOTES.md, point 11): this used to be a
+    # completely fake, static, always-empty portfolio dict — meaning
+    # `portfolio_allowed` for EVERY candidate this scan produces (which
+    # scripts/morning_executor.py then reads straight from
+    # reports/candidates_order.json to open REAL positions) was decided
+    # against a fictional empty portfolio, never the real one, no matter
+    # how many positions were actually open or how concentrated they
+    # were. Wired to the SAME real VirtualPortfolio state paper trading
+    # itself uses — read-only here (no .save(), no mutation; this scan
+    # doesn't open positions, only proposes candidates).
+    virtual_portfolio = VirtualPortfolio()
+    portfolio = virtual_portfolio.snapshot()
+    # "sector_exposure" here is a DICT ({sector: $value}) — rename to
+    # match the contract execution/scanner.py's per-symbol
+    # _sector_exposure_ratio() expects (see that method's docstring);
+    # it computes and sets the SCALAR "sector_exposure" itself, per
+    # candidate symbol.
+    portfolio["sector_exposure_by_sector"] = portfolio.pop("sector_exposure", {})
+
+    # Real portfolio correlation — fetched/computed ONCE for this whole
+    # scan run (same "fetch once per run" reasoning as VIX below); None
+    # when it can't be computed (fewer than 2 open positions, or
+    # insufficient overlapping history) simply leaves "correlation"
+    # unset, so risk/validation/portfolio_rules fall back to their
+    # pre-existing 0.0 default — no fabrication, no regression.
+    open_symbols = set(virtual_portfolio.engine.state.open_positions.keys())
+    if len(open_symbols) >= 2:
+        market_data_provider = MarketDataProvider()
+        closes = fetch_correlation_inputs(open_symbols, market_data_provider)
+        portfolio_correlation = compute_portfolio_correlation(closes)
+        if portfolio_correlation is not None:
+            portfolio["correlation"] = portfolio_correlation
+
     broker_status = {"status": "ONLINE", "mode": "SCAN", "connected": True, "order_allowed": True, "available_margin": 100000.0}
     # "vix" used to be entirely absent from this dict, so
     # risk_manager.py's market.get("vix", 20.0) always fell through to

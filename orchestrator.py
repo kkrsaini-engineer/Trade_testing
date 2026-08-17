@@ -18,6 +18,7 @@ import time
 
 # Core System Utilities
 from core.logger import get_logger
+from core.trading_calendar import is_trading_day, market_open_now, now_ist
 from data.watchlist import WatchlistManager
 
 # Fixed Package Internal Mapping Layer
@@ -97,6 +98,19 @@ class WiredOrchestrator:
 
         # STEP 2: BUILD SHARED CONTEXT DICTS
         broker_status = {"status": "ONLINE", "mode": self.mode, "connected": True, "order_allowed": True, "available_margin": 100000.0}
+
+        # Phase 26 (see PHASE26_NOTES.md): was hardcoded market_open=True/
+        # holiday=False unconditionally — the TODO below used to be real
+        # (no genuine NSE calendar check existed anywhere in this
+        # codebase). core/trading_calendar.py's is_trading_day() now
+        # exists (added for paper_trading_engine.py's own trading-day
+        # gate) — reused here instead of a second implementation.
+        # NOTE: this method (WiredOrchestrator.run_cycle()) has no live
+        # caller anywhere in scripts/ (confirmed in PHASE23_NOTES.md) —
+        # this fix has zero live effect today, done for correctness/
+        # consistency, not because anything currently depends on it.
+        today_ist = now_ist()
+
         market_state = {
             "max_trade_candidates": 20,
             "max_watchlist": 50,
@@ -106,14 +120,8 @@ class WiredOrchestrator:
             # could never fire. Now fetched live each cycle (falls back
             # to 20.0 itself, with a logged warning, if the fetch fails).
             "vix": fetch_india_vix(),
-            # CRITICAL: without these two keys, ValidationEngine defaults
-            # market_open to False and rejects EVERY trade with "Market is
-            # closed" — meaning portfolio_allowed was permanently stuck at
-            # False and no order could ever actually execute, regardless
-            # of how good the BUY/SELL signal was. TODO: replace with a
-            # real NSE market-hours/holiday-calendar check for live mode.
-            "market_open": True,
-            "holiday": False,
+            "market_open": market_open_now(today_ist),
+            "holiday": not is_trading_day(today_ist.date()),
         }
         # Prefer the orchestrator's live portfolio bookkeeping over whatever the
         # caller passed in, so sizing/risk/validation always see current state.

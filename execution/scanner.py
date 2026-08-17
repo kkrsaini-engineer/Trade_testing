@@ -10,6 +10,7 @@ from typing import Any
 import pandas as pd
 
 from core.logger import get_logger
+from core.trading_calendar import is_trading_day, market_open_now, now_ist
 
 # Fixed Correct Class Imports
 from data.market_data import MarketData
@@ -35,6 +36,8 @@ from data import liquidity_history
 from data.fii_dii_data import FiiDiiDataProvider
 from datetime import date as _date
 from market import macro_intelligence
+from market.circuit_bands import CircuitBandsProvider, detect_circuit_lock
+from risk import stop_target
 
 logger = get_logger(__name__)
 
@@ -175,6 +178,14 @@ class MarketScanner:
         # fetch that legitimately found nothing is ALSO `None` — this
         # flag is what actually prevents re-hitting NSE once per symbol.
         self._fii_dii_fetched: bool = False
+        # Phase 25 (see PHASE25_NOTES.md): circuit-band assignments are
+        # per-SYMBOL static metadata, same "fetch once per run, reuse for
+        # every symbol" shape as FII/DII above — but unlike FII/DII this
+        # is a lookup TABLE (symbol -> band%), not a single market-wide
+        # value.
+        self._circuit_bands_provider = CircuitBandsProvider()
+        self._circuit_bands: dict[str, float] | None = None
+        self._circuit_bands_fetched: bool = False
 
         logger.info("Market Scanner Engine initialized under professional pipeline contracts.")
 
@@ -199,13 +210,25 @@ class MarketScanner:
         if not symbols:
             return []
 
+        # Phase 26 (see PHASE26_NOTES.md): was hardcoded market_open=True/
+        # holiday=False unconditionally. Also confirmed while fixing this:
+        # this method (prepare_orders()) has NO caller anywhere in this
+        # codebase — not even orchestrator.py, despite this class's own
+        # docstring above claiming it "matches the exact call inside
+        # orchestrator.py (Step 7)" (orchestrator.py actually calls
+        # scan_symbols() directly, not this method) — so this fix, like
+        # orchestrator.py's matching one, has zero live effect today.
+        # Fixed anyway for correctness/consistency with that sibling fix,
+        # not because anything currently depends on it.
+        today_ist = now_ist()
+
         # Dummy/Mock state matching for global evaluation criteria
         broker_status = {"status": "ONLINE", "connected": True, "order_allowed": True, "available_margin": 100000.0}
         market_state = {
             "max_trade_candidates": 20,
             "max_watchlist": 50,
-            "market_open": True,
-            "holiday": False,
+            "market_open": market_open_now(today_ist),
+            "holiday": not is_trading_day(today_ist.date()),
             "vix": fetch_india_vix(),
         }
 
@@ -281,6 +304,85 @@ class MarketScanner:
             self._fii_dii_fetched = True
         return self._fii_dii_data
 
+    def _get_circuit_bands(self) -> dict[str, float]:
+        """Fetch NSE's per-symbol circuit-band assignment list once per
+        scan run (same lazy-cache reasoning as _get_fii_dii_data() — a
+        network fetch, not something worth repeating per symbol). Empty
+        dict when unavailable OR when live market context is disabled
+        (backtesting) — callers must treat a missing symbol as "band
+        unknown", not assume a default band (see
+        market/circuit_bands.py's detect_circuit_lock(), which already
+        falls back to checking all 4 standard bands when band_percent is
+        None)."""
+        if self._disable_live_market_context:
+            return {}
+        if not self._circuit_bands_fetched:
+            try:
+                self._circuit_bands = self._circuit_bands_provider.fetch_bands()
+            except Exception as exc:
+                logger.warning("Circuit-band list fetch failed: %s", exc)
+                self._circuit_bands = {}
+            self._circuit_bands_fetched = True
+        return self._circuit_bands or {}
+
+    def _detect_circuit_lock(self, symbol: str, dataframe: pd.DataFrame) -> dict[str, Any]:
+        """Per-symbol circuit-lock heuristic (see market/circuit_bands.py)
+        for the most recent completed bar. Returns detect_circuit_lock()'s
+        diagnostics dict unchanged; callers decide what to do with it.
+        Never raises — any missing/malformed data falls through to
+        circuit_likely=False via detect_circuit_lock()'s own guards."""
+        if self._disable_live_market_context or len(dataframe) < 2:
+            return detect_circuit_lock(None, None, None, None, None)
+
+        latest = dataframe.iloc[-1]
+        previous = dataframe.iloc[-2]
+
+        bands = self._get_circuit_bands()
+        band_percent = bands.get(symbol_without_suffix(symbol))
+
+        return detect_circuit_lock(
+            open_price=float(latest.get("open", 0.0)) or None,
+            high=float(latest.get("high", 0.0)) or None,
+            low=float(latest.get("low", 0.0)) or None,
+            close=float(latest.get("close", 0.0)) or None,
+            prev_close=float(previous.get("close", 0.0)) or None,
+            band_percent=band_percent,
+        )
+
+    @staticmethod
+    def _sector_exposure_ratio(sector: str | None, portfolio: dict[str, Any]) -> float:
+        """Phase 26 (see PHASE26_NOTES.md, point 11): sector_exposure is
+        a PER-SYMBOL fact (this candidate's/held position's sector's
+        CURRENT $ exposure, as a ratio of total portfolio value) —
+        `portfolio` is the SAME shared dict across every symbol in a
+        run, so it cannot carry this directly (same reasoning as
+        circuit_breaker in Phase 25). Callers that want a REAL (not
+        always-0.0) result must include, in `portfolio`:
+          - "sector_exposure_by_sector": {sector_name: $ exposure}
+          - "portfolio_value": float, total portfolio value
+        (see paper_trading/paper_trading_engine.py and
+        scripts/generate_full_report.py for the real producers — both
+        source this from paper_trading/virtual_portfolio.py's
+        VirtualPortfolio.snapshot(), which already tracks real
+        per-sector exposure via register_sector()).
+
+        Callers that don't supply these two keys (backtests, diagnose
+        scripts, any MarketScanner caller not yet wired to a real
+        portfolio) get 0.0 — the SAME fallback this always silently
+        produced before this phase, not a new regression.
+        """
+        if not sector:
+            return 0.0
+
+        portfolio_value = float(portfolio.get("portfolio_value", 0.0) or 0.0)
+
+        if portfolio_value <= 0:
+            return 0.0
+
+        sector_exposure_by_sector = portfolio.get("sector_exposure_by_sector") or {}
+
+        return float(sector_exposure_by_sector.get(sector, 0.0)) / portfolio_value
+
     def _evaluate_market_context(self, symbol: str, bundle: Any = None) -> dict[str, Any]:
         """
         SINGLE SOURCE OF TRUTH for market analysis: data fetch, feature
@@ -326,6 +428,25 @@ class MarketScanner:
         diagnostics["latest_close"] = round(float(latest["close"]), 2)
         diagnostics["latest_high"] = round(float(latest["high"]), 2)
         diagnostics["latest_low"] = round(float(latest["low"]), 2)
+
+        # Phase 25 (see PHASE25_NOTES.md): heuristic circuit-lock
+        # detection from today's/yesterday's OHLC — computed once here
+        # (the single source of truth shared by scan_symbol() and
+        # evaluate_position()) so BOTH the entry path and the monitoring
+        # path see the SAME diagnosis for this symbol on this run,
+        # instead of two independent computations that could disagree.
+        # Surfaced into diagnostics for reporting/audit; scan_symbol()/
+        # evaluate_position() are responsible for feeding
+        # circuit_likely into a PER-SYMBOL market_state copy before
+        # calling validate()/risk.evaluate() (market_state itself is
+        # shared/identical across every symbol in a scan run, so it
+        # cannot carry a per-symbol fact without being copied first).
+        circuit_result = self._detect_circuit_lock(symbol, dataframe)
+        diagnostics["circuit_likely"] = circuit_result["circuit_likely"]
+        diagnostics["circuit_direction"] = circuit_result["direction"]
+        diagnostics["circuit_full_day_freeze"] = circuit_result["full_day_freeze"]
+        diagnostics["circuit_move_percent"] = circuit_result["move_percent"]
+        diagnostics["circuit_band_used"] = circuit_result["band_used"]
 
         # 2a. DELIVERY PERCENTAGE — was previously ALWAYS absent from
         # this dataframe, so validation_engine.py's
@@ -472,9 +593,9 @@ class MarketScanner:
 
         # Internal passthrough (not used by the report) so callers
         # like the Paper Trading Engine can re-evaluate an existing
-        # position (via ExitEngine) using the SAME already-computed
-        # dataframe/fundamentals/news_score, instead of re-fetching
-        # or re-deriving them.
+        # position (via ExitStrategyEngine) using the SAME already-
+        # computed dataframe/fundamentals/news_score, instead of
+        # re-fetching or re-deriving them.
         diagnostics["_dataframe"] = dataframe
         diagnostics["_fundamentals"] = fundamentals
         diagnostics["_news_score"] = news_score
@@ -686,35 +807,22 @@ class MarketScanner:
 
     def _compute_stop_loss_targets(
         self, direction: str, close_price: float, atr: float
-    ) -> tuple[float, float, float, float]:
+    ) -> tuple[float, float, float]:
         """
-        Shared stop-loss/target projection — same ATR multipliers as
-        risk/exit_strategy.py's ExitStrategyEngine (ATR_STOP=2.0,
-        PARTIAL_TARGET=2.0, FINAL_TARGET=3.5). `direction` is BUY or
-        SELL — callers pass today's fresh signal (scan_symbol, entry)
-        or the ALREADY-HELD position's direction (evaluate_position,
-        monitoring), whichever is the relevant "am I long or short"
-        context for that caller.
+        Thin wrapper over risk/stop_target.py's shared
+        compute_stop_loss_targets() — the SAME canonical formula
+        risk/exit_strategy.py's ExitStrategyEngine and
+        risk/position_sizing.py's PositionSizingEngine also use (see
+        PHASE20_NOTES.md — previously duplicated 3 ways with no test to
+        catch drift; now a single shared implementation). `direction` is
+        BUY or SELL — callers pass today's fresh signal (scan_symbol,
+        entry) or the ALREADY-HELD position's direction
+        (evaluate_position, monitoring), whichever is the relevant "am I
+        long or short" context for that caller.
         """
-        ATR_STOP = 2.0
-        PARTIAL_TARGET = 2.0
-        FINAL_TARGET = 3.5
-
-        if atr and close_price:
-            if direction == "SELL":
-                stop_loss = round(close_price + ATR_STOP * atr, 2)
-                target1 = round(close_price - PARTIAL_TARGET * atr, 2)
-                target2 = round(close_price - FINAL_TARGET * atr, 2)
-            else:
-                stop_loss = round(close_price - ATR_STOP * atr, 2)
-                target1 = round(close_price + PARTIAL_TARGET * atr, 2)
-                target2 = round(close_price + FINAL_TARGET * atr, 2)
-            risk = abs(close_price - stop_loss)
-            reward = abs(target1 - close_price)
-            risk_reward = round(reward / risk, 2) if risk else 0.0
-        else:
-            stop_loss = target1 = target2 = risk_reward = 0.0
-        return stop_loss, target1, target2, risk_reward
+        return stop_target.compute_stop_loss_targets(
+            direction=direction, close_price=close_price, atr=atr,
+        )
 
     def scan_symbol(
         self,
@@ -736,13 +844,33 @@ class MarketScanner:
             diagnostics.update(context["diagnostics"])
             latest = dataframe.iloc[-1]
 
+            # Phase 25: market_state is the SAME shared dict for every
+            # symbol in a scan run — a per-symbol fact (this symbol's
+            # circuit-lock heuristic, just computed above in
+            # _evaluate_market_context) cannot be injected into it
+            # directly without corrupting every other symbol's view.
+            # Copy it per-symbol instead; risk_manager.py/
+            # validation_engine.py already read circuit_breaker from
+            # this `market`/`market_state` dict (see PHASE22_NOTES.md),
+            # so no change needed on their side.
+            market_state_for_symbol = dict(market_state)
+            market_state_for_symbol["circuit_breaker"] = diagnostics["circuit_likely"]
+
+            # Phase 26: same per-symbol-copy reasoning as circuit_breaker
+            # above, for sector_exposure — see _sector_exposure_ratio()'s
+            # docstring.
+            portfolio_for_symbol = dict(portfolio)
+            portfolio_for_symbol["sector_exposure"] = self._sector_exposure_ratio(
+                diagnostics.get("sector"), portfolio
+            )
+
             # 7. VALIDATION ENGINE
             validation = self.validation.validate(
                 decision=final_decision,
                 dataframe=dataframe,
-                portfolio=portfolio,
+                portfolio=portfolio_for_symbol,
                 broker_status=broker_status,
-                market_state=market_state,
+                market_state=market_state_for_symbol,
             )
             diagnostics["validation_passed"] = validation.passed
             diagnostics["validation_action"] = validation.action
@@ -757,8 +885,8 @@ class MarketScanner:
                 validation=validation,
                 decision=final_decision,
                 dataframe=dataframe,
-                portfolio=portfolio,
-                market=market_state,
+                portfolio=portfolio_for_symbol,
+                market=market_state_for_symbol,
             )
             diagnostics["risk_safe"] = risk_result.safe
             diagnostics["risk_grade"] = risk_result.risk_grade
@@ -770,7 +898,7 @@ class MarketScanner:
                 validation=validation,
                 risk=risk_result,
                 dataframe=dataframe,
-                portfolio=portfolio,
+                portfolio=portfolio_for_symbol,
             )
             diagnostics["quantity"] = position_result.quantity
             diagnostics["position_value"] = round(position_result.position_value, 2)
@@ -781,7 +909,7 @@ class MarketScanner:
             # is specific to THIS symbol, not portfolio-wide state — inject
             # it into a copy of the portfolio dict so the liquidity
             # participation check has real data instead of defaulting to 0.
-            portfolio_with_liquidity = dict(portfolio)
+            portfolio_with_liquidity = dict(portfolio_for_symbol)
             portfolio_with_liquidity["average_daily_value"] = (
                 latest.get("volume_sma_20", 0.0) * latest.get("close", 0.0)
             )
@@ -799,13 +927,13 @@ class MarketScanner:
                 portfolio_result, "rejection_reason", None
             ) or "OK"
 
-            # Stop-loss / targets use the SAME ATR multipliers as
-            # risk/exit_strategy.py's ExitStrategyEngine (ATR_STOP=2.0,
-            # PARTIAL_TARGET=2.0, FINAL_TARGET=3.5), so these scan-time
-            # projections match what that engine will compute once a
-            # position is actually open. Shared with evaluate_position()
-            # via _compute_stop_loss_targets() — see that method.
-            stop_loss, target1, target2, risk_reward = self._compute_stop_loss_targets(
+            # Stop-loss / targets use risk/stop_target.py's shared
+            # canonical formula, so these scan-time projections match
+            # what risk/exit_strategy.py's ExitStrategyEngine will
+            # compute once a position is actually open. Shared with
+            # evaluate_position() via _compute_stop_loss_targets() —
+            # see that method.
+            stop_loss, target1, target2 = self._compute_stop_loss_targets(
                 direction=final_decision.action,
                 close_price=diagnostics.get("latest_close", 0.0),
                 atr=diagnostics.get("atr_14", 0.0),
@@ -813,7 +941,12 @@ class MarketScanner:
             diagnostics["stop_loss"] = stop_loss
             diagnostics["target1"] = target1
             diagnostics["target2"] = target2
-            diagnostics["risk_reward"] = risk_reward
+            # Target1/Target2 are ALWAYS exactly these fixed R-multiples
+            # of the stop distance by construction (see
+            # risk/stop_target.py's module docstring) — not a per-symbol
+            # computed "Risk:Reward". Exposed honestly as such.
+            diagnostics["target1_r_multiple"] = stop_target.TARGET1_R_MULTIPLE
+            diagnostics["target2_r_multiple"] = stop_target.TARGET2_R_MULTIPLE
 
             # RESOLVE FINAL SCORES
             # NOTE: even for NO_TRADE, report the stronger side's ACTUAL
@@ -929,12 +1062,28 @@ class MarketScanner:
                 if sym != symbol
             }
 
+            # Phase 25: same per-symbol market_state copy as
+            # scan_symbol() — see the comment there.
+            market_state_for_symbol = dict(market_state)
+            market_state_for_symbol["circuit_breaker"] = diagnostics["circuit_likely"]
+
+            # Phase 26: same per-symbol sector_exposure injection as
+            # scan_symbol() — see _sector_exposure_ratio()'s docstring.
+            # Uses monitoring_portfolio (this symbol already excluded
+            # from open_positions above) as the source for
+            # "sector_exposure_by_sector"/"portfolio_value" — those two
+            # keys are portfolio-wide, unaffected by the open_positions
+            # exclusion above.
+            monitoring_portfolio["sector_exposure"] = self._sector_exposure_ratio(
+                diagnostics.get("sector"), monitoring_portfolio
+            )
+
             validation = self.validation.validate(
                 decision=final_decision,
                 dataframe=dataframe,
                 portfolio=monitoring_portfolio,
                 broker_status=broker_status,
-                market_state=market_state,
+                market_state=market_state_for_symbol,
                 skip_position_count=True,
             )
             diagnostics["validation_passed"] = validation.passed
@@ -947,18 +1096,28 @@ class MarketScanner:
                 decision=final_decision,
                 dataframe=dataframe,
                 portfolio=monitoring_portfolio,
-                market=market_state,
+                market=market_state_for_symbol,
             )
             diagnostics["risk_safe"] = risk_result.safe
             diagnostics["risk_grade"] = risk_result.risk_grade
             diagnostics["total_risk"] = round(risk_result.total_risk, 2)
+
+            # Internal passthrough (same leading-underscore convention as
+            # _dataframe/_fundamentals/_news_score above) — the FULL
+            # FinalDecision/RiskResult objects, not just report-safe
+            # scalars, so a caller monitoring this position (e.g.
+            # paper_trading_engine.py) can feed them straight into
+            # risk/exit_strategy.py's ExitStrategyEngine without
+            # recomputing either from scratch.
+            diagnostics["_final_decision"] = final_decision
+            diagnostics["_risk_result"] = risk_result
 
             # Stop-loss uses the POSITION'S HELD direction (not today's
             # fresh signal) — monitoring cares about "given I am long
             # this stock, where is my stop", regardless of what a brand
             # new scan would decide today.
             held_direction = position.get("direction", "BUY")
-            stop_loss, target1, target2, risk_reward = self._compute_stop_loss_targets(
+            stop_loss, target1, target2 = self._compute_stop_loss_targets(
                 direction=held_direction,
                 close_price=diagnostics.get("latest_close", 0.0),
                 atr=diagnostics.get("atr_14", 0.0),
@@ -966,7 +1125,8 @@ class MarketScanner:
             diagnostics["stop_loss"] = stop_loss
             diagnostics["target1"] = target1
             diagnostics["target2"] = target2
-            diagnostics["risk_reward"] = risk_reward
+            diagnostics["target1_r_multiple"] = stop_target.TARGET1_R_MULTIPLE
+            diagnostics["target2_r_multiple"] = stop_target.TARGET2_R_MULTIPLE
 
             return ScanResult(
                 symbol=symbol,

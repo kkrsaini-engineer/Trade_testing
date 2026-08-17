@@ -17,6 +17,7 @@ Workflow per cycle (see module docstring in the spec):
 
 from __future__ import annotations
 
+import dataclasses
 import math
 import time
 from datetime import date
@@ -25,10 +26,12 @@ from typing import Any
 from core.logger import get_logger
 from core.notifications import notify, severity_from_magnitude
 from core.trading_calendar import is_trading_day, now_ist
+from data.market_data import MarketDataProvider
 from execution.scanner import MarketScanner
 from market.volatility import fetch_india_vix
 from paper_trading.virtual_portfolio import VirtualPortfolio
-from risk.exit_engine import ExitEngine
+from portfolio.correlation import compute_portfolio_correlation, fetch_correlation_inputs
+from risk.exit_strategy import ExitStrategyEngine
 from storage.trades.trade_diary import TradeDiary
 from storage.trades.trade_store import TradeStore
 
@@ -43,13 +46,22 @@ class PaperTradingEngine:
         portfolio: VirtualPortfolio | None = None,
         diary: TradeDiary | None = None,
         trade_store: TradeStore | None = None,
-        exit_engine: ExitEngine | None = None,
+        exit_engine: ExitStrategyEngine | None = None,
     ):
         self.scanner = scanner or MarketScanner()
         self.portfolio = portfolio or VirtualPortfolio()
         self.diary = diary or TradeDiary()
         self.trade_store = trade_store or TradeStore()
-        self.exit_engine = exit_engine or ExitEngine()
+        # ExitStrategyEngine (trailing stop / break-even stop / partial +
+        # final target) replaces the previously-live risk/exit_engine.py's
+        # ExitEngine — see PHASE19_NOTES.md. Kept as the sole exit-decision
+        # source for open positions (one live vote per signal).
+        self.exit_engine = exit_engine or ExitStrategyEngine()
+        # Phase 26 (see PHASE26_NOTES.md, point 11): lightweight OHLCV-only
+        # provider (no fundamentals/news) for the real portfolio-correlation
+        # calc below — deliberately NOT the full DataEngine bundle used for
+        # scanning, since correlation only needs closes.
+        self._market_data_provider = MarketDataProvider()
 
     # ==========================================================
     # MAIN DAILY CYCLE
@@ -69,6 +81,18 @@ class PaperTradingEngine:
             }
 
         today = today_date.isoformat()
+
+        # Phase 22 (see PHASE22_NOTES.md): captures today's starting
+        # equity (from yesterday's persisted closing state, since each
+        # run_cycle() call is a fresh process for one trading day — see
+        # VirtualPortfolio's module docstring) BEFORE any of today's
+        # monitoring/entries/exits run. This is what daily_loss is
+        # measured against for the rest of this cycle. Also updates the
+        # running peak_equity used for drawdown. Called again after
+        # mark_to_market() below so peak_equity reflects this day's
+        # closing numbers too.
+        self.portfolio.engine.update_equity_tracking(today)
+
         broker_status = {
             "status": "ONLINE", "mode": "PAPER",
             "connected": True, "order_allowed": True, "available_margin": 1e12,
@@ -108,9 +132,27 @@ class PaperTradingEngine:
         cycle_abort_reason: str | None = None
         holding_status_rows: list[dict[str, Any]] = []
         closed_details: list[dict[str, Any]] = []
+        partial_exits_today: list[dict[str, Any]] = []
 
         snap_at_start = self.portfolio.snapshot()
         return_pct = snap_at_start.get("portfolio_return_percent", 0.0)
+
+        # Phase 26 (see PHASE26_NOTES.md, point 11): real portfolio
+        # correlation — computed ONCE per cycle (a network fetch per open
+        # symbol, same "fetch once per run" reasoning as VIX/FII-DII/
+        # circuit-bands above/in execution/scanner.py — this does NOT
+        # change meaningfully symbol-to-symbol within one cycle, so
+        # refetching it per position monitored would be wasteful, not
+        # more accurate). None (not 0.0) when it can't be computed (see
+        # portfolio/correlation.py's docstring) — that case is handled
+        # below by simply not overriding the existing "correlation" key,
+        # so risk/validation/portfolio_rules fall back to their
+        # pre-existing 0.0 default, exactly as before this phase (no new
+        # fabrication, no regression).
+        portfolio_correlation = None
+        if len(open_symbols) >= 2:
+            closes = fetch_correlation_inputs(open_symbols, self._market_data_provider)
+            portfolio_correlation = compute_portfolio_correlation(closes)
         notify(
             event_type="paper_trading_started",
             message=(
@@ -135,7 +177,28 @@ class PaperTradingEngine:
         #    since this position already legitimately exists.)
         # --------------------------------------------------
         for symbol in list(open_symbols):
-            portfolio_dict = self.portfolio.engine.snapshot()
+            # Phase 26 (see PHASE26_NOTES.md, point 11): was
+            # `self.portfolio.engine.snapshot()` — the bare
+            # PortfolioEngine snapshot, which does NOT carry sector
+            # exposure at all (that bookkeeping lives one layer up, in
+            # VirtualPortfolio — see that class's module docstring).
+            # Using `self.portfolio.snapshot()` (the VirtualPortfolio
+            # wrapper) instead means sector_exposure/portfolio_value are
+            # both present now, giving execution/scanner.py's
+            # _sector_exposure_ratio() real data instead of always 0.0.
+            # "sector_exposure" here is a DICT ({sector: $value}) — renamed
+            # to "sector_exposure_by_sector" to match the contract
+            # scanner.py's per-symbol injection expects (it computes and
+            # sets the SCALAR "sector_exposure" itself, per symbol — see
+            # that method's docstring); leaving the raw dict under the
+            # original key would make `float(portfolio.get(
+            # "sector_exposure"))` crash downstream.
+            portfolio_dict = self.portfolio.snapshot()
+            portfolio_dict["sector_exposure_by_sector"] = portfolio_dict.pop(
+                "sector_exposure", {}
+            )
+            if portfolio_correlation is not None:
+                portfolio_dict["correlation"] = portfolio_correlation
             pos = self.portfolio.engine.state.open_positions[symbol]
             result = self.scanner.evaluate_position(
                 symbol=symbol,
@@ -207,33 +270,89 @@ class PaperTradingEngine:
             diary_record = self.diary.get_diary(trade_id) if trade_id else None
             holding_days = len(diary_record["daily_log"]) if diary_record else 0
 
+            # Thesis-decay time exit (Point 16, PHASE28_NOTES.md). Use
+            # THIS position's HELD direction's own confidence — not
+            # whatever fresh BUY/SELL signal today's scan produced —
+            # same held-direction precedent as held_decision below.
+            # capture_thesis_baseline() is idempotent: it only writes a
+            # baseline the first time a real (non-None) value is
+            # available for this trade_id, so calling it every cycle is
+            # safe and requires no separate "is this day 1?" check here.
+            held_thesis_confidence = (
+                result.diagnostics.get("buy_decision_confidence")
+                if pos.direction == "BUY"
+                else result.diagnostics.get("sell_decision_confidence")
+            )
+            if trade_id is not None:
+                self.diary.capture_thesis_baseline(trade_id, held_thesis_confidence)
+                diary_record = self.diary.get_diary(trade_id)
+            entry_thesis_confidence = (
+                diary_record.get("entry_thesis_confidence") if diary_record else None
+            )
+
             dataframe = result.diagnostics.get("_dataframe")
-            fundamentals = result.diagnostics.get("_fundamentals") or {}
-            news_score = result.diagnostics.get("_news_score")
 
             if dataframe is None:
                 logger.warning("No dataframe available to evaluate exit for %s; holding by default.", symbol)
                 monitoring_errors.append(f"{symbol} [Data Fetch] MissingDataError: no market data available")
                 continue
 
+            # RiskManager's own verdict for this symbol THIS cycle — used
+            # below both as the `risk` argument ExitStrategyEngine expects
+            # and to drive the risk-unsafe hard exit (see position_input).
+            risk_result = result.diagnostics.get("_risk_result")
+            final_decision = result.diagnostics.get("_final_decision")
+            if risk_result is None or final_decision is None:
+                logger.warning(
+                    "Missing _risk_result/_final_decision diagnostics for %s; "
+                    "holding by default.", symbol,
+                )
+                monitoring_errors.append(
+                    f"{symbol} [Data Fetch] MissingDataError: no risk/decision object available"
+                )
+                continue
+
+            # ExitStrategyEngine decides based on the POSITION'S HELD
+            # direction, not whatever fresh BUY/SELL signal today's scan
+            # produced — dataclasses.replace() builds a copy of the same
+            # FinalDecision with only .action overridden, mirroring
+            # execution/scanner.py's own held_direction precedent for
+            # stop_loss/target1/target2 in evaluate_position().
+            held_decision = dataclasses.replace(final_decision, action=pos.direction)
+
             position_input = {
                 "symbol": symbol,
                 "direction": pos.direction,
                 "entry_price": pos.entry_price,
                 "current_price": current_price,
-                "stop_loss": result.diagnostics.get("stop_loss"),
-                "target1": result.diagnostics.get("target1"),
-                "target2": result.diagnostics.get("target2"),
+                "holding_days": holding_days,
+                "highest_price": pos.highest_price,
+                "lowest_price": pos.lowest_price,
                 "day_high": result.diagnostics.get("latest_high"),
                 "day_low": result.diagnostics.get("latest_low"),
                 "max_drawdown_percent": pos.max_drawdown_percent,
+                # Thesis-decay time exit inputs (Point 16,
+                # PHASE28_NOTES.md) — both None for a position with no
+                # captured baseline yet (falls back to the old flat
+                # MAX_HOLD_DAYS behavior inside ExitStrategyEngine).
+                "entry_thesis_confidence": entry_thesis_confidence,
+                "held_thesis_confidence": held_thesis_confidence,
+                # A RiskManager-unsafe verdict (circuit breaker, VIX spike,
+                # daily loss lock, etc.) forces an immediate FULL_EXIT —
+                # same hard-risk-override behavior risk/exit_engine.py had,
+                # now expressed through ExitStrategyEngine's own
+                # emergency_exit mechanism instead of being lost.
+                "emergency_exit": not risk_result.safe,
+                "emergency_exit_reason": (
+                    f"Risk engine flagged this symbol as unsafe "
+                    f"(grade: {risk_result.risk_grade}, total_risk: "
+                    f"{risk_result.total_risk:.0f}/100)."
+                ),
             }
             try:
                 exit_eval = self.exit_engine.evaluate(
-                    dataframe=dataframe, fundamentals=fundamentals, news_score=news_score,
-                    position=position_input, risk_safe=result.diagnostics.get("risk_safe", True),
-                    holding_days=holding_days,
-                    fii_dii_bias=result.diagnostics.get("fii_dii_bias"),
+                    decision=held_decision, risk=risk_result,
+                    dataframe=dataframe, position=position_input,
                 )
             except Exception as exc:
                 logger.exception("Exit Logic stage failed for %s — REVIEW REQUIRED", symbol)
@@ -258,13 +377,21 @@ class PaperTradingEngine:
                 logger.warning("No open diary entry found for %s; skipping diary update.", symbol)
                 monitoring_errors.append(f"{symbol} [Portfolio Update] MissingDiaryEntryError: no matching diary entry found")
                 continue
+            # "exit_score" (the diary/trade-store field name, kept for
+            # schema stability) now holds ExitStrategyEngine's own
+            # `confidence` — its blended conviction in WHATEVER action it
+            # just decided (HOLD/PARTIAL_EXIT/FULL_EXIT), not the old
+            # ExitEngine's "how strong is the case to exit" 0-100 score.
+            # `recommendation` can now be HOLD/PARTIAL_EXIT/FULL_EXIT
+            # (previously only HOLD/EXIT).
+            exit_conviction = exit_eval.confidence
             try:
                 self.diary.add_daily_log(
                     trade_id=trade_id, date=today, current_price=current_price,
                     current_pnl=pos.unrealized_pnl,
                     current_buy_confidence=result.diagnostics.get("buy_decision_confidence", 0.0),
                     current_sell_confidence=result.diagnostics.get("sell_decision_confidence", 0.0),
-                    exit_score=exit_eval.exit_score, recommendation=exit_eval.action,
+                    exit_score=exit_conviction, recommendation=exit_eval.action,
                     notes=exit_eval.reasons,
                 )
             except Exception as exc:
@@ -287,7 +414,7 @@ class PaperTradingEngine:
                 cycle_aborted = True
                 cycle_abort_reason = err_line
                 break
-            monitored.append({"symbol": symbol, "action": exit_eval.action, "exit_score": exit_eval.exit_score})
+            monitored.append({"symbol": symbol, "action": exit_eval.action, "exit_score": exit_conviction})
 
             # Holding Status row (item 3) — built entirely from values
             # already computed above (pos, exit_eval, result.diagnostics).
@@ -310,8 +437,10 @@ class PaperTradingEngine:
                 dist_target2 = round((target2_v - current_price) / current_price * 100, 2) if target2_v and current_price else None
                 dist_stop = round((current_price - stop_loss_v) / current_price * 100, 2) if stop_loss_v and current_price else None
 
-            if exit_eval.action == "EXIT":
+            if exit_eval.action == "FULL_EXIT":
                 status_label = "EXIT CANDIDATE"
+            elif exit_eval.action == "PARTIAL_EXIT":
+                status_label = "PARTIAL EXIT CANDIDATE"
             elif dist_target2 is not None and dist_target2 <= 0:
                 status_label = "TARGET 2 REACHED"
             elif dist_target1 is not None and dist_target1 <= 0:
@@ -341,45 +470,57 @@ class PaperTradingEngine:
                 "buy_confidence": result.diagnostics.get("buy_decision_confidence", 0.0),
                 "sell_confidence": result.diagnostics.get("sell_decision_confidence", 0.0),
                 "status": status_label,
+                # ExitStrategyEngine's OWN live stop/target (trailing stop,
+                # break-even-adjusted stop, dual targets) — a DIFFERENT
+                # calculation than stop_loss_v/target1_v/target2_v above
+                # (those come from execution/scanner.py's static ATR
+                # stop/target, unchanged by this position's price path).
+                # Shown separately so the trailing-stop benefit is
+                # actually visible, not just computed internally.
+                "exit_action": exit_eval.action,
+                "exit_confidence": exit_eval.confidence,
+                "exit_stop": exit_eval.stop_loss,
+                "exit_trailing_stop": exit_eval.trailing_stop,
+                "exit_take_profit": exit_eval.take_profit,
+                "exit_rr": exit_eval.expected_rr,
             })
 
-            # "Existing Position Updated" — only notify on a MEANINGFUL
-            # change vs the last logged values (prevents spamming every
-            # trivial fluctuation), and dedup by (symbol, today's date)
-            # so this fires at most once per position per day.
-            prev_log = diary_record["daily_log"][-1] if diary_record and diary_record["daily_log"] else None
-            new_buy_conf = result.diagnostics.get("buy_decision_confidence", 0.0)
-            new_sell_conf = result.diagnostics.get("sell_decision_confidence", 0.0)
-            CHANGE_THRESHOLD = 10.0
-            meaningfully_changed = prev_log is None or (
-                abs(new_buy_conf - prev_log.get("current_buy_confidence", 0.0)) >= CHANGE_THRESHOLD
-                or abs(new_sell_conf - prev_log.get("current_sell_confidence", 0.0)) >= CHANGE_THRESHOLD
-                or abs(exit_eval.exit_score - prev_log.get("current_exit_score", 0.0)) >= CHANGE_THRESHOLD
-                or exit_eval.action != prev_log.get("recommendation")
+            # A stop-loss/target breach detected via day_low/day_high means
+            # a real order would have executed AT that touch price, not
+            # whatever price is current by the time this periodic check
+            # runs (which can be significantly different if price has
+            # since moved further) — use that price when it's available,
+            # so P&L reflects what actually would have happened.
+            actual_exit_price = (
+                exit_eval.suggested_exit_price
+                if exit_eval.suggested_exit_price is not None
+                else current_price
             )
-            if meaningfully_changed:
-                position_status = "EXIT" if exit_eval.action == "EXIT" else (
-                    "REVIEW" if exit_eval.exit_score >= exit_eval.threshold * 0.7 else "HOLD"
-                )
-                # NOTE: no longer sent as an individual Telegram message
-                # (was causing 1 message per position per day — see the
-                # consolidated "Paper Trading Summary" at the end of this
-                # cycle instead, which reflects every meaningful change).
 
-            if exit_eval.action == "EXIT":
+            # dist_stop/dist_target1/dist_target2 only compare the LATEST
+            # current_price against scanner.py's static stop/target — they
+            # can show "NOT HIT"/"NOT REACHED" even when the exit was
+            # genuinely triggered by an INTRADAY dip/spike that recovered
+            # by the time this runs. exit_eval.diagnostics's own hit flags
+            # (stop_hit/final_exit/partial_exit) are the actual source of
+            # truth for why the exit happened, so they override here.
+            target1_status = (
+                "REACHED" if (dist_target1 is not None and dist_target1 <= 0)
+                or exit_eval.diagnostics.get("final_exit") or exit_eval.diagnostics.get("partial_exit")
+                else "NOT REACHED" if dist_target1 is not None else "N/A"
+            )
+            target2_status = (
+                "REACHED" if (dist_target2 is not None and dist_target2 <= 0)
+                or exit_eval.diagnostics.get("final_exit")
+                else "NOT REACHED" if dist_target2 is not None else "N/A"
+            )
+            stop_loss_status = (
+                "HIT" if (dist_stop is not None and dist_stop <= 0) or exit_eval.diagnostics.get("stop_hit")
+                else "NOT HIT" if dist_stop is not None else "N/A"
+            )
+
+            if exit_eval.action == "FULL_EXIT":
                 closed = None
-                # A stop-loss/target breach detected via day_low/day_high
-                # means a real order would have executed AT that touch
-                # price, not whatever price is current by the time this
-                # periodic check runs (which can be significantly
-                # different if price has since moved further) — use
-                # that price when it's available, so P&L reflects what
-                # actually would have happened.
-                actual_exit_price = (
-                    exit_eval.suggested_exit_price
-                    if exit_eval.suggested_exit_price is not None
-                    else current_price
-                )
                 try:
                     closed = self.portfolio.engine.close_position(symbol=symbol, exit_price=actual_exit_price)
                     if closed is not None:
@@ -395,38 +536,17 @@ class PaperTradingEngine:
                             "confidence": result.confidence,
                             "reasons": "; ".join(exit_eval.reasons),
                         })
-                        target1_status = (
-                            "REACHED" if dist_target1 is not None and dist_target1 <= 0
-                            else "NOT REACHED" if dist_target1 is not None else "N/A"
+                        exit_reason_text = exit_eval.diagnostics.get("exit_reason") or (
+                            exit_eval.reasons[-1] if exit_eval.reasons else "N/A"
                         )
-                        target2_status = (
-                            "REACHED" if dist_target2 is not None and dist_target2 <= 0
-                            else "NOT REACHED" if dist_target2 is not None else "N/A"
-                        )
-                        stop_loss_status = (
-                            "HIT" if dist_stop is not None and dist_stop <= 0
-                            else "NOT HIT" if dist_stop is not None else "N/A"
-                        )
-                        # dist_stop only compares the LATEST current_price
-                        # against the stop level — it can show "NOT HIT"
-                        # even when the exit was genuinely triggered by an
-                        # INTRADAY dip/spike (day_low/day_high) that
-                        # recovered by the time this runs, contradicting
-                        # the Exit Reason shown right above it (the exact
-                        # bug reported). exit_eval.hard_risk_reason is the
-                        # actual source of truth for why the exit
-                        # happened, so it overrides here when it
-                        # specifically says the stop was breached.
-                        if exit_eval.hard_risk_reason and "stop-loss breached" in exit_eval.hard_risk_reason.lower():
-                            stop_loss_status = "HIT"
                         self.diary.close_trade(
-                            trade_id=trade_id, exit_date=today, exit_price=current_price,
-                            exit_reason=exit_eval.hard_risk_reason or "; ".join(exit_eval.reasons[-1:]),
+                            trade_id=trade_id, exit_date=today, exit_price=actual_exit_price,
+                            exit_reason=exit_reason_text,
                             final_pnl=closed.realized_pnl,
                             final_pnl_percent=closed.realized_pnl_percent,
                             max_profit_percent=closed.max_profit_percent,
                             max_drawdown_percent=closed.max_drawdown_percent,
-                            exit_score=exit_eval.exit_score,
+                            exit_score=exit_conviction,
                             target1_status=target1_status,
                             target2_status=target2_status,
                             stop_loss_status=stop_loss_status,
@@ -456,16 +576,125 @@ class PaperTradingEngine:
                     break
 
                 if closed is not None:
-                    closed_at = time.time()
-                    pnl_pct = closed.realized_pnl_percent
                     trigger = self._classify_exit_trigger(exit_eval)
                     closed_details.append({
                         "symbol": symbol, "direction": closed.direction,
                         "entry_price": closed.entry_price, "exit_price": actual_exit_price,
-                        "pnl_pct": pnl_pct, "pnl_rupees": closed.realized_pnl,
+                        "pnl_pct": closed.realized_pnl_percent, "pnl_rupees": closed.realized_pnl,
                         "trigger": trigger, "holding_days": holding_days,
-                        "trade_id": trade_id, "exit_score": exit_eval.exit_score,
-                        "exit_threshold": exit_eval.threshold,
+                        "trade_id": trade_id, "exit_score": exit_conviction,
+                        "exit_reasons": [
+                            r for r in (exit_eval.reasons or [])
+                            if not r.lower().startswith("exit score")
+                        ][:3],
+                        "risk_factor_detail": self._top_risk_factors(result.diagnostics),
+                        "target1_status": target1_status, "target2_status": target2_status,
+                        "stop_loss_status": stop_loss_status,
+                    })
+
+            elif exit_eval.action == "PARTIAL_EXIT":
+                # Genuine partial profit-booking — NEW capability this
+                # engine unlocks (the old ExitEngine was binary EXIT/HOLD
+                # only, so partial exits never executed in production
+                # before). Reduces quantity via the SAME PortfolioEngine
+                # already used for full closes; if the reduction happens
+                # to consume the entire remaining quantity (e.g. a 1-share
+                # position), PortfolioEngine.partial_exit() itself falls
+                # through to a full close — handled below.
+                exit_qty = max(1, round(pos.quantity * exit_eval.exit_percent / 100.0))
+                exit_qty = min(exit_qty, pos.quantity)
+                try:
+                    self.portfolio.engine.partial_exit(
+                        symbol=symbol, quantity=exit_qty, exit_price=actual_exit_price,
+                    )
+                except Exception as exc:
+                    logger.exception("Portfolio Update stage (partial exit) failed for %s — NON-RECOVERABLE, aborting cycle", symbol)
+                    err_line = f"{symbol} [Portfolio Update] {type(exc).__name__}: {exc}"
+                    monitoring_errors.append(err_line)
+                    notify(
+                        event_type="cycle_aborted",
+                        message=(
+                            f"🔴 Paper Trading Cycle ABORTED — Non-Recoverable Failure\n"
+                            f"{err_line}\n\n"
+                            f"A partial-exit operation failed partway through — the "
+                            f"portfolio/diary/trade journal may now be inconsistent for "
+                            f"this symbol. Remaining symbols this cycle were NOT "
+                            f"monitored, to avoid risking further corruption. "
+                            f"Already-completed changes will still be saved."
+                        ),
+                        severity="🔴 CRITICAL",
+                        dedup_key=f"cycle_aborted::{symbol}::{today}::{now_ist().strftime('%H:%M:%S.%f')}",
+                    )
+                    cycle_aborted = True
+                    cycle_abort_reason = err_line
+                    break
+
+                still_open = symbol in self.portfolio.engine.state.open_positions
+                if still_open:
+                    remaining = self.portfolio.engine.state.open_positions[symbol]
+                    trigger = self._classify_exit_trigger(exit_eval)
+                    self.trade_store.save_trade({
+                        "symbol": symbol, "direction": pos.direction, "action": "PARTIAL_CLOSE",
+                        "quantity": exit_qty, "entry_price": pos.entry_price,
+                        "exit_price": actual_exit_price, "status": "OPEN",
+                        "realized_pnl": remaining.realized_pnl,
+                        "realized_pnl_percent": remaining.realized_pnl_percent,
+                        "max_profit_percent": remaining.max_profit_percent,
+                        "max_drawdown_percent": remaining.max_drawdown_percent,
+                        "regime": result.diagnostics.get("market_regime", ""),
+                        "confidence": result.confidence,
+                        "reasons": "; ".join(exit_eval.reasons),
+                    })
+                    partial_exits_today.append({
+                        "symbol": symbol, "direction": pos.direction,
+                        "quantity": exit_qty, "remaining_quantity": remaining.quantity,
+                        "exit_price": actual_exit_price, "trigger": trigger,
+                        "realized_pnl": remaining.realized_pnl,
+                    })
+                else:
+                    # partial_exit() reduced the remaining quantity to
+                    # zero — PortfolioEngine already auto-closed it as a
+                    # full close. Record it the same way a FULL_EXIT
+                    # would be, so the diary/trade-store/closed_today
+                    # bookkeeping and the position-count reconciliation
+                    # downstream stay accurate.
+                    closed = self.portfolio.engine.state.closed_positions[-1]
+                    self.trade_store.save_trade({
+                        "symbol": closed.symbol, "direction": closed.direction, "action": "CLOSE",
+                        "quantity": exit_qty, "entry_price": closed.entry_price,
+                        "exit_price": actual_exit_price, "status": "CLOSED",
+                        "realized_pnl": closed.realized_pnl,
+                        "realized_pnl_percent": closed.realized_pnl_percent,
+                        "max_profit_percent": closed.max_profit_percent,
+                        "max_drawdown_percent": closed.max_drawdown_percent,
+                        "regime": result.diagnostics.get("market_regime", ""),
+                        "confidence": result.confidence,
+                        "reasons": "; ".join(exit_eval.reasons),
+                    })
+                    exit_reason_text = exit_eval.diagnostics.get("exit_reason") or (
+                        exit_eval.reasons[-1] if exit_eval.reasons else "N/A"
+                    )
+                    self.diary.close_trade(
+                        trade_id=trade_id, exit_date=today, exit_price=actual_exit_price,
+                        exit_reason=exit_reason_text,
+                        final_pnl=closed.realized_pnl,
+                        final_pnl_percent=closed.realized_pnl_percent,
+                        max_profit_percent=closed.max_profit_percent,
+                        max_drawdown_percent=closed.max_drawdown_percent,
+                        exit_score=exit_conviction,
+                        target1_status=target1_status,
+                        target2_status=target2_status,
+                        stop_loss_status=stop_loss_status,
+                    )
+                    closed_today.append({"symbol": symbol, "pnl": closed.realized_pnl})
+                    open_symbols.discard(symbol)
+                    trigger = self._classify_exit_trigger(exit_eval)
+                    closed_details.append({
+                        "symbol": symbol, "direction": closed.direction,
+                        "entry_price": closed.entry_price, "exit_price": actual_exit_price,
+                        "pnl_pct": closed.realized_pnl_percent, "pnl_rupees": closed.realized_pnl,
+                        "trigger": trigger, "holding_days": holding_days,
+                        "trade_id": trade_id, "exit_score": exit_conviction,
                         "exit_reasons": [
                             r for r in (exit_eval.reasons or [])
                             if not r.lower().startswith("exit score")
@@ -519,12 +748,24 @@ class PaperTradingEngine:
                     "Fundamentals Weakened": "Fundamentals Exit",
                     "Negative News": "News Exit",
                     "Trend Reversal": "Trend Exit",
+                    "Volatility Exit": "Volatility Exit",
                 }
                 summary_lines.append("-" * 16)
                 summary_lines.append("Closed")
                 for c in closed_details:
                     summary_lines.append("-" * 14)
                     summary_lines.extend(self._render_closed_trade_block(c, short_trigger))
+
+            if partial_exits_today:
+                summary_lines.append("-" * 16)
+                summary_lines.append("Partial Exits (position remains open)")
+                for p in partial_exits_today:
+                    summary_lines.append("-" * 14)
+                    tag = f"{p['symbol'].split('.')[0]}" + (" SELL" if p["direction"] == "SELL" else "")
+                    summary_lines.append(tag)
+                    summary_lines.append(f"Booked: {p['quantity']} shares @ {p['exit_price']}")
+                    summary_lines.append(f"Remaining: {p['remaining_quantity']} shares")
+                    summary_lines.append(f"Reason: {p['trigger']}")
 
             if groups:
                 summary_lines.append("")
@@ -563,7 +804,7 @@ class PaperTradingEngine:
                     "Stop Loss Hit": "Stop Loss", "Target Achieved": "Target Hit", "Risk Management Exit": "Risk Exit",
                     "Time-Based Exit": "Time Exit", "Momentum Weakened": "Momentum Exit",
                     "Fundamentals Weakened": "Fundamentals Exit", "Negative News": "News Exit",
-                    "Trend Reversal": "Trend Exit",
+                    "Trend Reversal": "Trend Exit", "Volatility Exit": "Volatility Exit",
                 }
                 lines.append("")
                 lines.append(f"Last {len(recent_closed)} Exit(s)")
@@ -586,6 +827,10 @@ class PaperTradingEngine:
             )
 
         self.portfolio.engine.mark_to_market()
+        # Refresh peak_equity with this day's final mark-to-market numbers
+        # (day_start_equity is untouched — `today` is unchanged so this is
+        # a no-op on that field, see update_equity_tracking()'s docstring).
+        self.portfolio.engine.update_equity_tracking(today)
 
         if holding_status_rows:
             # Build each position's block SEPARATELY (not one giant
@@ -715,6 +960,7 @@ class PaperTradingEngine:
             "date": today,
             "opened_today": opened_today,
             "closed_today": closed_today,
+            "partial_exits_today": partial_exits_today,
             "monitored": monitored,
             "monitoring_errors": monitoring_errors,
             "cycle_aborted": cycle_aborted,
@@ -798,15 +1044,21 @@ class PaperTradingEngine:
         expected_hold_days = d.get("expected_hold_days", 0) or 0
 
         stop_pct = round(abs(price - stop_loss) / price * 100, 2) if stop_loss and price else 0.0
-        stop_dist = abs(price - stop_loss)
 
-        def target_block(label: str, target_price: float) -> list[str]:
+        # NOTE: this used to display a per-trade "computed" Risk:Reward
+        # (target distance / stop distance). Under the ATR-multiple
+        # stop/target formula (risk/stop_target.py), that ratio is a
+        # FIXED CONSTANT by construction — it can never vary
+        # symbol-to-symbol regardless of what the multipliers are set
+        # to, so presenting it as a computed metric was misleading (see
+        # PHASE20_NOTES.md). Shown honestly now as the model's fixed
+        # R-multiple instead.
+        def target_block(label: str, target_price: float, r_multiple: float) -> list[str]:
             if not target_price or not price:
                 return [f"{label}: N/A"]
             pct = round((target_price - price) / price * 100, 2)
-            rr = round(abs(target_price - price) / stop_dist, 2) if stop_dist else 0.0
             sign = "+" if pct >= 0 else ""
-            return [f"{label}: {sign}{pct:.1f}%  (Risk:Reward 1:{rr:.2f})"]
+            return [f"{label}: {sign}{pct:.1f}%  ({r_multiple:.2f}R)"]
 
         # Decision Margin — overall score vs the qualifying threshold that
         # actually decided this trade (already computed by the strategy).
@@ -849,8 +1101,12 @@ class PaperTradingEngine:
             f"Confidence: {candidate.confidence:.1f}%",
             "",
             f"📅 Expected Holding: ~{expected_hold_days} days",
-            "🎯 " + target_block("Target 1 (Partial)", target1)[0],
-            "🎯 " + target_block("Target 2 (Final)", target2)[0],
+            "🎯 " + target_block(
+                "Target 1 (Partial)", target1, d.get("target1_r_multiple", 0.0),
+            )[0],
+            "🎯 " + target_block(
+                "Target 2 (Final)", target2, d.get("target2_r_multiple", 0.0),
+            )[0],
             f"🛑 Expected Stop Loss: -{stop_pct:.1f}%",
         ]
         lines += margin_lines
@@ -936,7 +1192,7 @@ class PaperTradingEngine:
         lines += [
             f"BUY Confidence: {buy_conf:.1f}%",
             f"SELL Confidence: {sell_conf:.1f}%",
-            f"Exit Score: {exit_eval.exit_score:.1f}/100",
+            f"Exit Confidence: {exit_eval.confidence:.1f}%",
             f"Recommendation: {position_status}",
             "",
             "Lifecycle",
@@ -971,11 +1227,18 @@ class PaperTradingEngine:
 
         components = diagnostics.get("risk_components")
         weights = diagnostics.get("risk_weights")
+        # Phase 26 (see PHASE26_NOTES.md, point 11): "atr"/"volatility"
+        # merged into one "price_volatility" component; "sector"/
+        # "correlation" no longer contribute to the weighted total_risk
+        # (validation_engine.py is now the sole hard-gate for those two
+        # facts) — both keys simply no longer appear in risk_components/
+        # risk_weights, so they naturally drop out of this breakdown
+        # instead of showing a misleading "0% contribution" line.
         labels = {
-            "atr": "ATR (volatility)", "gap": "Overnight Gap", "overnight": "Overnight Hold",
-            "news": "News", "liquidity": "Liquidity", "volatility": "Volatility",
-            "market": "Market", "portfolio": "Portfolio", "sector": "Sector",
-            "correlation": "Correlation", "capital": "Capital",
+            "price_volatility": "Price Volatility (ATR + BB, merged)",
+            "gap": "Overnight Gap", "overnight": "Overnight Hold",
+            "news": "News", "liquidity": "Liquidity",
+            "market": "Market", "portfolio": "Portfolio", "capital": "Capital",
         }
         if components and weights:
             scored = []
@@ -1038,12 +1301,11 @@ class PaperTradingEngine:
                     for factor in c.get("risk_factor_detail") or []:
                         lines.append(f"      - {factor}")
         if c.get("exit_score") is not None:
-            threshold = c.get("exit_threshold")
-            if threshold is not None:
-                lines.append(f"Exit Score: {c['exit_score']:.1f} / 100")
-                lines.append(f"Threshold : {threshold:.0f}")
-            else:
-                lines.append(f"Exit Score: {c['exit_score']:.1f}/100")
+            # "exit_score" here is ExitStrategyEngine's own `confidence` —
+            # conviction in the decided action, not the old ExitEngine's
+            # separate "case to exit" 0-100 score against a fixed
+            # threshold (that threshold concept no longer exists).
+            lines.append(f"Exit Confidence: {c['exit_score']:.1f}%")
         t1 = c.get("target1_status")
         t2 = c.get("target2_status")
         sl = c.get("stop_loss_status")
@@ -1057,30 +1319,31 @@ class PaperTradingEngine:
 
     @staticmethod
     def _classify_exit_trigger(exit_eval: Any) -> str:
-        """Classifies the ALREADY-COMPUTED exit reason into a short
-        label. Purely a text categorization of exit_eval's existing
-        output (hard_risk_reason / reasons) — does not change when or
-        why ExitEngine decides to exit, only how it's labeled here."""
-        reason_text = (exit_eval.hard_risk_reason or "").lower()
-        if "stop-loss" in reason_text:
-            return "Stop Loss Hit"
-        if "target" in reason_text and "reached" in reason_text:
-            return "Target Achieved"
-        if "risk engine" in reason_text or "unsafe" in reason_text:
+        """Classifies an ExitDecision into a short display label by
+        reading its OWN per-condition diagnostics flags (emergency_exit /
+        stop_hit / final_exit / partial_exit / trend_reversal / news_exit
+        / volatility_exit / time_exit) in the EXACT same priority order
+        risk/exit_strategy.py's EXIT PRIORITY ENGINE itself evaluates them
+        in — so the label always matches which branch actually fired,
+        rather than re-parsing free-text reason strings."""
+        d = exit_eval.diagnostics
+        if d.get("emergency_exit"):
             return "Risk Management Exit"
-        if "maximum holding" in reason_text:
+        if d.get("stop_hit"):
+            return "Stop Loss Hit"
+        if d.get("final_exit"):
+            return "Target Achieved"
+        if d.get("partial_exit"):
+            return "Target Achieved"
+        if d.get("trend_reversal"):
+            return "Trend Reversal"
+        if d.get("news_exit"):
+            return "Negative News"
+        if d.get("volatility_exit"):
+            return "Volatility Exit"
+        if d.get("time_exit"):
             return "Time-Based Exit"
-        # Weighted-score exit (no hard-risk override) — look at which
-        # sub-score(s) were the biggest drivers, from exit_eval's own
-        # already-computed breakdown.
-        subscores = {
-            "Momentum Weakened": exit_eval.technical_exit,
-            "Fundamentals Weakened": exit_eval.fundamental_exit,
-            "Negative News": exit_eval.news_exit,
-            "Risk Management Exit": exit_eval.risk_exit,
-        }
-        top = max(subscores, key=subscores.get)
-        return "Trend Reversal" if top == "Momentum Weakened" and exit_eval.technical_exit >= 80 else top
+        return "Risk Management Exit"
 
     def _format_trade_closed(
         self, symbol: str, closed: Any, exit_price: float, pnl_pct: float,
@@ -1088,7 +1351,7 @@ class PaperTradingEngine:
         created_at: float | None, closed_at: float | None,
     ) -> str:
         trigger = self._classify_exit_trigger(exit_eval)
-        explanation = exit_eval.hard_risk_reason or (
+        explanation = exit_eval.diagnostics.get("exit_reason") or (
             exit_eval.reasons[-1] if exit_eval.reasons else "N/A"
         )
         top_reasons = "\n".join(f"• {r}" for r in exit_eval.reasons[:5]) or "• N/A"

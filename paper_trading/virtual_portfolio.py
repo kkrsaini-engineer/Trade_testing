@@ -50,6 +50,26 @@ class VirtualPortfolio:
                 total_pnl_percent=saved.get("total_pnl_percent", 0.0),
                 exposure=saved.get("exposure", 0.0),
                 risk_score=saved.get("risk_score", 0.0),
+                # Phase 22: older saved state files predate these fields.
+                # Default peak_equity/day_start_equity to total_capital (a
+                # clean "no drawdown/loss yet" baseline) rather than 0.0 —
+                # 0.0 would make snapshot() treat them as "not yet
+                # initialized" and report 0% drawdown/loss regardless of
+                # actual equity, which is also safe but less informative
+                # than starting the tracker from a real number immediately.
+                # current_trading_day defaults to "" so the very next
+                # update_equity_tracking() call (always called at the top
+                # of run_cycle()) is guaranteed to treat it as a new day
+                # and (re)capture day_start_equity correctly.
+                peak_equity=saved.get("peak_equity", saved["total_capital"]),
+                day_start_equity=saved.get("day_start_equity", saved["total_capital"]),
+                current_trading_day=saved.get("current_trading_day", ""),
+                # Phase 23: same backward-compat reasoning as the daily
+                # fields above.
+                week_start_equity=saved.get("week_start_equity", saved["total_capital"]),
+                current_trading_week=saved.get("current_trading_week", ""),
+                month_start_equity=saved.get("month_start_equity", saved["total_capital"]),
+                current_trading_month=saved.get("current_trading_month", ""),
             )
             engine = PortfolioEngine(state=state)
             for symbol, pos in saved.get("open_positions", {}).items():
@@ -88,6 +108,13 @@ class VirtualPortfolio:
             "total_pnl_percent": self.engine.state.total_pnl_percent,
             "exposure": self.engine.state.exposure,
             "risk_score": self.engine.state.risk_score,
+            "peak_equity": self.engine.state.peak_equity,
+            "day_start_equity": self.engine.state.day_start_equity,
+            "current_trading_day": self.engine.state.current_trading_day,
+            "week_start_equity": self.engine.state.week_start_equity,
+            "current_trading_week": self.engine.state.current_trading_week,
+            "month_start_equity": self.engine.state.month_start_equity,
+            "current_trading_month": self.engine.state.current_trading_month,
             "open_positions": {
                 sym: pos_to_dict(p) for sym, p in self.engine.state.open_positions.items()
             },

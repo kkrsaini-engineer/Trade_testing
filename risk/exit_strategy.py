@@ -38,6 +38,7 @@ import pandas as pd
 from decision.decision_engine import FinalDecision
 from risk.risk_manager import RiskResult
 from risk.position_sizing import PositionSizingResult
+from risk import stop_target
 
 from core.logger import get_logger
 
@@ -83,6 +84,15 @@ class ExitDecision:
 
     diagnostics: dict[str, Any] = field(default_factory=dict)
 
+    # Set ONLY when a stop-loss or target was breached INTRADAY (via
+    # day_low/day_high) — a real stop/target order fills at that touch
+    # price, not at whatever price is current by the time this daily
+    # check runs. When set, the caller should use THIS price to close
+    # (or partially close) the position instead of current_price, so
+    # realized P&L reflects what actually would have happened. Mirrors
+    # risk/exit_engine.py's ExitEvaluation.suggested_exit_price.
+    suggested_exit_price: float | None = None
+
 
 # ==========================================================
 # ENGINE
@@ -94,26 +104,59 @@ class ExitStrategyEngine:
     Institutional Exit Engine
     """
 
-    ATR_STOP = 2.0
+    # Initial stop-loss / profit-target multipliers now live in
+    # risk/stop_target.py's shared canonical formula (see
+    # PHASE20_NOTES.md — previously duplicated 3 ways with no test to
+    # catch drift). Aliased here so existing `self.ATR_STOP`-style
+    # references and any external code that reads these class attributes
+    # keep working unchanged.
+    ATR_STOP = stop_target.ATR_STOP
 
+    PARTIAL_TARGET = stop_target.PARTIAL_TARGET
+
+    FINAL_TARGET = stop_target.FINAL_TARGET
+
+    # Trailing-stop / break-even / time-exit behavior is genuinely UNIQUE
+    # to this live exit engine (no equivalent in execution/scanner.py's
+    # static display or risk/position_sizing.py's entry sizing) — these
+    # stay local, not part of the shared module.
     ATR_TRAILING = 3.0
 
     BREAK_EVEN_TRIGGER = 1.5
 
-    PARTIAL_TARGET = 2.0
-
-    FINAL_TARGET = 3.5
-
     MAX_HOLD_DAYS = 30
+
+    # Thesis-decay time exit (Point 16, PHASE28_NOTES.md). Holding past
+    # MAX_HOLD_DAYS is no longer, by itself, a reason to force an exit —
+    # a position can be held longer AS LONG AS the original thesis
+    # (held-direction confidence) hasn't meaningfully weakened. Once
+    # MAX_HOLD_DAYS is reached, we only force the exit if confidence has
+    # dropped THESIS_DECAY_THRESHOLD points or more from the baseline
+    # captured on the position's first monitoring cycle (see
+    # storage/trades/trade_diary.py's capture_thesis_baseline()).
+    THESIS_DECAY_THRESHOLD = 20.0
+
+    # Absolute safety net — force the exit regardless of thesis strength
+    # once a position has been held this many days, so a thesis that
+    # never meaningfully decays can't keep a position open forever.
+    HARD_CEILING_DAYS = 150
 
     def evaluate(
         self,
         decision: FinalDecision,
         risk: RiskResult,
-        sizing: PositionSizingResult,
         dataframe: pd.DataFrame,
         position: dict[str, Any],
+        sizing: PositionSizingResult | None = None,
     ) -> ExitDecision:
+        # `sizing` is accepted for interface parity with the entry-side
+        # engines (and to leave room for a future sizing-aware exit rule,
+        # e.g. scaling exit_percent by original position size) but is NOT
+        # currently used anywhere in this method's body — monitoring an
+        # already-open position never recomputes a fresh sizing result
+        # (PositionSizingEngine is an entry-only concern; see
+        # execution/scanner.py's evaluate_position() docstring). Optional
+        # so callers that only monitor never need to fabricate one.
 
         latest = dataframe.iloc[-1]
 
@@ -146,6 +189,15 @@ class ExitStrategyEngine:
             )
         )
 
+        # Thesis-decay time exit inputs (Point 16, PHASE28_NOTES.md).
+        # Both are Optional[float] — None when no real baseline has been
+        # captured yet for this position (e.g. it predates this fix, or
+        # this is its very first monitoring cycle). See the TIME EXIT
+        # section below for how a missing value is handled.
+        entry_thesis_confidence = position.get("entry_thesis_confidence")
+
+        held_thesis_confidence = position.get("held_thesis_confidence")
+
         highest_price = float(
             position.get(
                 "highest_price",
@@ -159,17 +211,29 @@ class ExitStrategyEngine:
                 current_price,
             )
         )
+
+        # Intraday high/low for the CURRENT bar — optional. When supplied,
+        # stop-loss / target checks below use these to catch a genuine
+        # intraday touch even if the close price later recovered, same
+        # rationale as risk/exit_engine.py's day_high/day_low handling.
+        # None (not supplied) falls back to close-only comparison.
+        day_high = position.get("day_high")
+        day_low = position.get("day_low")
+        day_high = float(day_high) if day_high is not None else None
+        day_low = float(day_low) if day_low is not None else None
+
         # ==========================================================
-        # INITIAL STOP LOSS
+        # INITIAL STOP LOSS + PROFIT TARGETS
         # ==========================================================
-
-        if decision.action == "BUY":
-
-            stop_loss = entry_price - (atr * self.ATR_STOP)
-
-        else:
-
-            stop_loss = entry_price + (atr * self.ATR_STOP)
+        # Both computed together via risk/stop_target.py's shared
+        # canonical formula — SAME function execution/scanner.py's
+        # static display and risk/position_sizing.py's sizing use, so
+        # this live engine's initial levels always match what those
+        # show/assume. (Trailing stop / break-even below are this
+        # engine's own genuinely separate behavior, computed locally.)
+        stop_loss, partial_target, final_target = stop_target.compute_stop_loss_targets(
+            direction=decision.action, close_price=entry_price, atr=atr,
+        )
 
         diagnostics["initial_stop_loss"] = round(
             stop_loss,
@@ -266,20 +330,9 @@ class ExitStrategyEngine:
             2,
         )
         # ==========================================================
-        # PROFIT TARGETS
+        # PROFIT TARGETS (diagnostics only — values computed above
+        # alongside the initial stop-loss, same shared-formula call)
         # ==========================================================
-
-        if decision.action == "BUY":
-
-            partial_target = entry_price + (atr * self.PARTIAL_TARGET)
-
-            final_target = entry_price + (atr * self.FINAL_TARGET)
-
-        else:
-
-            partial_target = entry_price - (atr * self.PARTIAL_TARGET)
-
-            final_target = entry_price - (atr * self.FINAL_TARGET)
 
         diagnostics["partial_target"] = round(
             partial_target,
@@ -297,15 +350,25 @@ class ExitStrategyEngine:
 
         partial_exit = False
 
+        # Use the day's HIGH (BUY) / LOW (SELL) when available — catches a
+        # genuine intraday touch of the target even if the close later
+        # pulled back below/above it, same day_high/day_low convention as
+        # risk/exit_engine.py. Falls back to close-only when not supplied.
+        partial_touch_price = current_price
+
         if decision.action == "BUY":
 
-            if current_price >= partial_target:
+            partial_touch_price = day_high if day_high is not None else current_price
+
+            if partial_touch_price >= partial_target:
 
                 partial_exit = True
 
         else:
 
-            if current_price <= partial_target:
+            partial_touch_price = day_low if day_low is not None else current_price
+
+            if partial_touch_price <= partial_target:
 
                 partial_exit = True
 
@@ -321,15 +384,21 @@ class ExitStrategyEngine:
 
         final_exit = False
 
+        final_touch_price = current_price
+
         if decision.action == "BUY":
 
-            if current_price >= final_target:
+            final_touch_price = day_high if day_high is not None else current_price
+
+            if final_touch_price >= final_target:
 
                 final_exit = True
 
         else:
 
-            if current_price <= final_target:
+            final_touch_price = day_low if day_low is not None else current_price
+
+            if final_touch_price <= final_target:
 
                 final_exit = True
 
@@ -381,16 +450,69 @@ class ExitStrategyEngine:
 
             reasons.append("Below preferred risk/reward profile.")
         # ==========================================================
-        # TIME EXIT
+        # TIME EXIT — thesis-decay based (Point 16, PHASE28_NOTES.md)
         # ==========================================================
+        # MAX_HOLD_DAYS is no longer, by itself, a forced-exit trigger.
+        # Once reached, we only force the exit if the held-direction
+        # thesis has genuinely decayed (confidence dropped
+        # THESIS_DECAY_THRESHOLD+ points from its baseline). If no real
+        # baseline is available for this position (predates thesis-decay
+        # tracking, or this is literally its first monitoring cycle),
+        # we fall back to the OLD flat "holding_days >= MAX_HOLD_DAYS"
+        # behavior — a thesis-strength check with no thesis data to
+        # check against would be meaningless, and silently never
+        # forcing an exit would leave a stale position open forever.
+        # HARD_CEILING_DAYS applies unconditionally either way, as an
+        # absolute safety net.
 
-        time_exit = holding_days >= self.MAX_HOLD_DAYS
+        thesis_decay_points = None
+
+        thesis_decayed = False
+
+        if entry_thesis_confidence is not None and held_thesis_confidence is not None:
+
+            thesis_decay_points = entry_thesis_confidence - held_thesis_confidence
+
+            thesis_decayed = thesis_decay_points >= self.THESIS_DECAY_THRESHOLD
+
+        hard_ceiling_reached = holding_days >= self.HARD_CEILING_DAYS
+
+        has_baseline = entry_thesis_confidence is not None and held_thesis_confidence is not None
+
+        if has_baseline:
+
+            time_exit = (holding_days >= self.MAX_HOLD_DAYS and thesis_decayed) or hard_ceiling_reached
+
+        else:
+
+            time_exit = holding_days >= self.MAX_HOLD_DAYS or hard_ceiling_reached
 
         diagnostics["time_exit"] = time_exit
 
+        diagnostics["thesis_decay_points"] = (
+            round(thesis_decay_points, 2) if thesis_decay_points is not None else None
+        )
+
+        diagnostics["thesis_decayed"] = thesis_decayed
+
+        diagnostics["hard_ceiling_reached"] = hard_ceiling_reached
+
         if time_exit:
 
-            reasons.append("Maximum holding period reached.")
+            if hard_ceiling_reached:
+
+                reasons.append(f"Hard ceiling reached ({self.HARD_CEILING_DAYS} days held).")
+
+            elif thesis_decayed:
+
+                reasons.append(
+                    f"Thesis decayed {thesis_decay_points:.1f} points "
+                    f"after {holding_days} days held."
+                )
+
+            else:
+
+                reasons.append("Maximum holding period reached.")
 
         # ==========================================================
         # VOLATILITY EXIT
@@ -439,11 +561,22 @@ class ExitStrategyEngine:
             )
         )
 
+        # Caller-supplied reason for the emergency flag (e.g. "Risk engine
+        # flagged this symbol as unsafe (grade: D)."), so the FULL_EXIT
+        # this triggers below carries the SAME specific explanation the
+        # old risk/exit_engine.py's hard-risk override gave, instead of a
+        # generic label. Falls back to a generic message if the caller
+        # didn't supply one.
+        emergency_exit_reason = position.get(
+            "emergency_exit_reason",
+            "Emergency exit activated.",
+        )
+
         diagnostics["emergency_exit"] = emergency_exit
 
         if emergency_exit:
 
-            reasons.append("Emergency exit activated.")
+            reasons.append(emergency_exit_reason)
 
         # ==========================================================
         # TREND REVERSAL EXIT
@@ -475,13 +608,22 @@ class ExitStrategyEngine:
 
         stop_hit = False
 
+        # Same intraday-touch convention as the target checks above — the
+        # day's LOW (BUY) / HIGH (SELL) catches a genuine stop breach even
+        # if price recovered by the close.
+        stop_touch_price = current_price
+
         if decision.action == "BUY":
 
-            stop_hit = current_price <= active_stop
+            stop_touch_price = day_low if day_low is not None else current_price
+
+            stop_hit = stop_touch_price <= active_stop
 
         else:
 
-            stop_hit = current_price >= active_stop
+            stop_touch_price = day_high if day_high is not None else current_price
+
+            stop_hit = stop_touch_price >= active_stop
 
         diagnostics["stop_hit"] = stop_hit
 
@@ -500,6 +642,11 @@ class ExitStrategyEngine:
 
         exit_reason = "Continue holding position."
 
+        # Only set for a stop/target branch below, where an actual
+        # intraday touch price (rather than just the close) is known —
+        # carried into the final ExitDecision.suggested_exit_price.
+        resolved_exit_price: float | None = None
+
         # ==========================================================
         # EMERGENCY EXIT
         # ==========================================================
@@ -512,7 +659,7 @@ class ExitStrategyEngine:
 
             confidence = 100.0
 
-            exit_reason = "Emergency exit."
+            exit_reason = emergency_exit_reason
 
         # ==========================================================
         # STOP LOSS EXIT
@@ -527,6 +674,8 @@ class ExitStrategyEngine:
             confidence = 99.0
 
             exit_reason = "Stop-loss triggered."
+
+            resolved_exit_price = stop_touch_price
 
         # ==========================================================
         # FINAL TARGET
@@ -553,6 +702,8 @@ class ExitStrategyEngine:
 
             exit_reason = "Final target achieved."
 
+            resolved_exit_price = final_touch_price
+
         # ==========================================================
         # PARTIAL TARGET
         # ==========================================================
@@ -566,6 +717,8 @@ class ExitStrategyEngine:
             confidence = 85.0
 
             exit_reason = "Partial target achieved."
+
+            resolved_exit_price = partial_touch_price
 
         # ==========================================================
         # TREND REVERSAL
@@ -625,7 +778,17 @@ class ExitStrategyEngine:
 
             confidence = 75.0
 
-            exit_reason = "Maximum holding period."
+            if hard_ceiling_reached:
+
+                exit_reason = f"Hard ceiling reached ({self.HARD_CEILING_DAYS} days held)."
+
+            elif thesis_decayed:
+
+                exit_reason = "Thesis decayed beyond threshold."
+
+            else:
+
+                exit_reason = "Maximum holding period."
 
         # ==========================================================
         # HOLD
@@ -703,11 +866,20 @@ class ExitStrategyEngine:
         # ==========================================================
         # CONFIDENCE REFINEMENT
         # ==========================================================
+        # Phase 21 (see PHASE21_NOTES.md, point 17): previously blended in
+        # `decision.confidence` (the ENTRY-time decision engine's output,
+        # computed potentially hours/days earlier) at a 0.20 weight. This
+        # re-injected stale entry-time information into a live exit-time
+        # confidence number — action (EXIT/HOLD/etc.) was never affected
+        # by it (that's decided by the priority engine above, independent
+        # of this blend), but the displayed confidence percentage was.
+        # Removed; the freed weight goes to the two genuinely exit-time
+        # signals (the priority-engine's own confidence, and the current
+        # live risk score).
 
         confidence = (
-            confidence * 0.60
-            + decision.confidence * 0.20
-            + (100.0 - risk.total_risk) * 0.20
+            confidence * 0.75
+            + (100.0 - risk.total_risk) * 0.25
         )
 
         confidence = round(
@@ -976,6 +1148,8 @@ class ExitStrategyEngine:
 
             confidence = 0.0
 
+            resolved_exit_price = None
+
             warnings = ["Exit strategy entered fail-safe mode."]
 
             diagnostics["fail_safe"] = True
@@ -985,6 +1159,11 @@ class ExitStrategyEngine:
             warnings = []
 
             diagnostics["fail_safe"] = False
+
+        # Surfaced in diagnostics (was previously computed but silently
+        # dropped — never persisted anywhere) so a fail-safe event is
+        # actually visible to anything inspecting this ExitDecision.
+        diagnostics["warnings"] = warnings
 
         # ==========================================================
         # BUILD RESULT
@@ -1022,6 +1201,9 @@ class ExitStrategyEngine:
             ),
             reasons=reasons,
             diagnostics=diagnostics,
+            suggested_exit_price=(
+                round(resolved_exit_price, 2) if resolved_exit_price is not None else None
+            ),
         )
 
         logger.info("ExitDecision created successfully.")

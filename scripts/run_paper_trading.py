@@ -49,6 +49,7 @@ def write_daily_report(summary: dict, diary: TradeDiary) -> None:
         "Date": summary["date"],
         "OpenedToday": len(summary["opened_today"]),
         "ClosedToday": len(summary["closed_today"]),
+        "PartialExitsToday": len(summary.get("partial_exits_today", [])),
         "Monitored": len(summary["monitored"]),
         "OpenPositions": len(open_trades),
         "ClosedPositions": len(closed_trades),
@@ -62,6 +63,7 @@ def write_daily_report(summary: dict, diary: TradeDiary) -> None:
         "SectorExposure": json.dumps(snap.get("sector_exposure", {})),
         "ClosedToday_Detail": json.dumps(summary["closed_today"]),
         "OpenedToday_Detail": json.dumps(summary["opened_today"]),
+        "PartialExitsToday_Detail": json.dumps(summary.get("partial_exits_today", [])),
     }
 
     file_exists = Path(REPORT_PATH).exists()
@@ -216,6 +218,10 @@ def main() -> None:
     print(f"Closed today : {len(summary['closed_today'])}")
     for c in summary["closed_today"]:
         print(f"  - {c['symbol']:15s} PnL={c['pnl']:.2f}")
+    partial_exits = summary.get("partial_exits_today", [])
+    print(f"Partial exits today : {len(partial_exits)}")
+    for p in partial_exits:
+        print(f"  ~ {p['symbol']:15s} booked {p['quantity']} @ {p['exit_price']}, {p['remaining_quantity']} remaining")
     print(f"Monitored (held): {len(summary['monitored'])}")
 
     snap = summary["portfolio_snapshot"]

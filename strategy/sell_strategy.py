@@ -44,6 +44,7 @@ from core.constants import NO_TRADE
 
 from core.logger import get_logger
 from core.exceptions import StrategyError
+from decision.state_rules import evaluate_entry_state
 from strategy.fundamental_scoring import sell_fundamental_evaluation
 from news.news_bias import news_component
 
@@ -88,10 +89,12 @@ class SellDecision:
     news_negativity: float | None = None
     overall_score: float = 0.0
     qualify_threshold: float = 0.0
-    # FIX #15 (architecture review — state-based structure): mirrors
-    # buy_strategy.py's identical fix — see BuyDecision.state_narrative's
-    # NOTE for the full rationale and scope boundary (presentation layer
-    # only, built on top of existing checks/scoring, not a replacement).
+    # FIX #15 (architecture review — state-based structure), Point 15
+    # (PHASE29_NOTES.md): mirrors buy_strategy.py's identical fix — see
+    # BuyDecision.state_narrative's NOTE and decision/state_rules.py's
+    # module docstring for the full rationale (entry_state now comes
+    # from the same rule table that decides `qualified`/`action`, not a
+    # separate after-the-fact narration of it).
     state_narrative: str = ""
     # FIX #10/#16 (architecture review — volume-pressure model): mirrors
     # BuyDecision's identical field — see buy_strategy.py's
@@ -1077,19 +1080,65 @@ class SellStrategyEngine:
         optional_total = len(optional_checks)
 
         # --------------------------------------------------
-        # FINAL QUALIFICATION
+        # STATES (Point 15, PHASE29_NOTES.md) — mirrors
+        # buy_strategy.py's identical fix. TrendState/SetupState
+        # computed BEFORE qualification, so they can feed the shared
+        # decision/state_rules.py rule table as genuine INPUTS rather
+        # than being derived AFTER-the-fact purely for display.
+        # --------------------------------------------------
+
+        market_state = str(row.get("market_regime", "UNKNOWN")).upper()
+
+        if adx_regime == "RANGE_BOUND":
+            trend_state = "RANGE"
+        elif checks.get("price_below_ema20"):
+            trend_state = "DOWNTREND"
+        else:
+            trend_state = "UPTREND"
+
+        # FIX #5: setup_state distinguishes STALE_BREAKDOWN — mirrors
+        # buy_strategy.py's identical fix.
+        if checks.get("squeeze_breakout"):
+            setup_state = "SQUEEZE_BREAKDOWN"
+        elif checks.get("confirmed_breakdown"):
+            setup_state = "BREAKDOWN"
+        elif checks.get("pullback_entry"):
+            setup_state = "PULLBACK"
+        elif setup_is_stale:
+            setup_state = "STALE_BREAKDOWN"
+        else:
+            setup_state = "NONE"
+
+        # --------------------------------------------------
+        # FINAL QUALIFICATION (Point 15) — mirrors buy_strategy.py's
+        # identical fix; see decision/state_rules.py for the exact rule
+        # order and rationale.
         # --------------------------------------------------
 
         QUALIFY_THRESHOLD = 58.0
 
-        # not_overextended / not_stale_entry are HARD rejects, not just
-        # weighted votes — same reasoning as buy_strategy.py's mirror.
-        qualified = (
-            tier1_passed
-            and overall_score >= QUALIFY_THRESHOLD
-            and checks["not_overextended"]
-            and checks["not_stale_entry"]
+        gate_result = evaluate_entry_state(
+            trend_state=trend_state,
+            unfavorable_trend_state="UPTREND",
+            tier1_passed=tier1_passed,
+            setup_state=setup_state,
+            stale_setup_state="STALE_BREAKDOWN",
+            stale_reason=(
+                "Rejected: stale entry (no fresh trigger on a running "
+                "breakdown), regardless of score."
+            ),
+            not_overextended=checks["not_overextended"],
+            overextended_reason=(
+                "Rejected: overextension cap breached (short-squeeze "
+                "risk), regardless of score."
+            ),
+            overall_score=overall_score,
+            qualify_threshold=QUALIFY_THRESHOLD,
         )
+
+        qualified = gate_result.qualified
+
+        entry_state = gate_result.entry_state
 
         # --------------------------------------------------
         # CONFIDENCE
@@ -1121,13 +1170,9 @@ class SellStrategyEngine:
 
         reasons.append(f"Weighted score: {overall_score:.2f}/100 (need >= {QUALIFY_THRESHOLD:.0f})")
 
-        if not checks["not_overextended"]:
+        if gate_result.reject_reason:
 
-            reasons.append("Rejected: overextension cap breached (short-squeeze risk), regardless of score.")
-
-        if not checks["not_stale_entry"]:
-
-            reasons.append("Rejected: stale entry (no fresh trigger on a running breakdown), regardless of score.")
+            reasons.append(gate_result.reject_reason)
 
         reasons.append(f"Confidence: {confidence:.2f}%")
 
@@ -1138,43 +1183,10 @@ class SellStrategyEngine:
         action = SELL if qualified else NO_TRADE
 
         # --------------------------------------------------
-        # STATE NARRATIVE (FIX #15) — mirrors buy_strategy.py's identical
-        # fix; see BuyDecision.state_narrative's NOTE for the full
-        # rationale and scope boundary.
-        # --------------------------------------------------
-
-        market_state = str(row.get("market_regime", "UNKNOWN")).upper()
-
-        if adx_regime == "RANGE_BOUND":
-            trend_state = "RANGE"
-        elif checks.get("price_below_ema20"):
-            trend_state = "DOWNTREND"
-        else:
-            trend_state = "UPTREND"
-
-        # FIX #5: setup_state now distinguishes STALE_BREAKDOWN — mirrors
+        # STATE NARRATIVE (Point 15) — entry_state now comes from the
+        # SAME rule table that decided `qualified` above — mirrors
         # buy_strategy.py's identical fix.
-        if checks.get("squeeze_breakout"):
-            setup_state = "SQUEEZE_BREAKDOWN"
-        elif checks.get("confirmed_breakdown"):
-            setup_state = "BREAKDOWN"
-        elif checks.get("pullback_entry"):
-            setup_state = "PULLBACK"
-        elif setup_is_stale:
-            setup_state = "STALE_BREAKDOWN"
-        else:
-            setup_state = "NONE"
-
-        if not tier1_passed:
-            entry_state = "REJECTED_TREND"
-        elif not checks["not_stale_entry"]:
-            entry_state = "REJECTED_STALE_ENTRY"
-        elif not checks["not_overextended"]:
-            entry_state = "REJECTED_OVEREXTENDED"
-        elif qualified:
-            entry_state = "TRIGGERED"
-        else:
-            entry_state = "WAITING"
+        # --------------------------------------------------
 
         state_narrative = (
             f"MarketState={market_state} / TrendState={trend_state} / "

@@ -36,6 +36,7 @@ from typing import Any
 import pandas as pd
 
 from decision.decision_engine import FinalDecision
+from risk import portfolio_limits
 
 from core.constants import (
     BUY,
@@ -91,7 +92,9 @@ class ValidationEngine:
 
     MAX_CORRELATION = 0.80
 
-    MAX_DAILY_LOSS = 0.03
+    # Phase 22: daily-loss now uses risk/portfolio_limits.py's shared
+    # 4-stage hierarchy instead of this flat constant — see the DAILY LOSS
+    # section in validate(). No class constant needed here anymore.
 
     MAX_WEEKLY_LOSS = 0.06
 
@@ -187,9 +190,17 @@ class ValidationEngine:
         # --------------------------------------------------
         # CIRCUIT BREAKER
         # --------------------------------------------------
+        # Phase 22 (see PHASE22_NOTES.md): was reading `latest.get(...)` —
+        # `latest = dataframe.iloc[-1]`, a price/indicator dataframe row,
+        # not a market dict. No producer ever wrote a "circuit_breaker"
+        # column there, so this could never fire. Reads from
+        # `market_state` (this function's actual market-condition dict
+        # parameter) instead — same fix as risk/risk_manager.py.
+        # Phase 25 (see PHASE25_NOTES.md): now genuinely populated — see
+        # risk/risk_manager.py's matching comment for the producer.
 
         checks["circuit"] = not bool(
-            latest.get(
+            market_state.get(
                 "circuit_breaker",
                 False,
             )
@@ -566,7 +577,16 @@ class ValidationEngine:
             )
         )
 
-        checks["daily_loss"] = daily_loss <= self.MAX_DAILY_LOSS
+        # Phase 22 (see PHASE22_NOTES.md, point 10): previously its own
+        # independent `self.MAX_DAILY_LOSS = 0.03` flat cutoff — a THIRD
+        # hardcoded copy of this threshold (alongside portfolio_rules.py's
+        # 3% and risk_manager.py's since-fixed 5.0 unit bug). Now sourced
+        # from the same shared 4-stage hierarchy as those two — rejects at
+        # the same trading_halt/emergency stages portfolio_rules.py does.
+        checks["daily_loss"] = portfolio_limits.daily_loss_stage(daily_loss) not in (
+            "trading_halt",
+            "emergency",
+        )
 
         if rejection_reason is None and not checks["daily_loss"]:
 
@@ -632,11 +652,14 @@ class ValidationEngine:
             )
         )
 
-        checks["drawdown"] = max_drawdown <= 0.20
+        # Phase 22: was a flat `<= 0.20` cutoff — a second hardcoded copy
+        # of portfolio_rules.py's old threshold. Now uses the same
+        # graduated-band halt threshold (>15%) as portfolio_rules.py.
+        checks["drawdown"] = portfolio_limits.drawdown_band_label(max_drawdown) != "halt"
 
         if rejection_reason is None and not checks["drawdown"]:
 
-            rejection_reason = "Portfolio drawdown exceeds 20%."
+            rejection_reason = "Portfolio drawdown exceeds limit."
 
         diagnostics["max_drawdown"] = round(
             max_drawdown,

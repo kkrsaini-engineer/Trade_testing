@@ -16,9 +16,11 @@ from __future__ import annotations
 import math
 import time
 from dataclasses import dataclass, field
+from datetime import date
 from typing import Any
 
 from core.logger import get_logger
+from risk.portfolio_limits import is_emergency_condition
 
 logger = get_logger(__name__)
 
@@ -87,6 +89,31 @@ class PortfolioState:
     exposure: float = 0.0
 
     risk_score: float = 0.0
+
+    # Phase 22 (see PHASE22_NOTES.md): running peak of mark-to-market
+    # portfolio equity (for drawdown) and the equity captured at the start
+    # of the current trading day (for daily loss). Both default to 0.0
+    # meaning "not yet initialized" — see PortfolioEngine.update_equity_
+    # tracking(), which must be called at least once before max_drawdown/
+    # daily_loss in snapshot() mean anything (0.0 peak/day-start is treated
+    # as "no baseline yet", not "100% loss").
+    peak_equity: float = 0.0
+
+    day_start_equity: float = 0.0
+
+    current_trading_day: str = ""
+
+    # Phase 23 (see PHASE23_NOTES.md): same pattern as day_start_equity —
+    # equity captured at the start of the current ISO trading week/month,
+    # for weekly_loss/monthly_loss (previously always 0.0, same
+    # never-populated problem daily_loss/max_drawdown had before Phase 22).
+    week_start_equity: float = 0.0
+
+    current_trading_week: str = ""
+
+    month_start_equity: float = 0.0
+
+    current_trading_month: str = ""
 
     updated_at: float = field(default_factory=time.time)
 
@@ -449,7 +476,110 @@ class PortfolioEngine:
     # POSITION SNAPSHOT
     # ==========================================================
 
+    def _current_equity(self) -> float:
+        """Mark-to-market portfolio equity: available cash + current
+        market value of every open position. Same formula
+        paper_trading/virtual_portfolio.py's snapshot() independently
+        computed as `portfolio_value` — kept here too so max_drawdown/
+        daily_loss below are correct for ANY caller of this snapshot(),
+        not only ones that go through VirtualPortfolio's wrapper."""
+
+        return self.state.available_capital + sum(
+            p.quantity * p.current_price
+            for p in self.state.open_positions.values()
+        )
+
+    @staticmethod
+    def _week_key(trading_day: str) -> str:
+        """ISO year+week (e.g. "2026-W33") — resets on ISO week boundaries
+        (Monday), not plain 7-day rolling windows."""
+
+        iso_year, iso_week, _ = date.fromisoformat(trading_day).isocalendar()
+
+        return f"{iso_year}-W{iso_week:02d}"
+
+    @staticmethod
+    def _month_key(trading_day: str) -> str:
+        """Calendar month (e.g. "2026-08") — trading_day is always an ISO
+        "YYYY-MM-DD" string (see paper_trading_engine.py's `today =
+        today_date.isoformat()`), so the first 7 characters are exactly
+        "YYYY-MM"."""
+
+        return trading_day[:7]
+
+    def update_equity_tracking(self, trading_day: str) -> None:
+        """Phase 22/23 (see PHASE22_NOTES.md / PHASE23_NOTES.md): must be
+        called once at the START of each trading-day cycle (before that
+        day's monitoring/entries/exits run) and again after any
+        equity-changing operation (e.g. after mark_to_market()) so
+        peak_equity/day_start_equity/week_start_equity/month_start_equity
+        stay current. Idempotent — safe to call multiple times per day.
+
+        - peak_equity: running max, for drawdown. Never resets.
+        - day_start_equity / week_start_equity / month_start_equity: each
+          reset to the CURRENT equity only when its own period key
+          (trading day / ISO week / calendar month, derived from
+          `trading_day`) differs from the last recorded one — i.e. each
+          captures equity as of the first call in a new period, before
+          that period's activity, and holds steady for the rest of it.
+          The three periods are independent: a new week does not force a
+          new day's baseline to reset early, and vice versa — each only
+          resets on ITS OWN boundary.
+        """
+
+        current_equity = self._current_equity()
+
+        self.state.peak_equity = max(self.state.peak_equity, current_equity)
+
+        if trading_day != self.state.current_trading_day:
+
+            self.state.day_start_equity = current_equity
+
+            self.state.current_trading_day = trading_day
+
+        week_key = self._week_key(trading_day)
+
+        if week_key != self.state.current_trading_week:
+
+            self.state.week_start_equity = current_equity
+
+            self.state.current_trading_week = week_key
+
+        month_key = self._month_key(trading_day)
+
+        if month_key != self.state.current_trading_month:
+
+            self.state.month_start_equity = current_equity
+
+            self.state.current_trading_month = month_key
+
     def snapshot(self) -> dict[str, Any]:
+
+        current_equity = self._current_equity()
+
+        max_drawdown = (
+            (self.state.peak_equity - current_equity) / self.state.peak_equity
+            if self.state.peak_equity > 0
+            else 0.0
+        )
+
+        daily_loss = (
+            max(0.0, (self.state.day_start_equity - current_equity) / self.state.day_start_equity)
+            if self.state.day_start_equity > 0
+            else 0.0
+        )
+
+        weekly_loss = (
+            max(0.0, (self.state.week_start_equity - current_equity) / self.state.week_start_equity)
+            if self.state.week_start_equity > 0
+            else 0.0
+        )
+
+        monthly_loss = (
+            max(0.0, (self.state.month_start_equity - current_equity) / self.state.month_start_equity)
+            if self.state.month_start_equity > 0
+            else 0.0
+        )
 
         return {
             "total_capital": self.state.total_capital,
@@ -459,6 +589,15 @@ class PortfolioEngine:
             "total_pnl": self.state.total_pnl,
             "total_pnl_percent": self.state.total_pnl_percent,
             "risk_score": self.state.risk_score,
+            # Phase 22/23: all five of these used to always fall back to
+            # their 0.0/False defaults everywhere they were read (see
+            # PHASE21_NOTES.md's "9 + 10" section for how that was found,
+            # and PHASE23_NOTES.md for weekly_loss/monthly_loss).
+            "max_drawdown": round(max(max_drawdown, 0.0), 4),
+            "daily_loss": round(daily_loss, 4),
+            "weekly_loss": round(weekly_loss, 4),
+            "monthly_loss": round(monthly_loss, 4),
+            "emergency_stop": is_emergency_condition(max_drawdown, daily_loss),
             "open_positions": {
                 k: {
                     "quantity": v.quantity,

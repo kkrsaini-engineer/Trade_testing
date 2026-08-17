@@ -39,6 +39,7 @@ from decision.decision_engine import FinalDecision
 from decision.validation_engine import ValidationResult
 from risk.risk_manager import RiskResult
 from risk.position_sizing import PositionSizingResult
+from risk import portfolio_limits
 
 from core.logger import get_logger
 
@@ -88,7 +89,29 @@ class PortfolioRulesEngine:
 
     MIN_CASH_RESERVE = 0.10
 
-    MAX_DRAWDOWN = 0.20
+    # NOTE (Phase 21 clarification): MAX_PORTFOLIO_EXPOSURE (above) and
+    # MIN_CASH_RESERVE are NOT two independent limits — under this engine's
+    # accounting (both measured against the same `total_capital`, no
+    # leverage anywhere in this codebase), "exposure <= 0.95" and
+    # "cash_ratio >= 0.10" are almost the same statement: exposure +
+    # cash_ratio == 1.0 when the only two capital buckets are "deployed"
+    # and "available". They are kept as two separate checks (see PORTFOLIO
+    # EXPOSURE / CASH RESERVE sections in evaluate()) because they read
+    # from different portfolio-dict fields (`open_exposure`/`exposure` vs
+    # `available_cash`/`available_capital`) and a future caller could feed
+    # them from genuinely independent sources (e.g. margin/leverage, where
+    # exposure could exceed 100% of capital while cash reserve is a
+    # separate constraint) — but under TODAY's inputs, expect these two
+    # checks to (almost) always agree. If one is ever changed without the
+    # other, re-verify they still express the intended combined ceiling.
+
+    # Phase 22 (see PHASE22_NOTES.md): the old flat MAX_DRAWDOWN=0.20
+    # binary gate is replaced by risk/portfolio_limits.py's graduated
+    # drawdown bands (0-5% normal / 5-10% reduced / 10-15% heavily reduced
+    # / >15% halt — a LOWER halt threshold than the old 20%, by design).
+    # No class constant here anymore — see the PORTFOLIO DRAWDOWN section
+    # in evaluate() and portfolio_limits.drawdown_band_label()/
+    # drawdown_multiplier().
 
     def evaluate(
         self,
@@ -144,11 +167,16 @@ class PortfolioRulesEngine:
         # OPEN POSITIONS
         # ==========================================================
 
-        open_positions = int(
+        # Phase 26 (see PHASE26_NOTES.md, point 11): "open_positions_count"
+        # is not a key any real producer sets — the actual portfolio dict
+        # (PortfolioEngine.snapshot()/VirtualPortfolio.snapshot()) carries
+        # "open_positions" as a dict of positions. Same class of bug as
+        # risk_manager.py's matching fix — see that file's comment.
+        open_positions = len(
             portfolio.get(
-                "open_positions_count",
-                0,
-            )
+                "open_positions",
+                {},
+            ) or {}
         )
 
         diagnostics["open_positions"] = open_positions
@@ -255,6 +283,18 @@ class PortfolioRulesEngine:
         # ==========================================================
         # SECTOR EXPOSURE
         # ==========================================================
+        # Phase 26 (see PHASE26_NOTES.md, point 11): kept as its OWN hard
+        # gate, deliberately NOT deduplicated away in favor of
+        # validation_engine.py's sector_exposure check — that one only
+        # has today's CURRENT sector exposure to check against (it runs
+        # before position sizing, so it can't know the trade being
+        # sized). This one computes `projected_sector_exposure =
+        # sector_exposure + new_position_exposure` — whether THIS
+        # SPECIFIC candidate's own size would push the sector over the
+        # limit, which validation_engine.py's cruder current-state-only
+        # check cannot express. Confirmed via direct read before
+        # deciding: not a duplicate of validation_engine.py's check,
+        # it's a distinct, more precise one — so it stays.
 
         sector_exposure = float(
             portfolio.get(
@@ -298,11 +338,22 @@ class PortfolioRulesEngine:
             4,
         )
 
-        if rejection_reason is None and portfolio_correlation > self.MAX_CORRELATION:
-
-            rejection_reason = "Portfolio correlation exceeds allowed limit."
-
-        elif portfolio_correlation > 0.70:
+        # Phase 26 (see PHASE26_NOTES.md, point 11): this used to ALSO
+        # hard-reject here (`rejection_reason = "Portfolio correlation
+        # exceeds allowed limit."`) — an exact duplicate of
+        # decision/validation_engine.py's `checks["correlation"]` gate
+        # (same input, same MAX_CORRELATION-equivalent threshold, same
+        # CURRENT-state semantics — unlike sector_exposure below, this
+        # one genuinely IS a pure duplicate, not a more-precise variant).
+        # validation_engine.py is now the SOLE hard gate for correlation
+        # (and this method already returns early above if
+        # `not validation.passed`, so a correlation-driven rejection
+        # still stops the trade — just from one place, not two).
+        # portfolio_correlation is still computed/reported here (now
+        # from REAL data — see PHASE26_NOTES.md) for audit visibility,
+        # and the >0.70 soft warning below is a distinct, non-duplicate
+        # informational signal (a WARNING, not a rejection).
+        if portfolio_correlation > 0.70:
 
             warnings.append("Portfolio correlation is elevated.")
 
@@ -322,13 +373,20 @@ class PortfolioRulesEngine:
             4,
         )
 
-        if rejection_reason is None and portfolio_drawdown > self.MAX_DRAWDOWN:
+        drawdown_band = portfolio_limits.drawdown_band_label(portfolio_drawdown)
+
+        diagnostics["drawdown_band"] = drawdown_band
+
+        if rejection_reason is None and drawdown_band == "halt":
 
             rejection_reason = "Portfolio drawdown exceeds limit."
 
-        elif portfolio_drawdown > 0.15:
+        elif drawdown_band in (
+            "reduced",
+            "heavily_reduced",
+        ):
 
-            warnings.append("Portfolio drawdown is elevated.")
+            warnings.append(f"Portfolio drawdown is elevated ({drawdown_band}); allocation reduced.")
 
         # ==========================================================
         # DAILY RISK
@@ -346,11 +404,22 @@ class PortfolioRulesEngine:
             4,
         )
 
-        if rejection_reason is None and daily_loss >= 0.03:
+        daily_loss_stage = portfolio_limits.daily_loss_stage(daily_loss)
+
+        diagnostics["daily_loss_stage"] = daily_loss_stage
+
+        if rejection_reason is None and daily_loss_stage in (
+            "trading_halt",
+            "emergency",
+        ):
 
             rejection_reason = "Daily loss limit reached."
 
-        elif daily_loss >= 0.02:
+        elif daily_loss_stage == "risk_reduction":
+
+            warnings.append("Daily loss elevated; allocation reduced.")
+
+        elif daily_loss_stage == "warning":
 
             warnings.append("Approaching daily loss limit.")
 
@@ -522,7 +591,7 @@ class PortfolioRulesEngine:
             "symbol": position_weight <= self.MAX_SYMBOL_EXPOSURE,
             "sector": projected_sector_exposure <= self.MAX_SECTOR_EXPOSURE,
             "correlation": portfolio_correlation <= self.MAX_CORRELATION,
-            "drawdown": portfolio_drawdown <= self.MAX_DRAWDOWN,
+            "drawdown": drawdown_band != "halt",
             "liquidity": participation_rate <= 0.05,
             "concentration": projected_top5 <= 0.60,
         }
@@ -567,6 +636,16 @@ class PortfolioRulesEngine:
         if portfolio_score < 65:
 
             allocation_allowed *= 0.50
+
+        # Phase 22: graduated drawdown/daily-loss throttling, on top of
+        # (not instead of) the governance-score cascade above — drawdown
+        # is ALSO one of the 9 governance_checks, but that check alone
+        # only ever contributes a small, equally-weighted slice of
+        # portfolio_score. These two multipliers make severity-specific
+        # scaling explicit, per risk/portfolio_limits.py.
+        allocation_allowed *= portfolio_limits.drawdown_multiplier(portfolio_drawdown)
+
+        allocation_allowed *= portfolio_limits.daily_loss_multiplier(daily_loss)
 
         allocation_allowed = round(
             max(

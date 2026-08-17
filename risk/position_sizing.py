@@ -35,6 +35,7 @@ import pandas as pd
 from decision.decision_engine import FinalDecision
 from decision.validation_engine import ValidationResult
 from risk.risk_manager import RiskResult
+from risk import stop_target as stop_target_module
 
 from core.logger import get_logger
 
@@ -230,11 +231,14 @@ class PositionSizingEngine:
         # ==========================================================
         # STOP DISTANCE
         # ==========================================================
+        # Now risk/stop_target.py's shared canonical formula (same one
+        # execution/scanner.py's static display and
+        # risk/exit_strategy.py's live exit engine use — see
+        # PHASE20_NOTES.md). Was already effectively this formula
+        # (atr*2.0 floored at close*1%) before this consolidation — the
+        # other two callers were the ones missing the floor, now fixed.
 
-        stop_distance = max(
-            atr * 2.0,
-            close * 0.01,
-        )
+        stop_distance = stop_target_module.stop_distance(close_price=close, atr=atr)
 
         diagnostics["stop_distance"] = round(
             stop_distance,

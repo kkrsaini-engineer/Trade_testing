@@ -2,8 +2,18 @@
 DAILY SCAN SCRIPT
 
 Runs the MarketScanner against a list of NSE symbols and writes a CSV report.
-This is what the "Daily Scan" GitHub Action actually executes (the workflow
-used to just `echo` a placeholder — it never ran real code).
+
+CORRECTION (Phase 26 — see PHASE26_NOTES.md, point 11): the claim below
+("This is what the 'Daily Scan' GitHub Action actually executes") is
+FALSE — confirmed by reading .github/workflows/daily_scan.yml directly,
+which actually runs scripts/generate_full_report.py, not this file.
+This script is not invoked by any workflow — it is DEAD CODE. It also
+still uses a fake, static, always-empty `portfolio` dict (the exact bug
+generate_full_report.py had before Phase 26 fixed it there, since that
+one IS live) — left as-is here since fixing a genuinely dead script
+carries the same "why bother, nothing runs it" reasoning already
+applied elsewhere in this review (see orchestrator.py's risk_snapshot
+in PHASE24_NOTES.md). Flagging, not fixing.
 
 Usage:
     python scripts/daily_scan.py

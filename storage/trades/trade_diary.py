@@ -67,6 +67,15 @@ class TradeDiary:
             "entry_price": entry_price,
             "buy_probability": buy_probability,
             "buy_confidence": buy_confidence,
+            # Thesis-decay baseline (Point 16, PHASE28_NOTES.md) — always
+            # None at open_trade() time. The real live entry path
+            # (scripts/morning_executor.py) hardcodes buy_confidence/
+            # buy_probability to 0.0 since it deliberately skips a full
+            # re-scan at entry, so those two fields can't serve as a
+            # genuine decay baseline. Populated instead by
+            # capture_thesis_baseline() the first time monitoring
+            # produces a real held-direction confidence value.
+            "entry_thesis_confidence": None,
             "entry_reasons": entry_reasons,
             "daily_log": [],
             "status": "OPEN",
@@ -115,6 +124,38 @@ class TradeDiary:
             "notes": notes or [],
         })
         record["holding_days"] = len(record["daily_log"])
+        record["updated_at"] = time.time()
+
+        self._write(trade_id, record)
+
+    def capture_thesis_baseline(self, trade_id: str, confidence: float | None) -> None:
+        """Capture this position's held-direction confidence as its
+        permanent thesis-decay baseline — the FIRST time a real value is
+        available. Idempotent: a no-op once a baseline is already
+        stored, and a no-op (not a permanent skip) if `confidence` is
+        None this cycle, so a transient diagnostics gap doesn't
+        permanently block capture on a later cycle.
+
+        See PHASE28_NOTES.md (Point 16): the live entry path
+        (scripts/morning_executor.py) hardcodes open_trade()'s
+        buy_confidence/buy_probability to 0.0 (it deliberately skips a
+        full re-scan at entry), so those fields can't serve as a genuine
+        decay baseline. This captures the first REAL confidence value
+        computed once monitoring starts instead — see
+        risk/exit_strategy.py's thesis-decay time exit, which compares
+        each day's held-direction confidence against this baseline.
+        """
+        if confidence is None:
+            return
+
+        record = self._read(trade_id)
+        if record is None:
+            return
+
+        if record.get("entry_thesis_confidence") is not None:
+            return
+
+        record["entry_thesis_confidence"] = confidence
         record["updated_at"] = time.time()
 
         self._write(trade_id, record)

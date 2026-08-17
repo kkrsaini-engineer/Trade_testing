@@ -211,6 +211,56 @@ class BrokerEngine:
             )
         )
 
+        # ==========================================================
+        # ORDER REJECTION HANDLING (EXTENDED)
+        # ==========================================================
+        # Phase 24 (see PHASE24_NOTES.md): this check existed in the file
+        # already, but sat AFTER an unconditional `return result` later in
+        # this function — 100% unreachable, regardless of market_state
+        # content, for as long as this function has had that early return.
+        # Moved here (still before any fill/slippage simulation runs) so a
+        # circuit-breaker-active or extreme-spread/volatility order is
+        # rejected outright instead of being simulated through a fill.
+        # NOTE: the ~400 lines that followed this block in its old
+        # location (retry mechanism, order-book simulation, execution
+        # quality scoring, detailed fee breakdown, etc.) are ALSO
+        # unreachable dead code, still after that same early return — NOT
+        # touched here, flagged separately as its own, much bigger
+        # question (see PHASE24_NOTES.md).
+
+        rejection_reason = None
+
+        if market_state.get("circuit_breaker", False):
+
+            rejection_reason = "Circuit breaker active"
+
+        elif spread > 0.05:
+
+            rejection_reason = "Spread too high"
+
+        elif volatility > 0.2:
+
+            rejection_reason = "Extreme volatility"
+
+        if rejection_reason:
+
+            logger.warning(
+                "Order rejected %s | %s",
+                order.symbol,
+                rejection_reason,
+            )
+
+            return OrderResult(
+                symbol=order.symbol,
+                status=REJECTED,
+                filled_quantity=0,
+                avg_price=0.0,
+                slippage=0.0,
+                brokerage=0.0,
+                timestamp=time.time(),
+                diagnostics={"reason": rejection_reason},
+            )
+
         base_fill_prob = 0.98
 
         fill_penalty = volatility * 10 + spread * 20

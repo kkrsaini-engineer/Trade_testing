@@ -33,6 +33,7 @@ import pandas as pd
 
 from decision.validation_engine import ValidationResult
 from decision.decision_engine import FinalDecision
+from risk import portfolio_limits
 
 from core.logger import get_logger
 
@@ -132,7 +133,16 @@ class RiskManager:
 
     MAX_SECTOR_RISK = 50.0
 
-    MAX_DAILY_LOSS = 5.0  # <--- FIXED: Added missing class variable
+    # Phase 22 (see PHASE22_NOTES.md, point 10): this was hardcoded to
+    # `5.0` — a UNIT BUG. `daily_loss` everywhere else in the codebase
+    # (portfolio_rules.py, validation_engine.py, and now the real producer
+    # in portfolio/portfolio.py) is a 0.0-1.0 FRACTION (0.05 = 5% loss),
+    # so `daily_loss >= 5.0` could only ever fire on a 500%+ loss — with
+    # daily_loss now actually being computed from real portfolio equity,
+    # this would have been effectively permanently dead if left as-is.
+    # Sourced from the shared module so this can never drift from the
+    # other two files' thresholds again.
+    MAX_DAILY_LOSS = portfolio_limits.DAILY_LOSS_EMERGENCY
 
     def evaluate(
         self,
@@ -411,9 +421,21 @@ class RiskManager:
         # PORTFOLIO RISK
         # ==========================================================
 
-        open_positions = int(portfolio.get("open_positions_count", 0))
+        # Phase 26 (see PHASE26_NOTES.md, point 11): this used to read
+        # `portfolio.get("open_positions_count", 0)` /
+        # `portfolio.get("open_exposure", 0.0)` — keys that NO producer
+        # anywhere in the codebase ever actually set. The real portfolio
+        # dict (PortfolioEngine.snapshot() / VirtualPortfolio.snapshot())
+        # carries `"open_positions"` (a dict of open positions, not a
+        # count) and `"exposure"` (not `"open_exposure"`) — the exact
+        # keys portfolio_rules.py and morning_executor.py already read
+        # correctly. This was structurally dead in live/paper trading
+        # (always 0 / 0.0) regardless of real portfolio state — same
+        # class of bug as the circuit_breaker wrong-read-source fix in
+        # Phase 22.
+        open_positions = len(portfolio.get("open_positions", {}) or {})
 
-        portfolio_exposure = float(portfolio.get("open_exposure", 0.0))
+        portfolio_exposure = float(portfolio.get("exposure", 0.0))
 
         portfolio_risk = 0.0
 
@@ -549,18 +571,61 @@ class RiskManager:
         # ==========================================================
         # RISK AGGREGATION
         # ==========================================================
+        # Phase 26 (see PHASE26_NOTES.md, point 11 — "correlated
+        # risk-factor double-counting redesign"). Two independent fixes
+        # to the weighted sum below, both explicitly sign-off'd before
+        # implementing (this directly changes total_risk / position
+        # sizing, not a cosmetic change):
+        #
+        # 1. ATR risk and Volatility risk measure the SAME underlying
+        #    phenomenon (how much this stock's price moves) through two
+        #    different lenses (ATR-14 percent-of-price vs.
+        #    volatility_state + bb_width) — summing them as if
+        #    independent double-penalized a single volatility condition.
+        #    Merged into ONE `price_volatility` component,
+        #    max(atr_risk, volatility_risk) — max rather than average
+        #    because this is a RISK metric: if either lens flags high
+        #    volatility, that's the more conservative (safety-first)
+        #    reading to act on, not diluted by the other lens agreeing
+        #    less. atr_risk/volatility_risk are still individually
+        #    computed and left in diagnostics/RiskResult exactly as
+        #    before (see above) — only the WEIGHTED-SUM input changed.
+        #
+        # 2. sector_risk and correlation_risk are REMOVED from the
+        #    weighted sum entirely. Both are the exact same CURRENT-STATE
+        #    portfolio-concentration facts decision/validation_engine.py
+        #    already hard-gates (checks["sector_exposure"]/
+        #    checks["correlation"], rejecting the trade outright if
+        #    either exceeds MAX_SECTOR_EXPOSURE/MAX_CORRELATION) — a
+        #    trade that reaches this far already passed that hard gate,
+        #    so re-scoring the identical fact into total_risk here was
+        #    double-counting it a second, softer way. validation_engine.py
+        #    is now the SOLE gate for these two facts. sector_risk/
+        #    correlation_risk are still individually computed and left in
+        #    diagnostics/RiskResult (see above) for audit visibility —
+        #    only the WEIGHTED-SUM input changed.
+        #
+        # Weights below were rescaled PROPORTIONALLY from the original
+        # 11-component scheme after removing sector (0.05) + correlation
+        # (0.10) — i.e. every surviving component's relative weight vs.
+        # every other surviving component is UNCHANGED, only the removed
+        # 0.15 budget was redistributed across them (not an arbitrary
+        # re-judgment of which factors matter more). Merged
+        # atr(0.10)+volatility(0.10)=0.20 combined budget flows into
+        # price_volatility unchanged by that rescale, then the same
+        # proportional rescale is applied to it too.
+        price_volatility_risk = max(atr_risk, volatility_risk)
+
+        diagnostics["price_volatility_risk"] = price_volatility_risk
 
         risk_components = {
-            "atr": atr_risk,
+            "price_volatility": price_volatility_risk,
             "gap": gap_risk,
             "overnight": overnight_risk,
             "news": news_risk,
             "liquidity": liquidity_risk,
-            "volatility": volatility_risk,
             "market": market_risk,
             "portfolio": portfolio_risk,
-            "sector": sector_risk,
-            "correlation": correlation_risk,
             "capital": capital_risk,
         }
 
@@ -569,17 +634,14 @@ class RiskManager:
         # ==========================================================
 
         weights = {
-            "atr": 0.10,
-            "gap": 0.08,
-            "overnight": 0.08,
-            "news": 0.10,
-            "liquidity": 0.10,
-            "volatility": 0.10,
-            "market": 0.12,
-            "portfolio": 0.12,
-            "sector": 0.05,
-            "correlation": 0.10,
-            "capital": 0.05,
+            "price_volatility": 0.24,
+            "gap": 0.09,
+            "overnight": 0.09,
+            "news": 0.12,
+            "liquidity": 0.12,
+            "market": 0.14,
+            "portfolio": 0.14,
+            "capital": 0.06,
         }
 
         total_risk = 0.0
@@ -646,6 +708,31 @@ class RiskManager:
         # ==========================================================
         # RISK OVERRIDES
         # ==========================================================
+        # Phase 21 grouping (see PHASE21_NOTES.md, point 13): these two
+        # sub-groups are categorically different and were previously
+        # interleaved with no labeling distinguishing them.
+        #
+        # MARKET-RISK ADDITIVES: continuous market-condition signals that
+        # ADD to the weighted base score (capped at 100) — total_risk can
+        # still land under 100 depending on the base score. `safe` is NOT
+        # forced False by these alone.
+        #
+        # SYSTEM SAFETY OVERRIDES: operational/portfolio-level kill
+        # switches — unconditionally force total_risk=100 and safe=False,
+        # regardless of the weighted base score. These represent "the
+        # system itself decided to stop", not "the market got riskier".
+        #
+        # NOTE: whether circuit_breaker/emergency_stop/daily_loss_lock
+        # actually receive real live data (vs. always falling back to
+        # their False/0.0 defaults) is a separate, larger wiring question
+        # not addressed by this grouping change — see PHASE21_NOTES.md.
+        # ==========================================================
+
+        diagnostics["override_category"] = None
+
+        # ----------------------------------------------------------
+        # MARKET-RISK ADDITIVES
+        # ----------------------------------------------------------
 
         # --------------------------------------------------
         # HIGH IMPACT EVENT
@@ -680,24 +767,6 @@ class RiskManager:
             diagnostics["vix_override"] = False
 
         # --------------------------------------------------
-        # CIRCUIT BREAKER
-        # --------------------------------------------------
-
-        if bool(latest.get("circuit_breaker", False)):
-
-            total_risk = 100.0
-
-            safe = False
-
-            warnings.append("Circuit breaker active.")
-
-            diagnostics["circuit_override"] = True
-
-        else:
-
-            diagnostics["circuit_override"] = False
-
-        # --------------------------------------------------
         # NEWS SHOCK
         # --------------------------------------------------
 
@@ -712,6 +781,49 @@ class RiskManager:
         else:
 
             diagnostics["news_override"] = False
+
+        # ----------------------------------------------------------
+        # SYSTEM SAFETY OVERRIDES (unconditional: total_risk=100, safe=False)
+        # ----------------------------------------------------------
+
+        # --------------------------------------------------
+        # CIRCUIT BREAKER
+        # --------------------------------------------------
+        # Phase 22 (see PHASE22_NOTES.md): this used to read
+        # `latest.get("circuit_breaker")`, where `latest = dataframe.
+        # iloc[-1]` — a price/indicator DATAFRAME ROW, not a market or
+        # portfolio dict. No producer anywhere in the data/feature
+        # pipeline ever wrote a "circuit_breaker" column onto that
+        # dataframe, so this check could never fire regardless of the
+        # real market. Reads from `market` (the actual dict callers pass
+        # real market-condition flags through) instead.
+        # Phase 25 (see PHASE25_NOTES.md): `market["circuit_breaker"]` IS
+        # now populated by a real producer — execution/scanner.py builds
+        # a per-symbol copy of market_state with this key set from
+        # market/circuit_bands.py's OHLC-based circuit-lock heuristic
+        # (a HEURISTIC, not ground-truth NSE data — see that module's
+        # docstring for the caveats). Defaults to False when the scanner
+        # opted out (e.g. _disable_live_market_context during
+        # backtesting) or when the heuristic simply didn't detect a
+        # circuit lock — both indistinguishable here by design, same as
+        # every other "unavailable = treat as normal" convention in this
+        # codebase.
+
+        if bool(market.get("circuit_breaker", False)):
+
+            total_risk = 100.0
+
+            safe = False
+
+            warnings.append("Circuit breaker active.")
+
+            diagnostics["circuit_override"] = True
+
+            diagnostics["override_category"] = "system_safety"
+
+        else:
+
+            diagnostics["circuit_override"] = False
 
         # --------------------------------------------------
         # PORTFOLIO EMERGENCY STOP
@@ -729,6 +841,8 @@ class RiskManager:
 
             warnings.append("Portfolio emergency stop enabled.")
 
+            diagnostics["override_category"] = "system_safety"
+
         diagnostics["emergency_stop"] = emergency_stop
 
         # --------------------------------------------------
@@ -744,6 +858,8 @@ class RiskManager:
             warnings.append("Daily loss limit reached.")
 
             diagnostics["daily_loss_lock"] = True
+
+            diagnostics["override_category"] = "system_safety"
 
         else:
 

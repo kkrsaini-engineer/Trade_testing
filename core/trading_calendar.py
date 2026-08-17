@@ -17,7 +17,7 @@ Source: https://www.nseindia.com/resources/exchange-communication-holidays
 
 from __future__ import annotations
 
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, datetime, time, timedelta, timezone
 
 IST_OFFSET = timedelta(hours=5, minutes=30)
 
@@ -76,6 +76,22 @@ def now_ist() -> datetime:
     """Current wall-clock time in IST (UTC+5:30), for notification
     timestamps only — not used anywhere in trading-day logic."""
     return datetime.now(timezone.utc) + IST_OFFSET
+
+
+# NSE normal equity market session: 9:15 AM - 3:30 PM IST.
+MARKET_OPEN_TIME = time(9, 15)
+MARKET_CLOSE_TIME = time(15, 30)
+
+
+def market_open_now(now: datetime | None = None) -> bool:
+    """Whether NSE is genuinely open for trading RIGHT NOW — a trading
+    day (see is_trading_day()) AND within normal session hours. Phase 26
+    (see PHASE26_NOTES.md): factored out of orchestrator.py's and
+    execution/scanner.py's `prepare_orders()` — both used to hardcode
+    market_open=True unconditionally, so ValidationEngine's market-hours
+    check could never actually fire."""
+    now = now or now_ist()
+    return is_trading_day(now.date()) and MARKET_OPEN_TIME <= now.time() <= MARKET_CLOSE_TIME
 
 
 def previous_trading_day(d: date | None = None) -> date:
