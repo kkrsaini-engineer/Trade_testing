@@ -20,6 +20,7 @@ import pandas as pd
 
 from core.exceptions import IndicatorError
 from core.logger import get_logger
+from features.indicators.smoothing import wilders_smoothing
 
 logger = get_logger(__name__)
 
@@ -39,11 +40,16 @@ class MomentumIndicators:
         df = dataframe.copy()
 
         # RSI(14)
+        # FIX (real-data accuracy audit — see PHASE30_NOTES.md): was a
+        # plain 14-bar rolling mean of gain/loss. Every broker/charting
+        # platform uses Wilder's smoothing here (the original RSI
+        # definition) — see features/indicators/smoothing.py's
+        # docstring for the full before/after evidence.
         delta = df["close"].diff()
         gain = delta.clip(lower=0)
         loss = -delta.clip(upper=0)
-        avg_gain = gain.rolling(14, min_periods=14).mean()
-        avg_loss = loss.rolling(14, min_periods=14).mean()
+        avg_gain = wilders_smoothing(gain, 14)
+        avg_loss = wilders_smoothing(loss, 14)
         rs = avg_gain / avg_loss.replace(0, np.nan)
         df["rsi_14"] = 100 - (100 / (1 + rs))
 
@@ -100,12 +106,19 @@ class MomentumIndicators:
             axis=1,
         ).max(axis=1)
 
-        atr_14 = tr.rolling(14, min_periods=14).mean()
-        plus_di = 100 * (plus_dm.rolling(14, min_periods=14).mean() / atr_14)
-        minus_di = 100 * (minus_dm.rolling(14, min_periods=14).mean() / atr_14)
+        # FIX (real-data accuracy audit — see PHASE30_NOTES.md): every
+        # smoothing step in real Wilder's ADX (TR, +DM, -DM, and the
+        # final DX average) uses Wilder's smoothing, not a plain
+        # rolling mean — this was using plain rolling means for all
+        # four, which was the direct cause of a real ADX regime
+        # misclassification found against a broker's live chart
+        # (BASELINE here vs RANGE_BOUND on the broker, same candle).
+        atr_14 = wilders_smoothing(tr, 14)
+        plus_di = 100 * (wilders_smoothing(plus_dm, 14) / atr_14)
+        minus_di = 100 * (wilders_smoothing(minus_dm, 14) / atr_14)
 
         dx = 100 * (plus_di - minus_di).abs() / (plus_di + minus_di)
-        df["adx_14"] = dx.rolling(14, min_periods=14).mean()
+        df["adx_14"] = wilders_smoothing(dx, 14)
 
         logger.info("Momentum indicators calculated.")
 

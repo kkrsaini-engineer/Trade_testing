@@ -16,6 +16,7 @@ import pandas as pd
 
 from core.exceptions import IndicatorError
 from core.logger import get_logger
+from features.indicators.smoothing import wilders_smoothing
 
 logger = get_logger(__name__)
 
@@ -45,7 +46,15 @@ class VolatilityIndicators:
         ).max(axis=1)
 
         # ATR(14)
-        df["atr_14"] = tr.rolling(14, min_periods=14).mean()
+        # FIX (real-data accuracy audit — see PHASE30_NOTES.md): was a
+        # plain 14-bar rolling mean of True Range. Every broker/
+        # charting platform uses Wilder's smoothing for ATR (the
+        # original definition) — see features/indicators/smoothing.py's
+        # docstring for the full before/after evidence. This column
+        # feeds the ATR filter check, the overextension cap, position
+        # sizing, and (via atr_ma below) volatility_state/market_regime's
+        # volatility_regime — all pick up the fix automatically.
+        df["atr_14"] = wilders_smoothing(tr, 14)
 
         # Bollinger Bands(20,2)
         sma20 = df["close"].rolling(20, min_periods=20).mean()
@@ -57,8 +66,14 @@ class VolatilityIndicators:
         df["bb_width"] = (df["bb_upper"] - df["bb_lower"]) / sma20
 
         # Keltner Channel(20)
+        # FIX (real-data accuracy audit — see PHASE30_NOTES.md): band
+        # width uses the same Wilder's-smoothing fix as atr_14 above
+        # (period kept at 20 — only the SMOOTHING METHOD changed, not
+        # the period). A real side-by-side against a broker's live
+        # chart found the Keltner MIDDLE band (EMA20) matched exactly
+        # while the band width didn't — this is that gap's root cause.
         ema20 = df["close"].ewm(span=20, adjust=False).mean()
-        atr20 = tr.rolling(20, min_periods=20).mean()
+        atr20 = wilders_smoothing(tr, 20)
 
         df["kc_middle"] = ema20
         df["kc_upper"] = ema20 + (2 * atr20)
@@ -70,9 +85,15 @@ class VolatilityIndicators:
         df["dc_middle"] = (df["dc_upper"] + df["dc_lower"]) / 2
 
         # Supertrend(10, 3) — required by buy/sell strategy engines.
+        # FIX (real-data accuracy audit — see PHASE30_NOTES.md): same
+        # Wilder's-smoothing fix as atr_14/Keltner above (period kept
+        # at 10, only the smoothing method changed). Supertrend's
+        # boolean direction feeds TREND_CORE in tier2_score, so this is
+        # a real (if usually small) behavior change, not cosmetic —
+        # flagging explicitly rather than burying it in the ATR fix.
         st_period = 10
         st_multiplier = 3.0
-        st_atr = tr.rolling(st_period, min_periods=st_period).mean()
+        st_atr = wilders_smoothing(tr, st_period)
         hl2 = (df["high"] + df["low"]) / 2
         upperband = hl2 + (st_multiplier * st_atr)
         lowerband = hl2 - (st_multiplier * st_atr)

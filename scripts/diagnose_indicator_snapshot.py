@@ -282,7 +282,10 @@ def main() -> None:
     obv_line = "" if math.isnan(obv) else f"{obv:,.0f}  ->  "
     print(f"OBV (20-bar signed volume sum): {obv_line}{_obv_read(obv)}")
 
-    print(f"CMF(20): {_fmt(cmf_20)}  ->  {_cmf_read(cmf_20)}")
+    print(f"CMF(21): {_fmt(cmf_20)}  ->  {_cmf_read(cmf_20)}")
+    print("  -> NOTE: internal column name is still 'cmf_20' for backward")
+    print("     compatibility, but the window is now 21 bars (real-data")
+    print("     accuracy audit, PHASE30_NOTES.md).")
 
     print(f"MFI(14): {_fmt(mfi_14)}  ->  {_mfi_read(mfi_14)}")
 
