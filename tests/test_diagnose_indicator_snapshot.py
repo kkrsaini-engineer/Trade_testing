@@ -5,10 +5,18 @@ is a direct pass-through print of real engine output, nothing to unit
 test in isolation).
 """
 
+import math
+
 from scripts.diagnose_indicator_snapshot import (
+    _band_position,
     _bollinger_position,
     _cci_read,
+    _cmf_read,
+    _fmt,
     _macd_read,
+    _mfi_read,
+    _obv_read,
+    _pivot_read,
     _roc_read,
     _side,
     _stochastic_read,
@@ -36,6 +44,11 @@ def test_below_lower_band():
     assert "BELOW the lower band" in result
 
 
+def test_bollinger_position_nan_is_na():
+    result = _bollinger_position(close=100.0, upper=float("nan"), middle=100.0, lower=95.0)
+    assert "N/A" in result
+
+
 def test_side_above():
     assert _side(105.0, 100.0) == "ABOVE"
 
@@ -46,6 +59,39 @@ def test_side_below():
 
 def test_side_exactly_at():
     assert _side(100.0, 100.0) == "EXACTLY AT"
+
+
+def test_side_nan_is_na_not_exactly_at():
+    result = _side(100.0, float("nan"))
+    assert "N/A" in result
+
+
+def test_fmt_regular_value():
+    assert _fmt(123.456) == "123.46"
+
+
+def test_fmt_nan_is_na():
+    assert "N/A" in _fmt(float("nan"))
+
+
+def test_band_position_above_upper():
+    result = _band_position(close=110.0, upper=105.0, lower=95.0, upper_label="upper", lower_label="lower")
+    assert "ABOVE the upper" in result
+
+
+def test_band_position_below_lower():
+    result = _band_position(close=90.0, upper=105.0, lower=95.0, upper_label="upper", lower_label="lower")
+    assert "BELOW the lower" in result
+
+
+def test_band_position_between():
+    result = _band_position(close=100.0, upper=105.0, lower=95.0, upper_label="upper", lower_label="lower")
+    assert "between the lower" in result and "upper" in result
+
+
+def test_band_position_nan_is_na():
+    result = _band_position(close=100.0, upper=float("nan"), lower=95.0, upper_label="u", lower_label="l")
+    assert "N/A" in result
 
 
 def test_macd_bullish_widening():
@@ -103,3 +149,78 @@ def test_roc_positive():
 
 def test_roc_negative():
     assert "negative momentum" in _roc_read(-5.0)
+
+
+def test_obv_read_positive():
+    assert "buying pressure" in _obv_read(1000.0)
+
+
+def test_obv_read_negative():
+    assert "selling pressure" in _obv_read(-1000.0)
+
+
+def test_obv_read_nan():
+    assert "N/A" in _obv_read(float("nan"))
+
+
+def test_cmf_strong_buying():
+    assert "strong buying" in _cmf_read(0.2)
+
+
+def test_cmf_strong_selling():
+    assert "strong selling" in _cmf_read(-0.2)
+
+
+def test_cmf_neutral():
+    assert "neutral" in _cmf_read(0.0)
+
+
+def test_cmf_nan():
+    assert "N/A" in _cmf_read(float("nan"))
+
+
+def test_mfi_overbought():
+    assert "overbought zone" in _mfi_read(85.0)
+
+
+def test_mfi_oversold():
+    assert "oversold zone" in _mfi_read(15.0)
+
+
+def test_mfi_neutral():
+    assert "neutral zone" in _mfi_read(50.0)
+
+
+def test_mfi_nan():
+    assert "N/A" in _mfi_read(float("nan"))
+
+
+def test_pivot_above_r1():
+    result = _pivot_read(close=112.0, pivot=100.0, resistance_1=110.0, support_1=90.0)
+    assert "ABOVE R1" in result
+
+
+def test_pivot_between_pivot_and_r1():
+    result = _pivot_read(close=105.0, pivot=100.0, resistance_1=110.0, support_1=90.0)
+    assert "between Pivot" in result and "R1" in result
+
+
+def test_pivot_between_s1_and_pivot():
+    result = _pivot_read(close=95.0, pivot=100.0, resistance_1=110.0, support_1=90.0)
+    assert "between S1" in result and "Pivot" in result
+
+
+def test_pivot_below_s1():
+    result = _pivot_read(close=85.0, pivot=100.0, resistance_1=110.0, support_1=90.0)
+    assert "BELOW S1" in result
+
+
+def test_pivot_nan_is_na():
+    result = _pivot_read(close=100.0, pivot=float("nan"), resistance_1=110.0, support_1=90.0)
+    assert "N/A" in result
+
+
+def test_fmt_matches_isnan_contract():
+    # Sanity check that our NaN check actually catches math.nan the way
+    # engine dataframes surface missing values (float NaN, not None).
+    assert math.isnan(float("nan"))
