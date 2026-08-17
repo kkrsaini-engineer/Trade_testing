@@ -1,0 +1,30 @@
+name: Diagnose Fundamental Snapshot (single symbol, real engine)
+
+on:
+  workflow_dispatch:
+    inputs:
+      symbol:
+        description: "Symbol to check (e.g. HDFCBANK.NS)"
+        required: true
+        default: "HDFCBANK.NS"
+      news_limit:
+        description: "Max news items to fetch"
+        required: true
+        default: "20"
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run diagnose_fundamental_snapshot.py
+        run: |
+          PYTHONPATH=. python scripts/diagnose_fundamental_snapshot.py \
+            --symbol "${{ inputs.symbol }}" \
+            --news-limit "${{ inputs.news_limit }}"
