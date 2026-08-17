@@ -15,6 +15,10 @@ on:
         description: "How far back to fetch — e.g. 1y for interval=1d, 1mo for interval=60m"
         required: true
         default: "1y"
+      at:
+        description: "Optional — pick a specific CLOSED candle instead of the latest (UTC, e.g. '2026-08-12 08:45'). Convert your broker's IST time by subtracting 5:30. Leave blank for the latest candle."
+        required: false
+        default: ""
 
 jobs:
   diagnose:
@@ -32,4 +36,5 @@ jobs:
           PYTHONPATH=. python scripts/diagnose_indicator_snapshot.py \
             --symbol "${{ inputs.symbol }}" \
             --interval "${{ inputs.interval }}" \
-            --period "${{ inputs.period }}"
+            --period "${{ inputs.period }}" \
+            ${{ inputs.at != '' && format('--at "{0}"', inputs.at) || '' }}
