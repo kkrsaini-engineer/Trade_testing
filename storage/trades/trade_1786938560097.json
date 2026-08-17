@@ -1,0 +1,18 @@
+{
+  "symbol": "JSWINFRA.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 56,
+  "entry_price": 341.29998779296875,
+  "exit_price": 334.3,
+  "status": "CLOSED",
+  "realized_pnl": -391.99931640624936,
+  "realized_pnl_percent": -2.050978037894014,
+  "max_profit_percent": 0.014653445303259124,
+  "max_drawdown_percent": 2.050978037894014,
+  "regime": "BULL",
+  "confidence": 66.48,
+  "reasons": "HARD RISK EXIT: Risk engine flagged this symbol as unsafe.",
+  "id": "trade_1786938560097",
+  "timestamp": 1786938560.0974734
+}

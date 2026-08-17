@@ -1,25 +1,61 @@
 {
-  "date": "2026-08-14",
-  "opening_balance": 241183.9994104004,
-  "total_capital_in_positions": 217766.09999999998,
-  "remaining_balance": 282184.39838623046,
-  "portfolio_value": 499950.49838623044,
-  "realized_pnl": -199.50058959961473,
-  "portfolio_return_percent": -0.009900322753912769,
+  "date": "2026-08-17",
+  "opening_balance": 282184.39838623046,
+  "total_capital_in_positions": 0.0,
+  "remaining_balance": 498200.73865478515,
+  "portfolio_value": 498200.73865478515,
+  "realized_pnl": -1941.180589599606,
+  "portfolio_return_percent": -0.35985226904297013,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "GODREJCP.NS",
-      "pnl": 46.800000000000296
+      "symbol": "SBIN.NS",
+      "pnl": -345.80000000000064
     },
     {
-      "symbol": "ZYDUSLIFE.NS",
-      "pnl": -284.9002685546875
+      "symbol": "360ONE.NS",
+      "pnl": -283.7999999999995
     },
     {
-      "symbol": "AFCONS.NS",
-      "pnl": -35.40000000000134
+      "symbol": "UNIONBANK.NS",
+      "pnl": -170.14017211913966
+    },
+    {
+      "symbol": "HAL.NS",
+      "pnl": 447.3000000000011
+    },
+    {
+      "symbol": "BELRISE.NS",
+      "pnl": -968.5199487304676
+    },
+    {
+      "symbol": "JSWINFRA.NS",
+      "pnl": -391.99931640624936
+    },
+    {
+      "symbol": "PIDILITIND.NS",
+      "pnl": 67.20034179687627
+    },
+    {
+      "symbol": "BLUESTARCO.NS",
+      "pnl": 186.90000000000032
+    },
+    {
+      "symbol": "FINCABLES.NS",
+      "pnl": 387.89912109374836
+    },
+    {
+      "symbol": "AARTIIND.NS",
+      "pnl": -228.800537109375
+    },
+    {
+      "symbol": "ARE&M.NS",
+      "pnl": -126.0
+    },
+    {
+      "symbol": "GRASIM.NS",
+      "pnl": -174.000244140625
     }
   ],
-  "open_positions_now": 12
+  "open_positions_now": 0
 }

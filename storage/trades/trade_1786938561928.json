@@ -1,0 +1,18 @@
+{
+  "symbol": "BLUESTARCO.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 7,
+  "entry_price": 1514.0,
+  "exit_price": 1487.3,
+  "status": "CLOSED",
+  "realized_pnl": 186.90000000000032,
+  "realized_pnl_percent": 1.7635402906208748,
+  "max_profit_percent": 1.7635402906208748,
+  "max_drawdown_percent": 0.0,
+  "regime": "BEAR",
+  "confidence": 48.83,
+  "reasons": "HARD RISK EXIT: Risk engine flagged this symbol as unsafe.; News sentiment now works against this SELL position (75/100).",
+  "id": "trade_1786938561928",
+  "timestamp": 1786938561.9280553
+}

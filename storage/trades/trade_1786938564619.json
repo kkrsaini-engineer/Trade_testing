@@ -1,0 +1,18 @@
+{
+  "symbol": "ARE&M.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 21,
+  "entry_price": 951.0,
+  "exit_price": 945.0,
+  "status": "CLOSED",
+  "realized_pnl": -126.0,
+  "realized_pnl_percent": -0.6309148264984227,
+  "max_profit_percent": 1.934805467928494,
+  "max_drawdown_percent": 0.6309148264984227,
+  "regime": "BULL",
+  "confidence": 75.75,
+  "reasons": "HARD RISK EXIT: Risk engine flagged this symbol as unsafe.",
+  "id": "trade_1786938564619",
+  "timestamp": 1786938564.6197393
+}
