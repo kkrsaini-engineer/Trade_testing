@@ -1,0 +1,35 @@
+name: Diagnose Indicator Snapshot (single symbol, real engine)
+
+on:
+  workflow_dispatch:
+    inputs:
+      symbol:
+        description: "Symbol to check (e.g. HDFCBANK.NS)"
+        required: true
+        default: "HDFCBANK.NS"
+      interval:
+        description: "Candle interval — e.g. 1d, 60m, 15m"
+        required: true
+        default: "1d"
+      period:
+        description: "How far back to fetch — e.g. 1y for interval=1d, 1mo for interval=60m"
+        required: true
+        default: "1y"
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run diagnose_indicator_snapshot.py
+        run: |
+          PYTHONPATH=. python scripts/diagnose_indicator_snapshot.py \
+            --symbol "${{ inputs.symbol }}" \
+            --interval "${{ inputs.interval }}" \
+            --period "${{ inputs.period }}"
