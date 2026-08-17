@@ -38,6 +38,52 @@ def _bollinger_position(close: float, upper: float, middle: float, lower: float)
     return f"BELOW the lower band ({lower:.2f}) — extended to the downside."
 
 
+def _side(value: float, reference: float) -> str:
+    if value > reference:
+        return "ABOVE"
+    if value < reference:
+        return "BELOW"
+    return "EXACTLY AT"
+
+
+def _macd_read(macd: float, macd_signal: float, macd_histogram: float) -> str:
+    cross = "MACD ABOVE signal (bullish)" if macd > macd_signal else "MACD BELOW signal (bearish)"
+    momentum = "histogram widening/positive" if macd_histogram > 0 else "histogram negative/narrowing"
+    return f"{cross}, {momentum}"
+
+
+def _stochastic_read(stoch_k: float, stoch_d: float) -> str:
+    if stoch_k >= 80:
+        zone = "overbought zone (>=80)"
+    elif stoch_k <= 20:
+        zone = "oversold zone (<=20)"
+    else:
+        zone = "neutral zone (20-80)"
+    cross = "%K above %D" if stoch_k > stoch_d else "%K below %D"
+    return f"{zone}, {cross}"
+
+
+def _williams_r_read(value: float) -> str:
+    if value >= -20:
+        return "overbought zone (>=-20)"
+    if value <= -80:
+        return "oversold zone (<=-80)"
+    return "neutral zone (-80 to -20)"
+
+
+def _cci_read(value: float) -> str:
+    if value > 100:
+        return "overbought zone (>100)"
+    if value < -100:
+        return "oversold zone (<-100)"
+    return "neutral zone (-100 to 100)"
+
+
+def _roc_read(value: float) -> str:
+    return "positive momentum (price higher than 12 bars ago)" if value > 0 else \
+        "negative momentum (price lower than 12 bars ago)"
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--symbol", required=True, help="e.g. HDFCBANK.NS")
@@ -61,11 +107,27 @@ def main() -> None:
 
     close = float(latest["close"])
     ema_20 = float(latest["ema_20"])
+    ema_50 = float(latest["ema_50"])
+    ema_200 = float(latest["ema_200"])
+    sma_20 = float(latest["sma_20"])
+    sma_50 = float(latest["sma_50"])
+    sma_200 = float(latest["sma_200"])
     rsi_14 = float(latest["rsi_14"])
     adx_14 = float(latest["adx_14"])
     bb_upper = float(latest["bb_upper"])
     bb_middle = float(latest["bb_middle"])
     bb_lower = float(latest["bb_lower"])
+    macd = float(latest["macd"])
+    macd_signal = float(latest["macd_signal"])
+    macd_histogram = float(latest["macd_histogram"])
+    atr_14 = float(latest["atr_14"])
+    vwap = float(latest["vwap"])
+    stoch_k = float(latest["stoch_k"])
+    stoch_d = float(latest["stoch_d"])
+    williams_r_14 = float(latest["williams_r_14"])
+    cci_20 = float(latest["cci_20"])
+    roc_12 = float(latest["roc_12"])
+    supertrend = bool(latest["supertrend"])
     market_regime = str(latest.get("market_regime", "UNKNOWN"))
 
     print("\n" + "=" * 60)
@@ -74,8 +136,12 @@ def main() -> None:
 
     print(f"\nClose price: {close:.2f}")
 
-    ema_side = "ABOVE" if close > ema_20 else "BELOW" if close < ema_20 else "EXACTLY AT"
-    print(f"20-EMA: {ema_20:.2f}  ->  candle closed {ema_side} the 20-EMA")
+    print(f"20-EMA: {ema_20:.2f}  ->  candle closed {_side(close, ema_20)} the 20-EMA")
+    print(f"50-EMA: {ema_50:.2f}  ->  candle closed {_side(close, ema_50)} the 50-EMA")
+    print(f"200-EMA: {ema_200:.2f}  ->  candle closed {_side(close, ema_200)} the 200-EMA")
+    print(f"20-SMA: {sma_20:.2f}  ->  candle closed {_side(close, sma_20)} the 20-SMA")
+    print(f"50-SMA: {sma_50:.2f}  ->  candle closed {_side(close, sma_50)} the 50-SMA")
+    print(f"200-SMA: {sma_200:.2f}  ->  candle closed {_side(close, sma_200)} the 200-SMA")
 
     if rsi_14 >= 70:
         rsi_read = "overbought zone (>=70)"
@@ -100,6 +166,25 @@ def main() -> None:
     bb_read = _bollinger_position(close, bb_upper, bb_middle, bb_lower)
     print(f"Bollinger Bands: upper={bb_upper:.2f} middle={bb_middle:.2f} lower={bb_lower:.2f}")
     print(f"  -> candle is {bb_read}")
+
+    print(f"\nMACD: macd={macd:.2f} signal={macd_signal:.2f} histogram={macd_histogram:.2f}")
+    print(f"  -> {_macd_read(macd, macd_signal, macd_histogram)}")
+
+    print(f"ATR(14): {atr_14:.2f}  ->  average true range in price points (not a zone, a volatility size)")
+
+    print(f"VWAP: {vwap:.2f}  ->  candle closed {_side(close, vwap)} the VWAP")
+
+    print(f"Stochastic: %K={stoch_k:.2f} %D={stoch_d:.2f}")
+    print(f"  -> {_stochastic_read(stoch_k, stoch_d)}")
+
+    print(f"Williams %R(14): {williams_r_14:.2f}  ->  {_williams_r_read(williams_r_14)}")
+
+    print(f"CCI(20): {cci_20:.2f}  ->  {_cci_read(cci_20)}")
+
+    print(f"ROC(12): {roc_12:.2f}%  ->  {_roc_read(roc_12)}")
+
+    supertrend_read = "BULLISH (price above Supertrend line)" if supertrend else "BEARISH (price below Supertrend line)"
+    print(f"Supertrend(10,3): {supertrend_read}")
 
     print(f"\nMarketRegimeEngine's own market_regime label: {market_regime}")
 
