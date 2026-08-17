@@ -24,6 +24,8 @@ from __future__ import annotations
 import argparse
 import math
 
+import pandas as pd
+
 from data.market_data import MarketDataProvider
 from features.feature_engineering import FeatureEngineeringEngine
 from market.market_regime import MarketRegimeEngine
@@ -138,6 +140,22 @@ def _mfi_read(value: float) -> str:
     return "neutral zone (20-80)"
 
 
+def _as_utc(timestamp_str: str) -> pd.Timestamp:
+    target = pd.Timestamp(timestamp_str)
+    return target.tz_localize("UTC") if target.tzinfo is None else target.tz_convert("UTC")
+
+
+def _select_candle_near(features: pd.DataFrame, at: str) -> tuple[pd.Series, pd.Timedelta]:
+    """The row whose `timestamp` is closest to `at` (a UTC-ish string),
+    plus how far off the match actually was — used by --at to test a
+    specific closed candle instead of always using the latest row."""
+    target = _as_utc(at)
+    candle_timestamps = pd.to_datetime(features["timestamp"], utc=True)
+    diffs = (candle_timestamps - target).abs()
+    match_index = diffs.idxmin()
+    return features.loc[match_index], diffs.loc[match_index]
+
+
 def _pivot_read(close: float, pivot: float, resistance_1: float, support_1: float) -> str:
     if any(math.isnan(v) for v in (close, pivot, resistance_1, support_1)):
         return "N/A (not enough data for this window)."
@@ -158,6 +176,20 @@ def main() -> None:
         "--period", default="1y",
         help="How far back to fetch — e.g. 1y for interval=1d, 1mo for interval=60m",
     )
+    parser.add_argument(
+        "--at", default=None,
+        help=(
+            "Pick a specific CLOSED candle instead of the latest one — a UTC "
+            "timestamp, e.g. '2026-08-12 08:45'. Convert your broker's IST "
+            "candle time to UTC by subtracting 5:30 (broker shows IST). "
+            "Finds the closest matching candle in the fetched data and "
+            "prints how close the match was, so you can verify you're "
+            "comparing the SAME candle on both sides — useful for testing "
+            "an old/closed candle instead of the still-forming live one "
+            "(e.g. to rule out a 'live candle shows cumulative-for-the-day "
+            "volume' display convention on the broker's side)."
+        ),
+    )
     args = parser.parse_args()
 
     print(f"Fetching {args.symbol} @ interval={args.interval} period={args.period} ...")
@@ -168,7 +200,18 @@ def main() -> None:
     features = FeatureEngineeringEngine().generate(market_data)
     features = MarketRegimeEngine().evaluate(features)
 
-    latest = features.iloc[-1]
+    if args.at:
+        latest, diff = _select_candle_near(features, args.at)
+        print(f"\nRequested candle (UTC): {_as_utc(args.at)}")
+        print(f"Closest matching candle actually found: {latest['timestamp']}  (off by {diff})")
+        if diff > pd.Timedelta(minutes=30):
+            print(
+                "  -> WARNING: closest match is more than 30 minutes off the "
+                "requested time — double check --interval/--period cover the "
+                "date you want, and that the UTC conversion is right."
+            )
+    else:
+        latest = features.iloc[-1]
     timestamp = latest.get("timestamp", "unknown")
 
     close = float(latest["close"])
@@ -216,8 +259,9 @@ def main() -> None:
     kc_lower = float(latest["kc_lower"])
     market_regime = str(latest.get("market_regime", "UNKNOWN"))
 
+    candle_label = "selected candle" if args.at else "latest candle"
     print("\n" + "=" * 60)
-    print(f"{args.symbol} — latest candle: {timestamp}")
+    print(f"{args.symbol} — {candle_label}: {timestamp}")
     print("=" * 60)
 
     print(f"\nClose price: {close:.2f}")

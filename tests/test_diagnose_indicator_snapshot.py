@@ -7,7 +7,10 @@ test in isolation).
 
 import math
 
+import pandas as pd
+
 from scripts.diagnose_indicator_snapshot import (
+    _as_utc,
     _band_position,
     _bollinger_position,
     _cci_read,
@@ -18,6 +21,7 @@ from scripts.diagnose_indicator_snapshot import (
     _obv_read,
     _pivot_read,
     _roc_read,
+    _select_candle_near,
     _side,
     _stochastic_read,
     _williams_r_read,
@@ -224,3 +228,38 @@ def test_fmt_matches_isnan_contract():
     # Sanity check that our NaN check actually catches math.nan the way
     # engine dataframes surface missing values (float NaN, not None).
     assert math.isnan(float("nan"))
+
+
+def test_as_utc_naive_string_localized_to_utc():
+    result = _as_utc("2026-08-12 08:45")
+    assert str(result.tz) == "UTC"
+    assert result.hour == 8 and result.minute == 45
+
+
+def test_as_utc_aware_string_converted_to_utc():
+    result = _as_utc("2026-08-12 14:15+05:30")
+    assert str(result.tz) == "UTC"
+    assert result.hour == 8 and result.minute == 45
+
+
+def test_select_candle_near_exact_match():
+    timestamps = pd.date_range("2026-08-01", periods=5, freq="1h", tz="UTC")
+    features = pd.DataFrame({"timestamp": timestamps, "close": [1.0, 2.0, 3.0, 4.0, 5.0]})
+    row, diff = _select_candle_near(features, "2026-08-01 02:00")
+    assert row["close"] == 3.0
+    assert diff == pd.Timedelta(0)
+
+
+def test_select_candle_near_picks_closest_when_no_exact_match():
+    timestamps = pd.date_range("2026-08-01", periods=5, freq="1h", tz="UTC")
+    features = pd.DataFrame({"timestamp": timestamps, "close": [1.0, 2.0, 3.0, 4.0, 5.0]})
+    row, diff = _select_candle_near(features, "2026-08-01 02:20")
+    assert row["close"] == 3.0
+    assert diff == pd.Timedelta(minutes=20)
+
+
+def test_select_candle_near_far_off_reports_large_diff():
+    timestamps = pd.date_range("2026-08-01", periods=5, freq="1h", tz="UTC")
+    features = pd.DataFrame({"timestamp": timestamps, "close": [1.0, 2.0, 3.0, 4.0, 5.0]})
+    row, diff = _select_candle_near(features, "2026-09-01 00:00")
+    assert diff > pd.Timedelta(days=1)
