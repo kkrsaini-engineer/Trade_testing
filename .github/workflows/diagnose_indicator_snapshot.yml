@@ -19,6 +19,10 @@ on:
         description: "Optional — pick a specific CLOSED candle instead of the latest (UTC, e.g. '2026-08-12 08:45'). Convert your broker's IST time by subtracting 5:30. Leave blank for the latest candle."
         required: false
         default: ""
+      dump_day:
+        description: "Optional — print the FULL raw OHLCV candle sequence for one IST day (e.g. '2026-08-12') instead of a single-candle report, to compare candle-by-candle against your broker chart. Leave blank for the normal indicator report."
+        required: false
+        default: ""
 
 jobs:
   diagnose:
@@ -37,4 +41,5 @@ jobs:
             --symbol "${{ inputs.symbol }}" \
             --interval "${{ inputs.interval }}" \
             --period "${{ inputs.period }}" \
-            ${{ inputs.at != '' && format('--at "{0}"', inputs.at) || '' }}
+            ${{ inputs.at != '' && format('--at "{0}"', inputs.at) || '' }} \
+            ${{ inputs.dump_day != '' && format('--dump-day "{0}"', inputs.dump_day) || '' }}
