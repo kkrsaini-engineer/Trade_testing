@@ -1,0 +1,20 @@
+{
+  "total_capital": 500000.0,
+  "available_capital": 500000.0,
+  "used_capital": 0.0,
+  "total_pnl": 0.0,
+  "total_pnl_percent": 0.0,
+  "exposure": 0.0,
+  "risk_score": 0.0,
+  "peak_equity": 500000.0,
+  "day_start_equity": 500000.0,
+  "current_trading_day": "2026-08-18",
+  "week_start_equity": 500000.0,
+  "current_trading_week": "2026-W34",
+  "month_start_equity": 500000.0,
+  "current_trading_month": "2026-08",
+  "open_positions": {},
+  "closed_positions": [],
+  "symbol_sector": {},
+  "saved_at": 1787024921.9585245
+}

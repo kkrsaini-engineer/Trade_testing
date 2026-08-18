@@ -1,0 +1,190 @@
+{
+  "signal_counts": {
+    "BUY": 104,
+    "NO_TRADE": 394,
+    "SELL": 2
+  },
+  "total_scans": 500,
+  "buy_stats": {
+    "count": 104,
+    "avg_confidence": 70.86,
+    "min_confidence": 65.19,
+    "max_confidence": 80.56
+  },
+  "sell_stats": {
+    "count": 2,
+    "avg_confidence": 68.27,
+    "min_confidence": 65.37,
+    "max_confidence": 71.16
+  },
+  "no_trade_stats": {
+    "count": 394
+  },
+  "sell_signal_vs_opened": {
+    "sell_signals": 2,
+    "sell_trades_opened": 0,
+    "gap": 2,
+    "gap_reasons": {
+      "Risk Engine": 2
+    }
+  },
+  "tier1_pass_rate": {
+    "buy": 40.8,
+    "sell": 26.4
+  },
+  "tier_contribution": {
+    "buy_tier2_avg": 38.67,
+    "buy_tier2_n": 500,
+    "buy_tier3_avg": 64.49,
+    "buy_tier3_n": 500,
+    "sell_tier2_avg": 35.71,
+    "sell_tier2_n": 500,
+    "sell_tier3_avg": 35.51,
+    "sell_tier3_n": 500
+  },
+  "tier4_rejection_reasons": {
+    "Decision engine rejected trade.": 394,
+    "NaN values detected.": 106
+  },
+  "sector_stats": {
+    "Financial Services": {
+      "BUY": 18,
+      "NO_TRADE": 79
+    },
+    "Industrials": {
+      "NO_TRADE": 68,
+      "BUY": 21,
+      "SELL": 1
+    },
+    "Basic Materials": {
+      "NO_TRADE": 49,
+      "BUY": 13
+    },
+    "Utilities": {
+      "NO_TRADE": 19,
+      "BUY": 2
+    },
+    "Consumer Defensive": {
+      "NO_TRADE": 25,
+      "BUY": 3
+    },
+    "Healthcare": {
+      "NO_TRADE": 39,
+      "BUY": 12
+    },
+    "Energy": {
+      "NO_TRADE": 13,
+      "BUY": 2
+    },
+    "Consumer Cyclical": {
+      "NO_TRADE": 47,
+      "BUY": 22
+    },
+    "Real Estate": {
+      "NO_TRADE": 9,
+      "BUY": 2
+    },
+    "Communication Services": {
+      "NO_TRADE": 12,
+      "BUY": 2
+    },
+    "Technology": {
+      "NO_TRADE": 33,
+      "BUY": 7,
+      "SELL": 1
+    },
+    "UNKNOWN": {
+      "NO_TRADE": 1
+    }
+  },
+  "unknown_sector_symbols": [
+    "JSWDULUX.NS"
+  ],
+  "regime_percentages": {
+    "BULL": 39.6,
+    "BEAR": 28.0,
+    "SIDEWAYS": 32.4
+  },
+  "top_buy_sectors": [
+    [
+      "Consumer Cyclical",
+      22
+    ],
+    [
+      "Industrials",
+      21
+    ],
+    [
+      "Financial Services",
+      18
+    ]
+  ],
+  "weakest_buy_sectors": [
+    [
+      "UNKNOWN",
+      0
+    ],
+    [
+      "Utilities",
+      2
+    ],
+    [
+      "Energy",
+      2
+    ]
+  ],
+  "rejection_funnel": {
+    "buy_side_scanned": 498,
+    "buy_candidates": 104,
+    "rejected_by_trend": 294,
+    "rejected_by_risk": 0,
+    "rejected_by_portfolio": 0,
+    "rejected_by_liquidity": 0,
+    "rejected_by_score_threshold": 100,
+    "rejected_by_insufficient_history": 0,
+    "rejected_by_other": 0,
+    "other_reasons_breakdown": {},
+    "executed": 0
+  },
+  "execution_summary": {
+    "buy_generated": 104,
+    "buy_executed": 0,
+    "buy_rejected": 104,
+    "reasons": {
+      "Not Attempted (ranked below daily candidate limit)": 84,
+      "Risk Engine (execution stage)": 20
+    }
+  },
+  "regime_stats": {
+    "BULL": {
+      "BUY": 104,
+      "NO_TRADE": 94
+    },
+    "BEAR": {
+      "NO_TRADE": 138,
+      "SELL": 2
+    },
+    "SIDEWAYS": {
+      "NO_TRADE": 162
+    }
+  },
+  "top_rejection_reasons": {
+    "AI rejected the trade due to insufficient conviction.": 394,
+    "SELL engine validation failed (combined score 51.4, need 65).": 5,
+    "BUY engine validation failed (combined score 53.1, need 65).": 5,
+    "SELL engine validation failed (combined score 53.9, need 65).": 5,
+    "BUY engine validation failed (combined score 45.5, need 65).": 4,
+    "BUY engine validation failed (combined score 45.4, need 65).": 4,
+    "SELL engine validation failed (combined score 53.1, need 65).": 4,
+    "BUY engine validation failed (combined score 51.5, need 65).": 4,
+    "SELL engine validation failed (combined score 44.9, need 65).": 4,
+    "SELL engine validation failed (combined score 37.8, need 65).": 4
+  },
+  "daily_summary": {
+    "2026-08-17": {
+      "BUY": 104,
+      "NO_TRADE": 394,
+      "SELL": 2
+    }
+  }
+}

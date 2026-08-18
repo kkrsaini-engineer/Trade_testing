@@ -1,0 +1,2 @@
+Date,OpenedToday,ClosedToday,PartialExitsToday,Monitored,OpenPositions,ClosedPositions,CashBalance,PortfolioValue,RealizedPnL,PortfolioReturnPercent,WinRate,LossRate,AverageHoldingDays,SectorExposure,ClosedToday_Detail,OpenedToday_Detail,PartialExitsToday_Detail
+2026-08-18,0,0,0,0,0,0,500000.0,500000.0,0.0,0.0,,,0.0,{},[],[],[]
