@@ -156,6 +156,66 @@ def _select_candle_near(features: pd.DataFrame, at: str) -> tuple[pd.Series, pd.
     return features.loc[match_index], diffs.loc[match_index]
 
 
+def _rows_for_ist_day(features: pd.DataFrame, day: str) -> pd.DataFrame:
+    """Every candle whose IST calendar date matches `day` (a
+    'YYYY-MM-DD' string), sorted chronologically, with both the raw
+    (as-fetched) timestamp and its Asia/Kolkata conversion attached.
+
+    Used by --dump-day to print the FULL raw OHLCV sequence for one
+    trading day, so it can be lined up candle-by-candle against a
+    broker's own chart — this is the tool for testing a candle-
+    labeling-convention mismatch (start-time vs end-time labeling)
+    between the engine's data source and a broker, which a single
+    indicator value in isolation can't distinguish from a genuine
+    data/formula difference.
+    """
+    target_date = pd.Timestamp(day).date()
+    timestamps_utc = pd.to_datetime(features["timestamp"], utc=True)
+    timestamps_ist = timestamps_utc.dt.tz_convert("Asia/Kolkata")
+    mask = timestamps_ist.dt.date == target_date
+    day_rows = features.loc[mask].copy()
+    day_rows["timestamp_ist"] = timestamps_ist.loc[mask]
+    return day_rows.sort_values("timestamp_ist")
+
+
+def _print_day_dump(features: pd.DataFrame, day: str) -> None:
+    day_rows = _rows_for_ist_day(features, day)
+    print("\n" + "=" * 78)
+    print(f"Raw candle sequence for IST calendar date {day}")
+    print("=" * 78)
+    if day_rows.empty:
+        print(
+            f"No candles found on {day} in the fetched data. Check that "
+            f"--interval/--period actually cover this date (e.g. 60m data "
+            f"with period=1mo only covers roughly the last month)."
+        )
+        return
+    print(f"{len(day_rows)} candle(s) found. Line these up against your")
+    print("broker chart's own candles for the SAME day, one by one, to")
+    print("check whether a candle labeled e.g. '14:15' on one side lines")
+    print("up with a candle labeled '15:15' on the other (start-time vs")
+    print("end-time labeling), rather than comparing a single indicator")
+    print("value in isolation.\n")
+    header = f"{'#':>2}  {'timestamp (IST)':<20}  {'timestamp (raw/UTC)':<26}  " \
+        f"{'open':>10}  {'high':>10}  {'low':>10}  {'close':>10}  {'volume':>14}"
+    print(header)
+    print("-" * len(header))
+    for position, (_, row) in enumerate(day_rows.iterrows(), start=1):
+        ist_str = row["timestamp_ist"].strftime("%Y-%m-%d %H:%M:%S")
+        raw_str = str(row["timestamp"])
+        print(
+            f"{position:>2}  {ist_str:<20}  {raw_str:<26}  "
+            f"{row['open']:>10.2f}  {row['high']:>10.2f}  {row['low']:>10.2f}  "
+            f"{row['close']:>10.2f}  {row['volume']:>14,.0f}"
+        )
+    print(
+        "\nNOTE: 'timestamp (IST)' is the raw fetched timestamp converted to "
+        "Asia/Kolkata for readability — it is NOT a claim about which end of "
+        "the candle's time window that raw timestamp actually labels. That's "
+        "exactly the open question this dump is meant to help resolve."
+    )
+
+
 def _pivot_read(close: float, pivot: float, resistance_1: float, support_1: float) -> str:
     if any(math.isnan(v) for v in (close, pivot, resistance_1, support_1)):
         return "N/A (not enough data for this window)."
@@ -190,6 +250,20 @@ def main() -> None:
             "volume' display convention on the broker's side)."
         ),
     )
+    parser.add_argument(
+        "--dump-day", default=None, metavar="YYYY-MM-DD",
+        help=(
+            "Print the FULL raw OHLCV candle sequence for one IST calendar "
+            "day (e.g. '2026-08-12') instead of a single-candle indicator "
+            "snapshot — so you can line it up candle-by-candle against your "
+            "broker's chart for the same day. Use this to test whether a "
+            "candle's clock label refers to the START or END of its time "
+            "window (a labeling-convention mismatch would explain a gap "
+            "that shows up only on short-window/volume indicators like "
+            "CMF/MFI but not on long-converged ones like RSI/ADX). When "
+            "given, this replaces the usual indicator report for this run."
+        ),
+    )
     args = parser.parse_args()
 
     print(f"Fetching {args.symbol} @ interval={args.interval} period={args.period} ...")
@@ -199,6 +273,10 @@ def main() -> None:
     print("Computing real technical features (same engine the live scan uses) ...")
     features = FeatureEngineeringEngine().generate(market_data)
     features = MarketRegimeEngine().evaluate(features)
+
+    if args.dump_day:
+        _print_day_dump(features, args.dump_day)
+        return
 
     if args.at:
         latest, diff = _select_candle_near(features, args.at)

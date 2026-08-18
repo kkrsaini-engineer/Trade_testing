@@ -20,12 +20,39 @@ from scripts.diagnose_indicator_snapshot import (
     _mfi_read,
     _obv_read,
     _pivot_read,
+    _print_day_dump,
     _roc_read,
+    _rows_for_ist_day,
     _select_candle_near,
     _side,
     _stochastic_read,
     _williams_r_read,
 )
+
+
+def _synthetic_multiday_features(days: int = 3, candles_per_day: int = 7) -> pd.DataFrame:
+    """Synthetic 60m-style OHLCV rows spanning several IST trading days,
+    labeled at 9:15, 10:15, ... IST and converted to UTC — mirrors what
+    MarketDataProvider's real fetch (yfinance) hands back for interval=60m."""
+    rows = []
+    base_day = pd.Timestamp("2026-08-10", tz="Asia/Kolkata")
+    close = 100.0
+    for day_offset in range(days):
+        day = base_day + pd.Timedelta(days=day_offset)
+        for hour in range(candles_per_day):
+            candle_time = day + pd.Timedelta(hours=9, minutes=15) + pd.Timedelta(hours=hour)
+            close += 0.5
+            rows.append(
+                {
+                    "timestamp": candle_time.tz_convert("UTC"),
+                    "open": close - 0.5,
+                    "high": close + 1.0,
+                    "low": close - 1.0,
+                    "close": close,
+                    "volume": 100_000.0,
+                }
+            )
+    return pd.DataFrame(rows)
 
 
 def test_above_upper_band():
@@ -263,3 +290,48 @@ def test_select_candle_near_far_off_reports_large_diff():
     features = pd.DataFrame({"timestamp": timestamps, "close": [1.0, 2.0, 3.0, 4.0, 5.0]})
     row, diff = _select_candle_near(features, "2026-09-01 00:00")
     assert diff > pd.Timedelta(days=1)
+
+
+def test_rows_for_ist_day_returns_only_that_days_candles():
+    features = _synthetic_multiday_features(days=3, candles_per_day=7)
+    day_rows = _rows_for_ist_day(features, "2026-08-11")
+    assert len(day_rows) == 7
+    assert (day_rows["timestamp_ist"].dt.date == pd.Timestamp("2026-08-11").date()).all()
+
+
+def test_rows_for_ist_day_sorted_chronologically():
+    features = _synthetic_multiday_features(days=1, candles_per_day=7)
+    # Shuffle the rows to prove sorting isn't just accidental row order.
+    shuffled = features.sample(frac=1.0, random_state=0).reset_index(drop=True)
+    day_rows = _rows_for_ist_day(shuffled, "2026-08-10")
+    ist_times = day_rows["timestamp_ist"].tolist()
+    assert ist_times == sorted(ist_times)
+
+
+def test_rows_for_ist_day_first_candle_is_915_ist():
+    features = _synthetic_multiday_features(days=1, candles_per_day=7)
+    day_rows = _rows_for_ist_day(features, "2026-08-10")
+    first = day_rows.iloc[0]["timestamp_ist"]
+    assert (first.hour, first.minute) == (9, 15)
+
+
+def test_rows_for_ist_day_no_match_returns_empty():
+    features = _synthetic_multiday_features(days=1, candles_per_day=7)
+    day_rows = _rows_for_ist_day(features, "2026-09-01")
+    assert day_rows.empty
+
+
+def test_print_day_dump_with_candles(capsys):
+    features = _synthetic_multiday_features(days=1, candles_per_day=7)
+    _print_day_dump(features, "2026-08-10")
+    output = capsys.readouterr().out
+    assert "7 candle(s) found" in output
+    assert "09:15:00" in output
+    assert "15:15:00" in output
+
+
+def test_print_day_dump_no_candles(capsys):
+    features = _synthetic_multiday_features(days=1, candles_per_day=7)
+    _print_day_dump(features, "2026-09-01")
+    output = capsys.readouterr().out
+    assert "No candles found on 2026-09-01" in output
