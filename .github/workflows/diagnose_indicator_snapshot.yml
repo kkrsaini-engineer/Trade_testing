@@ -1,36 +1,9 @@
-name: Diagnose Indicator Snapshot (single symbol, real engine)
+name: Diagnose CMF-MFI Daily Window (no fields — just click Run)
 
+# No inputs at all — every value is fixed below. Click "Run workflow"
+# and go, nothing to fill in or get wrong.
 on:
-  workflow_dispatch:
-    inputs:
-      symbol:
-        description: "Symbol to check (e.g. HDFCBANK.NS)"
-        required: true
-        default: "HDFCBANK.NS"
-      interval:
-        description: "Candle interval — e.g. 1d, 60m, 15m"
-        required: true
-        default: "1d"
-      period:
-        description: "How far back to fetch — e.g. 1y for interval=1d, 1mo for interval=60m"
-        required: true
-        default: "1y"
-      at:
-        description: "Optional — pick a specific CLOSED candle instead of the latest (UTC, e.g. '2026-08-12 08:45'). Convert your broker's IST time by subtracting 5:30. Leave blank for the latest candle."
-        required: false
-        default: ""
-      dump_day:
-        description: "Optional — print the FULL raw OHLCV candle sequence for one IST day (e.g. '2026-08-12') instead of a single-candle report, to compare candle-by-candle against your broker chart. Leave blank for the normal indicator report."
-        required: false
-        default: ""
-      scan_zero_volume:
-        description: "Optional — set to 'true' to scan the FULL fetched dataset for candles with volume == 0 and report whether they cluster on one IST time-of-day (e.g. every day's opening candle). Use a wider period like 60m/3mo for a meaningful sample. Leave blank for the normal indicator report."
-        required: false
-        default: ""
-      show_cmf_mfi_window:
-        description: "Optional — set to 'true' to also print every bar in the CMF(21)/MFI(14) rolling windows behind the selected candle (latest, or the one picked by --at), flagging zero-volume bars — proves/disproves whether the opening-candle volume bug is what's causing a CMF/MFI gap for that candle. Ignored if dump_day or scan_zero_volume is set. Leave blank to skip."
-        required: false
-        default: ""
+  workflow_dispatch: {}
 
 jobs:
   diagnose:
@@ -43,13 +16,10 @@ jobs:
           python-version: "3.10"
       - name: Install dependencies
         run: pip install -r requirements.txt
-      - name: Run diagnose_indicator_snapshot.py
+      - name: Run diagnose_indicator_snapshot.py (daily candles, CMF/MFI window check)
         run: |
           PYTHONPATH=. python scripts/diagnose_indicator_snapshot.py \
-            --symbol "${{ inputs.symbol }}" \
-            --interval "${{ inputs.interval }}" \
-            --period "${{ inputs.period }}" \
-            ${{ inputs.at != '' && format('--at "{0}"', inputs.at) || '' }} \
-            ${{ inputs.dump_day != '' && format('--dump-day "{0}"', inputs.dump_day) || '' }} \
-            ${{ inputs.scan_zero_volume == 'true' && '--scan-zero-volume' || '' }} \
-            ${{ inputs.show_cmf_mfi_window == 'true' && '--show-cmf-mfi-window' || '' }}
+            --symbol "HDFCBANK.NS" \
+            --interval "1d" \
+            --period "3mo" \
+            --show-cmf-mfi-window
