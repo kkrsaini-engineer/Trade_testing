@@ -46,3 +46,5 @@
 {"date": "2026-08-17", "symbol": "SWANCORP.NS", "direction": "SELL", "entry_price": 304.6}
 {"date": "2026-08-18", "symbol": "NATIONALUM.NS", "direction": "BUY", "entry_price": 376.0}
 {"date": "2026-08-18", "symbol": "SWANCORP.NS", "direction": "SELL", "entry_price": 304.6}
+{"date": "2026-08-19", "symbol": "AUBANK.NS", "direction": "BUY", "entry_price": 1075.7}
+{"date": "2026-08-19", "symbol": "PIIND.NS", "direction": "SELL", "entry_price": 2515.0}
