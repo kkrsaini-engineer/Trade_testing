@@ -27,6 +27,10 @@ on:
         description: "Optional — set to 'true' to scan the FULL fetched dataset for candles with volume == 0 and report whether they cluster on one IST time-of-day (e.g. every day's opening candle). Use a wider period like 60m/3mo for a meaningful sample. Leave blank for the normal indicator report."
         required: false
         default: ""
+      show_cmf_mfi_window:
+        description: "Optional — set to 'true' to also print every bar in the CMF(21)/MFI(14) rolling windows behind the selected candle (latest, or the one picked by --at), flagging zero-volume bars — proves/disproves whether the opening-candle volume bug is what's causing a CMF/MFI gap for that candle. Ignored if dump_day or scan_zero_volume is set. Leave blank to skip."
+        required: false
+        default: ""
 
 jobs:
   diagnose:
@@ -47,4 +51,5 @@ jobs:
             --period "${{ inputs.period }}" \
             ${{ inputs.at != '' && format('--at "{0}"', inputs.at) || '' }} \
             ${{ inputs.dump_day != '' && format('--dump-day "{0}"', inputs.dump_day) || '' }} \
-            ${{ inputs.scan_zero_volume == 'true' && '--scan-zero-volume' || '' }}
+            ${{ inputs.scan_zero_volume == 'true' && '--scan-zero-volume' || '' }} \
+            ${{ inputs.show_cmf_mfi_window == 'true' && '--show-cmf-mfi-window' || '' }}
