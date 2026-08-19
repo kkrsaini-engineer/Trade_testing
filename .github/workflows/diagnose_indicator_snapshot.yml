@@ -23,6 +23,10 @@ on:
         description: "Optional — print the FULL raw OHLCV candle sequence for one IST day (e.g. '2026-08-12') instead of a single-candle report, to compare candle-by-candle against your broker chart. Leave blank for the normal indicator report."
         required: false
         default: ""
+      scan_zero_volume:
+        description: "Optional — set to 'true' to scan the FULL fetched dataset for candles with volume == 0 and report whether they cluster on one IST time-of-day (e.g. every day's opening candle). Use a wider period like 60m/3mo for a meaningful sample. Leave blank for the normal indicator report."
+        required: false
+        default: ""
 
 jobs:
   diagnose:
@@ -42,4 +46,5 @@ jobs:
             --interval "${{ inputs.interval }}" \
             --period "${{ inputs.period }}" \
             ${{ inputs.at != '' && format('--at "{0}"', inputs.at) || '' }} \
-            ${{ inputs.dump_day != '' && format('--dump-day "{0}"', inputs.dump_day) || '' }}
+            ${{ inputs.dump_day != '' && format('--dump-day "{0}"', inputs.dump_day) || '' }} \
+            ${{ inputs.scan_zero_volume == 'true' && '--scan-zero-volume' || '' }}
