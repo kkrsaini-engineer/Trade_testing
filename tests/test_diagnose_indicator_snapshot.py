@@ -5,9 +5,11 @@ is a direct pass-through print of real engine output, nothing to unit
 test in isolation).
 """
 
+import argparse
 import math
 
 import pandas as pd
+import pytest
 
 from scripts.diagnose_indicator_snapshot import (
     _as_utc,
@@ -21,19 +23,29 @@ from scripts.diagnose_indicator_snapshot import (
     _obv_read,
     _pivot_read,
     _print_day_dump,
+    _print_zero_volume_scan,
     _roc_read,
     _rows_for_ist_day,
+    _scan_zero_volume,
     _select_candle_near,
     _side,
     _stochastic_read,
+    _validate_day_arg,
     _williams_r_read,
 )
 
 
-def _synthetic_multiday_features(days: int = 3, candles_per_day: int = 7) -> pd.DataFrame:
+def _synthetic_multiday_features(
+    days: int = 3, candles_per_day: int = 7, zero_volume_hours: tuple = ()
+) -> pd.DataFrame:
     """Synthetic 60m-style OHLCV rows spanning several IST trading days,
     labeled at 9:15, 10:15, ... IST and converted to UTC — mirrors what
-    MarketDataProvider's real fetch (yfinance) hands back for interval=60m."""
+    MarketDataProvider's real fetch (yfinance) hands back for interval=60m.
+
+    `zero_volume_hours` is an iterable of hour-offsets-from-9:15 (e.g.
+    (0,) means "every day's 09:15 candle gets volume=0") — used to
+    simulate the real zero-volume-opening-candle finding for the
+    --scan-zero-volume tests below."""
     rows = []
     base_day = pd.Timestamp("2026-08-10", tz="Asia/Kolkata")
     close = 100.0
@@ -42,6 +54,7 @@ def _synthetic_multiday_features(days: int = 3, candles_per_day: int = 7) -> pd.
         for hour in range(candles_per_day):
             candle_time = day + pd.Timedelta(hours=9, minutes=15) + pd.Timedelta(hours=hour)
             close += 0.5
+            volume = 0.0 if hour in zero_volume_hours else 100_000.0
             rows.append(
                 {
                     "timestamp": candle_time.tz_convert("UTC"),
@@ -49,7 +62,7 @@ def _synthetic_multiday_features(days: int = 3, candles_per_day: int = 7) -> pd.
                     "high": close + 1.0,
                     "low": close - 1.0,
                     "close": close,
-                    "volume": 100_000.0,
+                    "volume": volume,
                 }
             )
     return pd.DataFrame(rows)
@@ -335,3 +348,82 @@ def test_print_day_dump_no_candles(capsys):
     _print_day_dump(features, "2026-09-01")
     output = capsys.readouterr().out
     assert "No candles found on 2026-09-01" in output
+
+
+def test_validate_day_arg_accepts_valid_date():
+    assert _validate_day_arg("2026-08-12") == "2026-08-12"
+
+
+def test_validate_day_arg_rejects_non_date_text():
+    # Regression test: a user once pasted descriptive text (not a date)
+    # into the --dump-day / GitHub Actions input field, which previously
+    # crashed deep inside pandas with a raw traceback instead of a clear
+    # argparse error.
+    with pytest.raises(argparse.ArgumentTypeError):
+        _validate_day_arg("timestamp IST + raw/UTC, open, high, low, close, volume")
+
+
+def test_validate_day_arg_rejects_wrong_format():
+    with pytest.raises(argparse.ArgumentTypeError):
+        _validate_day_arg("12-08-2026")
+
+
+def test_validate_day_arg_rejects_invalid_calendar_date():
+    with pytest.raises(argparse.ArgumentTypeError):
+        _validate_day_arg("2026-13-40")
+
+
+def test_validate_day_arg_rejects_empty_string():
+    with pytest.raises(argparse.ArgumentTypeError):
+        _validate_day_arg("")
+
+
+def test_scan_zero_volume_finds_only_zero_rows():
+    features = _synthetic_multiday_features(days=3, candles_per_day=7, zero_volume_hours=(0,))
+    zero_rows = _scan_zero_volume(features)
+    assert len(zero_rows) == 3
+    assert (zero_rows["volume"] == 0).all()
+
+
+def test_scan_zero_volume_clusters_on_same_ist_time():
+    features = _synthetic_multiday_features(days=4, candles_per_day=7, zero_volume_hours=(0,))
+    zero_rows = _scan_zero_volume(features)
+    times = zero_rows["timestamp_ist"].dt.strftime("%H:%M").unique()
+    assert list(times) == ["09:15"]
+
+
+def test_scan_zero_volume_empty_when_no_zero_volume_rows():
+    features = _synthetic_multiday_features(days=3, candles_per_day=7)
+    zero_rows = _scan_zero_volume(features)
+    assert zero_rows.empty
+
+
+def test_scan_zero_volume_sorted_chronologically():
+    features = _synthetic_multiday_features(days=4, candles_per_day=7, zero_volume_hours=(0, 6))
+    shuffled = features.sample(frac=1.0, random_state=0).reset_index(drop=True)
+    zero_rows = _scan_zero_volume(shuffled)
+    ist_times = zero_rows["timestamp_ist"].tolist()
+    assert ist_times == sorted(ist_times)
+
+
+def test_print_zero_volume_scan_reports_systemic_pattern(capsys):
+    features = _synthetic_multiday_features(days=5, candles_per_day=7, zero_volume_hours=(0,))
+    _print_zero_volume_scan(features)
+    output = capsys.readouterr().out
+    assert "5 candle(s) have volume == 0" in output
+    assert "09:15 IST: 5 candle(s)" in output
+    assert "PATTERN" in output and "SYSTEMIC" in output
+
+
+def test_print_zero_volume_scan_no_pattern_when_scattered_times(capsys):
+    features = _synthetic_multiday_features(days=1, candles_per_day=7, zero_volume_hours=(0, 3))
+    _print_zero_volume_scan(features)
+    output = capsys.readouterr().out
+    assert "No single dominant time-of-day pattern" in output
+
+
+def test_print_zero_volume_scan_clean_when_no_zero_rows(capsys):
+    features = _synthetic_multiday_features(days=2, candles_per_day=7)
+    _print_zero_volume_scan(features)
+    output = capsys.readouterr().out
+    assert "No zero-volume candles found in this fetch — clean" in output

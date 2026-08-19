@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import argparse
 import math
+import re
 
 import pandas as pd
 
@@ -156,6 +157,23 @@ def _select_candle_near(features: pd.DataFrame, at: str) -> tuple[pd.Series, pd.
     return features.loc[match_index], diffs.loc[match_index]
 
 
+def _validate_day_arg(value: str) -> str:
+    """argparse `type=` for --dump-day: reject anything that isn't a
+    real YYYY-MM-DD date up front, with a clear message — instead of a
+    raw pandas traceback if someone pastes the wrong text into the
+    field (e.g. a GitHub Actions workflow_dispatch text input)."""
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
+        raise argparse.ArgumentTypeError(
+            f"--dump-day expects a date in YYYY-MM-DD format (e.g. "
+            f"'2026-08-12'), got: {value!r}"
+        )
+    try:
+        pd.Timestamp(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError(f"--dump-day: {value!r} is not a valid date ({exc})")
+    return value
+
+
 def _rows_for_ist_day(features: pd.DataFrame, day: str) -> pd.DataFrame:
     """Every candle whose IST calendar date matches `day` (a
     'YYYY-MM-DD' string), sorted chronologically, with both the raw
@@ -216,6 +234,84 @@ def _print_day_dump(features: pd.DataFrame, day: str) -> None:
     )
 
 
+def _scan_zero_volume(features: pd.DataFrame) -> pd.DataFrame:
+    """Every row in the FULL fetched dataset (all days, not just one)
+    where volume is exactly 0 — with IST timestamp attached — so a
+    systemic pattern (e.g. "always the day's opening candle") is
+    visible in a single run instead of needing a separate --dump-day
+    check per date.
+
+    Real-data finding this exists to confirm/refute at scale: on
+    HDFCBANK.NS 60m/1mo, the 2026-08-12 09:15 IST candle came back
+    with volume=0 from the fetch while the broker's own chart showed
+    Volume=6.290M for the exact same candle (OHLC matched exactly, so
+    this is NOT a candle-labeling mismatch — it's a genuine zeroed-out
+    volume value on this one fetch). CMF(21) and MFI(14) are both
+    volume-weighted rolling sums spanning multiple trading days (21
+    bars ~= 3 days, 14 bars ~= 2 days at 7 candles/day), so if EVERY
+    day's opening candle comes back zero-volume, every CMF/MFI window
+    that includes one — which, given the window sizes, is nearly every
+    window — would be silently corrupted. This scan is how that
+    hypothesis gets tested against real fetched data.
+    """
+    timestamps_ist = pd.to_datetime(features["timestamp"], utc=True).dt.tz_convert("Asia/Kolkata")
+    zero_rows = features.loc[features["volume"] == 0].copy()
+    zero_rows["timestamp_ist"] = timestamps_ist.loc[zero_rows.index]
+    return zero_rows.sort_values("timestamp_ist")
+
+
+def _print_zero_volume_scan(features: pd.DataFrame) -> None:
+    zero_rows = _scan_zero_volume(features)
+    total = len(features)
+    print("\n" + "=" * 78)
+    print("Zero-volume candle scan (full fetched dataset, all days)")
+    print("=" * 78)
+    print(f"{total} candle(s) fetched in total.")
+    if zero_rows.empty:
+        print("No zero-volume candles found in this fetch — clean, no anomaly here.")
+        return
+
+    pct = len(zero_rows) / total * 100 if total else 0.0
+    print(f"{len(zero_rows)} candle(s) have volume == 0 ({pct:.1f}% of all fetched rows).\n")
+
+    time_of_day_counts = zero_rows["timestamp_ist"].dt.strftime("%H:%M").value_counts().sort_index()
+    print("Breakdown by IST time-of-day (which clock slot the zero-volume candles land on):")
+    for time_label, count in time_of_day_counts.items():
+        print(f"  {time_label} IST: {count} candle(s)")
+
+    print("\nFull list of zero-volume candles:")
+    header = f"{'timestamp (IST)':<20}  {'timestamp (raw/UTC)':<26}  " \
+        f"{'open':>10}  {'high':>10}  {'low':>10}  {'close':>10}"
+    print(header)
+    print("-" * len(header))
+    for _, row in zero_rows.iterrows():
+        ist_str = row["timestamp_ist"].strftime("%Y-%m-%d %H:%M:%S")
+        raw_str = str(row["timestamp"])
+        print(
+            f"{ist_str:<20}  {raw_str:<26}  {row['open']:>10.2f}  "
+            f"{row['high']:>10.2f}  {row['low']:>10.2f}  {row['close']:>10.2f}"
+        )
+
+    if len(time_of_day_counts) == 1 and len(zero_rows) > 1:
+        print(
+            f"\n-> PATTERN: every zero-volume candle lands on the SAME IST "
+            f"time-of-day ({time_of_day_counts.index[0]}) — this looks "
+            f"SYSTEMIC (e.g. every trading day's opening candle), not a "
+            f"one-off. If your broker shows a real (non-zero) volume for "
+            f"this same clock slot, this is a strong candidate for the "
+            f"real root cause behind the CMF/MFI gap — both are volume-"
+            f"weighted rolling sums spanning multiple days, so a zeroed-"
+            f"out bar at a fixed daily slot would corrupt nearly every "
+            f"window that includes it."
+        )
+    else:
+        print(
+            "\n-> No single dominant time-of-day pattern — zero-volume "
+            "candles are spread across different clock slots, which "
+            "points away from a simple 'always the opening candle' cause."
+        )
+
+
 def _pivot_read(close: float, pivot: float, resistance_1: float, support_1: float) -> str:
     if any(math.isnan(v) for v in (close, pivot, resistance_1, support_1)):
         return "N/A (not enough data for this window)."
@@ -251,7 +347,7 @@ def main() -> None:
         ),
     )
     parser.add_argument(
-        "--dump-day", default=None, metavar="YYYY-MM-DD",
+        "--dump-day", default=None, metavar="YYYY-MM-DD", type=_validate_day_arg,
         help=(
             "Print the FULL raw OHLCV candle sequence for one IST calendar "
             "day (e.g. '2026-08-12') instead of a single-candle indicator "
@@ -264,6 +360,18 @@ def main() -> None:
             "given, this replaces the usual indicator report for this run."
         ),
     )
+    parser.add_argument(
+        "--scan-zero-volume", action="store_true",
+        help=(
+            "Scan the FULL fetched dataset (every day, not just one) for "
+            "candles with volume == 0, and report whether they cluster on "
+            "a single IST time-of-day (e.g. every day's opening candle) — "
+            "run this on a wider --period (e.g. 60m/3mo) for a meaningful "
+            "sample. When given, this replaces the usual indicator report "
+            "for this run (and takes priority over --dump-day/--at if more "
+            "than one is given)."
+        ),
+    )
     args = parser.parse_args()
 
     print(f"Fetching {args.symbol} @ interval={args.interval} period={args.period} ...")
@@ -273,6 +381,10 @@ def main() -> None:
     print("Computing real technical features (same engine the live scan uses) ...")
     features = FeatureEngineeringEngine().generate(market_data)
     features = MarketRegimeEngine().evaluate(features)
+
+    if args.scan_zero_volume:
+        _print_zero_volume_scan(features)
+        return
 
     if args.dump_day:
         _print_day_dump(features, args.dump_day)
