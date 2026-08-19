@@ -23,6 +23,7 @@ from scripts.diagnose_indicator_snapshot import (
     _obv_read,
     _pivot_read,
     _print_day_dump,
+    _print_window_composition,
     _print_zero_volume_scan,
     _roc_read,
     _rows_for_ist_day,
@@ -427,3 +428,50 @@ def test_print_zero_volume_scan_clean_when_no_zero_rows(capsys):
     _print_zero_volume_scan(features)
     output = capsys.readouterr().out
     assert "No zero-volume candles found in this fetch — clean" in output
+
+
+def test_window_composition_flags_zero_volume_bars_in_both_windows(capsys):
+    # 5 trading days, opening (hour 0) candle zero-volume every day —
+    # mirrors the real confirmed finding. Select the LAST candle
+    # (index 34) so both the 21-bar and 14-bar windows are full and
+    # span multiple days' opening candles, matching the hand-verified
+    # real-data case (Aug-18 14:15 in PHASE30_NOTES.md's investigation).
+    features = _synthetic_multiday_features(days=5, candles_per_day=7, zero_volume_hours=(0,))
+    selected = features.iloc[34]
+    _print_window_composition(features, selected)
+    output = capsys.readouterr().out
+    assert "CMF(21) window" in output and "MFI(14) window" in output
+    assert "ZERO VOLUME" in output
+    # 21-bar window ending at index 34 spans indices 14-34 -> covers 3
+    # opening candles (indices 14, 21, 28); 14-bar window spans 21-34
+    # -> covers 2 opening candles (indices 21, 28).
+    assert "3 of 21 bar(s) in this window have volume == 0." in output
+    assert "2 of 14 bar(s) in this window have volume == 0." in output
+
+
+def test_window_composition_no_zero_volume_bars(capsys):
+    features = _synthetic_multiday_features(days=5, candles_per_day=7)
+    selected = features.iloc[34]
+    _print_window_composition(features, selected)
+    output = capsys.readouterr().out
+    assert "0 of 21 bar(s) in this window have volume == 0." in output
+    assert "0 of 14 bar(s) in this window have volume == 0." in output
+    assert "<-- ZERO VOLUME" not in output
+
+
+def test_window_composition_not_enough_history():
+    features = _synthetic_multiday_features(days=1, candles_per_day=3)
+    selected = features.iloc[1]
+    # Should not raise even though there isn't a full 21/14-bar window
+    # available yet — must degrade gracefully, matching real behavior
+    # for early rows in a freshly fetched dataframe.
+    _print_window_composition(features, selected)
+
+
+def test_window_composition_not_enough_history_message(capsys):
+    features = _synthetic_multiday_features(days=1, candles_per_day=3)
+    selected = features.iloc[1]
+    _print_window_composition(features, selected)
+    output = capsys.readouterr().out
+    assert "Not enough history before this candle for a full 21-bar window" in output
+    assert "Not enough history before this candle for a full 14-bar window" in output

@@ -234,6 +234,68 @@ def _print_day_dump(features: pd.DataFrame, day: str) -> None:
     )
 
 
+def _print_window_composition(features: pd.DataFrame, selected_row: pd.Series) -> None:
+    """For the CMF(21)/MFI(14) rolling windows ending at `selected_row`
+    (matching features/indicators/volume.py's `.rolling(21, ...)` /
+    `.rolling(14, ...)` exactly), print every bar's volume with its
+    IST timestamp, flagging any zero-volume bars.
+
+    This exists to turn "CMF/MFI's real-data gap vs a broker is caused
+    by the already-confirmed zero-volume-opening-candle bug being
+    carried forward through these rolling windows" from a plausible
+    theory into something directly checkable against real fetched
+    data — CMF/MFI are NOT a function of just the selected candle,
+    they SUM the trailing 21/14 bars, so a corrupted bar several
+    candles back can still be poisoning today's printed value even
+    when today's own OHLCV matches a broker exactly (see
+    PHASE30_NOTES.md's real-data investigation log).
+    """
+    CMF_WINDOW = 21
+    MFI_WINDOW = 14
+
+    position = features.index.get_loc(selected_row.name)
+    timestamps_ist = pd.to_datetime(features["timestamp"], utc=True).dt.tz_convert("Asia/Kolkata")
+
+    print("\n" + "=" * 78)
+    print("CMF(21) / MFI(14) rolling window composition for the selected candle")
+    print("=" * 78)
+    print(
+        "Real-data check: CMF/MFI don't just look at this one candle — they "
+        "sum the trailing 21 / 14 bars. If any bar in that window below is "
+        "flagged ZERO VOLUME, this candle's CMF/MFI value is being computed "
+        "from data that includes the already-confirmed opening-candle "
+        "volume bug, even if this candle's own volume is completely correct."
+    )
+
+    for label, window in (("CMF(21)", CMF_WINDOW), ("MFI(14)", MFI_WINDOW)):
+        start = position - window + 1
+        print(f"\n{label} window — {window} bar(s) ending at this candle:")
+        if start < 0:
+            print(
+                f"  Not enough history before this candle for a full {window}-bar "
+                f"window (would need {abs(start)} more prior row(s) than are "
+                f"available) — CMF/MFI would be NaN at this candle in the real "
+                f"engine too, nothing to check here."
+            )
+            continue
+        window_rows = features.iloc[start:position + 1]
+        zero_count = int((window_rows["volume"] == 0).sum())
+        print(f"  {zero_count} of {window} bar(s) in this window have volume == 0.")
+        header = f"  {'timestamp (IST)':<20}  {'volume':>14}"
+        print(header)
+        print("  " + "-" * (len(header) - 2))
+        for _, row in window_rows.iterrows():
+            ist_str = timestamps_ist.loc[row.name].strftime("%Y-%m-%d %H:%M:%S")
+            flag = "  <-- ZERO VOLUME" if row["volume"] == 0 else ""
+            print(f"  {ist_str:<20}  {row['volume']:>14,.0f}{flag}")
+
+    print(
+        "\nIf either window above shows 0 zero-volume bars, this candle's "
+        "CMF/MFI gap is NOT explained by the opening-candle bug — that "
+        "would REFUTE the theory above and mean something else is going on."
+    )
+
+
 def _scan_zero_volume(features: pd.DataFrame) -> pd.DataFrame:
     """Every row in the FULL fetched dataset (all days, not just one)
     where volume is exactly 0 — with IST timestamp attached — so a
@@ -370,6 +432,20 @@ def main() -> None:
             "sample. When given, this replaces the usual indicator report "
             "for this run (and takes priority over --dump-day/--at if more "
             "than one is given)."
+        ),
+    )
+    parser.add_argument(
+        "--show-cmf-mfi-window", action="store_true",
+        help=(
+            "After the normal indicator report, also print every bar in "
+            "the CMF(21)/MFI(14) rolling windows ending at the selected "
+            "candle (the latest one, or the one picked by --at), flagging "
+            "any zero-volume bars — direct, checkable proof (or disproof) "
+            "of whether the already-confirmed opening-candle volume bug is "
+            "what's poisoning this candle's CMF/MFI value. Ignored if "
+            "--dump-day or --scan-zero-volume is also given (they replace "
+            "the normal report entirely, so there's no selected candle to "
+            "show a window for)."
         ),
     )
     args = parser.parse_args()
@@ -543,6 +619,9 @@ def main() -> None:
     print(f"  -> candle is {kc_read}")
 
     print(f"\nMarketRegimeEngine's own market_regime label: {market_regime}")
+
+    if args.show_cmf_mfi_window:
+        _print_window_composition(features, latest)
 
     print("\n" + "=" * 60)
     print("These are the EXACT numbers strategy/buy_strategy.py and")
