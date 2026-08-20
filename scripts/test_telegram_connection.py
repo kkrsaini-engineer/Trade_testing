@@ -55,7 +55,7 @@ def main() -> None:
 
     message = (
         "----------------------------------\n"
-        "✅ Automate investent Bot Connected\n"
+        "✅ Trading trail Bot Connected\n"
         "Repository:\n"
         f"{repo_name}\n"
         "Telegram notifications are working successfully.\n"
