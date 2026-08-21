@@ -133,6 +133,22 @@ def trace_one_buy_candidate() -> None:
         print(f"  {k}: {v}{marker}")
     print(f"\nFinal rejection_reason: {validation.rejection_reason}")
 
+    # ADDED: when the "nan" check fails, ValidationEngine only reports
+    # True/False — it never says WHICH column(s) were NaN. Recomputes
+    # the exact same latest_check_row ValidationEngine itself checks
+    # (see decision/validation_engine.py's "nan" check) so the actual
+    # offending column name(s) are visible here instead of guessed.
+    if validation.checks.get("nan") is False:
+        latest_row = dataframe.iloc[-1]
+        latest_check_row = latest_row.drop(labels=["chikou_span"], errors="ignore")
+        nan_columns = latest_check_row[latest_check_row.isna()].index.tolist()
+        print(f"\nColumn(s) causing the 'NaN values detected' rejection: {nan_columns}")
+        for col in nan_columns:
+            # Show the last 5 values of this column too — helps tell
+            # apart "always NaN" (a broken/unfilled feature) from
+            # "NaN only recently" (e.g., a live data-source outage).
+            print(f"  {col} — last 5 values: {dataframe[col].tail(5).tolist()}")
+
 
 if __name__ == "__main__":
     show_portfolio_state()
