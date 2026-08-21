@@ -244,7 +244,22 @@ class ValidationEngine:
         # for the most recent ~26 rows of ANY dataset (live or
         # historical) since it plots the close price shifted backward in
         # time — and it isn't used in any decision logic anyway.
-        latest_check_row = latest.drop(labels=["chikou_span"], errors="ignore")
+        #
+        # "breadth" is excluded for the same class of reason (found via
+        # diagnose_buy_pipeline.py — every single candidate was being
+        # rejected with "NaN values detected."): execution/scanner.py's
+        # FIX #8 deliberately sets dataframe["breadth"] = None (real
+        # market-wide advance/decline data isn't wired into this
+        # per-symbol pipeline yet — see that comment) instead of a
+        # fabricated 50.0, so consumers can tell "unavailable" apart
+        # from "actually neutral". strategy/buy_strategy.py's and
+        # sell_strategy.py's own Tier2 checks already treat a missing
+        # breadth as a no-op (`row.get("breadth", "NEUTRAL") == "STRONG"`
+        # is False for None, contributing nothing either way) — so this
+        # column being None was never meant to block a trade; it just
+        # wasn't excluded here yet, unlike chikou_span, causing EVERY
+        # candidate to fail validation regardless of real signal quality.
+        latest_check_row = latest.drop(labels=["chikou_span", "breadth"], errors="ignore")
         checks["nan"] = not latest_check_row.isna().any()
 
         if rejection_reason is None and not checks["nan"]:
