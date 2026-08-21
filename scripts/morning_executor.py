@@ -270,11 +270,20 @@ def check_capital_portfolio_risk(portfolio_snapshot: dict[str, Any]) -> tuple[bo
         portfolio_risk += 20.0
     elif open_positions_count >= 5:
         portfolio_risk += 10.0
-    if exposure >= 0.90:
+    # Exposure bands shifted up 2026-08-21 (user-requested): capital
+    # utilization should be able to reach 75%+ before ANY risk-score
+    # penalty kicks in. Previously the middle band started at 0.50,
+    # which — combined with the open_positions>=15 band's +35 — was
+    # blocking new trades at just ~51% exposure in production (mirror
+    # of the same threshold in PRO_TRADER, currently dormant here
+    # since open_positions is 0 pending the breadth-bug fix). Position-
+    # count bands above are UNCHANGED — this is a capital-utilization
+    # fix only, not a position-limit or risk-management change.
+    if exposure >= 0.95:
         portfolio_risk += 40.0
-    elif exposure >= 0.75:
+    elif exposure >= 0.85:
         portfolio_risk += 25.0
-    elif exposure >= 0.50:
+    elif exposure >= 0.75:
         portfolio_risk += 10.0
 
     if portfolio_risk >= RiskManager.MAX_PORTFOLIO_RISK:
