@@ -1,5 +1,5 @@
 {
-  "timestamp": 1787203055.9000106,
+  "timestamp": 1787289593.9454083,
   "closed_trades_observed": 0,
   "sector_performance": {},
   "regime_performance": {},
@@ -25,289 +25,289 @@
       "rule_a": "market_trend",
       "rule_b": "market_score",
       "agreement_rate": 100.0,
-      "sample_size": 1500
+      "sample_size": 2000
     },
     {
       "rule_a": "squeeze_breakout",
       "rule_b": "breadth",
       "agreement_rate": 100.0,
-      "sample_size": 1500
+      "sample_size": 2000
     },
     {
       "rule_a": "squeeze_breakout",
       "rule_b": "sector",
       "agreement_rate": 100.0,
-      "sample_size": 1500
+      "sample_size": 2000
     },
     {
       "rule_a": "breadth",
       "rule_b": "sector",
       "agreement_rate": 100.0,
-      "sample_size": 1500
+      "sample_size": 2000
     },
     {
       "rule_a": "breakout",
       "rule_b": "confirmed_breakout",
-      "agreement_rate": 99.0,
-      "sample_size": 1500
+      "agreement_rate": 98.65,
+      "sample_size": 2000
     },
     {
       "rule_a": "not_overextended",
       "rule_b": "not_stale_entry",
-      "agreement_rate": 98.87,
-      "sample_size": 1500
+      "agreement_rate": 98.5,
+      "sample_size": 2000
     },
     {
       "rule_a": "atr_filter",
       "rule_b": "not_overextended",
-      "agreement_rate": 98.47,
-      "sample_size": 1500
+      "agreement_rate": 98.45,
+      "sample_size": 2000
     },
     {
       "rule_a": "ema_fresh_cross",
       "rule_b": "squeeze_breakout",
-      "agreement_rate": 98.07,
-      "sample_size": 1500
+      "agreement_rate": 98.25,
+      "sample_size": 2000
     },
     {
       "rule_a": "ema_fresh_cross",
       "rule_b": "breadth",
-      "agreement_rate": 98.07,
-      "sample_size": 1500
+      "agreement_rate": 98.25,
+      "sample_size": 2000
     },
     {
       "rule_a": "ema_fresh_cross",
       "rule_b": "sector",
-      "agreement_rate": 98.07,
-      "sample_size": 1500
+      "agreement_rate": 98.25,
+      "sample_size": 2000
     },
     {
       "rule_a": "confirmed_breakout",
       "rule_b": "squeeze_breakout",
-      "agreement_rate": 98.0,
-      "sample_size": 1500
+      "agreement_rate": 97.8,
+      "sample_size": 2000
     },
     {
       "rule_a": "confirmed_breakout",
       "rule_b": "breadth",
-      "agreement_rate": 98.0,
-      "sample_size": 1500
+      "agreement_rate": 97.8,
+      "sample_size": 2000
     },
     {
       "rule_a": "confirmed_breakout",
       "rule_b": "sector",
-      "agreement_rate": 98.0,
-      "sample_size": 1500
-    },
-    {
-      "rule_a": "atr_filter",
-      "rule_b": "not_stale_entry",
-      "agreement_rate": 97.87,
-      "sample_size": 1500
+      "agreement_rate": 97.8,
+      "sample_size": 2000
     },
     {
       "rule_a": "not_overextended",
       "rule_b": "volatility",
-      "agreement_rate": 97.27,
-      "sample_size": 1500
+      "agreement_rate": 97.7,
+      "sample_size": 2000
     },
     {
-      "rule_a": "rsi_fresh_cross",
-      "rule_b": "squeeze_breakout",
-      "agreement_rate": 97.13,
-      "sample_size": 1500
-    },
-    {
-      "rule_a": "rsi_fresh_cross",
-      "rule_b": "breadth",
-      "agreement_rate": 97.13,
-      "sample_size": 1500
-    },
-    {
-      "rule_a": "rsi_fresh_cross",
-      "rule_b": "sector",
-      "agreement_rate": 97.13,
-      "sample_size": 1500
+      "rule_a": "atr_filter",
+      "rule_b": "not_stale_entry",
+      "agreement_rate": 97.55,
+      "sample_size": 2000
     },
     {
       "rule_a": "breakout",
       "rule_b": "squeeze_breakout",
-      "agreement_rate": 97.0,
-      "sample_size": 1500
+      "agreement_rate": 96.45,
+      "sample_size": 2000
     },
     {
       "rule_a": "breakout",
       "rule_b": "breadth",
-      "agreement_rate": 97.0,
-      "sample_size": 1500
+      "agreement_rate": 96.45,
+      "sample_size": 2000
     },
     {
       "rule_a": "breakout",
       "rule_b": "sector",
-      "agreement_rate": 97.0,
-      "sample_size": 1500
+      "agreement_rate": 96.45,
+      "sample_size": 2000
+    },
+    {
+      "rule_a": "confirmed_breakout",
+      "rule_b": "ema_fresh_cross",
+      "agreement_rate": 96.45,
+      "sample_size": 2000
     },
     {
       "rule_a": "not_stale_entry",
       "rule_b": "volatility",
       "agreement_rate": 96.4,
-      "sample_size": 1500
-    },
-    {
-      "rule_a": "confirmed_breakout",
-      "rule_b": "ema_fresh_cross",
-      "agreement_rate": 96.33,
-      "sample_size": 1500
+      "sample_size": 2000
     },
     {
       "rule_a": "atr_filter",
       "rule_b": "volatility",
-      "agreement_rate": 95.87,
-      "sample_size": 1500
+      "agreement_rate": 96.35,
+      "sample_size": 2000
     },
     {
-      "rule_a": "confirmed_breakout",
-      "rule_b": "rsi_fresh_cross",
-      "agreement_rate": 95.53,
-      "sample_size": 1500
+      "rule_a": "rsi_fresh_cross",
+      "rule_b": "squeeze_breakout",
+      "agreement_rate": 96.0,
+      "sample_size": 2000
+    },
+    {
+      "rule_a": "rsi_fresh_cross",
+      "rule_b": "breadth",
+      "agreement_rate": 96.0,
+      "sample_size": 2000
+    },
+    {
+      "rule_a": "rsi_fresh_cross",
+      "rule_b": "sector",
+      "agreement_rate": 96.0,
+      "sample_size": 2000
     },
     {
       "rule_a": "breakout",
       "rule_b": "ema_fresh_cross",
-      "agreement_rate": 95.47,
-      "sample_size": 1500
-    },
-    {
-      "rule_a": "ema_fresh_cross",
-      "rule_b": "rsi_fresh_cross",
       "agreement_rate": 95.2,
-      "sample_size": 1500
-    },
-    {
-      "rule_a": "not_overextended",
-      "rule_b": "gap_day",
-      "agreement_rate": 94.73,
-      "sample_size": 1500
-    },
-    {
-      "rule_a": "breakout",
-      "rule_b": "rsi_fresh_cross",
-      "agreement_rate": 94.67,
-      "sample_size": 1500
-    },
-    {
-      "rule_a": "atr_filter",
-      "rule_b": "gap_day",
-      "agreement_rate": 94.27,
-      "sample_size": 1500
+      "sample_size": 2000
     },
     {
       "rule_a": "price_above_ema20",
       "rule_b": "bollinger",
-      "agreement_rate": 94.13,
-      "sample_size": 1500
+      "agreement_rate": 94.25,
+      "sample_size": 2000
     },
     {
-      "rule_a": "not_stale_entry",
-      "rule_b": "gap_day",
-      "agreement_rate": 94.13,
-      "sample_size": 1500
+      "rule_a": "ema_fresh_cross",
+      "rule_b": "rsi_fresh_cross",
+      "agreement_rate": 94.25,
+      "sample_size": 2000
+    },
+    {
+      "rule_a": "confirmed_breakout",
+      "rule_b": "rsi_fresh_cross",
+      "agreement_rate": 94.2,
+      "sample_size": 2000
     },
     {
       "rule_a": "squeeze_breakout",
       "rule_b": "pullback_entry",
-      "agreement_rate": 93.4,
-      "sample_size": 1500
+      "agreement_rate": 93.35,
+      "sample_size": 2000
     },
     {
       "rule_a": "pullback_entry",
       "rule_b": "breadth",
-      "agreement_rate": 93.4,
-      "sample_size": 1500
+      "agreement_rate": 93.35,
+      "sample_size": 2000
     },
     {
       "rule_a": "pullback_entry",
       "rule_b": "sector",
-      "agreement_rate": 93.4,
-      "sample_size": 1500
+      "agreement_rate": 93.35,
+      "sample_size": 2000
     },
     {
-      "rule_a": "rsi_fresh_cross",
-      "rule_b": "pullback_entry",
-      "agreement_rate": 92.53,
-      "sample_size": 1500
-    },
-    {
-      "rule_a": "volatility",
-      "rule_b": "gap_day",
-      "agreement_rate": 92.53,
-      "sample_size": 1500
-    },
-    {
-      "rule_a": "ema_alignment",
-      "rule_b": "market_trend",
-      "agreement_rate": 92.47,
-      "sample_size": 1500
-    },
-    {
-      "rule_a": "ema_alignment",
-      "rule_b": "market_score",
-      "agreement_rate": 92.47,
-      "sample_size": 1500
+      "rule_a": "breakout",
+      "rule_b": "rsi_fresh_cross",
+      "agreement_rate": 92.95,
+      "sample_size": 2000
     },
     {
       "rule_a": "bollinger",
       "rule_b": "donchian",
-      "agreement_rate": 92.4,
-      "sample_size": 1500
+      "agreement_rate": 92.8,
+      "sample_size": 2000
     },
     {
-      "rule_a": "confirmed_breakout",
-      "rule_b": "pullback_entry",
-      "agreement_rate": 92.07,
-      "sample_size": 1500
+      "rule_a": "not_overextended",
+      "rule_b": "gap_day",
+      "agreement_rate": 92.6,
+      "sample_size": 2000
+    },
+    {
+      "rule_a": "ema_alignment",
+      "rule_b": "market_trend",
+      "agreement_rate": 92.3,
+      "sample_size": 2000
+    },
+    {
+      "rule_a": "ema_alignment",
+      "rule_b": "market_score",
+      "agreement_rate": 92.3,
+      "sample_size": 2000
+    },
+    {
+      "rule_a": "atr_filter",
+      "rule_b": "gap_day",
+      "agreement_rate": 92.25,
+      "sample_size": 2000
     },
     {
       "rule_a": "pullback",
       "rule_b": "rsi_fresh_cross",
-      "agreement_rate": 91.73,
-      "sample_size": 1500
+      "agreement_rate": 92.15,
+      "sample_size": 2000
+    },
+    {
+      "rule_a": "not_stale_entry",
+      "rule_b": "gap_day",
+      "agreement_rate": 91.9,
+      "sample_size": 2000
+    },
+    {
+      "rule_a": "rsi_fresh_cross",
+      "rule_b": "pullback_entry",
+      "agreement_rate": 91.75,
+      "sample_size": 2000
     },
     {
       "rule_a": "ema_fresh_cross",
       "rule_b": "pullback_entry",
-      "agreement_rate": 91.47,
-      "sample_size": 1500
+      "agreement_rate": 91.7,
+      "sample_size": 2000
+    },
+    {
+      "rule_a": "confirmed_breakout",
+      "rule_b": "pullback_entry",
+      "agreement_rate": 91.65,
+      "sample_size": 2000
     },
     {
       "rule_a": "volume_spike",
       "rule_b": "confirmed_breakout",
-      "agreement_rate": 91.27,
-      "sample_size": 1500
+      "agreement_rate": 91.55,
+      "sample_size": 2000
     },
     {
-      "rule_a": "breakout",
-      "rule_b": "pullback_entry",
-      "agreement_rate": 91.2,
-      "sample_size": 1500
-    },
-    {
-      "rule_a": "pullback",
-      "rule_b": "pullback_entry",
-      "agreement_rate": 90.93,
-      "sample_size": 1500
+      "rule_a": "volatility",
+      "rule_b": "gap_day",
+      "agreement_rate": 90.9,
+      "sample_size": 2000
     },
     {
       "rule_a": "price_above_ema20",
       "rule_b": "donchian",
-      "agreement_rate": 90.53,
-      "sample_size": 1500
+      "agreement_rate": 90.85,
+      "sample_size": 2000
+    },
+    {
+      "rule_a": "breakout",
+      "rule_b": "pullback_entry",
+      "agreement_rate": 90.4,
+      "sample_size": 2000
+    },
+    {
+      "rule_a": "pullback",
+      "rule_b": "pullback_entry",
+      "agreement_rate": 90.3,
+      "sample_size": 2000
     },
     {
       "rule_a": "volume_spike",
       "rule_b": "breakout",
-      "agreement_rate": 90.27,
-      "sample_size": 1500
+      "agreement_rate": 90.2,
+      "sample_size": 2000
     }
   ],
   "threshold_sensitivity": {

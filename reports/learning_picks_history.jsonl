@@ -50,3 +50,5 @@
 {"date": "2026-08-19", "symbol": "PIIND.NS", "direction": "SELL", "entry_price": 2515.0}
 {"date": "2026-08-20", "symbol": "AUBANK.NS", "direction": "BUY", "entry_price": 1075.0}
 {"date": "2026-08-20", "symbol": "ITI.NS", "direction": "SELL", "entry_price": 279.95}
+{"date": "2026-08-21", "symbol": "AUBANK.NS", "direction": "BUY", "entry_price": 1088.0}
+{"date": "2026-08-21", "symbol": "ITI.NS", "direction": "SELL", "entry_price": 279.5}
