@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_IFCI_NS_1787629627705",
+  "symbol": "IFCI.NS",
+  "direction": "BUY",
+  "entry_date": "2026-08-25",
+  "entry_price": 82.6500015258789,
+  "buy_probability": 0.0,
+  "buy_confidence": 0.0,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap +0.21% (0.06x ATR, NORMAL band)",
+    "No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1787629627.7058454,
+  "updated_at": 1787629627.7058456
+}
