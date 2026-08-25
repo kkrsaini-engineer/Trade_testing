@@ -6,20 +6,40 @@
   "entry_price": 256.0,
   "buy_probability": 0.0,
   "buy_confidence": 0.0,
-  "entry_thesis_confidence": null,
+  "entry_thesis_confidence": 69.42,
   "entry_reasons": [
     "Morning Executor: gap +0.46% (0.14x ATR, NORMAL band)",
     "No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.06 \u2014 not a blocker."
   ],
-  "daily_log": [],
-  "status": "OPEN",
-  "exit_date": null,
-  "exit_price": null,
-  "exit_reason": null,
-  "holding_days": 0,
-  "max_profit_percent": 0.0,
+  "daily_log": [
+    {
+      "date": "2026-08-25",
+      "current_price": 257.13,
+      "current_pnl": 109.60999999999956,
+      "current_buy_confidence": 69.42,
+      "current_sell_confidence": 20.94,
+      "current_exit_score": 75.0,
+      "recommendation": "FULL_EXIT",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100).",
+        "Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100)."
+      ]
+    }
+  ],
+  "status": "CLOSED",
+  "exit_date": "2026-08-25",
+  "exit_price": 257.13,
+  "exit_reason": "Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100).",
+  "holding_days": 1,
+  "max_profit_percent": 0.4414062499999982,
   "max_drawdown_percent": 0.0,
-  "final_pnl": null,
+  "final_pnl": 109.60999999999956,
   "created_at": 1787629600.583378,
-  "updated_at": 1787629600.5833783
+  "updated_at": 1787629685.7879868,
+  "final_pnl_percent": 0.4414062499999982,
+  "exit_score": 75.0,
+  "target1_status": "NOT REACHED",
+  "target2_status": "NOT REACHED",
+  "stop_loss_status": "NOT HIT"
 }

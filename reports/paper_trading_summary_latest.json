@@ -1,0 +1,29 @@
+{
+  "date": "2026-08-25",
+  "opening_balance": 183665.95935058594,
+  "total_capital_in_positions": 245208.37000000005,
+  "remaining_balance": 254307.3693505859,
+  "portfolio_value": 499515.73935058597,
+  "realized_pnl": -484.26064941405866,
+  "portfolio_return_percent": -0.09685212988280692,
+  "opened_today": [],
+  "closed_today": [
+    {
+      "symbol": "HINDZINC.NS",
+      "pnl": -180.19999999999845
+    },
+    {
+      "symbol": "IIFL.NS",
+      "pnl": -386.25000000000114
+    },
+    {
+      "symbol": "ENGINERSIN.NS",
+      "pnl": 109.60999999999956
+    },
+    {
+      "symbol": "ELGIEQUIP.NS",
+      "pnl": -123.75
+    }
+  ],
+  "open_positions_now": 16
+}
