@@ -1,43 +1,43 @@
 [
   {
     "category": "TECHNICAL",
-    "finding": "High-Tier2-score trades win 100.0% vs 0.0% for low-Tier2-score trades (+100.0pp).",
+    "finding": "High-Tier2-score trades win 50.0% vs 33.33% for low-Tier2-score trades (+16.7pp).",
     "suggestion": "Technical (Tier 2) weight looks well-calibrated.",
     "confidence": "MEDIUM"
   },
   {
     "category": "RULE (redundant)",
-    "finding": "'market_trend' and 'market_score' agree 100.0% of the time (n=500).",
+    "finding": "'market_trend' and 'market_score' agree 100.0% of the time (n=1000).",
     "suggestion": "These two rules likely measure the same thing \u2014 consider dropping one to simplify the checklist without losing signal.",
     "confidence": "HIGH"
   },
   {
     "category": "RULE (redundant)",
-    "finding": "'squeeze_breakout' and 'breadth' agree 100.0% of the time (n=500).",
+    "finding": "'squeeze_breakout' and 'breadth' agree 100.0% of the time (n=1000).",
     "suggestion": "These two rules likely measure the same thing \u2014 consider dropping one to simplify the checklist without losing signal.",
     "confidence": "HIGH"
   },
   {
     "category": "RULE (redundant)",
-    "finding": "'squeeze_breakout' and 'sector' agree 100.0% of the time (n=500).",
+    "finding": "'squeeze_breakout' and 'sector' agree 100.0% of the time (n=1000).",
     "suggestion": "These two rules likely measure the same thing \u2014 consider dropping one to simplify the checklist without losing signal.",
     "confidence": "HIGH"
   },
   {
     "category": "RULE (redundant)",
-    "finding": "'breadth' and 'sector' agree 100.0% of the time (n=500).",
+    "finding": "'breadth' and 'sector' agree 100.0% of the time (n=1000).",
     "suggestion": "These two rules likely measure the same thing \u2014 consider dropping one to simplify the checklist without losing signal.",
     "confidence": "HIGH"
   },
   {
     "category": "RULE (redundant)",
-    "finding": "'ema_fresh_cross' and 'squeeze_breakout' agree 99.0% of the time (n=500).",
+    "finding": "'ema_fresh_cross' and 'squeeze_breakout' agree 99.1% of the time (n=1000).",
     "suggestion": "These two rules likely measure the same thing \u2014 consider dropping one to simplify the checklist without losing signal.",
     "confidence": "HIGH"
   },
   {
     "category": "BUY ACCURACY",
-    "finding": "4 trades, 25.0% win rate.",
+    "finding": "8 trades, 37.5% win rate.",
     "suggestion": "Sample too small to recommend a threshold change yet.",
     "confidence": "LOW"
   }

@@ -1,29 +1,29 @@
 {
-  "date": "2026-08-25",
-  "opening_balance": 183665.95935058594,
-  "total_capital_in_positions": 245208.37000000005,
-  "remaining_balance": 254307.3693505859,
-  "portfolio_value": 499515.73935058597,
-  "realized_pnl": -484.26064941405866,
-  "portfolio_return_percent": -0.09685212988280692,
+  "date": "2026-08-26",
+  "opening_balance": 254307.3693505859,
+  "total_capital_in_positions": 185277.07999999996,
+  "remaining_balance": 316058.40870117187,
+  "portfolio_value": 501335.4887011718,
+  "realized_pnl": 1239.159350585937,
+  "portfolio_return_percent": 0.2670977402343648,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "HINDZINC.NS",
-      "pnl": -180.19999999999845
+      "symbol": "IDEA.NS",
+      "pnl": 1030.739872131348
     },
     {
-      "symbol": "IIFL.NS",
-      "pnl": -386.25000000000114
+      "symbol": "LAURUSLABS.NS",
+      "pnl": 528.0
     },
     {
-      "symbol": "ENGINERSIN.NS",
-      "pnl": 109.60999999999956
+      "symbol": "OIL.NS",
+      "pnl": -569.25
     },
     {
-      "symbol": "ELGIEQUIP.NS",
-      "pnl": -123.75
+      "symbol": "FEDERALBNK.NS",
+      "pnl": -729.0006591796881
     }
   ],
-  "open_positions_now": 16
+  "open_positions_now": 12
 }
