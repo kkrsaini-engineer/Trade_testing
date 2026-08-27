@@ -1,8 +1,14 @@
 [
   {
+    "category": "NEWS",
+    "finding": "News-present trades win 37.5% vs 100.0% without news (-62.5pp).",
+    "suggestion": "Consider decreasing the news weight in Tier 3 \u2014 it appears to carry real signal.",
+    "confidence": "MEDIUM"
+  },
+  {
     "category": "TECHNICAL",
-    "finding": "High-Tier2-score trades win 50.0% vs 33.33% for low-Tier2-score trades (+16.7pp).",
-    "suggestion": "Technical (Tier 2) weight looks well-calibrated.",
+    "finding": "High-Tier2-score trades win 50.0% vs 42.86% for low-Tier2-score trades (+7.1pp).",
+    "suggestion": "Technical score shows weak correlation with outcome \u2014 consider re-examining which of the 39 checks actually contribute vs just adding noise.",
     "confidence": "MEDIUM"
   },
   {
@@ -37,7 +43,7 @@
   },
   {
     "category": "BUY ACCURACY",
-    "finding": "8 trades, 37.5% win rate.",
+    "finding": "9 trades, 44.44% win rate.",
     "suggestion": "Sample too small to recommend a threshold change yet.",
     "confidence": "LOW"
   }

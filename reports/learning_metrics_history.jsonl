@@ -29,3 +29,4 @@
 {"date": "2026-08-24", "buy_trades": 0, "sell_trades": 0, "buy_win_rate": null, "sell_win_rate": null}
 {"date": "2026-08-25", "buy_trades": 4, "sell_trades": 0, "buy_win_rate": 25.0, "sell_win_rate": null}
 {"date": "2026-08-26", "buy_trades": 8, "sell_trades": 0, "buy_win_rate": 37.5, "sell_win_rate": null}
+{"date": "2026-08-27", "buy_trades": 9, "sell_trades": 0, "buy_win_rate": 44.44, "sell_win_rate": null}

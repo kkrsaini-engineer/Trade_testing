@@ -1,0 +1,18 @@
+{
+  "symbol": "IFCI.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 129,
+  "entry_price": 82.6500015258789,
+  "exit_price": 87.55,
+  "status": "CLOSED",
+  "realized_pnl": 632.0998031616207,
+  "realized_pnl_percent": 5.928612684401259,
+  "max_profit_percent": 5.928612684401259,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 56.89,
+  "reasons": "Break-even stop activated.; Excellent risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1787802464908",
+  "timestamp": 1787802464.9087389
+}

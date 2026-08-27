@@ -1,29 +1,17 @@
 {
-  "date": "2026-08-26",
-  "opening_balance": 254307.3693505859,
-  "total_capital_in_positions": 185277.07999999996,
-  "remaining_balance": 316058.40870117187,
-  "portfolio_value": 501335.4887011718,
-  "realized_pnl": 1239.159350585937,
-  "portfolio_return_percent": 0.2670977402343648,
+  "date": "2026-08-27",
+  "opening_balance": 316058.40870117187,
+  "total_capital_in_positions": 156982.52999999997,
+  "remaining_balance": 348471.1894882202,
+  "portfolio_value": 505453.7194882202,
+  "realized_pnl": 2585.8093811035164,
+  "portfolio_return_percent": 1.0907438976440345,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "IDEA.NS",
-      "pnl": 1030.739872131348
-    },
-    {
-      "symbol": "LAURUSLABS.NS",
-      "pnl": 528.0
-    },
-    {
-      "symbol": "OIL.NS",
-      "pnl": -569.25
-    },
-    {
-      "symbol": "FEDERALBNK.NS",
-      "pnl": -729.0006591796881
+      "symbol": "IFCI.NS",
+      "pnl": 632.0998031616207
     }
   ],
-  "open_positions_now": 12
+  "open_positions_now": 11
 }

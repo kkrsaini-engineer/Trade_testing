@@ -1,0 +1,18 @@
+{
+  "symbol": "SAIL.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 66,
+  "entry_price": 180.6999969482422,
+  "exit_price": 194.9,
+  "status": "OPEN",
+  "realized_pnl": 937.200201416016,
+  "realized_pnl_percent": 0.0,
+  "max_profit_percent": 6.923078728850812,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 71.98,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved.",
+  "id": "trade_1787802460019",
+  "timestamp": 1787802460.019416
+}
