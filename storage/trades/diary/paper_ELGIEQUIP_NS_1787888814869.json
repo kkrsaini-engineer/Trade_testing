@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_ELGIEQUIP_NS_1787888814869",
+  "symbol": "ELGIEQUIP.NS",
+  "direction": "BUY",
+  "entry_date": "2026-08-28",
+  "entry_price": 599.9000244140625,
+  "buy_probability": 0.0,
+  "buy_confidence": 0.0,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap -2.86% (0.99x ATR, NORMAL band)",
+    "No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.09 \u2014 not a blocker."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1787888814.8690622,
+  "updated_at": 1787888814.8690624
+}
