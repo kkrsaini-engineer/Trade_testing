@@ -3,6 +3,17 @@
     "scan_started::2026-08-28::06:31:37.135642",
     "bhavcopy_status::2026-08-28",
     "scan_completed::2026-08-28::06:41:15.532356",
-    "morning_exec::2026-08-28::09:17:16.826041"
+    "morning_exec::2026-08-28::09:17:16.826041",
+    "paper_trading_started::2026-08-28::09:18:02.530362",
+    "monitoring_summary::2026-08-28::09:18:45.454742",
+    "holding_status::2026-08-28::part1::09:18:46.531769",
+    "holding_status::2026-08-28::part2::09:18:47.089014",
+    "holding_status::2026-08-28::part3::09:18:47.618174",
+    "holding_status::2026-08-28::part4::09:18:48.189337",
+    "holding_status::2026-08-28::part5::09:18:48.752675",
+    "portfolio_summary::2026-08-28::09:18:49.306081",
+    "analysis_summary::2026-08-28::09:18:50.139694",
+    "learning_summary::2026-08-28::09:18:51.930365",
+    "optimizer_recommendation::2026-08-28::09:18:52.680009"
   ]
 }

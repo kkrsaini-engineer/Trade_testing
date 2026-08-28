@@ -1,0 +1,18 @@
+{
+  "symbol": "ENGINERSIN.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 60,
+  "entry_price": 247.5,
+  "exit_price": 249.45,
+  "status": "CLOSED",
+  "realized_pnl": 116.99999999999932,
+  "realized_pnl_percent": 0.7878787878787832,
+  "max_profit_percent": 0.7878787878787832,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 73.01,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=6 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=6 capital=10.",
+  "id": "trade_1787888920408",
+  "timestamp": 1787888920.4086952
+}

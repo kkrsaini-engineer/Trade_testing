@@ -1,0 +1,18 @@
+{
+  "symbol": "ADANIENT.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 2,
+  "entry_price": 3170.0,
+  "exit_price": 3141.6,
+  "status": "CLOSED",
+  "realized_pnl": -56.80000000000018,
+  "realized_pnl_percent": -0.8958990536277631,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.8958990536277631,
+  "regime": "BULL",
+  "confidence": 51.92,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1787888900172",
+  "timestamp": 1787888900.1721716
+}

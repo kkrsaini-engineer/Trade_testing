@@ -1,0 +1,18 @@
+{
+  "symbol": "GRASIM.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 6,
+  "entry_price": 3287.89990234375,
+  "exit_price": 3254.7,
+  "status": "CLOSED",
+  "realized_pnl": -199.1994140625011,
+  "realized_pnl_percent": -1.009760130473678,
+  "max_profit_percent": 0.030417521395258423,
+  "max_drawdown_percent": 1.009760130473678,
+  "regime": "BULL",
+  "confidence": 53.56,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1787888892981",
+  "timestamp": 1787888892.981458
+}
