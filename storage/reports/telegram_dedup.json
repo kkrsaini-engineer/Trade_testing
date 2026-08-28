@@ -1,12 +1,7 @@
 {
-  "2026-08-27": [
-    "paper_trading_started::2026-08-27::09:17:30.907594",
-    "monitoring_summary::2026-08-27::09:17:54.507798",
-    "holding_status::2026-08-27::part1::09:17:55.073942",
-    "holding_status::2026-08-27::part2::09:17:55.646405",
-    "portfolio_summary::2026-08-27::09:17:56.184321",
-    "analysis_summary::2026-08-27::09:17:57.319117",
-    "learning_summary::2026-08-27::09:17:59.342058",
-    "optimizer_recommendation::2026-08-27::09:18:00.092541"
+  "2026-08-28": [
+    "scan_started::2026-08-28::06:31:37.135642",
+    "bhavcopy_status::2026-08-28",
+    "scan_completed::2026-08-28::06:41:15.532356"
   ]
 }
