@@ -26,6 +26,14 @@ Usage:
     python scripts/clean_portfolio_state.py
     python scripts/clean_portfolio_state.py --path storage/trades/virtual_portfolio_state.json
     python scripts/clean_portfolio_state.py --dry-run   # report only, no write
+
+TELEGRAM NOTIFICATION (added 2026-08-31): same parity fix as
+scripts/clean_slate.py — see that file's matching note. Fires on the
+"already clean" outcome (informational, true regardless of --dry-run)
+and on an actual repair (only when a real write happened, i.e. not
+--dry-run). A dry run that FOUND corruption but wrote nothing stays
+silent here — nothing is "complete" yet, and the printed findings above
+are for whoever is running this manually to act on.
 """
 
 from __future__ import annotations
@@ -39,6 +47,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from core.logger import get_logger  # noqa: E402
+from core.notifications import notify  # noqa: E402
+from core.trading_calendar import now_ist  # noqa: E402
 
 logger = get_logger(__name__)
 
@@ -80,6 +90,15 @@ def main() -> None:
 
     if not findings:
         print("No NaN corruption found. State file is clean — no changes made.")
+        notify(
+            event_type="clean_portfolio_state_complete",
+            message=(
+                "✅ Portfolio Already Clear\n\n"
+                f"File: {path}\n"
+                "No corruption found — no changes made."
+            ),
+            dedup_key=f"clean_portfolio_state_complete::{now_ist().strftime('%Y-%m-%d %H:%M:%S.%f')}",
+        )
         return
 
     print(f"Found {len(findings)} NaN field(s):")
@@ -130,6 +149,23 @@ def main() -> None:
         )
 
     logger.info("Portfolio state cleaned: %s", path)
+
+    repair_lines = "\n".join(f"  - {r}" for r in repairs)
+    manual_review_note = (
+        f"\n\n⚠️ {len(position_level_findings)} position-level NaN field(s) "
+        "were NOT auto-altered — review manually."
+        if position_level_findings else ""
+    )
+    notify(
+        event_type="clean_portfolio_state_complete",
+        message=(
+            "🛠️ Portfolio State Repaired\n\n"
+            f"File: {path}\n"
+            f"Repaired ({len(repairs)}):\n{repair_lines}"
+            f"{manual_review_note}"
+        ),
+        dedup_key=f"clean_portfolio_state_complete::{now_ist().strftime('%Y-%m-%d %H:%M:%S.%f')}",
+    )
 
 
 if __name__ == "__main__":
