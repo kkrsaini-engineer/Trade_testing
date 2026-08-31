@@ -1,0 +1,18 @@
+{
+  "symbol": "CGCL.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 10,
+  "entry_price": 235.49000549316406,
+  "exit_price": 263.56,
+  "status": "OPEN",
+  "realized_pnl": 778.1198242187505,
+  "realized_pnl_percent": 0.0,
+  "max_profit_percent": 9.550296820341622,
+  "max_drawdown_percent": 0.03822051512358963,
+  "regime": "BULL",
+  "confidence": 79.98,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved.",
+  "id": "trade_1788207780858",
+  "timestamp": 1788207780.8585563
+}

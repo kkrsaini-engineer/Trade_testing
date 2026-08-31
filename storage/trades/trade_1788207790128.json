@@ -1,0 +1,18 @@
+{
+  "symbol": "CHENNPETRO.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 9,
+  "entry_price": 1420.0,
+  "exit_price": 1341.1,
+  "status": "CLOSED",
+  "realized_pnl": -710.1000000000008,
+  "realized_pnl_percent": -5.55633802816902,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 5.55633802816902,
+  "regime": "BULL",
+  "confidence": 54.72,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Decision engine rejected trade.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Decision engine rejected trade.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1788207790128",
+  "timestamp": 1788207790.1280823
+}

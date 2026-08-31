@@ -1,41 +1,21 @@
 {
   "date": "2026-08-31",
-  "opening_balance": 215160.07955615997,
-  "total_capital_in_positions": 180202.45,
-  "remaining_balance": 321784.0891709137,
-  "portfolio_value": 501986.5391709137,
-  "realized_pnl": 292.54916553496986,
-  "portfolio_return_percent": 0.39730783418273785,
+  "opening_balance": 321784.0891709137,
+  "total_capital_in_positions": 142151.34999999998,
+  "remaining_balance": 359635.2186777496,
+  "portfolio_value": 501786.5686777496,
+  "realized_pnl": 983.6091960525472,
+  "portfolio_return_percent": 0.35731373554992024,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "360ONE.NS",
-      "pnl": -136.20000000000027
+      "symbol": "PARADEEP.NS",
+      "pnl": 462.0593774414058
     },
     {
-      "symbol": "PNBHOUSING.NS",
-      "pnl": -216.00000000000136
-    },
-    {
-      "symbol": "IFCI.NS",
-      "pnl": 1273.4405639648428
-    },
-    {
-      "symbol": "LTF.NS",
-      "pnl": -288.0
-    },
-    {
-      "symbol": "NATIONALUM.NS",
-      "pnl": -935.4499999999988
-    },
-    {
-      "symbol": "BANKINDIA.NS",
-      "pnl": -341.99992675781345
-    },
-    {
-      "symbol": "NIACL.NS",
-      "pnl": 659.8800000000006
+      "symbol": "CHENNPETRO.NS",
+      "pnl": -710.1000000000008
     }
   ],
-  "open_positions_now": 17
+  "open_positions_now": 15
 }

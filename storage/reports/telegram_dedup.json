@@ -13,6 +13,15 @@
     "optimizer_recommendation::2026-08-31::09:18:02.098543",
     "mi_summary::2026-08-31 17:01:26.438163",
     "scan_started::2026-08-31::20:37:10.265094",
-    "scan_completed::2026-08-31::20:50:16.014273"
+    "scan_completed::2026-08-31::20:50:16.014273",
+    "paper_trading_started::2026-08-31::01:52:51.756813",
+    "monitoring_summary::2026-08-31::01:53:10.128913",
+    "holding_status::2026-08-31::part1::01:53:11.360658",
+    "holding_status::2026-08-31::part2::01:53:11.985963",
+    "holding_status::2026-08-31::part3::01:53:12.640376",
+    "portfolio_summary::2026-08-31::01:53:13.314419",
+    "analysis_summary::2026-08-31::01:53:14.366607",
+    "learning_summary::2026-08-31::01:53:16.196877",
+    "optimizer_recommendation::2026-08-31::01:53:17.096337"
   ]
 }
