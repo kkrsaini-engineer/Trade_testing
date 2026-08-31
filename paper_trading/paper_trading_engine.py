@@ -39,21 +39,35 @@ from storage.trades.trade_store import TradeStore
 logger = get_logger(__name__)
 
 
-def _emergency_exit_breakdown(risk_result: Any) -> str:
-    """DIAGNOSTIC (added 2026-08-25): when RiskManager.evaluate() marks a
-    HELD position unsafe (see the "emergency_exit"/"emergency_exit_reason"
-    construction below), the exit reason previously only recorded the
-    final grade + total_risk number — never WHICH of the ~10 weighted
-    risk factors or 4 unconditional "system safety" overrides
-    (circuit-breaker heuristic, portfolio emergency-stop, daily-loss-
-    lock, or plain weighted-score > RiskManager.MAX_TOTAL_RISK) actually
-    caused it. That made it impossible to tell, after the fact, whether
-    an emergency-exited position (including ones exited while still
-    PROFITABLE — confirmed happening 2026-08-25) was a genuine risk call
-    or a false trigger, without re-running a separate diagnostic script.
-    This appends the full breakdown straight into the diary's own exit
-    reason/notes, so it's visible for every future occurrence with no
-    extra step. Read-only — changes no trading behavior.
+def _emergency_exit_breakdown(
+    risk_result: Any, validation_rejection_reason: str | None = None
+) -> str:
+    """DIAGNOSTIC (added 2026-08-25, corrected 2026-08-31): when
+    RiskManager.evaluate() marks a HELD position unsafe (see the
+    "emergency_exit"/"emergency_exit_reason" construction below), the
+    exit reason previously only recorded the final grade + total_risk
+    number — never WHICH of the ~10 weighted risk factors, 4
+    unconditional "system safety" overrides (circuit-breaker heuristic,
+    portfolio emergency-stop, daily-loss-lock, plain weighted-score >
+    RiskManager.MAX_TOTAL_RISK), or an upstream ValidationEngine
+    rejection actually caused it.
+
+    CORRECTION (2026-08-31): analysis of Trade_testing's real closed
+    trades showed 18 of 19 diagnostically-enriched emergency exits carry
+    an ALL-100 risk breakdown (atr=100 gap=100 ... capital=100) with NO
+    override flag set. That specific pattern is RiskManager.evaluate()'s
+    OWN early-return path (see risk/risk_manager.py: "if not
+    validation.passed: return RiskResult(safe=False, total_risk=100.0,
+    ... diagnostics={})") — fired when ValidationEngine rejects this
+    symbol as a HELD position during MONITORING (any one of its ~35
+    checks failing), which is a completely different, upstream failure
+    mode from a genuinely high weighted risk score. Before this fix,
+    that dominant case fell through to the misleading "Plain weighted
+    score exceeded..." message. The caller now also passes
+    execution/scanner.py's own diagnostics["validation_rejection_reason"]
+    (already computed there, unused until now) so this function can
+    name the exact ValidationEngine check that failed instead of
+    guessing. Read-only — changes no trading behavior.
     """
     if risk_result.safe:
         return ""
@@ -71,14 +85,20 @@ def _emergency_exit_breakdown(risk_result: Any) -> str:
         )
         if fired
     ]
-    trigger = (
-        f"System safety override(s): {', '.join(overrides)}."
-        if overrides
-        else (
+    if overrides:
+        trigger = f"System safety override(s): {', '.join(overrides)}."
+    elif validation_rejection_reason:
+        trigger = (
+            f"ValidationEngine rejected this HELD position during "
+            f"monitoring (upstream of RiskManager, which then forces an "
+            f"all-100 REJECT with no per-factor breakdown): "
+            f"'{validation_rejection_reason}'."
+        )
+    else:
+        trigger = (
             f"Plain weighted score exceeded the safety threshold "
             f"(RiskManager.MAX_TOTAL_RISK={RiskManager.MAX_TOTAL_RISK:.0f})."
         )
-    )
     components = (
         f"atr={risk_result.atr_risk:.0f} gap={risk_result.gap_risk:.0f} "
         f"overnight={risk_result.overnight_risk:.0f} news={risk_result.news_risk:.0f} "
@@ -398,7 +418,7 @@ class PaperTradingEngine:
                     f"Risk engine flagged this symbol as unsafe "
                     f"(grade: {risk_result.risk_grade}, total_risk: "
                     f"{risk_result.total_risk:.0f}/100)."
-                    f"{_emergency_exit_breakdown(risk_result)}"
+                    f"{_emergency_exit_breakdown(risk_result, result.diagnostics.get('validation_rejection_reason'))}"
                 ),
             }
             try:
