@@ -383,6 +383,51 @@ class MarketScanner:
 
         return float(sector_exposure_by_sector.get(sector, 0.0)) / portfolio_value
 
+    @staticmethod
+    def _news_impact_for_direction(diagnostics: dict[str, Any], direction: str) -> float:
+        """NEWS-RISK WIRING (2026-08-31): risk/risk_manager.py's news-risk
+        band + "NEWS SHOCK" override have always existed but were DEAD —
+        they read `market.get("news_impact", 0.0)`, a key nothing ever
+        populated, so news_risk was permanently pinned to its lowest band
+        regardless of real news. This computes a genuine value from
+        `diagnostics["news_score"]` (already computed above by
+        _evaluate_market_context() via news/sentiment_engine.py, for both
+        scan_symbol() and evaluate_position() — same source used for
+        entry scoring) and returns it via market_state_for_symbol so that
+        existing, previously-inert RiskManager logic can finally react to
+        real news, in BOTH directions:
+
+          - BUY  (long):  risk rises the further news_score falls BELOW
+                           neutral (50) — i.e. genuinely NEGATIVE news.
+          - SELL (short): risk rises the further news_score climbs ABOVE
+                           neutral (50) — i.e. genuinely POSITIVE news
+                           (bad for a short thesis). Mirrors the exact
+                           adverse-direction logic market_intelligence_
+                           engine.py already uses for its (separate,
+                           advisory-only) Telegram alerts.
+          - NO_TRADE or unknown direction: 0.0 — not applicable.
+
+        No news available (diagnostics["has_news"] is False, i.e.
+        news_score is None) returns 0.0 — never fabricate a risk value
+        when there's genuinely no data, same convention used throughout
+        this codebase.
+        """
+        if not diagnostics.get("has_news"):
+            return 0.0
+
+        news_score = diagnostics.get("news_score")
+        if not isinstance(news_score, (int, float)):
+            return 0.0
+
+        if direction == "BUY":
+            adverse = 50.0 - float(news_score)
+        elif direction == "SELL":
+            adverse = float(news_score) - 50.0
+        else:
+            return 0.0
+
+        return max(0.0, min(100.0, adverse * 2.0))
+
     def _evaluate_market_context(self, symbol: str, bundle: Any = None) -> dict[str, Any]:
         """
         SINGLE SOURCE OF TRUTH for market analysis: data fetch, feature
@@ -856,6 +901,16 @@ class MarketScanner:
             market_state_for_symbol = dict(market_state)
             market_state_for_symbol["circuit_breaker"] = diagnostics["circuit_likely"]
 
+            # See _news_impact_for_direction()'s docstring — wires this
+            # symbol's real news sentiment into RiskManager's previously-
+            # dead news-risk check. For a fresh entry candidate, the
+            # relevant direction is whatever this scan is about to
+            # recommend (final_decision.action) — NO_TRADE candidates
+            # get 0.0 (moot; they're rejected on their own merits anyway).
+            market_state_for_symbol["news_impact"] = self._news_impact_for_direction(
+                diagnostics, final_decision.action
+            )
+
             # Phase 26: same per-symbol-copy reasoning as circuit_breaker
             # above, for sector_exposure — see _sector_exposure_ratio()'s
             # docstring.
@@ -1112,6 +1167,14 @@ class MarketScanner:
             # is unaffected — only the safety-gate INPUT changes.
             held_direction = position.get("direction", "BUY")
             held_decision = replace(final_decision, action=held_direction)
+
+            # See _news_impact_for_direction()'s docstring — same wiring
+            # as scan_symbol(), but keyed off this position's ACTUAL held
+            # direction (not today's fresh signal), consistent with the
+            # held_decision override just above.
+            market_state_for_symbol["news_impact"] = self._news_impact_for_direction(
+                diagnostics, held_direction
+            )
 
             validation = self.validation.validate(
                 decision=held_decision,
