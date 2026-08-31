@@ -1,0 +1,18 @@
+{
+  "symbol": "LTF.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 24,
+  "entry_price": 322.0,
+  "exit_price": 310.0,
+  "status": "CLOSED",
+  "realized_pnl": -288.0,
+  "realized_pnl_percent": -3.7267080745341614,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 3.7267080745341614,
+  "regime": "BULL",
+  "confidence": 55.84,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1788148067259",
+  "timestamp": 1788148067.2595801
+}

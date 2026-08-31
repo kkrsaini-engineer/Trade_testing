@@ -1,0 +1,18 @@
+{
+  "symbol": "NATIONALUM.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 53,
+  "entry_price": 402.0,
+  "exit_price": 384.35,
+  "status": "CLOSED",
+  "realized_pnl": -935.4499999999988,
+  "realized_pnl_percent": -4.3905472636815865,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 4.3905472636815865,
+  "regime": "BULL",
+  "confidence": 61.99,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1788148068299",
+  "timestamp": 1788148068.2993612
+}

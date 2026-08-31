@@ -1,0 +1,18 @@
+{
+  "symbol": "360ONE.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 6,
+  "entry_price": 1204.0,
+  "exit_price": 1181.3,
+  "status": "CLOSED",
+  "realized_pnl": -136.20000000000027,
+  "realized_pnl_percent": -1.8853820598006683,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 1.8853820598006683,
+  "regime": "BULL",
+  "confidence": 58.62,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1788148048933",
+  "timestamp": 1788148048.9330122
+}

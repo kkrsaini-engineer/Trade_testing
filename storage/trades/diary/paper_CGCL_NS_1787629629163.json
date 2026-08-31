@@ -64,16 +64,31 @@
         "Healthy risk/reward profile.",
         "Continue holding position."
       ]
+    },
+    {
+      "date": "2026-08-31",
+      "current_price": 252.58,
+      "current_pnl": 734.8697637939458,
+      "current_buy_confidence": 70.69,
+      "current_sell_confidence": 18.78,
+      "current_exit_score": 80.78,
+      "recommendation": "PARTIAL_EXIT",
+      "notes": [
+        "Break-even stop activated.",
+        "Partial profit target reached.",
+        "Excellent risk/reward profile.",
+        "Partial target achieved."
+      ]
     }
   ],
   "status": "OPEN",
   "exit_date": null,
   "exit_price": null,
   "exit_reason": null,
-  "holding_days": 4,
+  "holding_days": 5,
   "max_profit_percent": 0.0,
   "max_drawdown_percent": 0.0,
   "final_pnl": null,
   "created_at": 1787629629.1633377,
-  "updated_at": 1787888907.4677346
+  "updated_at": 1788148060.5488
 }

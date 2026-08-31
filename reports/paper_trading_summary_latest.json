@@ -1,41 +1,41 @@
 {
-  "date": "2026-08-28",
-  "opening_balance": 132208.59929828643,
-  "total_capital_in_positions": 288824.68,
-  "remaining_balance": 215160.07955615997,
-  "portfolio_value": 503984.75955615996,
-  "realized_pnl": 1178.46909351349,
-  "portfolio_return_percent": 0.7969519112319918,
+  "date": "2026-08-31",
+  "opening_balance": 215160.07955615997,
+  "total_capital_in_positions": 180202.45,
+  "remaining_balance": 321784.0891709137,
+  "portfolio_value": 501986.5391709137,
+  "realized_pnl": 292.54916553496986,
+  "portfolio_return_percent": 0.39730783418273785,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "GRASIM.NS",
-      "pnl": -199.1994140625011
+      "symbol": "360ONE.NS",
+      "pnl": -136.20000000000027
     },
     {
-      "symbol": "WOCKPHARMA.NS",
-      "pnl": 103.60009765625
+      "symbol": "PNBHOUSING.NS",
+      "pnl": -216.00000000000136
     },
     {
-      "symbol": "ADANIENT.NS",
-      "pnl": -56.80000000000018
+      "symbol": "IFCI.NS",
+      "pnl": 1273.4405639648428
     },
     {
-      "symbol": "BHEL.NS",
-      "pnl": 41.40000000000026
+      "symbol": "LTF.NS",
+      "pnl": -288.0
     },
     {
-      "symbol": "ELGIEQUIP.NS",
-      "pnl": -63.800537109375
+      "symbol": "NATIONALUM.NS",
+      "pnl": -935.4499999999988
     },
     {
-      "symbol": "DEEPAKNTR.NS",
-      "pnl": 28.499853515624864
+      "symbol": "BANKINDIA.NS",
+      "pnl": -341.99992675781345
     },
     {
-      "symbol": "ENGINERSIN.NS",
-      "pnl": 116.99999999999932
+      "symbol": "NIACL.NS",
+      "pnl": 659.8800000000006
     }
   ],
-  "open_positions_now": 24
+  "open_positions_now": 17
 }

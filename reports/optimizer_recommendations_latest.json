@@ -1,133 +1,97 @@
 [
   {
     "category": "NEWS",
-    "finding": "News-present trades win 42.86% vs 100.0% without news (-57.1pp).",
+    "finding": "News-present trades win 35.0% vs 100.0% without news (-65.0pp).",
     "suggestion": "Consider decreasing the news weight in Tier 3 \u2014 it appears to carry real signal.",
     "confidence": "MEDIUM"
   },
   {
     "category": "FUNDAMENTAL",
-    "finding": "Strong-fundamental trades win 46.15% vs 66.67% for weak-fundamental trades (-20.5pp).",
+    "finding": "Strong-fundamental trades win 40.0% vs 66.67% for weak-fundamental trades (-26.7pp).",
     "suggestion": "This matches the audit finding: SELL's heavy fundamental_weakness weighting may be over/under-tuned \u2014 cross-check against the Tier-3 rebalance decision from the audit.",
     "confidence": "MEDIUM"
   },
   {
     "category": "TECHNICAL",
-    "finding": "High-Tier2-score trades win 60.0% vs 45.45% for low-Tier2-score trades (+14.5pp).",
-    "suggestion": "Technical (Tier 2) weight looks well-calibrated.",
+    "finding": "High-Tier2-score trades win 33.33% vs 45.0% for low-Tier2-score trades (-11.7pp).",
+    "suggestion": "Technical score shows weak correlation with outcome \u2014 consider re-examining which of the 39 checks actually contribute vs just adding noise.",
     "confidence": "MEDIUM"
   },
   {
     "category": "RULE (weak)",
-    "finding": "'accumulation': only +0.0pp win-rate difference between passing and failing.",
+    "finding": "'accumulation': only +0.9pp win-rate difference between passing and failing.",
     "suggestion": "Weak predictive value \u2014 candidate for removal or re-weighting.",
     "confidence": "MEDIUM"
   },
   {
     "category": "RULE (weak/backwards)",
-    "finding": "'adx': passing this rule wins 45.45% vs 60.0% when it fails (-14.6pp) \u2014 backwards.",
-    "suggestion": "Re-examine this rule's logic/direction \u2014 it currently correlates with losses, not wins.",
-    "confidence": "MEDIUM"
-  },
-  {
-    "category": "RULE (weak)",
-    "finding": "'breakout': only +0.0pp win-rate difference between passing and failing.",
-    "suggestion": "Weak predictive value \u2014 candidate for removal or re-weighting.",
-    "confidence": "MEDIUM"
-  },
-  {
-    "category": "RULE (weak)",
-    "finding": "'cmf': only +0.0pp win-rate difference between passing and failing.",
-    "suggestion": "Weak predictive value \u2014 candidate for removal or re-weighting.",
-    "confidence": "MEDIUM"
-  },
-  {
-    "category": "RULE (weak)",
-    "finding": "'confirmed_breakout': only +0.0pp win-rate difference between passing and failing.",
-    "suggestion": "Weak predictive value \u2014 candidate for removal or re-weighting.",
-    "confidence": "MEDIUM"
-  },
-  {
-    "category": "RULE (weak/backwards)",
-    "finding": "'fundamental': passing this rule wins 46.15% vs 66.67% when it fails (-20.5pp) \u2014 backwards.",
-    "suggestion": "Re-examine this rule's logic/direction \u2014 it currently correlates with losses, not wins.",
-    "confidence": "MEDIUM"
-  },
-  {
-    "category": "RULE (weak)",
-    "finding": "'mfi': only +0.0pp win-rate difference between passing and failing.",
-    "suggestion": "Weak predictive value \u2014 candidate for removal or re-weighting.",
-    "confidence": "MEDIUM"
-  },
-  {
-    "category": "RULE (weak/backwards)",
-    "finding": "'news': passing this rule wins 42.86% vs 100.0% when it fails (-57.1pp) \u2014 backwards.",
+    "finding": "'cmf': passing this rule wins 41.18% vs 50.0% when it fails (-8.8pp) \u2014 backwards.",
     "suggestion": "Re-examine this rule's logic/direction \u2014 it currently correlates with losses, not wins.",
     "confidence": "MEDIUM"
   },
   {
     "category": "RULE (weak/backwards)",
-    "finding": "'pivot': passing this rule wins 44.44% vs 57.14% when it fails (-12.7pp) \u2014 backwards.",
+    "finding": "'ema_fresh_cross': passing this rule wins 0.0% vs 45.45% when it fails (-45.5pp) \u2014 backwards.",
     "suggestion": "Re-examine this rule's logic/direction \u2014 it currently correlates with losses, not wins.",
     "confidence": "MEDIUM"
   },
   {
     "category": "RULE (weak/backwards)",
-    "finding": "'pullback_entry': passing this rule wins 42.86% vs 55.56% when it fails (-12.7pp) \u2014 backwards.",
+    "finding": "'fundamental': passing this rule wins 40.0% vs 66.67% when it fails (-26.7pp) \u2014 backwards.",
     "suggestion": "Re-examine this rule's logic/direction \u2014 it currently correlates with losses, not wins.",
     "confidence": "MEDIUM"
   },
   {
-    "category": "RULE (weak)",
-    "finding": "'stochastic': only +0.0pp win-rate difference between passing and failing.",
-    "suggestion": "Weak predictive value \u2014 candidate for removal or re-weighting.",
+    "category": "RULE (weak/backwards)",
+    "finding": "'mfi': passing this rule wins 33.33% vs 62.5% when it fails (-29.2pp) \u2014 backwards.",
+    "suggestion": "Re-examine this rule's logic/direction \u2014 it currently correlates with losses, not wins.",
     "confidence": "MEDIUM"
   },
   {
-    "category": "RULE (weak)",
-    "finding": "'supertrend': only +0.0pp win-rate difference between passing and failing.",
-    "suggestion": "Weak predictive value \u2014 candidate for removal or re-weighting.",
+    "category": "RULE (weak/backwards)",
+    "finding": "'news': passing this rule wins 35.0% vs 100.0% when it fails (-65.0pp) \u2014 backwards.",
+    "suggestion": "Re-examine this rule's logic/direction \u2014 it currently correlates with losses, not wins.",
     "confidence": "MEDIUM"
   },
   {
     "category": "RULE (redundant)",
-    "finding": "'market_trend' and 'market_score' agree 100.0% of the time (n=1500).",
+    "finding": "'market_trend' and 'market_score' agree 100.0% of the time (n=2000).",
     "suggestion": "These two rules likely measure the same thing \u2014 consider dropping one to simplify the checklist without losing signal.",
     "confidence": "HIGH"
   },
   {
     "category": "RULE (redundant)",
-    "finding": "'squeeze_breakout' and 'breadth' agree 100.0% of the time (n=1500).",
+    "finding": "'squeeze_breakout' and 'breadth' agree 100.0% of the time (n=2000).",
     "suggestion": "These two rules likely measure the same thing \u2014 consider dropping one to simplify the checklist without losing signal.",
     "confidence": "HIGH"
   },
   {
     "category": "RULE (redundant)",
-    "finding": "'squeeze_breakout' and 'sector' agree 100.0% of the time (n=1500).",
+    "finding": "'squeeze_breakout' and 'sector' agree 100.0% of the time (n=2000).",
     "suggestion": "These two rules likely measure the same thing \u2014 consider dropping one to simplify the checklist without losing signal.",
     "confidence": "HIGH"
   },
   {
     "category": "RULE (redundant)",
-    "finding": "'breadth' and 'sector' agree 100.0% of the time (n=1500).",
+    "finding": "'breadth' and 'sector' agree 100.0% of the time (n=2000).",
     "suggestion": "These two rules likely measure the same thing \u2014 consider dropping one to simplify the checklist without losing signal.",
     "confidence": "HIGH"
   },
   {
     "category": "RULE (redundant)",
-    "finding": "'ema_fresh_cross' and 'squeeze_breakout' agree 99.0% of the time (n=1500).",
+    "finding": "'atr_filter' and 'not_overextended' agree 98.95% of the time (n=2000).",
     "suggestion": "These two rules likely measure the same thing \u2014 consider dropping one to simplify the checklist without losing signal.",
     "confidence": "HIGH"
   },
   {
     "category": "REGIME",
-    "finding": "BULL regime: 50.0% win rate over 16 trades.",
+    "finding": "BULL regime: 45.45% win rate over 22 trades.",
     "suggestion": "Feed this into Phase 3's Dynamic Regime Weights once sample size is HIGH confidence.",
     "confidence": "MEDIUM"
   },
   {
     "category": "BUY ACCURACY",
-    "finding": "16 trades, 50.0% win rate.",
+    "finding": "23 trades, 43.48% win rate.",
     "suggestion": "Below 45% with a decent sample would suggest the qualify threshold is too loose for this side; above 65% may mean it's too strict and missing volume.",
     "confidence": "MEDIUM"
   }
