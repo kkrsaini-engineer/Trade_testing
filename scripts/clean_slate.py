@@ -17,13 +17,27 @@ Explicitly protected (never touched by this script):
 Usage:
     python scripts/clean_slate.py              # dry run — shows what would be deleted
     python scripts/clean_slate.py --confirm     # actually deletes
+
+TELEGRAM NOTIFICATION (added 2026-08-31): a completion notification for
+this exact script was reported as previously working, but was found
+NOT present in this repo's history (nor PRO_TRADER's) — only in a
+third, separate repo not covered by this fix. Added here for parity,
+using the same core/notifications.notify() helper every other
+production script already uses. Only fires on an actual --confirm run
+(a dry run changes nothing, so nothing to announce as "complete").
 """
 
 from __future__ import annotations
 
 import argparse
 import shutil
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from core.notifications import notify  # noqa: E402
+from core.trading_calendar import now_ist  # noqa: E402
 
 FILES_TO_DELETE = [
     # Trades / Portfolio
@@ -100,14 +114,28 @@ def main() -> None:
         return
 
     print("\nDeleting...")
+    deleted = []
     for f in found_files:
         Path(f).unlink()
         print(f"  Deleted: {f}")
+        deleted.append(f)
     for d in found_dirs:
         shutil.rmtree(d)
         print(f"  Deleted: {d}/")
+        deleted.append(f"{d}/")
 
     print("\nDone. All data-accumulation files cleared. Config/watchlist/backtest-baseline untouched.")
+
+    deleted_lines = "\n".join(f"  - {f}" for f in deleted) if deleted else "  (nothing found to delete)"
+    notify(
+        event_type="clean_slate_complete",
+        message=(
+            "🧹 Clean Slate Complete\n\n"
+            f"Files deleted ({len(deleted)}):\n{deleted_lines}\n\n"
+            f"Protected (untouched): {', '.join(PROTECTED)}"
+        ),
+        dedup_key=f"clean_slate_complete::{now_ist().strftime('%Y-%m-%d %H:%M:%S.%f')}",
+    )
 
 
 if __name__ == "__main__":
