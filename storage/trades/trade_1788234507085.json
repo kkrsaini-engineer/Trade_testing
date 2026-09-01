@@ -1,0 +1,18 @@
+{
+  "symbol": "SCI.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 38,
+  "entry_price": 290.5,
+  "exit_price": 292.35,
+  "status": "CLOSED",
+  "realized_pnl": 70.30000000000086,
+  "realized_pnl_percent": 0.6368330464716085,
+  "max_profit_percent": 0.6368330464716085,
+  "max_drawdown_percent": 0.0,
+  "regime": "SIDEWAYS",
+  "confidence": 56.94,
+  "reasons": "Below preferred risk/reward profile.; Trend reversal detected.; Trend reversal confirmed.",
+  "id": "trade_1788234507085",
+  "timestamp": 1788234507.0859082
+}

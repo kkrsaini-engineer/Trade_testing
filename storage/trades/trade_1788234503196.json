@@ -1,0 +1,18 @@
+{
+  "symbol": "HINDZINC.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 23,
+  "entry_price": 604.1500244140625,
+  "exit_price": 607.25,
+  "status": "CLOSED",
+  "realized_pnl": 71.2994384765625,
+  "realized_pnl_percent": 0.5131135414492493,
+  "max_profit_percent": 0.5131135414492493,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 74.56,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=35 sector=10 correlation=12 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=35 sector=10 correlation=12 capital=10.",
+  "id": "trade_1788234503196",
+  "timestamp": 1788234503.196243
+}

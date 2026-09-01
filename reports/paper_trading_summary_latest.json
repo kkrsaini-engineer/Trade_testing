@@ -1,0 +1,29 @@
+{
+  "date": "2026-09-01",
+  "opening_balance": 184187.5897216797,
+  "total_capital_in_positions": 258460.01,
+  "remaining_balance": 240406.0397216797,
+  "portfolio_value": 498866.0497216797,
+  "realized_pnl": -1133.9502783203134,
+  "portfolio_return_percent": -0.22679005566405833,
+  "opened_today": [],
+  "closed_today": [
+    {
+      "symbol": "HINDZINC.NS",
+      "pnl": 71.2994384765625
+    },
+    {
+      "symbol": "SCI.NS",
+      "pnl": 70.30000000000086
+    },
+    {
+      "symbol": "GLENMARK.NS",
+      "pnl": -20.799999999999272
+    },
+    {
+      "symbol": "FINCABLES.NS",
+      "pnl": -176.80000000000155
+    }
+  ],
+  "open_positions_now": 16
+}

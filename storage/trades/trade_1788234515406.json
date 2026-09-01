@@ -1,0 +1,18 @@
+{
+  "symbol": "GLENMARK.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 4,
+  "entry_price": 2480.0,
+  "exit_price": 2474.8,
+  "status": "CLOSED",
+  "realized_pnl": -20.799999999999272,
+  "realized_pnl_percent": -0.20967741935483136,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.20967741935483136,
+  "regime": "BULL",
+  "confidence": 65.99,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Average trading volume is too low.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Average trading volume is too low.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1788234515406",
+  "timestamp": 1788234515.406927
+}

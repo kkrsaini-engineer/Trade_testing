@@ -1,0 +1,44 @@
+[
+  {
+    "category": "TECHNICAL",
+    "finding": "High-Tier2-score trades win 0.0% vs 66.67% for low-Tier2-score trades (-66.7pp).",
+    "suggestion": "Technical score shows weak correlation with outcome \u2014 consider re-examining which of the 39 checks actually contribute vs just adding noise.",
+    "confidence": "MEDIUM"
+  },
+  {
+    "category": "RULE (redundant)",
+    "finding": "'market_trend' and 'market_score' agree 100.0% of the time (n=500).",
+    "suggestion": "These two rules likely measure the same thing \u2014 consider dropping one to simplify the checklist without losing signal.",
+    "confidence": "HIGH"
+  },
+  {
+    "category": "RULE (redundant)",
+    "finding": "'squeeze_breakout' and 'breadth' agree 100.0% of the time (n=500).",
+    "suggestion": "These two rules likely measure the same thing \u2014 consider dropping one to simplify the checklist without losing signal.",
+    "confidence": "HIGH"
+  },
+  {
+    "category": "RULE (redundant)",
+    "finding": "'squeeze_breakout' and 'sector' agree 100.0% of the time (n=500).",
+    "suggestion": "These two rules likely measure the same thing \u2014 consider dropping one to simplify the checklist without losing signal.",
+    "confidence": "HIGH"
+  },
+  {
+    "category": "RULE (redundant)",
+    "finding": "'breadth' and 'sector' agree 100.0% of the time (n=500).",
+    "suggestion": "These two rules likely measure the same thing \u2014 consider dropping one to simplify the checklist without losing signal.",
+    "confidence": "HIGH"
+  },
+  {
+    "category": "RULE (redundant)",
+    "finding": "'ema_fresh_cross' and 'squeeze_breakout' agree 99.0% of the time (n=500).",
+    "suggestion": "These two rules likely measure the same thing \u2014 consider dropping one to simplify the checklist without losing signal.",
+    "confidence": "HIGH"
+  },
+  {
+    "category": "BUY ACCURACY",
+    "finding": "4 trades, 50.0% win rate.",
+    "suggestion": "Sample too small to recommend a threshold change yet.",
+    "confidence": "LOW"
+  }
+]
