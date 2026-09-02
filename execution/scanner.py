@@ -428,6 +428,38 @@ class MarketScanner:
 
         return max(0.0, min(100.0, adverse * 2.0))
 
+    @staticmethod
+    def looks_like_delisted_or_renamed(diagnostics: dict[str, Any]) -> bool:
+        """WATCHLIST HEALTH CHECK (2026-09-02, user-requested): detect
+        the one real, observable signature of "this symbol may be
+        delisted / renamed / a wrong ticker" that this codebase can
+        actually produce today — data/market_data.py's
+        MarketDataProvider raises DataError("No data returned for
+        {symbol}") specifically when yfinance's download() comes back
+        with a genuinely EMPTY dataframe (not a network/timeout error,
+        not a malformed-columns error, not a "too few rows" throttling
+        case — those are separate DataError messages / exception types,
+        see market_data.py, and are NOT this).
+
+        This is deliberately NARROW and honest: an empty response is
+        consistent with the symbol being delisted, renamed on the
+        exchange, or simply mistyped/wrong in the watchlist — but this
+        function (and the notifications built on it) cannot and does
+        NOT claim to know WHICH of those it is. Callers should present
+        it as "no data — please verify on NSE", never as a confirmed
+        diagnosis, per this codebase's standing convention of never
+        fabricating a specific root cause it hasn't actually confirmed.
+
+        Used by scripts/generate_full_report.py (fresh watchlist scan)
+        and paper_trading/paper_trading_engine.py (existing open
+        positions) so a symbol going silently empty is a visible
+        Telegram alert instead of a swallowed per-symbol skip.
+        """
+        return (
+            diagnostics.get("error_type") == "DataError"
+            and "no data returned for" in str(diagnostics.get("error", "")).lower()
+        )
+
     def _evaluate_market_context(self, symbol: str, bundle: Any = None) -> dict[str, Any]:
         """
         SINGLE SOURCE OF TRUTH for market analysis: data fetch, feature
@@ -1037,6 +1069,22 @@ class MarketScanner:
         except Exception as exc:
             logger.exception("Scanner compilation error for %s", symbol)
             diagnostics["error"] = str(exc)
+            # PARITY FIX (2026-09-02): evaluate_position() already records
+            # error_type/error_stage on failure (see that method's except
+            # block below); scan_symbol()'s own except block never did,
+            # so a caller could only pattern-match the free-text error
+            # string. Added so callers (e.g. generate_full_report.py's
+            # delisted/renamed-symbol detection) can reliably check
+            # error_type == "DataError" instead — data/market_data.py
+            # raises exactly that type with message "No data returned
+            # for {symbol}" when yfinance returns a genuinely empty
+            # dataframe, which is the real, observable signature of a
+            # delisted, renamed, or wrong/invalid ticker (as opposed to
+            # "Failed to download data for {symbol}", a transient
+            # network/API failure with the SAME exception type but a
+            # different message and no such implication).
+            diagnostics["error_type"] = type(exc).__name__
+            diagnostics["error_stage"] = "Data Fetch / Evaluation"
             return ScanResult(
                 symbol=symbol,
                 action="ERROR",
