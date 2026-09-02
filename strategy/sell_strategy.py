@@ -1056,16 +1056,34 @@ class SellStrategyEngine:
             + sector_component
         ) / active_weight
 
+        # WEIGHT REBALANCE (2026-09-02 — mirrors buy_strategy.py's identical
+        # fix; see that file's NOTE for the full rationale). Root cause
+        # found via a real-data audit: sell_fundamental_score is a strict
+        # mirror of buy_fundamental_score (100 - buy score, see
+        # strategy/fundamental_scoring.py), and the average BUY-direction
+        # fundamental score across the full NSE500 watchlist on a real scan
+        # day (2026-08-31) was 67.86/100 — most constituents currently show
+        # decent-to-good fundamentals, which is normal (fundamentals change
+        # quarterly) but mechanically forced sell_fundamental_weakness down
+        # to ~32/100 on average, independent of any actual price decline.
+        # At the old 0.55 weight (~30% of overall_score) this alone was
+        # enough to keep almost every SELL candidate below threshold even
+        # during a real 15-day, -5% market pullback (measured: 83-187
+        # BUY signals/day vs only 2-4 SELL signals/day across 4 real scan
+        # days). Rebalanced to 0.35/0.35/0.30 (fundamental/market/news),
+        # so the fast-reacting market_context_score (built from
+        # inverted_market, which real regime data drives day to day) gets
+        # equal say instead of being squeezed to 0.15.
         if has_news:
             tier3_score = (
-                fundamental_weakness * 0.55
+                fundamental_weakness * 0.35
                 + news_negativity * 0.30
-                + market_context_score * 0.15
+                + market_context_score * 0.35
             )
         else:
             tier3_score = (
-                fundamental_weakness * (0.55 / 0.70)
-                + market_context_score * (0.15 / 0.70)
+                fundamental_weakness * (0.35 / 0.70)
+                + market_context_score * (0.35 / 0.70)
             )
 
         # --------------------------------------------------
