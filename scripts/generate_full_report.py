@@ -8,6 +8,12 @@ lightweight summary CSV.
 
 Usage:
     python scripts/generate_full_report.py
+
+BUGFIX (2026-09-02): the four BUY-side columns were literally named
+"BUT score 00.00" / "BUT Confidence 00.00" / "BUT Passed 0/0" /
+"BUT  probability  %" — a typo (BUT instead of BUY), cosmetic only
+(the underlying values were always the correct buy_* diagnostics; only
+the CSV column header text was wrong). Corrected to "BUY ...".
 """
 
 from __future__ import annotations
@@ -48,8 +54,8 @@ FIELDNAMES = [
     "VolumeIndicators", "BreakoutIndicators", "IchimokuIndicators",
     "PatternIndicators", "Breakout", "Pullback", "score", "probability",
     "confidence", "ranking", "SELL score 00.00", "SELL Confidence 00.00",
-    "SELL Passed 0/0", "SELL  probability  %", "BUT score 00.00",
-    "BUT Confidence 00.00", "BUT Passed 0/0", "BUT  probability  %",
+    "SELL Passed 0/0", "SELL  probability  %", "BUY score 00.00",
+    "BUY Confidence 00.00", "BUY Passed 0/0", "BUY  probability  %",
     "portfolio_allowed", "latest_close", "market_regime",
     "Decision=NO_TRADE/TRADE", "Grade=ACCEPT/REJECT", "Rank=0.00",
     "Confidence=0.00", "PositionSize", "PositionRULE", "StopLoss",
@@ -141,10 +147,10 @@ def build_row(trade_id: int, r, trade: dict | None = None) -> dict:
         "SELL Confidence 00.00": d.get("sell_decision_confidence"),
         "SELL Passed 0/0": f"{d.get('sell_checks_passed', 0)} of {d.get('sell_checks_total', 0)}",
         "SELL  probability  %": d.get("sell_probability"),
-        "BUT score 00.00": d.get("buy_score"),
-        "BUT Confidence 00.00": d.get("buy_decision_confidence"),
-        "BUT Passed 0/0": f"{d.get('buy_checks_passed', 0)} of {d.get('buy_checks_total', 0)}",
-        "BUT  probability  %": d.get("buy_probability"),
+        "BUY score 00.00": d.get("buy_score"),
+        "BUY Confidence 00.00": d.get("buy_decision_confidence"),
+        "BUY Passed 0/0": f"{d.get('buy_checks_passed', 0)} of {d.get('buy_checks_total', 0)}",
+        "BUY  probability  %": d.get("buy_probability"),
         "portfolio_allowed": r.portfolio_allowed,
         "latest_close": d.get("latest_close"),
         "market_regime": d.get("market_regime"),
