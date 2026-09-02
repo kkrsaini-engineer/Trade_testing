@@ -1144,16 +1144,28 @@ class BuyStrategyEngine:
             + sector_component
         ) / active_weight
 
+        # WEIGHT REBALANCE (2026-09-02 — raised by user review): fundamentals
+        # move on a QUARTERLY cadence (revenue growth, ROE, PE, etc. don't
+        # shift within a swing trade's 1-15 day holding window), yet used
+        # to carry 0.55 of tier3 (~30% of overall_score) — the single
+        # largest input into a signal that's fundamentally about near-term
+        # price/technical timing. market_context_score (built from
+        # market_score, which real regime data actually drives day to day —
+        # see FIX #8 above) is the fast-reacting counterpart and used to be
+        # squeezed to just 0.15. Rebalanced so market_context now carries
+        # equal weight to fundamentals (0.35 each); news keeps its 0.30 —
+        # mirrored identically in sell_strategy.py's tier3, so BUY and SELL
+        # stay weighted the same way, just direction-inverted inputs.
         if has_news:
             tier3_score = (
-                fundamental_health * 0.55
+                fundamental_health * 0.35
                 + news_health * 0.30
-                + market_context_score * 0.15
+                + market_context_score * 0.35
             )
         else:
             tier3_score = (
-                fundamental_health * (0.55 / 0.70)
-                + market_context_score * (0.15 / 0.70)
+                fundamental_health * (0.35 / 0.70)
+                + market_context_score * (0.35 / 0.70)
             )
 
         # --------------------------------------------------
