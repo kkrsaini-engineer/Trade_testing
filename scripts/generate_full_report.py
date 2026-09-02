@@ -359,6 +359,16 @@ def main() -> None:
     total = len(WATCHLIST)
     rows = []
     pending_candidates = []
+    # WATCHLIST HEALTH CHECK (2026-09-02, user-requested): a symbol that
+    # comes back with a genuinely empty data response (MarketScanner.
+    # looks_like_delisted_or_renamed() — see that method's docstring for
+    # exactly what it does and does NOT claim) is worth a Telegram alert
+    # instead of the silent per-symbol skip below, since it's the one
+    # real signal available that a watchlist entry may be delisted,
+    # renamed, or simply mistyped. Collected here, notified once after
+    # the full scan (not per-symbol — 2000+ watchlist entries would make
+    # a per-symbol alert unusable spam).
+    possibly_delisted_or_renamed = []
     for i, symbol in enumerate(WATCHLIST, start=0):
         logger.info("[%d/%d] Full report scan: %s", i + 1, total, symbol)
         r = scanner.scan_symbol(
@@ -369,10 +379,35 @@ def main() -> None:
         )
         if r.action == "ERROR":
             logger.warning("Skipping %s from report: %s", symbol, r.diagnostics.get("error"))
+            if MarketScanner.looks_like_delisted_or_renamed(r.diagnostics):
+                possibly_delisted_or_renamed.append(symbol)
             continue
         rows.append(build_row(next_id + i, r, trade_lookup.get(symbol)))
         if r.action in ("BUY", "SELL") and r.portfolio_allowed:
             pending_candidates.append(r)
+
+    # Only fires when at least one symbol actually looks this way — a
+    # healthy scan stays silent, same convention as every other notify()
+    # call in this file.
+    if possibly_delisted_or_renamed:
+        symbol_lines = "\n".join(f"  - {s}" for s in possibly_delisted_or_renamed)
+        notify(
+            event_type="watchlist_symbol_unavailable",
+            message=(
+                "⚠️ Watchlist Symbol(s) Returned No Data\n\n"
+                f"{len(possibly_delisted_or_renamed)} symbol(s) got a completely "
+                f"empty response from the market data provider today:\n"
+                f"{symbol_lines}\n\n"
+                "This usually means one of: the stock was delisted, its ticker/"
+                "name changed on the exchange, or the symbol is simply wrong in "
+                "the watchlist file. This is NOT a confirmed diagnosis — please "
+                "verify on NSE and update storage/watchlist/nifty500.json if "
+                "needed (a transient data-provider hiccup can also look like "
+                "this for a single day; only act if it repeats)."
+            ),
+            severity=SEVERITY_MEDIUM,
+            dedup_key=f"watchlist_symbol_unavailable::{today_date.isoformat()}",
+        )
 
     # BHAVCOPY FETCH STATUS — user-requested: know on which day
     # delivery%/liquidity data was NOT counted, plus a trailing few-day
