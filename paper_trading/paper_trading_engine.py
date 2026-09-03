@@ -179,7 +179,7 @@ class PaperTradingEngine:
         # VIX is a single market-wide value, same reasoning as the other
         # once-per-run fetches in execution/scanner.py.
         market_state = {
-            "max_trade_candidates": 20, "max_watchlist": 50,
+            "max_trade_candidates": 100, "max_watchlist": 500,
             "market_open": True, "holiday": False,
             "vix": fetch_india_vix(),
         }
