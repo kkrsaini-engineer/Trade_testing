@@ -60,7 +60,7 @@ def run_scan(symbols: list[str]) -> list[dict]:
     # See scripts/generate_full_report.py for why "vix" is fetched live
     # here instead of being absent/hardcoded.
     market_state = {
-        "max_trade_candidates": 20,
+        "max_trade_candidates": 100,
         "max_watchlist": 50,
         "market_open": True,
         "holiday": False,
