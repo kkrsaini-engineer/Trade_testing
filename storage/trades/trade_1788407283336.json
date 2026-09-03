@@ -1,0 +1,18 @@
+{
+  "symbol": "JINDWORLD.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 273,
+  "entry_price": 40.52000045776367,
+  "exit_price": 40.85,
+  "status": "CLOSED",
+  "realized_pnl": 90.08987503051796,
+  "realized_pnl_percent": 0.8144114968120671,
+  "max_profit_percent": 0.8144114968120671,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 73.28,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=10 overnight=10 news=10 liquidity=20 volatility=38 portfolio=35 sector=10 correlation=8 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=10 overnight=10 news=10 liquidity=20 volatility=38 portfolio=35 sector=10 correlation=8 capital=10.",
+  "id": "trade_1788407283336",
+  "timestamp": 1788407283.3369303
+}

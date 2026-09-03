@@ -1,0 +1,50 @@
+[
+  {
+    "category": "NEWS",
+    "finding": "News-present trades win 50.0% vs 66.67% without news (-16.7pp).",
+    "suggestion": "Consider decreasing the news weight in Tier 3 \u2014 it appears to carry real signal.",
+    "confidence": "MEDIUM"
+  },
+  {
+    "category": "TECHNICAL",
+    "finding": "High-Tier2-score trades win 100.0% vs 50.0% for low-Tier2-score trades (+50.0pp).",
+    "suggestion": "Technical (Tier 2) weight looks well-calibrated.",
+    "confidence": "MEDIUM"
+  },
+  {
+    "category": "RULE (redundant)",
+    "finding": "'breadth' and 'sector' agree 100.0% of the time (n=2395).",
+    "suggestion": "These two rules likely measure the same thing \u2014 consider dropping one to simplify the checklist without losing signal.",
+    "confidence": "HIGH"
+  },
+  {
+    "category": "RULE (redundant)",
+    "finding": "'squeeze_breakout' and 'breadth' agree 99.96% of the time (n=2395).",
+    "suggestion": "These two rules likely measure the same thing \u2014 consider dropping one to simplify the checklist without losing signal.",
+    "confidence": "HIGH"
+  },
+  {
+    "category": "RULE (redundant)",
+    "finding": "'squeeze_breakout' and 'sector' agree 99.96% of the time (n=2395).",
+    "suggestion": "These two rules likely measure the same thing \u2014 consider dropping one to simplify the checklist without losing signal.",
+    "confidence": "HIGH"
+  },
+  {
+    "category": "RULE (redundant)",
+    "finding": "'breakout' and 'confirmed_breakout' agree 98.79% of the time (n=2395).",
+    "suggestion": "These two rules likely measure the same thing \u2014 consider dropping one to simplify the checklist without losing signal.",
+    "confidence": "HIGH"
+  },
+  {
+    "category": "RULE (redundant)",
+    "finding": "'ema_fresh_cross' and 'breadth' agree 98.29% of the time (n=2395).",
+    "suggestion": "These two rules likely measure the same thing \u2014 consider dropping one to simplify the checklist without losing signal.",
+    "confidence": "HIGH"
+  },
+  {
+    "category": "BUY ACCURACY",
+    "finding": "7 trades, 57.14% win rate.",
+    "suggestion": "Sample too small to recommend a threshold change yet.",
+    "confidence": "LOW"
+  }
+]

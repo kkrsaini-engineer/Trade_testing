@@ -1,0 +1,18 @@
+{
+  "symbol": "DEEPAKNTR.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 6,
+  "entry_price": 1741.5999755859375,
+  "exit_price": 1748.6,
+  "status": "CLOSED",
+  "realized_pnl": 42.000146484374454,
+  "realized_pnl_percent": 0.4019306679025042,
+  "max_profit_percent": 0.4019306679025042,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 59.07,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Average trading volume is too low.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Average trading volume is too low.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1788407279910",
+  "timestamp": 1788407279.9108706
+}

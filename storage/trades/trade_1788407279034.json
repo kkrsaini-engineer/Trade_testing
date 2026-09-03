@@ -1,0 +1,18 @@
+{
+  "symbol": "MUKKA.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 879,
+  "entry_price": 26.989999771118164,
+  "exit_price": 27.14,
+  "status": "CLOSED",
+  "realized_pnl": 131.8502011871343,
+  "realized_pnl_percent": 0.555762245846148,
+  "max_profit_percent": 0.555762245846148,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 77.48,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=35 sector=10 correlation=8 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=35 sector=10 correlation=8 capital=10.",
+  "id": "trade_1788407279034",
+  "timestamp": 1788407279.034621
+}

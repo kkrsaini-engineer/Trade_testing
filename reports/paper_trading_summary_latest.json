@@ -1,0 +1,41 @@
+{
+  "date": "2026-09-03",
+  "opening_balance": 181083.32174491882,
+  "total_capital_in_positions": 206874.02000000002,
+  "remaining_balance": 293846.34174491884,
+  "portfolio_value": 500720.36174491886,
+  "realized_pnl": 720.361744918825,
+  "portfolio_return_percent": 0.1440723489837721,
+  "opened_today": [],
+  "closed_today": [
+    {
+      "symbol": "MUKKA.NS",
+      "pnl": 131.8502011871343
+    },
+    {
+      "symbol": "DEEPAKNTR.NS",
+      "pnl": 42.000146484374454
+    },
+    {
+      "symbol": "NORTHARC.NS",
+      "pnl": -26.00063476562559
+    },
+    {
+      "symbol": "KAMDHENU.NS",
+      "pnl": 165.58999999999952
+    },
+    {
+      "symbol": "JINDWORLD.NS",
+      "pnl": 90.08987503051796
+    },
+    {
+      "symbol": "TNPETRO.NS",
+      "pnl": -81.78051635742145
+    },
+    {
+      "symbol": "SPORTKING.NS",
+      "pnl": -0.7602319335943548
+    }
+  ],
+  "open_positions_now": 13
+}
