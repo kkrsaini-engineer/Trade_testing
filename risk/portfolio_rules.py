@@ -78,7 +78,7 @@ class PortfolioRulesEngine:
     """
 
     MAX_OPEN_POSITIONS = 100
-
+    
     MAX_PORTFOLIO_EXPOSURE = 0.95
 
     MAX_SECTOR_EXPOSURE = 0.30
