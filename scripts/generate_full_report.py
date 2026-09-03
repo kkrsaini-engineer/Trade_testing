@@ -339,8 +339,8 @@ def main() -> None:
     # fetch_india_vix() pulls a live reading once per scan run (falls
     # back to 20.0 itself, with a logged warning, if the fetch fails).
     market_state = {
-        "max_trade_candidates": 20,
-        "max_watchlist": 50,
+        "max_trade_candidates": 100,
+        "max_watchlist": 500,
         "market_open": True,
         "holiday": False,
         "vix": fetch_india_vix(),
