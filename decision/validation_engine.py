@@ -291,9 +291,9 @@ class ValidationEngine:
                 0.0,
             )
         )
-
+        
         checks["average_volume"] = avg_volume >= self.MIN_AVG_VOLUME
-
+        
         if rejection_reason is None and not checks["average_volume"]:
 
             rejection_reason = "Average trading volume is too low."
