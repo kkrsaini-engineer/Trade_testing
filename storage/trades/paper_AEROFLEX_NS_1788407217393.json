@@ -1,0 +1,13 @@
+{
+  "id": "paper_AEROFLEX_NS_1788407217393",
+  "symbol": "AEROFLEX.NS",
+  "direction": "BUY",
+  "action": "BUY",
+  "quantity": 26,
+  "entry_price": 545.0499877929688,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap -1.27% (0.27x ATR, NORMAL band); No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.04 \u2014 not a blocker.",
+  "timestamp": 1788407217.39396
+}

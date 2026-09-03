@@ -1,0 +1,13 @@
+{
+  "id": "paper_NORTHARC_NS_1788407214179",
+  "symbol": "NORTHARC.NS",
+  "direction": "BUY",
+  "action": "BUY",
+  "quantity": 52,
+  "entry_price": 302.70001220703125,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap +1.07% (0.26x ATR, NORMAL band); No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.04 \u2014 not a blocker.",
+  "timestamp": 1788407214.1797967
+}

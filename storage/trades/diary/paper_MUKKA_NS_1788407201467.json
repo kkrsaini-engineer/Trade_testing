@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_MUKKA_NS_1788407201467",
+  "symbol": "MUKKA.NS",
+  "direction": "BUY",
+  "entry_date": "2026-09-03",
+  "entry_price": 26.989999771118164,
+  "buy_probability": 0.0,
+  "buy_confidence": 0.0,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap +1.09% (0.23x ATR, NORMAL band)",
+    "No company-specific news available. | 20 macro headline(s), bias 0.04 \u2014 not a blocker."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1788407201.4671326,
+  "updated_at": 1788407201.4671326
+}

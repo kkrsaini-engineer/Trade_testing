@@ -1,0 +1,13 @@
+{
+  "id": "paper_SOTL_NS_1788407203110",
+  "symbol": "SOTL.NS",
+  "direction": "BUY",
+  "action": "BUY",
+  "quantity": 30,
+  "entry_price": 743.0499877929688,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap -3.68% (0.76x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.04 \u2014 not a blocker.",
+  "timestamp": 1788407203.1110744
+}

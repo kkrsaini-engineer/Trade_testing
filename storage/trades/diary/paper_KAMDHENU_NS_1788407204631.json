@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_KAMDHENU_NS_1788407204631",
+  "symbol": "KAMDHENU.NS",
+  "direction": "BUY",
+  "entry_date": "2026-09-03",
+  "entry_price": 37.5,
+  "buy_probability": 0.0,
+  "buy_confidence": 0.0,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap +3.71% (0.76x ATR, NORMAL band)",
+    "No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.04 \u2014 not a blocker."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1788407204.6316745,
+  "updated_at": 1788407204.6316748
+}

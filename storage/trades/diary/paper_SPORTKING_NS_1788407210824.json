@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_SPORTKING_NS_1788407210824",
+  "symbol": "SPORTKING.NS",
+  "direction": "BUY",
+  "entry_date": "2026-09-03",
+  "entry_price": 227.5500030517578,
+  "buy_probability": 0.0,
+  "buy_confidence": 0.0,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap -1.03% (0.22x ATR, NORMAL band)",
+    "No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.04 \u2014 not a blocker."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1788407210.8241127,
+  "updated_at": 1788407210.824113
+}

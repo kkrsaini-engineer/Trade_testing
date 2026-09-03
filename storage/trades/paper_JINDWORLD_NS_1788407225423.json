@@ -1,0 +1,13 @@
+{
+  "id": "paper_JINDWORLD_NS_1788407225423",
+  "symbol": "JINDWORLD.NS",
+  "direction": "BUY",
+  "action": "BUY",
+  "quantity": 273,
+  "entry_price": 40.52000045776367,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap -3.71% (0.78x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.04 \u2014 not a blocker.",
+  "timestamp": 1788407225.423777
+}
