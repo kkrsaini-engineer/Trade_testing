@@ -263,7 +263,7 @@ def main() -> None:
         message_lines.append(f"└── Executed: {funnel.get('executed', 0)}")
 
     # ---------------- 5. Execution Summary (redesigned) ----------------
-    DAILY_CANDIDATE_LIMIT = 20  # matches execution/scanner.py's max_trade_candidates
+    DAILY_CANDIDATE_LIMIT = 100  # matches execution/scanner.py's max_trade_candidates
     buy_attempted = execution.get("buy_generated", 0) if execution else 0
     if execution:
         reasons = dict(execution.get("reasons", {}))
