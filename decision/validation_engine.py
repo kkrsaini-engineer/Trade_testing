@@ -87,7 +87,7 @@ class ValidationEngine:
     MAX_SPREAD = 0.005
 
     MAX_OPEN_POSITIONS = 100
-    
+
     MAX_SECTOR_EXPOSURE = 0.30
 
     MAX_CORRELATION = 0.80
@@ -291,9 +291,9 @@ class ValidationEngine:
                 0.0,
             )
         )
-        
+
         checks["average_volume"] = avg_volume >= self.MIN_AVG_VOLUME
-        
+
         if rejection_reason is None and not checks["average_volume"]:
 
             rejection_reason = "Average trading volume is too low."
