@@ -293,7 +293,7 @@ class AnalysisEngine:
         # ATTEMPTED by Paper Trading at all, which is different from a
         # genuine Tier4Block-based rejection and was previously
         # miscounted into an unhelpful "Other" bucket.
-        MAX_DAILY_CANDIDATES = 20
+        MAX_DAILY_CANDIDATES = 100
         buy_generated = signal_counts.get("BUY", 0)
         buy_executed = executed_buy_today
         buy_rejected = max(buy_generated - buy_executed, 0)
