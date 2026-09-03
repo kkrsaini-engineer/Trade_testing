@@ -77,7 +77,7 @@ class PortfolioRulesEngine:
     Portfolio Governance Engine
     """
 
-    MAX_OPEN_POSITIONS = 15
+    MAX_OPEN_POSITIONS = 100
 
     MAX_PORTFOLIO_EXPOSURE = 0.95
 
