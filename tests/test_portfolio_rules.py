@@ -152,7 +152,7 @@ def test_daily_loss_warning_stage_allows_at_full_allocation():
 # ==========================================================
 
 def test_open_positions_read_from_real_open_positions_dict():
-    # Below MAX_OPEN_POSITIONS (15) -> allowed, and the reported count
+    # Below MAX_OPEN_POSITIONS -> allowed, and the reported count
     # reflects the REAL dict length, not a fabricated/absent count.
     result = _evaluate(open_positions={"A": {}, "B": {}, "C": {}})
     assert result.allowed is True
@@ -160,8 +160,14 @@ def test_open_positions_read_from_real_open_positions_dict():
 
 
 def test_max_open_positions_reached_rejects_new_trade():
-    fifteen_positions = {f"SYM{i}": {} for i in range(15)}
-    result = _evaluate(open_positions=fifteen_positions)
+    # Reads the engine's own MAX_OPEN_POSITIONS (CHANGED 2026-09-03:
+    # 15 -> 100) rather than a hardcoded count, so this test keeps
+    # testing the real boundary instead of silently passing/failing
+    # for the wrong reason whenever that cap is retuned again.
+    at_cap_positions = {
+        f"SYM{i}": {} for i in range(PortfolioRulesEngine.MAX_OPEN_POSITIONS)
+    }
+    result = _evaluate(open_positions=at_cap_positions)
     assert result.allowed is False
     assert result.rejection_reason == "Maximum portfolio positions reached."
 
