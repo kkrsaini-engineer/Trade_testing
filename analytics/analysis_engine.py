@@ -154,7 +154,7 @@ class AnalysisEngine:
             except (TypeError, ValueError):
                 return 0.0
 
-        MAX_DAILY_CANDIDATES = 20
+        MAX_DAILY_CANDIDATES = 100
         all_sell_signal_rows = sell_signal_rows
         sell_ranked_all = sorted(all_sell_signal_rows, key=_sell_score, reverse=True)
         sell_attempted_symbols = {r.get("Stock") for r in sell_ranked_all[:MAX_DAILY_CANDIDATES]}
