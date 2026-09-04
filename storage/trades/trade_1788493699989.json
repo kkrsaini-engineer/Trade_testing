@@ -1,0 +1,18 @@
+{
+  "symbol": "AVTNPL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 128,
+  "entry_price": 93.66000366210938,
+  "exit_price": 92.72,
+  "status": "CLOSED",
+  "realized_pnl": -120.32046875000015,
+  "realized_pnl_percent": -1.0036340223736926,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 1.0036340223736926,
+  "regime": "BULL",
+  "confidence": 70.67,
+  "reasons": "Below preferred risk/reward profile.; High market volatility.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 42/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=85 portfolio=45 sector=10 correlation=3 capital=25.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 42/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=85 portfolio=45 sector=10 correlation=3 capital=25.",
+  "id": "trade_1788493699989",
+  "timestamp": 1788493699.9890046
+}

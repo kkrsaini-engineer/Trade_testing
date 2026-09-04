@@ -1,0 +1,18 @@
+{
+  "symbol": "OBEROIRLTY.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 4,
+  "entry_price": 1914.0,
+  "exit_price": 1915.4,
+  "status": "CLOSED",
+  "realized_pnl": 5.600000000000364,
+  "realized_pnl_percent": 0.07314524555904342,
+  "max_profit_percent": 0.07314524555904342,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 73.4,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Average trading volume is too low.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Average trading volume is too low.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1788493696813",
+  "timestamp": 1788493696.8138828
+}

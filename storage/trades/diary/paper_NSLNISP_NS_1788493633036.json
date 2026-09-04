@@ -6,20 +6,35 @@
   "entry_price": 45.61000061035156,
   "buy_probability": 0.0,
   "buy_confidence": 0.0,
-  "entry_thesis_confidence": null,
+  "entry_thesis_confidence": 70.83,
   "entry_reasons": [
     "Morning Executor: gap +0.46% (0.12x ATR, NORMAL band)",
     "No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker."
   ],
-  "daily_log": [],
+  "daily_log": [
+    {
+      "date": "2026-09-04",
+      "current_price": 45.57,
+      "current_pnl": -5.200079345703088,
+      "current_buy_confidence": 70.83,
+      "current_sell_confidence": 20.36,
+      "current_exit_score": 76.55,
+      "recommendation": "PARTIAL_EXIT",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "High market volatility.",
+        "High market volatility."
+      ]
+    }
+  ],
   "status": "OPEN",
   "exit_date": null,
   "exit_price": null,
   "exit_reason": null,
-  "holding_days": 0,
+  "holding_days": 1,
   "max_profit_percent": 0.0,
   "max_drawdown_percent": 0.0,
   "final_pnl": null,
   "created_at": 1788493633.0369866,
-  "updated_at": 1788493633.0369868
+  "updated_at": 1788493718.0538223
 }

@@ -1,0 +1,18 @@
+{
+  "symbol": "NSLNISP.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 65,
+  "entry_price": 45.61000061035156,
+  "exit_price": 45.57,
+  "status": "OPEN",
+  "realized_pnl": -2.600039672851544,
+  "realized_pnl_percent": 0.0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.08770140279823577,
+  "regime": "BULL",
+  "confidence": 78.07,
+  "reasons": "Below preferred risk/reward profile.; High market volatility.; High market volatility.",
+  "id": "trade_1788493718054",
+  "timestamp": 1788493718.0540378
+}

@@ -1,41 +1,41 @@
 {
-  "date": "2026-09-03",
-  "opening_balance": 181083.32174491882,
-  "total_capital_in_positions": 206874.02000000002,
-  "remaining_balance": 293846.34174491884,
-  "portfolio_value": 500720.36174491886,
-  "realized_pnl": 720.361744918825,
-  "portfolio_return_percent": 0.1440723489837721,
+  "date": "2026-09-04",
+  "opening_balance": 107325.34086563112,
+  "total_capital_in_positions": 308941.42,
+  "remaining_balance": 192179.79377090454,
+  "portfolio_value": 501121.2137709045,
+  "realized_pnl": 724.4409053039583,
+  "portfolio_return_percent": 0.22424275418090403,
   "opened_today": [],
   "closed_today": [
     {
       "symbol": "MUKKA.NS",
-      "pnl": 131.8502011871343
-    },
-    {
-      "symbol": "DEEPAKNTR.NS",
-      "pnl": 42.000146484374454
-    },
-    {
-      "symbol": "NORTHARC.NS",
-      "pnl": -26.00063476562559
+      "pnl": -247.79993247985882
     },
     {
       "symbol": "KAMDHENU.NS",
-      "pnl": 165.58999999999952
+      "pnl": 97.76028686523523
     },
     {
-      "symbol": "JINDWORLD.NS",
-      "pnl": 90.08987503051796
+      "symbol": "OBEROIRLTY.NS",
+      "pnl": 5.600000000000364
     },
     {
-      "symbol": "TNPETRO.NS",
-      "pnl": -81.78051635742145
+      "symbol": "AVTNPL.NS",
+      "pnl": -120.32046875000015
     },
     {
-      "symbol": "SPORTKING.NS",
-      "pnl": -0.7602319335943548
+      "symbol": "FINCABLES.NS",
+      "pnl": -23.200000000000728
+    },
+    {
+      "symbol": "EDELWEISS.NS",
+      "pnl": 1300.110000000002
+    },
+    {
+      "symbol": "PAISALO.NS",
+      "pnl": -117.00017852783137
     }
   ],
-  "open_positions_now": 13
+  "open_positions_now": 26
 }

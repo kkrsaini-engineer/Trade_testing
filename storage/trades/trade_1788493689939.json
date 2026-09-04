@@ -1,0 +1,18 @@
+{
+  "symbol": "KAMDHENU.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 376,
+  "entry_price": 39.04999923706055,
+  "exit_price": 39.31,
+  "status": "CLOSED",
+  "realized_pnl": 97.76028686523523,
+  "realized_pnl_percent": 0.6658150269378257,
+  "max_profit_percent": 0.6658150269378257,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 63.07,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 41/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=3 capital=25.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 41/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=3 capital=25.",
+  "id": "trade_1788493689939",
+  "timestamp": 1788493689.9394927
+}
