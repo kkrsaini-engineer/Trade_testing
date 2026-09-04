@@ -1,0 +1,13 @@
+{
+  "id": "paper_PAISALO_NS_1788493620592",
+  "symbol": "PAISALO.NS",
+  "direction": "BUY",
+  "action": "BUY",
+  "quantity": 117,
+  "entry_price": 71.6500015258789,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap +1.95% (0.57x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1788493620.5931025
+}

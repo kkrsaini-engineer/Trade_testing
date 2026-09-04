@@ -1,0 +1,13 @@
+{
+  "id": "paper_KTKBANK_NS_1788493634933",
+  "symbol": "KTKBANK.NS",
+  "direction": "BUY",
+  "action": "BUY",
+  "quantity": 16,
+  "entry_price": 341.0,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap +0.37% (0.12x ATR, NORMAL band); No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1788493634.9335284
+}

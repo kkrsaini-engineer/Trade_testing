@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_NIACL_NS_1788493631310",
+  "symbol": "NIACL.NS",
+  "direction": "BUY",
+  "entry_date": "2026-09-04",
+  "entry_price": 196.49000549316406,
+  "buy_probability": 0.0,
+  "buy_confidence": 0.0,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap +0.59% (0.15x ATR, NORMAL band)",
+    "No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.06 \u2014 not a blocker."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1788493631.310043,
+  "updated_at": 1788493631.3100433
+}

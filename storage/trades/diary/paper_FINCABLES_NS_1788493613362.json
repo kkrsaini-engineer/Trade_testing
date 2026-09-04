@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_FINCABLES_NS_1788493613362",
+  "symbol": "FINCABLES.NS",
+  "direction": "BUY",
+  "entry_date": "2026-09-04",
+  "entry_price": 1223.5,
+  "buy_probability": 0.0,
+  "buy_confidence": 0.0,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap -3.88% (0.92x ATR, NORMAL band)",
+    "No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.06 \u2014 not a blocker."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1788493613.362846,
+  "updated_at": 1788493613.3628461
+}

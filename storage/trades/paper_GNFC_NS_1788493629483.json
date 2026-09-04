@@ -1,0 +1,13 @@
+{
+  "id": "paper_GNFC_NS_1788493629483",
+  "symbol": "GNFC.NS",
+  "direction": "BUY",
+  "action": "BUY",
+  "quantity": 11,
+  "entry_price": 588.9000244140625,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap +0.26% (0.10x ATR, NORMAL band); No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1788493629.48367
+}
