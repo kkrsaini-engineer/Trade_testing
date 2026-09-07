@@ -1,0 +1,18 @@
+{
+  "symbol": "AHCL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 726,
+  "entry_price": 15.680000305175781,
+  "exit_price": 15.8,
+  "status": "CLOSED",
+  "realized_pnl": 87.11977844238334,
+  "realized_pnl_percent": 0.7653041612799523,
+  "max_profit_percent": 0.8290796702427862,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 76.71,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=4 capital=45.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=4 capital=45.",
+  "id": "trade_1788753188892",
+  "timestamp": 1788753188.892628
+}

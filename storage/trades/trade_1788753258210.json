@@ -1,0 +1,18 @@
+{
+  "symbol": "JINDALSAW.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 6,
+  "entry_price": 311.0,
+  "exit_price": 306.0,
+  "status": "CLOSED",
+  "realized_pnl": -30.0,
+  "realized_pnl_percent": -1.607717041800643,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 1.607717041800643,
+  "regime": "BULL",
+  "confidence": 72.71,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=45 sector=10 correlation=4 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=45 sector=10 correlation=4 capital=10.",
+  "id": "trade_1788753258210",
+  "timestamp": 1788753258.2104652
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "SOTL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 30,
+  "entry_price": 743.0499877929688,
+  "exit_price": 766.35,
+  "status": "CLOSED",
+  "realized_pnl": 699.0003662109382,
+  "realized_pnl_percent": 3.1357260735899786,
+  "max_profit_percent": 3.1357260735899786,
+  "max_drawdown_percent": 0.8142100655890758,
+  "regime": "BULL",
+  "confidence": 80.19,
+  "reasons": "Partial profit target reached.; Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 47/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=25 correlation=4 capital=25.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 47/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=25 correlation=4 capital=25.",
+  "id": "trade_1788753221473",
+  "timestamp": 1788753221.473297
+}

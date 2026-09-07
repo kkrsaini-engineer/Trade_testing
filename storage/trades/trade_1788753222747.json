@@ -1,0 +1,18 @@
+{
+  "symbol": "ONEPOINT.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 90,
+  "entry_price": 57.5,
+  "exit_price": 57.85,
+  "status": "CLOSED",
+  "realized_pnl": 31.500000000000128,
+  "realized_pnl_percent": 0.6086956521739155,
+  "max_profit_percent": 0.6086956521739155,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 72.81,
+  "reasons": "Below preferred risk/reward profile.; Trend reversal detected.; Trend reversal confirmed.",
+  "id": "trade_1788753222747",
+  "timestamp": 1788753222.7476075
+}

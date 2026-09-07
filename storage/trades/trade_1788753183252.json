@@ -1,0 +1,18 @@
+{
+  "symbol": "GHCLTEXTIL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 145,
+  "entry_price": 140.39999389648438,
+  "exit_price": 138.38,
+  "status": "CLOSED",
+  "realized_pnl": -292.89911499023503,
+  "realized_pnl_percent": -1.4387421540585694,
+  "max_profit_percent": 0.27065962965482826,
+  "max_drawdown_percent": 1.4387421540585694,
+  "regime": "BULL",
+  "confidence": 79.62,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 42/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=60 sector=10 correlation=4 capital=45.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 42/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=60 sector=10 correlation=4 capital=45.",
+  "id": "trade_1788753183252",
+  "timestamp": 1788753183.2527244
+}

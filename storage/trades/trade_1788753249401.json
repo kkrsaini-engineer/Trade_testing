@@ -1,0 +1,18 @@
+{
+  "symbol": "NIACL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 31,
+  "entry_price": 196.49000549316406,
+  "exit_price": 224.67,
+  "status": "CLOSED",
+  "realized_pnl": 873.5798297119137,
+  "realized_pnl_percent": 14.341693581873463,
+  "max_profit_percent": 14.341693581873463,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 68.38,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Final profit target reached.; Excellent risk/reward profile.; High market volatility.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 40/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=78 portfolio=45 sector=25 correlation=4 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 40/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=78 portfolio=45 sector=25 correlation=4 capital=10.; Profit protection activated.",
+  "id": "trade_1788753249401",
+  "timestamp": 1788753249.4013891
+}

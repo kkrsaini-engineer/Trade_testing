@@ -24,16 +24,35 @@
         "Below preferred risk/reward profile.",
         "Continue holding position."
       ]
+    },
+    {
+      "date": "2026-09-07",
+      "current_price": 285.75,
+      "current_pnl": 587.5,
+      "current_buy_confidence": 66.35,
+      "current_sell_confidence": 17.93,
+      "current_exit_score": 90.34,
+      "recommendation": "FULL_EXIT",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=45 portfolio=45 sector=25 correlation=4 capital=25.",
+        "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=45 portfolio=45 sector=25 correlation=4 capital=25."
+      ]
     }
   ],
-  "status": "OPEN",
-  "exit_date": null,
-  "exit_price": null,
-  "exit_reason": null,
-  "holding_days": 1,
-  "max_profit_percent": 0.0,
+  "status": "CLOSED",
+  "exit_date": "2026-09-07",
+  "exit_price": 285.75,
+  "exit_reason": "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=45 portfolio=45 sector=25 correlation=4 capital=25.",
+  "holding_days": 2,
+  "max_profit_percent": 4.288321167883212,
   "max_drawdown_percent": 0.0,
-  "final_pnl": null,
+  "final_pnl": 587.5,
   "created_at": 1788493602.915358,
-  "updated_at": 1788493694.5418985
+  "updated_at": 1788753231.5757537,
+  "final_pnl_percent": 4.288321167883212,
+  "exit_score": 90.34,
+  "target1_status": "NOT REACHED",
+  "target2_status": "NOT REACHED",
+  "stop_loss_status": "NOT HIT"
 }

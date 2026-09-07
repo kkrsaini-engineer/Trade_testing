@@ -1,41 +1,125 @@
 {
-  "date": "2026-09-04",
-  "opening_balance": 107325.34086563112,
-  "total_capital_in_positions": 308941.42,
-  "remaining_balance": 192179.79377090454,
-  "portfolio_value": 501121.2137709045,
-  "realized_pnl": 724.4409053039583,
-  "portfolio_return_percent": 0.22424275418090403,
+  "date": "2026-09-07",
+  "opening_balance": 24856.624005432124,
+  "total_capital_in_positions": 290349.45999999985,
+  "remaining_balance": 212469.81349838257,
+  "portfolio_value": 502819.2734983824,
+  "realized_pnl": 3310.971139831542,
+  "portfolio_return_percent": 0.5638546996764838,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "MUKKA.NS",
-      "pnl": -247.79993247985882
+      "symbol": "GRAPHITE.NS",
+      "pnl": 90.00000000000057
     },
     {
-      "symbol": "KAMDHENU.NS",
-      "pnl": 97.76028686523523
+      "symbol": "TEJASNET.NS",
+      "pnl": -103.60000000000036
     },
     {
-      "symbol": "OBEROIRLTY.NS",
-      "pnl": 5.600000000000364
+      "symbol": "THELEELA.NS",
+      "pnl": -16.800097656249818
     },
     {
-      "symbol": "AVTNPL.NS",
-      "pnl": -120.32046875000015
+      "symbol": "CYIENTDLM.NS",
+      "pnl": -0.599999999999909
     },
     {
-      "symbol": "FINCABLES.NS",
-      "pnl": -23.200000000000728
+      "symbol": "BRIGADE.NS",
+      "pnl": -6.449999999999932
     },
     {
-      "symbol": "EDELWEISS.NS",
-      "pnl": 1300.110000000002
+      "symbol": "MARKSANS.NS",
+      "pnl": 6.25
     },
     {
-      "symbol": "PAISALO.NS",
-      "pnl": -117.00017852783137
+      "symbol": "NORTHARC.NS",
+      "pnl": -39.65000000000015
+    },
+    {
+      "symbol": "MCX.NS",
+      "pnl": 60.10009765625
+    },
+    {
+      "symbol": "JINDALSTEL.NS",
+      "pnl": -78.0
+    },
+    {
+      "symbol": "SHREEJISPG.NS",
+      "pnl": -22.04999999999984
+    },
+    {
+      "symbol": "GHCLTEXTIL.NS",
+      "pnl": -292.89911499023503
+    },
+    {
+      "symbol": "GIPCL.NS",
+      "pnl": -10.5
+    },
+    {
+      "symbol": "AHCL.NS",
+      "pnl": 87.11977844238334
+    },
+    {
+      "symbol": "AEROENTER.NS",
+      "pnl": -8.399880371093559
+    },
+    {
+      "symbol": "VISAKAIND.NS",
+      "pnl": -19.99999999999993
+    },
+    {
+      "symbol": "AEGISVOPAK.NS",
+      "pnl": 5.4000244140625
+    },
+    {
+      "symbol": "IMAGICAA.NS",
+      "pnl": 14.84996566772466
+    },
+    {
+      "symbol": "SOTL.NS",
+      "pnl": 699.0003662109382
+    },
+    {
+      "symbol": "ONEPOINT.NS",
+      "pnl": 31.500000000000128
+    },
+    {
+      "symbol": "CGCL.NS",
+      "pnl": 587.5
+    },
+    {
+      "symbol": "CENTENKA.NS",
+      "pnl": 23.100000000000477
+    },
+    {
+      "symbol": "NSLNISP.NS",
+      "pnl": 13.649960327148456
+    },
+    {
+      "symbol": "BEML.NS",
+      "pnl": 7.0
+    },
+    {
+      "symbol": "NIACL.NS",
+      "pnl": 873.5798297119137
+    },
+    {
+      "symbol": "ACMESOLAR.NS",
+      "pnl": -37.79985351562527
+    },
+    {
+      "symbol": "VINCOFE.NS",
+      "pnl": 243.60000000000048
+    },
+    {
+      "symbol": "QUESS.NS",
+      "pnl": 17.399926757812636
+    },
+    {
+      "symbol": "JINDALSAW.NS",
+      "pnl": -30.0
     }
   ],
-  "open_positions_now": 26
+  "open_positions_now": 47
 }

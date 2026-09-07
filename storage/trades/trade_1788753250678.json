@@ -1,0 +1,18 @@
+{
+  "symbol": "ACMESOLAR.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 12,
+  "entry_price": 422.79998779296875,
+  "exit_price": 419.65,
+  "status": "CLOSED",
+  "realized_pnl": -37.79985351562527,
+  "realized_pnl_percent": -0.7450302469051201,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.7450302469051201,
+  "regime": "BULL",
+  "confidence": 66.85,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=4 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=4 capital=10.",
+  "id": "trade_1788753250678",
+  "timestamp": 1788753250.6784456
+}
