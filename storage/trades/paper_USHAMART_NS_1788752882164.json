@@ -1,0 +1,13 @@
+{
+  "id": "paper_USHAMART_NS_1788752882164",
+  "symbol": "USHAMART.NS",
+  "direction": "BUY",
+  "action": "BUY",
+  "quantity": 10,
+  "entry_price": 514.1500244140625,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap +0.00% (0.00x ATR, NORMAL band); No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1788752882.1653047
+}

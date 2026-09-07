@@ -1,0 +1,13 @@
+{
+  "id": "paper_VISAKAIND_NS_1788752949614",
+  "symbol": "VISAKAIND.NS",
+  "direction": "BUY",
+  "action": "BUY",
+  "quantity": 25,
+  "entry_price": 96.0,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap +2.82% (0.62x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1788752949.6151826
+}
