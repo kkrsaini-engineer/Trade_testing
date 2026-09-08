@@ -1,0 +1,18 @@
+{
+  "symbol": "BRIGADE.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 2,
+  "entry_price": 675.7999877929688,
+  "exit_price": 673.95,
+  "status": "CLOSED",
+  "realized_pnl": -3.699975585937409,
+  "realized_pnl_percent": -0.27374782870452613,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.27374782870452613,
+  "regime": "BULL",
+  "confidence": 59.02,
+  "reasons": "Below preferred risk/reward profile.; High market volatility.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 40/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=78 portfolio=45 sector=10 correlation=4 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 40/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=78 portfolio=45 sector=10 correlation=4 capital=10.",
+  "id": "trade_1788839415571",
+  "timestamp": 1788839415.571381
+}

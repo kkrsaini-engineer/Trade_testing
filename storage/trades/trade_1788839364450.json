@@ -1,0 +1,18 @@
+{
+  "symbol": "PARAS.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 2,
+  "entry_price": 1496.5,
+  "exit_price": 1513.8,
+  "status": "CLOSED",
+  "realized_pnl": 34.59999999999991,
+  "realized_pnl_percent": 1.1560307383895727,
+  "max_profit_percent": 1.1560307383895727,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 69.29,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=45 sector=10 correlation=4 capital=25.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=45 sector=10 correlation=4 capital=25.",
+  "id": "trade_1788839364450",
+  "timestamp": 1788839364.4500127
+}

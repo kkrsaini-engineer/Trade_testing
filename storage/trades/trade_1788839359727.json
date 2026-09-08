@@ -1,0 +1,18 @@
+{
+  "symbol": "SOLARA.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 5,
+  "entry_price": 643.8499755859375,
+  "exit_price": 689.0,
+  "status": "CLOSED",
+  "realized_pnl": 225.7501220703125,
+  "realized_pnl_percent": 7.012506969962,
+  "max_profit_percent": 7.012506969962,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 67.34,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 41/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=45 portfolio=60 sector=10 correlation=4 capital=25.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 41/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=45 portfolio=60 sector=10 correlation=4 capital=25.",
+  "id": "trade_1788839359727",
+  "timestamp": 1788839359.72774
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "MUNJALAU.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 47,
+  "entry_price": 115.98999786376953,
+  "exit_price": 115.02,
+  "status": "CLOSED",
+  "realized_pnl": -45.589899597168156,
+  "realized_pnl_percent": -0.836277163233333,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.836277163233333,
+  "regime": "BULL",
+  "confidence": 72.01,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 40/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=4 capital=75.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 40/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=4 capital=75.",
+  "id": "trade_1788839335347",
+  "timestamp": 1788839335.3477943
+}

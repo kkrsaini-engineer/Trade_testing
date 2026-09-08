@@ -1,0 +1,18 @@
+{
+  "symbol": "TEJASNET.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 3,
+  "entry_price": 595.7000122070312,
+  "exit_price": 598.8,
+  "status": "OPEN",
+  "realized_pnl": 9.299963378906114,
+  "realized_pnl_percent": 0.0,
+  "max_profit_percent": 0.5203941127151305,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 68.55,
+  "reasons": "Below preferred risk/reward profile.; High market volatility.; High market volatility.",
+  "id": "trade_1788839412655",
+  "timestamp": 1788839412.6557
+}

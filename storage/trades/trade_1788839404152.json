@@ -1,0 +1,18 @@
+{
+  "symbol": "GVKPIL.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 722,
+  "entry_price": 2.130000114440918,
+  "exit_price": 2.13,
+  "status": "CLOSED",
+  "realized_pnl": 8.262634285038928e-05,
+  "realized_pnl_percent": 5.372812766508693e-06,
+  "max_profit_percent": 5.372812766508693e-06,
+  "max_drawdown_percent": 0.0,
+  "regime": "BEAR",
+  "confidence": 61.64,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Circuit breaker active.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Circuit breaker active.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1788839404152",
+  "timestamp": 1788839404.152293
+}

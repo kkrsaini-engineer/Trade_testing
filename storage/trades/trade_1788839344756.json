@@ -1,0 +1,18 @@
+{
+  "symbol": "DCBBANK.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 41,
+  "entry_price": 222.39999389648438,
+  "exit_price": 226.54,
+  "status": "CLOSED",
+  "realized_pnl": 169.7402502441403,
+  "realized_pnl_percent": 1.861513586840553,
+  "max_profit_percent": 1.861513586840553,
+  "max_drawdown_percent": 0.863306631823939,
+  "regime": "BULL",
+  "confidence": 75.78,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=45 portfolio=60 sector=25 correlation=4 capital=45.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=45 portfolio=60 sector=25 correlation=4 capital=45.",
+  "id": "trade_1788839344756",
+  "timestamp": 1788839344.7568727
+}

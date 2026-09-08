@@ -1,0 +1,18 @@
+{
+  "symbol": "KRBL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 5,
+  "entry_price": 429.3999938964844,
+  "exit_price": 427.9,
+  "status": "CLOSED",
+  "realized_pnl": -7.499969482421989,
+  "realized_pnl_percent": -0.3493232225909164,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.3493232225909164,
+  "regime": "BULL",
+  "confidence": 69.44,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=45 sector=10 correlation=4 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=45 sector=10 correlation=4 capital=10.",
+  "id": "trade_1788839420330",
+  "timestamp": 1788839420.330302
+}

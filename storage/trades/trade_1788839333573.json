@@ -1,0 +1,18 @@
+{
+  "symbol": "GIPCL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 35,
+  "entry_price": 201.8000030517578,
+  "exit_price": 201.0,
+  "status": "CLOSED",
+  "realized_pnl": -28.000106811523438,
+  "realized_pnl_percent": -0.3964336172743403,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.3964336172743403,
+  "regime": "BULL",
+  "confidence": 72.72,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 46/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=45 portfolio=75 sector=10 correlation=4 capital=75.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 46/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=45 portfolio=75 sector=10 correlation=4 capital=75.",
+  "id": "trade_1788839333573",
+  "timestamp": 1788839333.5731833
+}
