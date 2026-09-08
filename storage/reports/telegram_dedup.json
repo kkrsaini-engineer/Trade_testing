@@ -1,28 +1,5 @@
 {
-  "2026-09-07": [
-    "mi_summary::2026-09-07 08:42:36.225436",
-    "morning_exec::2026-09-07::09:21:16.418418",
-    "paper_trading_started::2026-09-07::09:22:26.854399",
-    "monitoring_summary::2026-09-07::09:24:18.211407",
-    "holding_status::2026-09-07::part1::09:24:21.488147",
-    "holding_status::2026-09-07::part2::09:24:22.035848",
-    "holding_status::2026-09-07::part3::09:24:22.580176",
-    "holding_status::2026-09-07::part4::09:24:23.130590",
-    "holding_status::2026-09-07::part5::09:24:23.685920",
-    "holding_status::2026-09-07::part6::09:24:24.238214",
-    "holding_status::2026-09-07::part7::09:24:24.801607",
-    "holding_status::2026-09-07::part8::09:24:25.345301",
-    "holding_status::2026-09-07::part9::09:24:25.889016",
-    "holding_status::2026-09-07::part10::09:24:26.417314",
-    "holding_status::2026-09-07::part11::09:24:26.978222",
-    "portfolio_summary::2026-09-07::09:24:27.544661",
-    "analysis_summary::2026-09-07::09:24:28.775923",
-    "learning_summary::2026-09-07::09:24:31.692447",
-    "optimizer_recommendation::2026-09-07::09:24:32.491136",
-    "macro::Real Estate::ANANTRAJ.NS",
-    "mi_summary::2026-09-07 17:06:31.197171",
-    "scan_started::2026-09-07::20:42:29.781691",
-    "scan_completed::2026-09-07::21:33:14.779863",
-    "mi_summary::2026-09-08 03:09:28.767616"
+  "2026-09-08": [
+    "morning_exec::2026-09-08::09:17:55.382902"
   ]
 }

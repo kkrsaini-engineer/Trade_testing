@@ -1,0 +1,13 @@
+{
+  "id": "paper_DEEPINDS_NS_1788839227130",
+  "symbol": "DEEPINDS.NS",
+  "direction": "BUY",
+  "action": "BUY",
+  "quantity": 6,
+  "entry_price": 789.5499877929688,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap +0.55% (0.12x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.09 \u2014 not a blocker.",
+  "timestamp": 1788839227.1305773
+}
