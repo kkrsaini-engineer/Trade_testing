@@ -1,0 +1,13 @@
+{
+  "id": "paper_NSLNISP_NS_1788925624417",
+  "symbol": "NSLNISP.NS",
+  "direction": "BUY",
+  "action": "BUY",
+  "quantity": 156,
+  "entry_price": 45.20000076293945,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap -1.78% (0.47x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.09 \u2014 not a blocker.",
+  "timestamp": 1788925624.417832
+}

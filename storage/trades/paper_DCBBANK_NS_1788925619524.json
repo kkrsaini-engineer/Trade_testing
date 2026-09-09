@@ -1,0 +1,13 @@
+{
+  "id": "paper_DCBBANK_NS_1788925619524",
+  "symbol": "DCBBANK.NS",
+  "direction": "BUY",
+  "action": "BUY",
+  "quantity": 35,
+  "entry_price": 229.0,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap +3.47% (1.10x ATR, WARNING band); No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.09 \u2014 not a blocker.",
+  "timestamp": 1788925619.5251727
+}

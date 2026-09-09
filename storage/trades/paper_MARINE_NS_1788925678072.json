@@ -1,0 +1,13 @@
+{
+  "id": "paper_MARINE_NS_1788925678072",
+  "symbol": "MARINE.NS",
+  "direction": "BUY",
+  "action": "BUY",
+  "quantity": 4,
+  "entry_price": 416.79998779296875,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap -3.55% (0.78x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.09 \u2014 not a blocker.",
+  "timestamp": 1788925678.0731025
+}

@@ -1,0 +1,13 @@
+{
+  "id": "paper_MANINDS_NS_1788925656741",
+  "symbol": "MANINDS.NS",
+  "direction": "BUY",
+  "action": "BUY",
+  "quantity": 3,
+  "entry_price": 824.9000244140625,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap +4.61% (1.09x ATR, WARNING band); No company-specific news available. | 20 macro headline(s), bias 0.09 \u2014 not a blocker.",
+  "timestamp": 1788925656.7418258
+}

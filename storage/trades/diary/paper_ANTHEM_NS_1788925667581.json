@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_ANTHEM_NS_1788925667581",
+  "symbol": "ANTHEM.NS",
+  "direction": "BUY",
+  "entry_date": "2026-09-09",
+  "entry_price": 957.7000122070312,
+  "buy_probability": 0.0,
+  "buy_confidence": 0.0,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap -0.01% (0.00x ATR, NORMAL band)",
+    "No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.09 \u2014 not a blocker."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1788925667.5813565,
+  "updated_at": 1788925667.5813568
+}
