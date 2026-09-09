@@ -1,0 +1,18 @@
+{
+  "symbol": "APOLLO.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 2,
+  "entry_price": 391.0,
+  "exit_price": 424.0,
+  "status": "OPEN",
+  "realized_pnl": 66.0,
+  "realized_pnl_percent": 0.0,
+  "max_profit_percent": 7.301790281329926,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 65.62,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved.",
+  "id": "trade_1788925813973",
+  "timestamp": 1788925813.9737728
+}

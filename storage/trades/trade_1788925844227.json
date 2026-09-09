@@ -1,0 +1,18 @@
+{
+  "symbol": "APLAPOLLO.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 1,
+  "entry_price": 2204.60009765625,
+  "exit_price": 2176.4,
+  "status": "CLOSED",
+  "realized_pnl": -28.20009765624991,
+  "realized_pnl_percent": -1.2791479818144769,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 1.2791479818144769,
+  "regime": "BULL",
+  "confidence": 60.66,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Circuit breaker active.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Circuit breaker active.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1788925844227",
+  "timestamp": 1788925844.2272687
+}

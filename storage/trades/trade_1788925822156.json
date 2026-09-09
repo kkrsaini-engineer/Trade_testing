@@ -1,0 +1,18 @@
+{
+  "symbol": "IIFL.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 5,
+  "entry_price": 645.7000122070312,
+  "exit_price": 611.8,
+  "status": "OPEN",
+  "realized_pnl": -169.50006103515648,
+  "realized_pnl_percent": 0.0,
+  "max_profit_percent": 4.615144375034324,
+  "max_drawdown_percent": 5.250117944269437,
+  "regime": "BULL",
+  "confidence": 51.81,
+  "reasons": "Below preferred risk/reward profile.; High market volatility.; High market volatility.",
+  "id": "trade_1788925822156",
+  "timestamp": 1788925822.1562405
+}

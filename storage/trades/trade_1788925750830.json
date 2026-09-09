@@ -1,0 +1,18 @@
+{
+  "symbol": "SAMBHV.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 78,
+  "entry_price": 128.0500030517578,
+  "exit_price": 128.36,
+  "status": "CLOSED",
+  "realized_pnl": 24.17976196289169,
+  "realized_pnl_percent": 0.2420905434238064,
+  "max_profit_percent": 0.2420905434238064,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 68.76,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 40/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=4 capital=75.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 40/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=4 capital=75.",
+  "id": "trade_1788925750830",
+  "timestamp": 1788925750.8302023
+}

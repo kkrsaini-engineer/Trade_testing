@@ -1,0 +1,18 @@
+{
+  "symbol": "ESAFSFB.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 44,
+  "entry_price": 41.5,
+  "exit_price": 41.21,
+  "status": "CLOSED",
+  "realized_pnl": -12.759999999999962,
+  "realized_pnl_percent": -0.6987951807228895,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 1.2048192771084338,
+  "regime": "BULL",
+  "confidence": 62.47,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=25 correlation=4 capital=45.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=25 correlation=4 capital=45.",
+  "id": "trade_1788925770485",
+  "timestamp": 1788925770.485399
+}

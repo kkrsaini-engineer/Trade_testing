@@ -1,0 +1,18 @@
+{
+  "symbol": "TNPETRO.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 20,
+  "entry_price": 131.50999450683594,
+  "exit_price": 141.21,
+  "status": "CLOSED",
+  "realized_pnl": 194.0001098632814,
+  "realized_pnl_percent": 7.375869438318515,
+  "max_profit_percent": 7.375869438318515,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 70.13,
+  "reasons": "Healthy risk/reward profile.; High market volatility.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 44/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=85 portfolio=60 sector=10 correlation=4 capital=25.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 44/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=85 portfolio=60 sector=10 correlation=4 capital=25.",
+  "id": "trade_1788925787931",
+  "timestamp": 1788925787.9310732
+}

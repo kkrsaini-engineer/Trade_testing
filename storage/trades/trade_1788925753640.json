@@ -1,0 +1,18 @@
+{
+  "symbol": "IKIO.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 22,
+  "entry_price": 219.72999572753906,
+  "exit_price": 223.72,
+  "status": "CLOSED",
+  "realized_pnl": 87.7800939941406,
+  "realized_pnl_percent": 1.815866904857389,
+  "max_profit_percent": 1.815866904857389,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 70.32,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=38 portfolio=60 sector=10 correlation=4 capital=45.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=38 portfolio=60 sector=10 correlation=4 capital=45.",
+  "id": "trade_1788925753640",
+  "timestamp": 1788925753.640064
+}

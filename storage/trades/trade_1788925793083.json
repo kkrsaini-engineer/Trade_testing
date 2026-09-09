@@ -1,0 +1,18 @@
+{
+  "symbol": "SUDARSCHEM.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 9,
+  "entry_price": 1249.9000244140625,
+  "exit_price": 1229.5,
+  "status": "CLOSED",
+  "realized_pnl": -183.6002197265625,
+  "realized_pnl_percent": -1.63213249184676,
+  "max_profit_percent": 0.24801788346157763,
+  "max_drawdown_percent": 1.7441414503757746,
+  "regime": "BULL",
+  "confidence": 59.84,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 41/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=60 sector=10 correlation=4 capital=25.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 41/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=60 sector=10 correlation=4 capital=25.",
+  "id": "trade_1788925793083",
+  "timestamp": 1788925793.0839133
+}

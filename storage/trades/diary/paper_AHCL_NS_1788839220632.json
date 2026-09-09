@@ -24,16 +24,35 @@
         "Below preferred risk/reward profile.",
         "Continue holding position."
       ]
+    },
+    {
+      "date": "2026-09-09",
+      "current_price": 15.9,
+      "current_pnl": 132.84001407623305,
+      "current_buy_confidence": 68.48,
+      "current_sell_confidence": 19.68,
+      "current_exit_score": 90.97,
+      "recommendation": "FULL_EXIT",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=4 capital=45.",
+        "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=4 capital=45."
+      ]
     }
   ],
-  "status": "OPEN",
-  "exit_date": null,
-  "exit_price": null,
-  "exit_reason": null,
-  "holding_days": 1,
-  "max_profit_percent": 0.0,
+  "status": "CLOSED",
+  "exit_date": "2026-09-09",
+  "exit_price": 15.9,
+  "exit_reason": "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=4 capital=45.",
+  "holding_days": 2,
+  "max_profit_percent": 2.316602567765037,
   "max_drawdown_percent": 0.0,
-  "final_pnl": null,
+  "final_pnl": 132.84001407623305,
   "created_at": 1788839220.632278,
-  "updated_at": 1788839424.2353234
+  "updated_at": 1788925758.4947906,
+  "final_pnl_percent": 2.316602567765037,
+  "exit_score": 90.97,
+  "target1_status": "NOT REACHED",
+  "target2_status": "NOT REACHED",
+  "stop_loss_status": "NOT HIT"
 }

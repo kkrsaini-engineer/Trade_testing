@@ -1,0 +1,18 @@
+{
+  "symbol": "SSWL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 6,
+  "entry_price": 374.95001220703125,
+  "exit_price": 374.0,
+  "status": "CLOSED",
+  "realized_pnl": -5.7000732421875,
+  "realized_pnl_percent": -0.25337036300900134,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.25337036300900134,
+  "regime": "BULL",
+  "confidence": 63.06,
+  "reasons": "Below preferred risk/reward profile.; High market volatility.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 42/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=85 portfolio=45 sector=10 correlation=4 capital=25.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 42/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=85 portfolio=45 sector=10 correlation=4 capital=25.",
+  "id": "trade_1788925797164",
+  "timestamp": 1788925797.1647792
+}

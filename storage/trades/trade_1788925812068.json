@@ -1,0 +1,18 @@
+{
+  "symbol": "FINCABLES.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 4,
+  "entry_price": 1235.0999755859375,
+  "exit_price": 1311.1,
+  "status": "CLOSED",
+  "realized_pnl": 304.00009765624964,
+  "realized_pnl_percent": 6.15335000537164,
+  "max_profit_percent": 6.15335000537164,
+  "max_drawdown_percent": 0.1700247451580801,
+  "regime": "BULL",
+  "confidence": 73.52,
+  "reasons": "Healthy risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=4 capital=25.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=4 capital=25.",
+  "id": "trade_1788925812068",
+  "timestamp": 1788925812.0687332
+}

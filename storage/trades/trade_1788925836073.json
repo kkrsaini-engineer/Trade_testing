@@ -1,0 +1,18 @@
+{
+  "symbol": "BCLIND.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 49,
+  "entry_price": 35.90999984741211,
+  "exit_price": 35.72,
+  "status": "CLOSED",
+  "realized_pnl": -9.309992523193415,
+  "realized_pnl_percent": -0.5291001064312258,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.5291001064312258,
+  "regime": "SIDEWAYS",
+  "confidence": 49.98,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=4 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=4 capital=10.",
+  "id": "trade_1788925836073",
+  "timestamp": 1788925836.0731351
+}

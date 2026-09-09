@@ -1,0 +1,18 @@
+{
+  "symbol": "STYLEBAAZA.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 3,
+  "entry_price": 401.29998779296875,
+  "exit_price": 387.85,
+  "status": "CLOSED",
+  "realized_pnl": -40.34996337890618,
+  "realized_pnl_percent": -3.351604336431626,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 3.351604336431626,
+  "regime": "BULL",
+  "confidence": 72.06,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 40/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=4 capital=75.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 40/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=4 capital=75.",
+  "id": "trade_1788925746906",
+  "timestamp": 1788925746.9065754
+}
