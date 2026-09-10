@@ -1,0 +1,18 @@
+{
+  "symbol": "AARTIPHARM.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 2,
+  "entry_price": 866.9000244140625,
+  "exit_price": 829.15,
+  "status": "CLOSED",
+  "realized_pnl": -75.50004882812505,
+  "realized_pnl_percent": -4.35459953292512,
+  "max_profit_percent": 0.4498760498447842,
+  "max_drawdown_percent": 4.35459953292512,
+  "regime": "BULL",
+  "confidence": 52.4,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 46/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=4 capital=75.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 46/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=4 capital=75.",
+  "id": "trade_1789012146305",
+  "timestamp": 1789012146.3059094
+}

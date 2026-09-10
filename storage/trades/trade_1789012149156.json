@@ -1,0 +1,18 @@
+{
+  "symbol": "MANINDS.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 3,
+  "entry_price": 824.9000244140625,
+  "exit_price": 799.1,
+  "status": "CLOSED",
+  "realized_pnl": -77.40007324218743,
+  "realized_pnl_percent": -3.1276547036580076,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 3.1276547036580076,
+  "regime": "BULL",
+  "confidence": 67.76,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 46/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=45 portfolio=75 sector=10 correlation=4 capital=75.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 46/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=45 portfolio=75 sector=10 correlation=4 capital=75.",
+  "id": "trade_1789012149156",
+  "timestamp": 1789012149.1562579
+}

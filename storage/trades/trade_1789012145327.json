@@ -1,0 +1,18 @@
+{
+  "symbol": "JINDRILL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 4,
+  "entry_price": 665.4000244140625,
+  "exit_price": 703.05,
+  "status": "CLOSED",
+  "realized_pnl": 150.59990234374982,
+  "realized_pnl_percent": 5.658246799598669,
+  "max_profit_percent": 5.658246799598669,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 59.51,
+  "reasons": "Healthy risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 40/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=4 capital=75.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 40/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=4 capital=75.",
+  "id": "trade_1789012145327",
+  "timestamp": 1789012145.327532
+}

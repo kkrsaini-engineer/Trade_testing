@@ -1,0 +1,18 @@
+{
+  "symbol": "ASIANENE.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 6,
+  "entry_price": 521.5999755859375,
+  "exit_price": 536.6,
+  "status": "CLOSED",
+  "realized_pnl": 90.00014648437514,
+  "realized_pnl_percent": 2.875771686379452,
+  "max_profit_percent": 6.297934423244669,
+  "max_drawdown_percent": 2.1376487936779953,
+  "regime": "BULL",
+  "confidence": 74.59,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=45 portfolio=60 sector=10 correlation=4 capital=45.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=45 portfolio=60 sector=10 correlation=4 capital=45.",
+  "id": "trade_1789012159229",
+  "timestamp": 1789012159.2291048
+}

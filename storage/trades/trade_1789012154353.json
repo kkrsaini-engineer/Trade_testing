@@ -1,0 +1,18 @@
+{
+  "symbol": "AEGISVOPAK.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 8,
+  "entry_price": 291.0,
+  "exit_price": 298.5,
+  "status": "CLOSED",
+  "realized_pnl": 60.0,
+  "realized_pnl_percent": 2.5773195876288657,
+  "max_profit_percent": 2.5773195876288657,
+  "max_drawdown_percent": 0.3436426116838488,
+  "regime": "BULL",
+  "confidence": 69.34,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=4 capital=45.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=4 capital=45.",
+  "id": "trade_1789012154353",
+  "timestamp": 1789012154.353728
+}

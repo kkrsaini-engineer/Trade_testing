@@ -1,0 +1,18 @@
+{
+  "symbol": "REDINGTON.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 5,
+  "entry_price": 389.0,
+  "exit_price": 389.45,
+  "status": "CLOSED",
+  "realized_pnl": 2.249999999999943,
+  "realized_pnl_percent": 0.11568123393315903,
+  "max_profit_percent": 0.11568123393315903,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 71.38,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=4 capital=25.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=4 capital=25.",
+  "id": "trade_1789012213500",
+  "timestamp": 1789012213.5006275
+}

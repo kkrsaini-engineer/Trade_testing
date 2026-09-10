@@ -37,16 +37,35 @@
         "Below preferred risk/reward profile.",
         "Continue holding position."
       ]
+    },
+    {
+      "date": "2026-09-10",
+      "current_price": 829.15,
+      "current_pnl": -75.50004882812505,
+      "current_buy_confidence": 52.4,
+      "current_sell_confidence": 31.19,
+      "current_exit_score": 88.54,
+      "recommendation": "FULL_EXIT",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "Risk engine flagged this symbol as unsafe (grade: D, total_risk: 46/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=4 capital=75.",
+        "Risk engine flagged this symbol as unsafe (grade: D, total_risk: 46/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=4 capital=75."
+      ]
     }
   ],
-  "status": "OPEN",
-  "exit_date": null,
-  "exit_price": null,
-  "exit_reason": null,
-  "holding_days": 2,
-  "max_profit_percent": 0.0,
-  "max_drawdown_percent": 0.0,
-  "final_pnl": null,
+  "status": "CLOSED",
+  "exit_date": "2026-09-10",
+  "exit_price": 829.15,
+  "exit_reason": "Risk engine flagged this symbol as unsafe (grade: D, total_risk: 46/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=4 capital=75.",
+  "holding_days": 3,
+  "max_profit_percent": 0.4498760498447842,
+  "max_drawdown_percent": 4.35459953292512,
+  "final_pnl": -75.50004882812505,
   "created_at": 1788839258.0235107,
-  "updated_at": 1788925795.002258
+  "updated_at": 1789012146.3062608,
+  "final_pnl_percent": -4.35459953292512,
+  "exit_score": 88.54,
+  "target1_status": "NOT REACHED",
+  "target2_status": "NOT REACHED",
+  "stop_loss_status": "NOT HIT"
 }

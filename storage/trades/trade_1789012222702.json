@@ -1,0 +1,18 @@
+{
+  "symbol": "SAILIFE.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 2,
+  "entry_price": 1675.4000244140625,
+  "exit_price": 1630.9,
+  "status": "CLOSED",
+  "realized_pnl": -89.00004882812482,
+  "realized_pnl_percent": -2.656083548143996,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 2.656083548143996,
+  "regime": "BULL",
+  "confidence": 68.27,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=4 capital=25.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=4 capital=25.",
+  "id": "trade_1789012222702",
+  "timestamp": 1789012222.7026942
+}

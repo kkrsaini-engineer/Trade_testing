@@ -1,0 +1,18 @@
+{
+  "symbol": "MBAPL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 12,
+  "entry_price": 162.13999938964844,
+  "exit_price": 161.52,
+  "status": "CLOSED",
+  "realized_pnl": -7.439992675781127,
+  "realized_pnl_percent": -0.38238521770218414,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.38238521770218414,
+  "regime": "BULL",
+  "confidence": 48.41,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 42/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=4 capital=45.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 42/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=4 capital=45.",
+  "id": "trade_1789012165925",
+  "timestamp": 1789012165.9256182
+}

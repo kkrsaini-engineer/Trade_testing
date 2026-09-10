@@ -1,0 +1,18 @@
+{
+  "symbol": "DEVYANI.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 15,
+  "entry_price": 138.92999267578125,
+  "exit_price": 138.99,
+  "status": "CLOSED",
+  "realized_pnl": 0.9001098632813864,
+  "realized_pnl_percent": 0.04319249073797711,
+  "max_profit_percent": 0.6910007736479843,
+  "max_drawdown_percent": 1.1876432467910734,
+  "regime": "BULL",
+  "confidence": 56.83,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 37/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=4 capital=95.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 37/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=4 capital=95.",
+  "id": "trade_1789012143284",
+  "timestamp": 1789012143.284692
+}
