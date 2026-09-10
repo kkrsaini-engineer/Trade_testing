@@ -1,0 +1,13 @@
+{
+  "id": "paper_NYKAA_NS_1789012028579",
+  "symbol": "NYKAA.NS",
+  "direction": "BUY",
+  "action": "BUY",
+  "quantity": 11,
+  "entry_price": 343.04998779296875,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap +0.60% (0.26x ATR, NORMAL band); No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.09 \u2014 not a blocker.",
+  "timestamp": 1789012028.5799391
+}

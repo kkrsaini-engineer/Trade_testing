@@ -1,0 +1,13 @@
+{
+  "id": "paper_MSTCLTD_NS_1789012024420",
+  "symbol": "MSTCLTD.NS",
+  "direction": "BUY",
+  "action": "BUY",
+  "quantity": 5,
+  "entry_price": 764.0,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap -1.87% (0.44x ATR, NORMAL band); No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.09 \u2014 not a blocker.",
+  "timestamp": 1789012024.4209273
+}

@@ -1,0 +1,13 @@
+{
+  "id": "paper_BECTORFOOD_NS_1789012015959",
+  "symbol": "BECTORFOOD.NS",
+  "direction": "BUY",
+  "action": "BUY",
+  "quantity": 25,
+  "entry_price": 242.0500030517578,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap +0.00% (0.00x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.09 \u2014 not a blocker.",
+  "timestamp": 1789012015.9600368
+}

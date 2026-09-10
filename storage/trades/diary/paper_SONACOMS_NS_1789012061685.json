@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_SONACOMS_NS_1789012061685",
+  "symbol": "SONACOMS.NS",
+  "direction": "BUY",
+  "entry_date": "2026-09-10",
+  "entry_price": 798.0,
+  "buy_probability": 0.0,
+  "buy_confidence": 0.0,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap -0.75% (0.28x ATR, NORMAL band)",
+    "No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.09 \u2014 not a blocker."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1789012061.6855326,
+  "updated_at": 1789012061.685533
+}

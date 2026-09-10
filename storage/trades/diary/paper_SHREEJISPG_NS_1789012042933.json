@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_SHREEJISPG_NS_1789012042933",
+  "symbol": "SHREEJISPG.NS",
+  "direction": "BUY",
+  "entry_date": "2026-09-10",
+  "entry_price": 716.5,
+  "buy_probability": 0.0,
+  "buy_confidence": 0.0,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap +2.62% (0.75x ATR, NORMAL band)",
+    "No company-specific news available. | 20 macro headline(s), bias 0.09 \u2014 not a blocker."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1789012042.9331388,
+  "updated_at": 1789012042.9331388
+}
