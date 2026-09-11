@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_EMIL_NS_1789098443185",
+  "symbol": "EMIL.NS",
+  "direction": "BUY",
+  "entry_date": "2026-09-11",
+  "entry_price": 191.85000610351562,
+  "buy_probability": 0.0,
+  "buy_confidence": 0.0,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap +0.02% (0.00x ATR, NORMAL band)",
+    "No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.08 \u2014 not a blocker."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1789098443.1858761,
+  "updated_at": 1789098443.1858761
+}

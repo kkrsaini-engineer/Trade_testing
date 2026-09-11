@@ -1,0 +1,13 @@
+{
+  "id": "paper_DRREDDY_NS_1789098464022",
+  "symbol": "DRREDDY.NS",
+  "direction": "SELL",
+  "action": "SELL",
+  "quantity": 1,
+  "entry_price": 1130.0,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap -1.14% (0.69x ATR, NORMAL band); No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.08 \u2014 not a blocker.",
+  "timestamp": 1789098464.0231164
+}

@@ -1,0 +1,13 @@
+{
+  "id": "paper_IMAGICAA_NS_1789098449448",
+  "symbol": "IMAGICAA.NS",
+  "direction": "BUY",
+  "action": "BUY",
+  "quantity": 42,
+  "entry_price": 53.0099983215332,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap -3.27% (0.67x ATR, NORMAL band); No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.08 \u2014 not a blocker.",
+  "timestamp": 1789098449.4493983
+}

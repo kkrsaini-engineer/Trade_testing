@@ -1,0 +1,13 @@
+{
+  "id": "paper_IKIO_NS_1789098467341",
+  "symbol": "IKIO.NS",
+  "direction": "BUY",
+  "action": "BUY",
+  "quantity": 5,
+  "entry_price": 234.0,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap +6.39% (1.29x ATR, WARNING band); No company-specific news available. | 20 macro headline(s), bias 0.08 \u2014 not a blocker.",
+  "timestamp": 1789098467.3423798
+}
