@@ -1,0 +1,18 @@
+{
+  "symbol": "KARURVYSYA.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 47,
+  "entry_price": 348.79998779296875,
+  "exit_price": 331.2,
+  "status": "CLOSED",
+  "realized_pnl": -827.1994262695318,
+  "realized_pnl_percent": -5.045868236502143,
+  "max_profit_percent": 1.4478246513095414,
+  "max_drawdown_percent": 4.902519607632128,
+  "regime": "BULL",
+  "confidence": 59.87,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1789098609618",
+  "timestamp": 1789098609.6181085
+}

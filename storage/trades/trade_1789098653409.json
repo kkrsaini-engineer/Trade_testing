@@ -1,0 +1,18 @@
+{
+  "symbol": "TEJASNET.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 3,
+  "entry_price": 595.7000122070312,
+  "exit_price": 539.7,
+  "status": "CLOSED",
+  "realized_pnl": -168.0000366210936,
+  "realized_pnl_percent": -9.40070690943159,
+  "max_profit_percent": 0.5203941127151305,
+  "max_drawdown_percent": 9.023000017725495,
+  "regime": "BULL",
+  "confidence": 54.44,
+  "reasons": "Below preferred risk/reward profile.; High market volatility.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1789098653409",
+  "timestamp": 1789098653.4096196
+}

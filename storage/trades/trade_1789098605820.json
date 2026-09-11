@@ -1,0 +1,18 @@
+{
+  "symbol": "HINDALCO.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 1,
+  "entry_price": 990.0,
+  "exit_price": 975.4,
+  "status": "CLOSED",
+  "realized_pnl": -14.600000000000023,
+  "realized_pnl_percent": -1.474747474747477,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 1.474747474747477,
+  "regime": "SIDEWAYS",
+  "confidence": 48.64,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=5 capital=25.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=5 capital=25.",
+  "id": "trade_1789098605820",
+  "timestamp": 1789098605.820961
+}

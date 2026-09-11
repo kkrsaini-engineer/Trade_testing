@@ -1,0 +1,18 @@
+{
+  "symbol": "TMPV.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 4,
+  "entry_price": 303.0,
+  "exit_price": 297.8,
+  "status": "CLOSED",
+  "realized_pnl": 20.799999999999955,
+  "realized_pnl_percent": 1.7161716171617123,
+  "max_profit_percent": 1.7161716171617123,
+  "max_drawdown_percent": 0.0,
+  "regime": "BEAR",
+  "confidence": 53.88,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=5 capital=75.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=5 capital=75.",
+  "id": "trade_1789098579728",
+  "timestamp": 1789098579.728774
+}

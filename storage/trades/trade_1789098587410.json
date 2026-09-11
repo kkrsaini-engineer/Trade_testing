@@ -1,0 +1,18 @@
+{
+  "symbol": "SITINET.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 8400,
+  "entry_price": 0.2800000011920929,
+  "exit_price": 0.29,
+  "status": "CLOSED",
+  "realized_pnl": -83.99998998641951,
+  "realized_pnl_percent": -3.5714281304758373,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 3.5714281304758373,
+  "regime": "BEAR",
+  "confidence": 54.32,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=25 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=5 capital=45.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=25 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=5 capital=45.",
+  "id": "trade_1789098587410",
+  "timestamp": 1789098587.4107692
+}

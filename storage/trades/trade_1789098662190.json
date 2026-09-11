@@ -1,0 +1,18 @@
+{
+  "symbol": "JTLIND.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 62,
+  "entry_price": 87.80000305175781,
+  "exit_price": 87.8,
+  "status": "CLOSED",
+  "realized_pnl": -0.0001892089845512146,
+  "realized_pnl_percent": -3.4758060470034032e-06,
+  "max_profit_percent": 0.43279833147407454,
+  "max_drawdown_percent": 3.4758060470034032e-06,
+  "regime": "BULL",
+  "confidence": 76.93,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=45 portfolio=45 sector=10 correlation=5 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=45 portfolio=45 sector=10 correlation=5 capital=10.",
+  "id": "trade_1789098662190",
+  "timestamp": 1789098662.1906214
+}

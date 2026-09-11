@@ -1,0 +1,18 @@
+{
+  "symbol": "OIL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 10,
+  "entry_price": 490.79998779296875,
+  "exit_price": 507.6,
+  "status": "CLOSED",
+  "realized_pnl": 168.00012207031273,
+  "realized_pnl_percent": 3.422985457391234,
+  "max_profit_percent": 4.502855084901417,
+  "max_drawdown_percent": 0.865930704701135,
+  "regime": "BULL",
+  "confidence": 67.81,
+  "reasons": "Healthy risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=5 capital=45.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=5 capital=45.",
+  "id": "trade_1789098598011",
+  "timestamp": 1789098598.0111513
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "BEPL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 50,
+  "entry_price": 129.0,
+  "exit_price": 128.02,
+  "status": "CLOSED",
+  "realized_pnl": -48.99999999999949,
+  "realized_pnl_percent": -0.7596899224806122,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.7596899224806122,
+  "regime": "BULL",
+  "confidence": 71.63,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=35 sector=10 correlation=5 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=35 sector=10 correlation=5 capital=10.",
+  "id": "trade_1789098668808",
+  "timestamp": 1789098668.808415
+}

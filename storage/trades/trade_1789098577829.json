@@ -1,0 +1,18 @@
+{
+  "symbol": "SBILIFE.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 3,
+  "entry_price": 1734.5999755859375,
+  "exit_price": 1678.4,
+  "status": "CLOSED",
+  "realized_pnl": 168.59992675781223,
+  "realized_pnl_percent": 3.2399386819403935,
+  "max_profit_percent": 3.2399386819403935,
+  "max_drawdown_percent": 0.0,
+  "regime": "BEAR",
+  "confidence": 56.81,
+  "reasons": "Break-even stop activated.; Excellent risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 45/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=25 liquidity=20 volatility=30 portfolio=75 sector=25 correlation=5 capital=75.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 45/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=25 liquidity=20 volatility=30 portfolio=75 sector=25 correlation=5 capital=75.",
+  "id": "trade_1789098577829",
+  "timestamp": 1789098577.8291454
+}

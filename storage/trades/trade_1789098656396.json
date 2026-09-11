@@ -1,0 +1,18 @@
+{
+  "symbol": "EXICOM.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 15,
+  "entry_price": 180.4199981689453,
+  "exit_price": 173.18,
+  "status": "CLOSED",
+  "realized_pnl": -108.59997253417959,
+  "realized_pnl_percent": -4.0128579106656295,
+  "max_profit_percent": 1.4687960636011195,
+  "max_drawdown_percent": 4.0128579106656295,
+  "regime": "BULL",
+  "confidence": 60.84,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 44/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=45 sector=10 correlation=5 capital=10.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 44/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=45 sector=10 correlation=5 capital=10.",
+  "id": "trade_1789098656396",
+  "timestamp": 1789098656.396282
+}

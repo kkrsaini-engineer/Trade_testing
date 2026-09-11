@@ -1,0 +1,18 @@
+{
+  "symbol": "GAYAPROJ.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 300,
+  "entry_price": 25.299999237060547,
+  "exit_price": 24.77,
+  "status": "CLOSED",
+  "realized_pnl": -158.99977111816418,
+  "realized_pnl_percent": -2.094858707680043,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 2.094858707680043,
+  "regime": "BULL",
+  "confidence": 67.95,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 41/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=5 capital=25.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 41/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=5 capital=25.",
+  "id": "trade_1789098606736",
+  "timestamp": 1789098606.7368686
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "CHENNPETRO.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 2,
+  "entry_price": 1660.0,
+  "exit_price": 1624.0,
+  "status": "CLOSED",
+  "realized_pnl": -72.0,
+  "realized_pnl_percent": -2.1686746987951806,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 2.1686746987951806,
+  "regime": "BULL",
+  "confidence": 69.17,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 46/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=75 sector=10 correlation=5 capital=75.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 46/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=75 sector=10 correlation=5 capital=75.",
+  "id": "trade_1789098581747",
+  "timestamp": 1789098581.7470508
+}

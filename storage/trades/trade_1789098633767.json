@@ -1,0 +1,18 @@
+{
+  "symbol": "PNGJL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 14,
+  "entry_price": 628.0,
+  "exit_price": 600.7,
+  "status": "CLOSED",
+  "realized_pnl": -382.19999999999936,
+  "realized_pnl_percent": -4.347133757961776,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 4.347133757961776,
+  "regime": "SIDEWAYS",
+  "confidence": 53.01,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=5 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=5 capital=10.",
+  "id": "trade_1789098633767",
+  "timestamp": 1789098633.7678118
+}

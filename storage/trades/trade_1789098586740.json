@@ -1,0 +1,18 @@
+{
+  "symbol": "PNBHOUSING.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 4,
+  "entry_price": 1166.0,
+  "exit_price": 1172.0,
+  "status": "CLOSED",
+  "realized_pnl": 24.0,
+  "realized_pnl_percent": 0.5145797598627788,
+  "max_profit_percent": 0.5746140651801068,
+  "max_drawdown_percent": 2.178387650085771,
+  "regime": "BULL",
+  "confidence": 73.12,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=25 correlation=5 capital=45.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=25 correlation=5 capital=45.",
+  "id": "trade_1789098586740",
+  "timestamp": 1789098586.7404723
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "PAISALO.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 129,
+  "entry_price": 78.76000213623047,
+  "exit_price": 82.5,
+  "status": "CLOSED",
+  "realized_pnl": 482.45972442626953,
+  "realized_pnl_percent": 4.7486005108284415,
+  "max_profit_percent": 4.7486005108284415,
+  "max_drawdown_percent": 1.6886771205642797,
+  "regime": "BULL",
+  "confidence": 66.83,
+  "reasons": "Healthy risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=45 portfolio=45 sector=10 correlation=5 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=45 portfolio=45 sector=10 correlation=5 capital=10.",
+  "id": "trade_1789098626352",
+  "timestamp": 1789098626.3529835
+}

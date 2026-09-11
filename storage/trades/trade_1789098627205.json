@@ -1,0 +1,18 @@
+{
+  "symbol": "DATAPATTNS.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 1,
+  "entry_price": 4908.60009765625,
+  "exit_price": 4679.6,
+  "status": "CLOSED",
+  "realized_pnl": -229.00009765624964,
+  "realized_pnl_percent": -4.665283239626553,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 4.665283239626553,
+  "regime": "BULL",
+  "confidence": 60.37,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=5 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=5 capital=10.",
+  "id": "trade_1789098627205",
+  "timestamp": 1789098627.2051656
+}

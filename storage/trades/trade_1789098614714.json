@@ -1,0 +1,18 @@
+{
+  "symbol": "SHAREINDIA.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 17,
+  "entry_price": 197.0,
+  "exit_price": 198.8,
+  "status": "OPEN",
+  "realized_pnl": 30.600000000000193,
+  "realized_pnl_percent": 0.0,
+  "max_profit_percent": 0.913705583756351,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 66.18,
+  "reasons": "Below preferred risk/reward profile.; High market volatility.; High market volatility.",
+  "id": "trade_1789098614714",
+  "timestamp": 1789098614.7143104
+}

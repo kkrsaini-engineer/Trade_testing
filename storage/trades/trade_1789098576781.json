@@ -1,0 +1,18 @@
+{
+  "symbol": "PARADEEP.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 15,
+  "entry_price": 156.25,
+  "exit_price": 155.14,
+  "status": "CLOSED",
+  "realized_pnl": -16.650000000000205,
+  "realized_pnl_percent": -0.7104000000000088,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.7104000000000088,
+  "regime": "BULL",
+  "confidence": 67.8,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 41/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=5 capital=95.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 41/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=5 capital=95.",
+  "id": "trade_1789098576781",
+  "timestamp": 1789098576.7818332
+}

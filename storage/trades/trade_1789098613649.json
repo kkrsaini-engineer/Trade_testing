@@ -1,0 +1,18 @@
+{
+  "symbol": "GLAND.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 1,
+  "entry_price": 2929.60009765625,
+  "exit_price": 2920.2,
+  "status": "CLOSED",
+  "realized_pnl": -9.400097656250182,
+  "realized_pnl_percent": -0.32086623917614165,
+  "max_profit_percent": 2.601034264188888,
+  "max_drawdown_percent": 0.32086623917614165,
+  "regime": "BULL",
+  "confidence": 65.1,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=5 capital=25.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=5 capital=25.",
+  "id": "trade_1789098613649",
+  "timestamp": 1789098613.6491885
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "MSUMI.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 59,
+  "entry_price": 36.27000045776367,
+  "exit_price": 36.12,
+  "status": "CLOSED",
+  "realized_pnl": 8.850027008056792,
+  "realized_pnl_percent": 0.4135661865743553,
+  "max_profit_percent": 0.4135661865743553,
+  "max_drawdown_percent": 0.0,
+  "regime": "BEAR",
+  "confidence": 58.12,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 35/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=10 overnight=10 news=25 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=5 capital=45.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 35/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=10 overnight=10 news=25 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=5 capital=45.",
+  "id": "trade_1789098590175",
+  "timestamp": 1789098590.1756804
+}

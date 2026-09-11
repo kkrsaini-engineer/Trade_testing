@@ -1,0 +1,18 @@
+{
+  "symbol": "JINDALSTEL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 5,
+  "entry_price": 1139.5999755859375,
+  "exit_price": 1108.0,
+  "status": "CLOSED",
+  "realized_pnl": -157.9998779296875,
+  "realized_pnl_percent": -2.7729006899714994,
+  "max_profit_percent": 0.19305233952214576,
+  "max_drawdown_percent": 2.7729006899714994,
+  "regime": "SIDEWAYS",
+  "confidence": 53.15,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 41/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=5 capital=75.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 41/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=5 capital=75.",
+  "id": "trade_1789098582970",
+  "timestamp": 1789098582.9706397
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "NMDC.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 18,
+  "entry_price": 83.79000091552734,
+  "exit_price": 82.73,
+  "status": "CLOSED",
+  "realized_pnl": -19.080016479492116,
+  "realized_pnl_percent": -1.2650685093033676,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 1.2650685093033676,
+  "regime": "SIDEWAYS",
+  "confidence": 50.69,
+  "reasons": "Below preferred risk/reward profile.; Trend reversal detected.; Trend reversal confirmed.",
+  "id": "trade_1789098617947",
+  "timestamp": 1789098617.9479318
+}

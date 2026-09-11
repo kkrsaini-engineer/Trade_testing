@@ -1,0 +1,18 @@
+{
+  "symbol": "ETERNAL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 5,
+  "entry_price": 322.70001220703125,
+  "exit_price": 317.05,
+  "status": "CLOSED",
+  "realized_pnl": -28.250061035156193,
+  "realized_pnl_percent": -1.7508559012406915,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 1.7508559012406915,
+  "regime": "BULL",
+  "confidence": 47.86,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 40/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=5 capital=75.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 40/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=5 capital=75.",
+  "id": "trade_1789098578702",
+  "timestamp": 1789098578.7024624
+}

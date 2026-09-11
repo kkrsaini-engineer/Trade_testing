@@ -1,0 +1,18 @@
+{
+  "symbol": "MARKSANS.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 8,
+  "entry_price": 325.0,
+  "exit_price": 331.6,
+  "status": "CLOSED",
+  "realized_pnl": 52.80000000000018,
+  "realized_pnl_percent": 2.0307692307692378,
+  "max_profit_percent": 2.0307692307692378,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 68.82,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 42/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=5 capital=45.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 42/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=5 capital=45.",
+  "id": "trade_1789098596127",
+  "timestamp": 1789098596.12705
+}
