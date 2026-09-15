@@ -1,0 +1,18 @@
+{
+  "symbol": "CUB.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 31,
+  "entry_price": 227.32000732421875,
+  "exit_price": 228.52,
+  "status": "CLOSED",
+  "realized_pnl": 37.19977294921907,
+  "realized_pnl_percent": 0.5278869598441248,
+  "max_profit_percent": 0.5278869598441248,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 74.92,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=4 capital=45.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=4 capital=45.",
+  "id": "trade_1789444183042",
+  "timestamp": 1789444183.0426965
+}

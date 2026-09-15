@@ -89,16 +89,35 @@
         "Below preferred risk/reward profile.",
         "Continue holding position."
       ]
+    },
+    {
+      "date": "2026-09-15",
+      "current_price": 412.45,
+      "current_pnl": -165.59989013671895,
+      "current_buy_confidence": 59.75,
+      "current_sell_confidence": 27.93,
+      "current_exit_score": 75.0,
+      "recommendation": "FULL_EXIT",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Circuit breaker active.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+        "Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Circuit breaker active.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100."
+      ]
     }
   ],
-  "status": "OPEN",
-  "exit_date": null,
-  "exit_price": null,
-  "exit_reason": null,
-  "holding_days": 6,
-  "max_profit_percent": 0.0,
-  "max_drawdown_percent": 0.0,
-  "final_pnl": null,
+  "status": "CLOSED",
+  "exit_date": "2026-09-15",
+  "exit_price": 412.45,
+  "exit_reason": "Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Circuit breaker active.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "holding_days": 7,
+  "max_profit_percent": 0.4150376209765181,
+  "max_drawdown_percent": 2.786670002743801,
+  "final_pnl": -165.59989013671895,
   "created_at": 1788493624.1728883,
-  "updated_at": 1789098673.591606
+  "updated_at": 1789444216.6225996,
+  "final_pnl_percent": -2.181903007152182,
+  "exit_score": 75.0,
+  "target1_status": "NOT REACHED",
+  "target2_status": "NOT REACHED",
+  "stop_loss_status": "NOT HIT"
 }

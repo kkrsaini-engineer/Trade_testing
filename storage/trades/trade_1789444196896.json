@@ -1,0 +1,18 @@
+{
+  "symbol": "GRANULES.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 5,
+  "entry_price": 869.0,
+  "exit_price": 923.65,
+  "status": "OPEN",
+  "realized_pnl": 273.2499999999999,
+  "realized_pnl_percent": 0.0,
+  "max_profit_percent": 5.2876869965477615,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 67.9,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved.",
+  "id": "trade_1789444196896",
+  "timestamp": 1789444196.8961036
+}

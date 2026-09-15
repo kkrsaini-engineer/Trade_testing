@@ -1,0 +1,18 @@
+{
+  "symbol": "AEROFLEX.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 3,
+  "entry_price": 560.0,
+  "exit_price": 533.35,
+  "status": "CLOSED",
+  "realized_pnl": -79.94999999999993,
+  "realized_pnl_percent": -4.758928571428568,
+  "max_profit_percent": 0.4375000000000081,
+  "max_drawdown_percent": 4.758928571428568,
+  "regime": "BULL",
+  "confidence": 59.06,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=10 overnight=10 news=10 liquidity=20 volatility=38 portfolio=45 sector=10 correlation=4 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=10 overnight=10 news=10 liquidity=20 volatility=38 portfolio=45 sector=10 correlation=4 capital=10.",
+  "id": "trade_1789444247241",
+  "timestamp": 1789444247.2415242
+}

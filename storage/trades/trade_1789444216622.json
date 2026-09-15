@@ -1,0 +1,18 @@
+{
+  "symbol": "KOTAKBANK.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 18,
+  "entry_price": 421.6499938964844,
+  "exit_price": 412.45,
+  "status": "CLOSED",
+  "realized_pnl": -165.59989013671895,
+  "realized_pnl_percent": -2.181903007152182,
+  "max_profit_percent": 0.4150376209765181,
+  "max_drawdown_percent": 2.786670002743801,
+  "regime": "BULL",
+  "confidence": 59.75,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Circuit breaker active.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Circuit breaker active.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1789444216622",
+  "timestamp": 1789444216.6223474
+}

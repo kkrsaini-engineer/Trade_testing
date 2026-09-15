@@ -1,0 +1,18 @@
+{
+  "symbol": "SMCGLOBAL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 82,
+  "entry_price": 86.47000122070312,
+  "exit_price": 85.99,
+  "status": "CLOSED",
+  "realized_pnl": -39.36010009765667,
+  "realized_pnl_percent": -0.5551072209169873,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.5551072209169873,
+  "regime": "BULL",
+  "confidence": 70.3,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=4 capital=45.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=4 capital=45.",
+  "id": "trade_1789444195442",
+  "timestamp": 1789444195.4424026
+}

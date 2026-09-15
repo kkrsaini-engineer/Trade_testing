@@ -1,0 +1,18 @@
+{
+  "symbol": "TDPOWERSYS.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 2,
+  "entry_price": 769.7999877929688,
+  "exit_price": 773.65,
+  "status": "CLOSED",
+  "realized_pnl": 7.7000244140624545,
+  "realized_pnl_percent": 0.5001314975425352,
+  "max_profit_percent": 1.961550070989641,
+  "max_drawdown_percent": 3.1956336948636928,
+  "regime": "BULL",
+  "confidence": 68.01,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=4 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=4 capital=10.",
+  "id": "trade_1789444279203",
+  "timestamp": 1789444279.2033134
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "PCBL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 21,
+  "entry_price": 334.79998779296875,
+  "exit_price": 331.4,
+  "status": "CLOSED",
+  "realized_pnl": -71.39974365234423,
+  "realized_pnl_percent": -1.0155280516531062,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 1.0155280516531062,
+  "regime": "BULL",
+  "confidence": 71.78,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=4 capital=25.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=4 capital=25.",
+  "id": "trade_1789444221541",
+  "timestamp": 1789444221.5417256
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "JSWSTEEL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 9,
+  "entry_price": 1315.0,
+  "exit_price": 1251.6,
+  "status": "CLOSED",
+  "realized_pnl": -570.6000000000008,
+  "realized_pnl_percent": -4.821292775665406,
+  "max_profit_percent": 0.1977186311787003,
+  "max_drawdown_percent": 4.365019011406851,
+  "regime": "SIDEWAYS",
+  "confidence": 46.94,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1789444225726",
+  "timestamp": 1789444225.7266846
+}

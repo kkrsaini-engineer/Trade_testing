@@ -1,0 +1,18 @@
+{
+  "symbol": "AEGISLOG.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 5,
+  "entry_price": 1365.300048828125,
+  "exit_price": 1357.7,
+  "status": "CLOSED",
+  "realized_pnl": -38.00024414062477,
+  "realized_pnl_percent": -0.5566577716486781,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.5566577716486781,
+  "regime": "BULL",
+  "confidence": 71.9,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=4 capital=45.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=4 capital=45.",
+  "id": "trade_1789444194290",
+  "timestamp": 1789444194.2907293
+}

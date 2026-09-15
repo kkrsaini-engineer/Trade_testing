@@ -1,0 +1,18 @@
+{
+  "symbol": "SHAREINDIA.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 17,
+  "entry_price": 197.0,
+  "exit_price": 201.46,
+  "status": "CLOSED",
+  "realized_pnl": 75.82000000000014,
+  "realized_pnl_percent": 2.2639593908629485,
+  "max_profit_percent": 2.2639593908629485,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 67.36,
+  "reasons": "Below preferred risk/reward profile.; High market volatility.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 43/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=78 portfolio=60 sector=10 correlation=4 capital=25.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 43/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=78 portfolio=60 sector=10 correlation=4 capital=25.",
+  "id": "trade_1789444210103",
+  "timestamp": 1789444210.1031284
+}
