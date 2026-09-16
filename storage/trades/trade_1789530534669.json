@@ -1,0 +1,18 @@
+{
+  "symbol": "ABCAPITAL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 7,
+  "entry_price": 404.0,
+  "exit_price": 378.8,
+  "status": "CLOSED",
+  "realized_pnl": -176.39999999999992,
+  "realized_pnl_percent": -6.237623762376235,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 5.5569306930693045,
+  "regime": "SIDEWAYS",
+  "confidence": 49.09,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1789530534669",
+  "timestamp": 1789530534.6698778
+}

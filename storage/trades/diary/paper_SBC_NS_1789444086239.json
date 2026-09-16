@@ -24,16 +24,35 @@
         "Below preferred risk/reward profile.",
         "Continue holding position."
       ]
+    },
+    {
+      "date": "2026-09-16",
+      "current_price": 47.79,
+      "current_pnl": -10.440044250488306,
+      "current_buy_confidence": 59.86,
+      "current_sell_confidence": 25.1,
+      "current_exit_score": 91.01,
+      "recommendation": "FULL_EXIT",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=45 portfolio=60 sector=10 correlation=7 capital=45.",
+        "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=45 portfolio=60 sector=10 correlation=7 capital=45."
+      ]
     }
   ],
-  "status": "OPEN",
-  "exit_date": null,
-  "exit_price": null,
-  "exit_reason": null,
-  "holding_days": 1,
-  "max_profit_percent": 0.0,
-  "max_drawdown_percent": 0.0,
-  "final_pnl": null,
+  "status": "CLOSED",
+  "exit_date": "2026-09-16",
+  "exit_price": 47.79,
+  "exit_reason": "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=45 portfolio=60 sector=10 correlation=7 capital=45.",
+  "holding_days": 2,
+  "max_profit_percent": 0.20768114424118583,
+  "max_drawdown_percent": 0.7476666967194573,
+  "final_pnl": -10.440044250488306,
   "created_at": 1789444086.2395265,
-  "updated_at": 1789444259.915516
+  "updated_at": 1789530544.4372172,
+  "final_pnl_percent": -0.7476666967194573,
+  "exit_score": 91.01,
+  "target1_status": "NOT REACHED",
+  "target2_status": "NOT REACHED",
+  "stop_loss_status": "NOT HIT"
 }

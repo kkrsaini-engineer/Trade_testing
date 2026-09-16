@@ -1,0 +1,18 @@
+{
+  "symbol": "URJA.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 286,
+  "entry_price": 8.8100004196167,
+  "exit_price": 8.85,
+  "status": "CLOSED",
+  "realized_pnl": -11.439879989623922,
+  "realized_pnl_percent": -0.45402472733413,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.45402472733413,
+  "regime": "BEAR",
+  "confidence": 66.39,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=7 capital=25.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=7 capital=25.",
+  "id": "trade_1789530575862",
+  "timestamp": 1789530575.8620107
+}

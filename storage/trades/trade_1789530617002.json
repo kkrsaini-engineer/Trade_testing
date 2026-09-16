@@ -1,0 +1,18 @@
+{
+  "symbol": "IKIO.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 5,
+  "entry_price": 234.0,
+  "exit_price": 209.06,
+  "status": "CLOSED",
+  "realized_pnl": -124.69999999999999,
+  "realized_pnl_percent": -10.658119658119656,
+  "max_profit_percent": 0.09829059829059392,
+  "max_drawdown_percent": 9.499999999999996,
+  "regime": "BULL",
+  "confidence": 69.51,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1789530617002",
+  "timestamp": 1789530617.0022602
+}

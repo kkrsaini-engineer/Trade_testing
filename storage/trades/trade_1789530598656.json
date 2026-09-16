@@ -1,0 +1,18 @@
+{
+  "symbol": "FEDFINA.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 21,
+  "entry_price": 156.36000061035156,
+  "exit_price": 153.14,
+  "status": "CLOSED",
+  "realized_pnl": -67.6200128173831,
+  "realized_pnl_percent": -2.0593505997584405,
+  "max_profit_percent": 1.7203884491865127,
+  "max_drawdown_percent": 2.0593505997584405,
+  "regime": "SIDEWAYS",
+  "confidence": 48.02,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=7 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=7 capital=10.",
+  "id": "trade_1789530598656",
+  "timestamp": 1789530598.6564472
+}

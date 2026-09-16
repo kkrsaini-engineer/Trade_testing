@@ -1,0 +1,18 @@
+{
+  "symbol": "MARINE.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 3,
+  "entry_price": 422.0,
+  "exit_price": 379.4,
+  "status": "CLOSED",
+  "realized_pnl": -127.80000000000007,
+  "realized_pnl_percent": -10.094786729857825,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 10.094786729857825,
+  "regime": "BULL",
+  "confidence": 50.97,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 44/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=45 sector=10 correlation=7 capital=10.; Active stop-loss triggered.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 44/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=45 sector=10 correlation=7 capital=10.",
+  "id": "trade_1789530611703",
+  "timestamp": 1789530611.703339
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "LTFOODS.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 3,
+  "entry_price": 453.79998779296875,
+  "exit_price": 417.0,
+  "status": "CLOSED",
+  "realized_pnl": -110.39996337890625,
+  "realized_pnl_percent": -8.109296778949568,
+  "max_profit_percent": 0.15425566898662135,
+  "max_drawdown_percent": 6.8422187369326855,
+  "regime": "BULL",
+  "confidence": 52.05,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1789530566559",
+  "timestamp": 1789530566.5599632
+}

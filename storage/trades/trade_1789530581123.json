@@ -1,0 +1,18 @@
+{
+  "symbol": "TITAGARH.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 5,
+  "entry_price": 878.75,
+  "exit_price": 818.95,
+  "status": "CLOSED",
+  "realized_pnl": -298.9999999999998,
+  "realized_pnl_percent": -6.805120910384063,
+  "max_profit_percent": 1.4338549075391207,
+  "max_drawdown_percent": 6.805120910384063,
+  "regime": "SIDEWAYS",
+  "confidence": 47.65,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=7 capital=10.; Active stop-loss triggered.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=7 capital=10.",
+  "id": "trade_1789530581123",
+  "timestamp": 1789530581.1236203
+}

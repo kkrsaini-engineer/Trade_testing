@@ -1,0 +1,18 @@
+{
+  "symbol": "ELGIEQUIP.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 4,
+  "entry_price": 644.9000244140625,
+  "exit_price": 603.0,
+  "status": "CLOSED",
+  "realized_pnl": -167.60009765625,
+  "realized_pnl_percent": -6.4971348779419955,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 5.993180795609178,
+  "regime": "BULL",
+  "confidence": 53.81,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1789530577913",
+  "timestamp": 1789530577.9136245
+}

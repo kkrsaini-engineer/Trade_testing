@@ -1,0 +1,18 @@
+{
+  "symbol": "ADANIENT.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 1,
+  "entry_price": 3114.5,
+  "exit_price": 2946.8,
+  "status": "CLOSED",
+  "realized_pnl": -167.69999999999982,
+  "realized_pnl_percent": -5.384491892759667,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 5.384491892759667,
+  "regime": "SIDEWAYS",
+  "confidence": 44.08,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1789530614980",
+  "timestamp": 1789530614.9803953
+}

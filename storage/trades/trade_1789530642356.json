@@ -1,0 +1,18 @@
+{
+  "symbol": "KTKBANK.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 16,
+  "entry_price": 341.0,
+  "exit_price": 314.6,
+  "status": "CLOSED",
+  "realized_pnl": -422.39999999999964,
+  "realized_pnl_percent": -7.741935483870961,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 6.011730205278592,
+  "regime": "BULL",
+  "confidence": 60.06,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1789530642356",
+  "timestamp": 1789530642.3569512
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "IMAGICAA.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 42,
+  "entry_price": 53.0099983215332,
+  "exit_price": 50.46,
+  "status": "CLOSED",
+  "realized_pnl": -107.0999295043945,
+  "realized_pnl_percent": -4.81041011559015,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 4.81041011559015,
+  "regime": "BULL",
+  "confidence": 52.27,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 42/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=35 sector=10 correlation=7 capital=10.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 42/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=35 sector=10 correlation=7 capital=10.",
+  "id": "trade_1789530634970",
+  "timestamp": 1789530634.9705846
+}

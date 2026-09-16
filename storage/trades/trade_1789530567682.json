@@ -1,0 +1,18 @@
+{
+  "symbol": "HAL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 1,
+  "entry_price": 5015.0,
+  "exit_price": 4671.4,
+  "status": "CLOSED",
+  "realized_pnl": -343.60000000000036,
+  "realized_pnl_percent": -6.851445663010974,
+  "max_profit_percent": 0.4466600199401722,
+  "max_drawdown_percent": 6.550348953140578,
+  "regime": "SIDEWAYS",
+  "confidence": 46.6,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1789530567682",
+  "timestamp": 1789530567.6827316
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "MCX.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 1,
+  "entry_price": 3350.0,
+  "exit_price": 3150.6,
+  "status": "CLOSED",
+  "realized_pnl": -199.4000000000001,
+  "realized_pnl_percent": -5.952238805970151,
+  "max_profit_percent": 0.6865671641791045,
+  "max_drawdown_percent": 5.820895522388059,
+  "regime": "BULL",
+  "confidence": 53.12,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1789530531618",
+  "timestamp": 1789530531.6181731
+}

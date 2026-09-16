@@ -1,0 +1,18 @@
+{
+  "symbol": "GANDHAR.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 13,
+  "entry_price": 262.45001220703125,
+  "exit_price": 261.75,
+  "status": "CLOSED",
+  "realized_pnl": -9.10015869140625,
+  "realized_pnl_percent": -0.2667221087721085,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.2667221087721085,
+  "regime": "BULL",
+  "confidence": 63.23,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 41/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=7 capital=25.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 41/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=7 capital=25.",
+  "id": "trade_1789530556133",
+  "timestamp": 1789530556.1337347
+}

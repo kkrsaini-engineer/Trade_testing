@@ -1,0 +1,18 @@
+{
+  "symbol": "SBC.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 29,
+  "entry_price": 48.150001525878906,
+  "exit_price": 47.79,
+  "status": "CLOSED",
+  "realized_pnl": -10.440044250488306,
+  "realized_pnl_percent": -0.7476666967194573,
+  "max_profit_percent": 0.20768114424118583,
+  "max_drawdown_percent": 0.7476666967194573,
+  "regime": "BULL",
+  "confidence": 59.86,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=45 portfolio=60 sector=10 correlation=7 capital=45.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=45 portfolio=60 sector=10 correlation=7 capital=45.",
+  "id": "trade_1789530544436",
+  "timestamp": 1789530544.4368834
+}

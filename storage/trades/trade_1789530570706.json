@@ -1,0 +1,18 @@
+{
+  "symbol": "RAMRAT.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 5,
+  "entry_price": 535.0999755859375,
+  "exit_price": 516.8,
+  "status": "CLOSED",
+  "realized_pnl": -91.49987792968773,
+  "realized_pnl_percent": -3.4199171035092966,
+  "max_profit_percent": 0.5326153137909888,
+  "max_drawdown_percent": 3.4199171035092966,
+  "regime": "BULL",
+  "confidence": 51.08,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=45 sector=10 correlation=7 capital=25.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=45 sector=10 correlation=7 capital=25.",
+  "id": "trade_1789530570706",
+  "timestamp": 1789530570.706667
+}

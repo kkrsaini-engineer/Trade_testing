@@ -1,0 +1,18 @@
+{
+  "symbol": "GNFC.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 11,
+  "entry_price": 588.9000244140625,
+  "exit_price": 535.0,
+  "status": "CLOSED",
+  "realized_pnl": -592.9002685546875,
+  "realized_pnl_percent": -9.15266126329191,
+  "max_profit_percent": 1.927317900390712,
+  "max_drawdown_percent": 8.524371257075417,
+  "regime": "SIDEWAYS",
+  "confidence": 46.84,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1789530595437",
+  "timestamp": 1789530595.4371538
+}

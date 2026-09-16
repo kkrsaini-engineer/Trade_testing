@@ -1,0 +1,18 @@
+{
+  "symbol": "IPCALAB.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 1,
+  "entry_price": 1963.300048828125,
+  "exit_price": 1966.6,
+  "status": "CLOSED",
+  "realized_pnl": 3.299951171874909,
+  "realized_pnl_percent": 0.16808185655802424,
+  "max_profit_percent": 0.16808185655802424,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 68.72,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Average trading volume is too low.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Average trading volume is too low.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1789530587232",
+  "timestamp": 1789530587.232903
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "INDUSINDBK.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 2,
+  "entry_price": 1004.0999755859375,
+  "exit_price": 955.3,
+  "status": "CLOSED",
+  "realized_pnl": -97.59995117187509,
+  "realized_pnl_percent": -4.8600713845711,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 4.282439660537294,
+  "regime": "SIDEWAYS",
+  "confidence": 49.26,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1789530644513",
+  "timestamp": 1789530644.5137477
+}

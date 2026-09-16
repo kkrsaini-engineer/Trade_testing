@@ -1,0 +1,18 @@
+{
+  "symbol": "CGCL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 17,
+  "entry_price": 274.5,
+  "exit_price": 256.45,
+  "status": "CLOSED",
+  "realized_pnl": -306.8500000000002,
+  "realized_pnl_percent": -6.575591985428055,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 6.575591985428055,
+  "regime": "BULL",
+  "confidence": 61.63,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=45 sector=10 correlation=7 capital=25.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=45 sector=10 correlation=7 capital=25.",
+  "id": "trade_1789530559321",
+  "timestamp": 1789530559.3212655
+}

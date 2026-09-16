@@ -6,20 +6,40 @@
   "entry_price": 909.9000244140625,
   "buy_probability": 0.0,
   "buy_confidence": 0.0,
-  "entry_thesis_confidence": null,
+  "entry_thesis_confidence": 63.28,
   "entry_reasons": [
     "Morning Executor: gap -5.33% (1.31x ATR, WARNING band)",
     "No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.08 \u2014 not a blocker."
   ],
-  "daily_log": [],
-  "status": "OPEN",
-  "exit_date": null,
-  "exit_price": null,
-  "exit_reason": null,
-  "holding_days": 0,
-  "max_profit_percent": 0.0,
+  "daily_log": [
+    {
+      "date": "2026-09-16",
+      "current_price": 923.0,
+      "current_pnl": 39.2999267578125,
+      "current_buy_confidence": 63.28,
+      "current_sell_confidence": 30.19,
+      "current_exit_score": 90.97,
+      "recommendation": "FULL_EXIT",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=38 portfolio=60 sector=10 correlation=7 capital=45.",
+        "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=38 portfolio=60 sector=10 correlation=7 capital=45."
+      ]
+    }
+  ],
+  "status": "CLOSED",
+  "exit_date": "2026-09-16",
+  "exit_price": 923.0,
+  "exit_reason": "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=38 portfolio=60 sector=10 correlation=7 capital=45.",
+  "holding_days": 1,
+  "max_profit_percent": 1.4397159286124137,
   "max_drawdown_percent": 0.0,
-  "final_pnl": null,
+  "final_pnl": 39.2999267578125,
   "created_at": 1789530448.7430544,
-  "updated_at": 1789530448.7430546
+  "updated_at": 1789530536.784903,
+  "final_pnl_percent": 1.4397159286124137,
+  "exit_score": 90.97,
+  "target1_status": "NOT REACHED",
+  "target2_status": "NOT REACHED",
+  "stop_loss_status": "NOT HIT"
 }

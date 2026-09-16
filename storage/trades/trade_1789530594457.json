@@ -1,0 +1,18 @@
+{
+  "symbol": "MOL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 50,
+  "entry_price": 59.11000061035156,
+  "exit_price": 59.2,
+  "status": "CLOSED",
+  "realized_pnl": 4.499969482422017,
+  "realized_pnl_percent": 0.15225746695844106,
+  "max_profit_percent": 0.15225746695844106,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 54.03,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 44/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=7 capital=10.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 44/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=7 capital=10.",
+  "id": "trade_1789530594457",
+  "timestamp": 1789530594.457112
+}

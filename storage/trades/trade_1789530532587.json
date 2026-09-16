@@ -1,0 +1,18 @@
+{
+  "symbol": "LXCHEM.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 31,
+  "entry_price": 168.00999450683594,
+  "exit_price": 169.64,
+  "status": "CLOSED",
+  "realized_pnl": 50.530170288085515,
+  "realized_pnl_percent": 0.970183647674441,
+  "max_profit_percent": 0.970183647674441,
+  "max_drawdown_percent": 0.0,
+  "regime": "SIDEWAYS",
+  "confidence": 47.97,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=7 capital=75.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=7 capital=75.",
+  "id": "trade_1789530532587",
+  "timestamp": 1789530532.587325
+}
