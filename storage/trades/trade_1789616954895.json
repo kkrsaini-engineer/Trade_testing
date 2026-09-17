@@ -1,0 +1,18 @@
+{
+  "symbol": "NYKAA.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 11,
+  "entry_price": 343.04998779296875,
+  "exit_price": 323.8,
+  "status": "CLOSED",
+  "realized_pnl": -211.74986572265612,
+  "realized_pnl_percent": -5.611423546992265,
+  "max_profit_percent": 0.728760325314462,
+  "max_drawdown_percent": 5.523972734960444,
+  "regime": "SIDEWAYS",
+  "confidence": 46.92,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1789616954895",
+  "timestamp": 1789616954.8958426
+}

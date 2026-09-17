@@ -1,0 +1,18 @@
+{
+  "symbol": "COCHINSHIP.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 10,
+  "entry_price": 1312.0,
+  "exit_price": 1324.0,
+  "status": "CLOSED",
+  "realized_pnl": -120.0,
+  "realized_pnl_percent": -0.9146341463414633,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.9146341463414633,
+  "regime": "BEAR",
+  "confidence": 56.97,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=38 portfolio=45 sector=10 correlation=6 capital=25.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=38 portfolio=45 sector=10 correlation=6 capital=25.",
+  "id": "trade_1789616948596",
+  "timestamp": 1789616948.5961766
+}

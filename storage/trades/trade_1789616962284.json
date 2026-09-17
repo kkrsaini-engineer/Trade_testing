@@ -1,0 +1,18 @@
+{
+  "symbol": "WELENT.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 11,
+  "entry_price": 769.0,
+  "exit_price": 772.25,
+  "status": "CLOSED",
+  "realized_pnl": 35.75,
+  "realized_pnl_percent": 0.42262678803641096,
+  "max_profit_percent": 0.42262678803641096,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 66.34,
+  "reasons": "Below preferred risk/reward profile.; High market volatility.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 41/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=85 portfolio=45 sector=10 correlation=6 capital=10.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 41/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=85 portfolio=45 sector=10 correlation=6 capital=10.",
+  "id": "trade_1789616962284",
+  "timestamp": 1789616962.2840335
+}

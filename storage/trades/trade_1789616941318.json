@@ -1,0 +1,18 @@
+{
+  "symbol": "CYIENTDLM.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 4,
+  "entry_price": 858.0499877929688,
+  "exit_price": 902.65,
+  "status": "CLOSED",
+  "realized_pnl": 178.4000488281249,
+  "realized_pnl_percent": 5.197833790750239,
+  "max_profit_percent": 5.197833790750239,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 59.36,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=45 portfolio=45 sector=10 correlation=6 capital=25.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=45 portfolio=45 sector=10 correlation=6 capital=25.",
+  "id": "trade_1789616941318",
+  "timestamp": 1789616941.3185296
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "MANYAVAR.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 7,
+  "entry_price": 554.6500244140625,
+  "exit_price": 556.05,
+  "status": "CLOSED",
+  "realized_pnl": 9.799829101562182,
+  "realized_pnl_percent": 0.2524070178156761,
+  "max_profit_percent": 0.2524070178156761,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 61.58,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=6 capital=25.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=6 capital=25.",
+  "id": "trade_1789616928920",
+  "timestamp": 1789616928.9205244
+}

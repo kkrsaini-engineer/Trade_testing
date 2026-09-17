@@ -1,0 +1,18 @@
+{
+  "symbol": "BHEL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 4,
+  "entry_price": 434.20001220703125,
+  "exit_price": 410.9,
+  "status": "CLOSED",
+  "realized_pnl": -93.20004882812509,
+  "realized_pnl_percent": -5.366193356052135,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 4.836483559797375,
+  "regime": "SIDEWAYS",
+  "confidence": 43.49,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1789616961282",
+  "timestamp": 1789616961.282026
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "GRANULES.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 15,
+  "entry_price": 841.0,
+  "exit_price": 845.0,
+  "status": "CLOSED",
+  "realized_pnl": 60.0,
+  "realized_pnl_percent": 0.47562425683709864,
+  "max_profit_percent": 0.47562425683709864,
+  "max_drawdown_percent": 0.0,
+  "regime": "SIDEWAYS",
+  "confidence": 58.37,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 40/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=6 capital=25.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 40/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=6 capital=25.",
+  "id": "trade_1789616927829",
+  "timestamp": 1789616927.8295524
+}

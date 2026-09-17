@@ -1,0 +1,18 @@
+{
+  "symbol": "GIPCL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 35,
+  "entry_price": 199.5,
+  "exit_price": 185.05,
+  "status": "CLOSED",
+  "realized_pnl": -505.7499999999996,
+  "realized_pnl_percent": -7.243107769423553,
+  "max_profit_percent": 0.025062656641609705,
+  "max_drawdown_percent": 6.952380952380954,
+  "regime": "BULL",
+  "confidence": 57.23,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1789616924623",
+  "timestamp": 1789616924.6230645
+}

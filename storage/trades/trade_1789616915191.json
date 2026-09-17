@@ -1,0 +1,18 @@
+{
+  "symbol": "TFCILTD.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 28,
+  "entry_price": 138.61000061035156,
+  "exit_price": 140.12,
+  "status": "CLOSED",
+  "realized_pnl": 42.27998291015638,
+  "realized_pnl_percent": 1.089387044945784,
+  "max_profit_percent": 1.089387044945784,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 70.75,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=6 capital=45.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=6 capital=45.",
+  "id": "trade_1789616915191",
+  "timestamp": 1789616915.191236
+}

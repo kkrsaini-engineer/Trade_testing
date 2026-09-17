@@ -1,0 +1,18 @@
+{
+  "symbol": "KROSS.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 29,
+  "entry_price": 240.0,
+  "exit_price": 228.98,
+  "status": "CLOSED",
+  "realized_pnl": -319.58000000000027,
+  "realized_pnl_percent": -4.591666666666671,
+  "max_profit_percent": 0.06250000000000236,
+  "max_drawdown_percent": 5.12083333333333,
+  "regime": "BULL",
+  "confidence": 74.76,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=6 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=6 capital=10.",
+  "id": "trade_1789616969528",
+  "timestamp": 1789616969.5287437
+}

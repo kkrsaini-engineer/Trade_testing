@@ -1,0 +1,18 @@
+{
+  "symbol": "SKIPPER.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 9,
+  "entry_price": 533.0,
+  "exit_price": 520.05,
+  "status": "CLOSED",
+  "realized_pnl": -116.55000000000041,
+  "realized_pnl_percent": -2.4296435272045116,
+  "max_profit_percent": 0.1594746716697979,
+  "max_drawdown_percent": 2.4296435272045116,
+  "regime": "SIDEWAYS",
+  "confidence": 52.89,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=6 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=6 capital=10.",
+  "id": "trade_1789616966601",
+  "timestamp": 1789616966.601266
+}

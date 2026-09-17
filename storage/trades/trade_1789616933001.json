@@ -1,0 +1,18 @@
+{
+  "symbol": "DELTACORP.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 69,
+  "entry_price": 54.13999938964844,
+  "exit_price": 55.86,
+  "status": "CLOSED",
+  "realized_pnl": -118.68004211425777,
+  "realized_pnl_percent": -3.176949814817371,
+  "max_profit_percent": 0.9604717316414746,
+  "max_drawdown_percent": 3.176949814817371,
+  "regime": "BEAR",
+  "confidence": 60.29,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=6 capital=25.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=6 capital=25.",
+  "id": "trade_1789616933001",
+  "timestamp": 1789616933.0013607
+}
