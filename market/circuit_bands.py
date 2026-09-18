@@ -28,6 +28,7 @@ from typing import Any
 import requests
 
 from core.logger import get_logger
+from core.trading_calendar import now_ist
 
 logger = get_logger(__name__)
 
@@ -48,6 +49,13 @@ _REQUEST_TIMEOUT_SECONDS = 15
 _RETRY_ATTEMPTS = 2
 
 _CIRCUIT_BANDS_CACHE_PATH = "storage/reports/circuit_bands_cache.json"
+
+# BUGFIX (2026-09-18, Phase 5 — see BUG_AUDIT_2026-09-18.md item #17):
+# mirrors data/delivery_data.py's identical fix — no max-age limit meant
+# a weeks-old cache would be served forever, indistinguishable in the
+# logs from a normal one-day-stale fallback, if NSE's circuit-band source
+# were down/blocked for an extended period.
+_CACHE_MAX_AGE_DAYS = 7
 
 # NSE's standard cash-market circuit-filter percentages (source: NSE's
 # published sec_list.csv "Band" column + Zerodha's public circuit-limit
@@ -153,8 +161,12 @@ class CircuitBandsProvider:
             path = Path(_CIRCUIT_BANDS_CACHE_PATH)
             path.parent.mkdir(parents=True, exist_ok=True)
             with open(path, "w") as f:
+                # BUGFIX (2026-09-18, Phase 3 — see BUG_AUDIT_2026-09-18.md
+                # item #14): date.today() is the server's local/UTC date,
+                # not IST -- see data/delivery_data.py's equivalent fix for
+                # the full rationale (same class of bug, same fix).
                 json.dump(
-                    {"cached_on": date.today().isoformat(), "bands": bands},
+                    {"cached_on": now_ist().date().isoformat(), "bands": bands},
                     f,
                 )
         except Exception as exc:
@@ -171,9 +183,26 @@ class CircuitBandsProvider:
             with open(path) as f:
                 payload = json.load(f)
 
+            cached_on_raw = payload.get("cached_on")
+            if cached_on_raw:
+                try:
+                    cached_on = date.fromisoformat(cached_on_raw)
+                except ValueError:
+                    cached_on = None
+                if cached_on is not None:
+                    age_days = (now_ist().date() - cached_on).days
+                    if age_days > _CACHE_MAX_AGE_DAYS:
+                        logger.error(
+                            "Circuit-bands cache is %d day(s) old (from %s) — past "
+                            "the %d-day staleness limit. Refusing to use it; "
+                            "treating this as no circuit-band data available.",
+                            age_days, cached_on.isoformat(), _CACHE_MAX_AGE_DAYS,
+                        )
+                        return None
+
             logger.warning(
                 "Using cached circuit-band list from %s (live fetch failed today).",
-                payload.get("cached_on", "unknown date"),
+                cached_on_raw or "unknown date",
             )
             return payload.get("bands")
         except Exception as exc:

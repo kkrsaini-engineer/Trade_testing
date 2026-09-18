@@ -18,9 +18,34 @@ limitations to be aware of:
   - No source/recency weighting — every matching headline counts equally.
 Both are natural Phase 2 extensions once there's a real event-timestamp
 feed to work from.
+
+BUGFIX (2026-09-18, Phase 2 — see BUG_AUDIT_2026-09-18.md item #4):
+keyword matching used to be plain substring ("kw in text"), not
+whole-word/whole-phrase — the exact same class of bug news/sentiment_
+engine.py already documents and fixed for its own keyword list (see that
+module's ACCURACY FIX #1). "war" matched inside "software", "warehouse",
+"award" — completely unrelated, everyday business words — silently
+triggering a Defence/Energy/Airlines/Banks/Realty/IT sector bias on
+totally normal headlines (e.g. any IT-stock headline mentioning
+"software"). This ran EVERY scan, not as some rare edge case, since
+"software" is an extremely common word in NSE business news.
+
+Fix: `keyword_matches()`/`text_matches_any_keyword()` below now use
+`\b`-bounded regex matching (identical technique to sentiment_engine.py),
+so a keyword only matches as a whole word/phrase, not as a substring of
+an unrelated word. Because whole-word matching no longer catches plural/
+inflected forms a plain substring check used to (e.g. "rate hikes" no
+longer contains "rate hike" as a bounded match), the THEMES keyword lists
+below have been extended with the specific plural/variant forms real
+NSE headlines commonly use, following this codebase's existing
+convention (see sentiment_engine.py's POSITIVE/NEGATIVE sets, which
+already spell out multiple word-forms explicitly rather than relying on
+substring/stemming) — this is a coverage top-up, not a new mechanism.
 """
 
 from __future__ import annotations
+
+import re
 
 # Each theme: (keywords to match in headline text, {sector: bias in [-1, 1]})
 THEMES: list[tuple[list[str], dict[str, float]]] = [
@@ -42,7 +67,13 @@ THEMES: list[tuple[list[str], dict[str, float]]] = [
     ),
     (
         # War / military conflict
-        ["war", "military conflict", "missile strike", "invasion", "airstrike"],
+        [
+            "war", "wars", "warfare",
+            "military conflict", "military conflicts",
+            "missile strike", "missile strikes",
+            "invasion", "invasions",
+            "airstrike", "airstrikes",
+        ],
         {
             "Defence": 0.7, "Defense": 0.7,
             "Energy": 0.4, "Oil & Gas": 0.4,
@@ -62,7 +93,10 @@ THEMES: list[tuple[list[str], dict[str, float]]] = [
     ),
     (
         # Sanctions / trade barriers / tariffs
-        ["sanctions", "trade ban", "export ban", "tariff"],
+        [
+            "sanctions", "trade ban", "trade bans", "export ban",
+            "export bans", "tariff", "tariffs",
+        ],
         {
             "IT": -0.3, "Information Technology": -0.3,
             "Metals": -0.3, "Auto": -0.3, "Automobile": -0.3,
@@ -78,7 +112,10 @@ THEMES: list[tuple[list[str], dict[str, float]]] = [
         },
     ),
     (
-        ["rate hike", "fed hikes", "rbi hikes", "interest rate increase"],
+        [
+            "rate hike", "rate hikes", "fed hikes", "rbi hikes",
+            "interest rate increase", "interest rate increases",
+        ],
         {
             "Banks": -0.3, "Banking": -0.3, "Realty": -0.5, "Real Estate": -0.5,
             "Auto": -0.3, "Automobile": -0.3, "NBFC": -0.4,
@@ -88,7 +125,10 @@ THEMES: list[tuple[list[str], dict[str, float]]] = [
         },
     ),
     (
-        ["rate cut", "fed cuts", "rbi cuts", "interest rate decrease"],
+        [
+            "rate cut", "rate cuts", "fed cuts", "rbi cuts",
+            "interest rate decrease", "interest rate decreases",
+        ],
         {
             "Banks": 0.3, "Banking": 0.3, "Realty": 0.5, "Real Estate": 0.5,
             "Auto": 0.3, "Automobile": 0.3, "NBFC": 0.4,
@@ -96,7 +136,7 @@ THEMES: list[tuple[list[str], dict[str, float]]] = [
         },
     ),
     (
-        ["gold rally", "gold surges", "safe haven demand"],
+        ["gold rally", "gold rallies", "gold surges", "gold surge", "safe haven demand"],
         {
             "Gold": 0.6, "Jewellery": 0.4, "Mining": 0.3,
             # ADDED: gold-loan NBFCs directly benefit from higher gold
@@ -105,7 +145,10 @@ THEMES: list[tuple[list[str], dict[str, float]]] = [
         },
     ),
     (
-        ["chip shortage", "semiconductor shortage"],
+        [
+            "chip shortage", "chip shortages",
+            "semiconductor shortage", "semiconductor shortages",
+        ],
         {
             "Auto": -0.4, "Automobile": -0.4, "Electronics": -0.4, "IT": 0.2,
             # ADDED: consumer electronics/appliances are chip-dependent
@@ -114,6 +157,30 @@ THEMES: list[tuple[list[str], dict[str, float]]] = [
         },
     ),
 ]
+
+
+# \b-bounded regex per keyword (built lazily, cached) — see the module
+# BUGFIX note above. re.escape() so keywords containing regex-special
+# characters (e.g. "opec+ cut") match literally.
+_KEYWORD_PATTERN_CACHE: dict[str, "re.Pattern[str]"] = {}
+
+
+def _keyword_pattern(keyword: str) -> "re.Pattern[str]":
+    pattern = _KEYWORD_PATTERN_CACHE.get(keyword)
+    if pattern is None:
+        pattern = re.compile(r"\b" + re.escape(keyword) + r"\b")
+        _KEYWORD_PATTERN_CACHE[keyword] = pattern
+    return pattern
+
+
+def text_matches_any_keyword(text: str, keywords: list[str]) -> bool:
+    """True if any of `keywords` appears in `text` as a whole word/phrase
+    (not merely as a substring of some other, unrelated word). `text`
+    must already be lowercased by the caller, same as the keyword lists
+    in THEMES. Shared by sector_bias() below and
+    market_intelligence_engine.py's `_analyze_macro()`, so both consumers
+    of THEMES apply the identical, correct matching rule."""
+    return any(_keyword_pattern(kw).search(text) for kw in keywords)
 
 
 def sector_bias(headlines: list[str], sector: str | None) -> float:
@@ -129,7 +196,7 @@ def sector_bias(headlines: list[str], sector: str | None) -> float:
     total = 0.0
     matches = 0
     for keywords, sector_map in THEMES:
-        if any(kw in text for kw in keywords):
+        if text_matches_any_keyword(text, keywords):
             for sec_name, bias in sector_map.items():
                 if sec_name.lower() == sector.lower():
                     total += bias
