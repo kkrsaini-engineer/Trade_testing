@@ -122,8 +122,26 @@ def notify(
         # notify() call instead of fixing each oversized message
         # individually as it's discovered.
         TELEGRAM_SAFE_LIMIT = 4000
+
+        # BUGFIX (2026-09-18, Phase 2 — see BUG_AUDIT_2026-09-18.md item
+        # #5): output/telegram_alert.py's TelegramAlert.send() logs its
+        # own failures but then deliberately RE-RAISES them (network
+        # error, invalid bot token/chat id, Telegram rate-limit, etc.).
+        # This module's own docstring says Telegram is ONLY an advisory
+        # notification channel that must never affect the production
+        # engine — but with no try/except here, an uncaught send()
+        # exception propagated straight out of notify() and crashed
+        # whatever real trading/paper-trading/orchestrator/market-
+        # intelligence code path happened to call notify(), taking down
+        # actual trading logic because of a Telegram-side hiccup having
+        # nothing to do with trading. Every telegram.send() call below
+        # is now guarded: a failure is logged and swallowed here, never
+        # propagated to the caller.
         if len(full_message) <= TELEGRAM_SAFE_LIMIT:
-            telegram.send(full_message, level=event_type.upper())
+            try:
+                telegram.send(full_message, level=event_type.upper())
+            except Exception as exc:
+                logger.error("Telegram notification failed (swallowed, not fatal): %s", exc)
         else:
             lines = full_message.split("\n")
             parts: list[str] = []
@@ -140,7 +158,13 @@ def notify(
                 parts.append("\n".join(current))
             total = len(parts)
             for i, part in enumerate(parts, start=1):
-                telegram.send(f"(Part {i}/{total})\n{part}", level=event_type.upper())
+                try:
+                    telegram.send(f"(Part {i}/{total})\n{part}", level=event_type.upper())
+                except Exception as exc:
+                    logger.error(
+                        "Telegram notification part %d/%d failed (swallowed, not fatal): %s",
+                        i, total, exc,
+                    )
     else:
         logger.info("[Notification — no Telegram configured] %s", full_message)
 

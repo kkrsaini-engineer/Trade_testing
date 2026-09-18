@@ -49,7 +49,19 @@ ALL_NSE_HOLIDAYS: set[date] = set(NSE_HOLIDAYS_2026)
 
 
 def is_trading_day(d: date | None = None) -> bool:
-    d = d or date.today()
+    # BUGFIX (2026-09-18, Phase 3 — see BUG_AUDIT_2026-09-18.md item
+    # #13): `date.today()` is the RUNNING SERVER's local date, which for
+    # a GitHub Actions runner (or most cloud CI) is UTC, not IST. NSE
+    # trading days are an IST concept. market_intelligence.yml's cron
+    # runs at 21:30 UTC == 03:00 IST the NEXT calendar day — at that
+    # exact moment `date.today()` (UTC) still returns the PREVIOUS day,
+    # so a weekend/holiday boundary right around midnight IST could be
+    # evaluated against the wrong date entirely. Defaulting to
+    # `now_ist().date()` instead makes "today" mean IST-today
+    # everywhere this module is the source of truth for it, matching
+    # what NSE itself means by "today". An explicit `d` argument is
+    # untouched -- only the "caller didn't say" default changes.
+    d = d or now_ist().date()
     if d.weekday() >= 5:  # 5=Saturday, 6=Sunday
         return False
     if d in ALL_NSE_HOLIDAYS:
@@ -62,7 +74,7 @@ def skip_reason(d: date | None = None) -> str | None:
     Holiday", or None if it IS a trading day. Used only for notification
     text — is_trading_day() remains the single source of truth for the
     actual skip decision."""
-    d = d or date.today()
+    d = d or now_ist().date()  # BUGFIX 2026-09-18: see is_trading_day() above.
     if d.weekday() == 5:
         return "Saturday"
     if d.weekday() == 6:
@@ -73,8 +85,11 @@ def skip_reason(d: date | None = None) -> str | None:
 
 
 def now_ist() -> datetime:
-    """Current wall-clock time in IST (UTC+5:30), for notification
-    timestamps only — not used anywhere in trading-day logic."""
+    """Current wall-clock time in IST (UTC+5:30). Also the IST-aware
+    "what date is it" source for is_trading_day()/skip_reason()/
+    previous_trading_day()/next_trading_day() below when no explicit
+    date is given (see the 2026-09-18 BUGFIX note on is_trading_day())
+    — not just for notification timestamps."""
     return datetime.now(timezone.utc) + IST_OFFSET
 
 
@@ -95,14 +110,18 @@ def market_open_now(now: datetime | None = None) -> bool:
 
 
 def previous_trading_day(d: date | None = None) -> date:
-    d = (d or date.today()) - timedelta(days=1)
+    # BUGFIX 2026-09-18 (see is_trading_day() above): default to
+    # IST-today, not the server's local/UTC date.
+    d = (d or now_ist().date()) - timedelta(days=1)
     while not is_trading_day(d):
         d -= timedelta(days=1)
     return d
 
 
 def next_trading_day(d: date | None = None) -> date:
-    d = (d or date.today()) + timedelta(days=1)
+    # BUGFIX 2026-09-18 (see is_trading_day() above): default to
+    # IST-today, not the server's local/UTC date.
+    d = (d or now_ist().date()) + timedelta(days=1)
     while not is_trading_day(d):
         d += timedelta(days=1)
     return d
