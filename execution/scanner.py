@@ -10,6 +10,7 @@ from typing import Any
 import pandas as pd
 
 from core.logger import get_logger
+from core.notifications import notify
 from core.trading_calendar import is_trading_day, market_open_now, now_ist
 
 # Fixed Correct Class Imports
@@ -21,6 +22,7 @@ from strategy.buy_scoring import BuyScoringEngine
 from strategy.sell_scoring import SellScoringEngine
 from strategy.buy_probability import BuyProbabilityEngine
 from strategy.sell_probability import SellProbabilityEngine
+from strategy.fundamental_scoring import buy_fundamental_score
 from decision.decision_engine import DecisionEngine
 from decision.validation_engine import ValidationEngine
 from risk.risk_manager import RiskManager
@@ -460,7 +462,12 @@ class MarketScanner:
             and "no data returned for" in str(diagnostics.get("error", "")).lower()
         )
 
-    def _evaluate_market_context(self, symbol: str, bundle: Any = None) -> dict[str, Any]:
+    def _evaluate_market_context(
+        self,
+        symbol: str,
+        bundle: Any = None,
+        universe_buy_fundamental_scores: list[float] | None = None,
+    ) -> dict[str, Any]:
         """
         SINGLE SOURCE OF TRUTH for market analysis: data fetch, feature
         engineering, fundamentals/news/regime scoring, BUY/SELL strategy
@@ -474,6 +481,17 @@ class MarketScanner:
         top of scan_symbol() — no scoring/probability/confidence/decision
         logic was changed, only moved, so both callers get IDENTICAL
         market analysis with zero duplicated logic.
+
+        universe_buy_fundamental_scores (2026-09-18): every symbol's raw
+        buy_fundamental_score() from the SAME scan run — see
+        scan_symbols()'s pre-pass, which builds this once per run and
+        passes it down here so BUY/SELL fundamental scoring is ranked
+        against today's real watchlist distribution instead of a fixed,
+        structurally-wrong midpoint (fundamental_scoring.py's STRUCTURAL
+        BUY BIAS FIX note). None (default, e.g. evaluate_position()'s
+        per-symbol monitoring calls, which don't have a same-run
+        universe to build) falls back to the old absolute-score
+        behavior unchanged.
         """
         diagnostics: dict[str, Any] = {}
 
@@ -748,6 +766,7 @@ class MarketScanner:
             news_score=news_score,
             market_score=market_score,
             sector_score=sector_score,
+            universe_buy_fundamental_scores=universe_buy_fundamental_scores,
         )
         sell_decision = self.sell_strat.evaluate(
             dataframe=dataframe,
@@ -755,6 +774,7 @@ class MarketScanner:
             news_score=news_score,
             market_score=market_score,
             sector_score=sector_score,
+            universe_buy_fundamental_scores=universe_buy_fundamental_scores,
         )
         diagnostics["buy_signal"] = buy_decision.action
         diagnostics["sell_signal"] = sell_decision.action
@@ -832,6 +852,7 @@ class MarketScanner:
             market_score=market_score,
             sector_score=sector_score,
             buy_decision=buy_decision,
+            universe_buy_fundamental_scores=universe_buy_fundamental_scores,
         )
         sell_score = self.sell_score.score(
             dataframe=dataframe,
@@ -840,6 +861,7 @@ class MarketScanner:
             market_score=market_score,
             sector_score=sector_score,
             sell_decision=sell_decision,
+            universe_buy_fundamental_scores=universe_buy_fundamental_scores,
         )
         diagnostics["buy_score"] = round(buy_score.overall, 2)
         diagnostics["sell_score"] = round(sell_score.overall, 2)
@@ -908,12 +930,17 @@ class MarketScanner:
         broker_status: dict[str, Any],
         market_state: dict[str, Any],
         bundle: Any = None,
+        universe_buy_fundamental_scores: list[float] | None = None,
     ) -> ScanResult:
         logger.info("Scanning asset node: %s", symbol)
         diagnostics = {}
 
         try:
-            context = self._evaluate_market_context(symbol, bundle=bundle)
+            context = self._evaluate_market_context(
+                symbol,
+                bundle=bundle,
+                universe_buy_fundamental_scores=universe_buy_fundamental_scores,
+            )
             dataframe = context["dataframe"]
             fundamentals = context["fundamentals"]
             news_score = context["news_score"]
@@ -1105,6 +1132,7 @@ class MarketScanner:
         broker_status: dict[str, Any],
         market_state: dict[str, Any],
         bundle: Any = None,
+        universe_buy_fundamental_scores: list[float] | None = None,
     ) -> ScanResult:
         """
         MONITORING-ONLY evaluation for an EXISTING open position.
@@ -1132,12 +1160,24 @@ class MarketScanner:
         excluded from the `open_positions` dict passed to them, so the
         entry-only checks above correctly evaluate as if this position
         didn't need "room" to be opened — because it already IS open.
+
+        universe_buy_fundamental_scores (2026-09-18): optional, passed
+        straight through to _evaluate_market_context() — this
+        per-symbol monitoring call has no same-run watchlist scan of
+        its own to build a distribution from, so it defaults to None
+        (old absolute-score fundamental behavior) unless a caller
+        happens to have one on hand (e.g. reusing the same day's entry
+        scan's distribution).
         """
         logger.info("Evaluating existing position: %s", symbol)
         diagnostics: dict[str, Any] = {}
 
         try:
-            context = self._evaluate_market_context(symbol, bundle=bundle)
+            context = self._evaluate_market_context(
+                symbol,
+                bundle=bundle,
+                universe_buy_fundamental_scores=universe_buy_fundamental_scores,
+            )
         except Exception as exc:
             logger.exception("Data Fetch stage failed for %s", symbol)
             diagnostics["error"] = str(exc)
@@ -1323,8 +1363,100 @@ class MarketScanner:
         logger.info("Starting scan pass of %d target nodes.", len(symbols))
         results: list[ScanResult] = []
         total = len(symbols)
-        bundles = bundles or {}
+        bundles = dict(bundles or {})
 
+        # PASS 1 (2026-09-18, STRUCTURAL BUY BIAS FIX — see
+        # strategy/fundamental_scoring.py's module docstring): fetch
+        # every symbol's market bundle up front (skipping any the caller
+        # already supplied in `bundles`) so a same-run population of
+        # every symbol's raw buy_fundamental_score() can be built BEFORE
+        # any BUY/SELL scoring happens below — percentile ranking needs
+        # today's whole watchlist distribution, not one stock at a time.
+        #
+        # Each symbol is still fetched AT MOST once here; pass 2 below
+        # reuses this same `bundles` cache instead of re-fetching, so
+        # this adds no extra network/API load over the old single-pass
+        # design for any symbol that fetches successfully — it only
+        # changes ORDERING (fetch-everything, then evaluate-everything,
+        # instead of interleaved fetch-then-evaluate per symbol). A
+        # symbol whose fetch fails here is simply left out of both the
+        # cache and the population; scan_symbol() below will attempt
+        # (and, if it still fails, report) that same fetch itself on
+        # pass 2 exactly as it always has — no change to error
+        # handling/reporting, only to where the first fetch attempt
+        # happens for symbols that succeed.
+        if self.data_engine is not None:
+            for symbol in symbols:
+                if symbol in bundles:
+                    continue
+                try:
+                    bundles[symbol] = self.data_engine.fetch(symbol=symbol)
+                except Exception:
+                    continue
+
+            # BUGFIX (2026-09-18, Phase 5 — see BUG_AUDIT_2026-09-18.md
+            # item #15): every fetch() above just went through
+            # FundamentalDataProvider, which now tracks a running
+            # per-field missing count (see data/fundamental_data.py's
+            # missing_rate_report()). Check it once per full-universe
+            # scan, right here where every symbol in this batch has just
+            # been fetched: if a field is missing for effectively the
+            # WHOLE watchlist, that isn't normal per-symbol data
+            # sparsity (some names genuinely lack a PEG ratio, say) —
+            # it's the signature of an upstream schema change (Yahoo
+            # renaming/retiring a .info key) silently zeroing out one
+            # scoring input for every single symbol, indistinguishable
+            # from "normally missing" without this check. 95% threshold
+            # (not 100%) so one single symbol's own genuine data gap
+            # doesn't block the alert on an otherwise-universal failure.
+            fundamental_provider = getattr(self.data_engine, "fundamental_provider", None)
+            if fundamental_provider is not None:
+                missing_report = fundamental_provider.missing_rate_report()
+                if missing_report:
+                    broken_fields = {
+                        field: rate for field, rate in missing_report.items() if rate >= 0.95
+                    }
+                    if broken_fields:
+                        breakdown = ", ".join(
+                            f"{field}: {rate * 100:.0f}% missing"
+                            for field, rate in sorted(
+                                broken_fields.items(), key=lambda kv: kv[1], reverse=True
+                            )
+                        )
+                        notify(
+                            event_type="fundamental_field_missing_rate",
+                            message=(
+                                "🔴 Fundamental Data — Field(s) Missing Across "
+                                "The Whole Scan\n"
+                                f"{breakdown}\n\n"
+                                "Likely an upstream schema change (Yahoo Finance "
+                                "renamed/retired a field) rather than normal "
+                                "per-symbol data sparsity — every scored symbol "
+                                "this run is silently falling back to that "
+                                "field's default."
+                            ),
+                            severity="🔴 CRITICAL",
+                            dedup_key=(
+                                f"fundamental_field_missing_rate::"
+                                f"{now_ist().date().isoformat()}::"
+                                f"{','.join(sorted(broken_fields))}"
+                            ),
+                        )
+
+        universe_buy_fundamental_scores: list[float] = []
+        for bundle in bundles.values():
+            fundamentals = getattr(bundle, "fundamentals", None)
+            if not fundamentals:
+                continue
+            try:
+                universe_buy_fundamental_scores.append(buy_fundamental_score(fundamentals))
+            except Exception:
+                continue
+
+        # PASS 2: the original per-symbol evaluation loop, unchanged
+        # except for reusing the pre-fetched bundle (instead of letting
+        # scan_symbol() fetch it fresh) and passing down the population
+        # built above.
         for index, symbol in enumerate(symbols, start=1):
             logger.info("[%d/%d] Sizing target context: %s", index, total, symbol)
             result = self.scan_symbol(
@@ -1333,6 +1465,7 @@ class MarketScanner:
                 broker_status=broker_status,
                 market_state=market_state,
                 bundle=bundles.get(symbol),
+                universe_buy_fundamental_scores=universe_buy_fundamental_scores,
             )
             results.append(result)
 

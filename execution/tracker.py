@@ -233,7 +233,20 @@ class PositionTracker:
 
                 pos.pnl_absolute = (pos.entry_price - close) * pos.quantity
 
-                pos.pnl_percent = ((pos.entry_price / close) - 1.0) * 100.0
+                # BUGFIX (2026-09-18, Phase 4 — see BUG_AUDIT_2026-09-18.md's
+                # "Dead code" section; this class is confirmed to have no
+                # live caller, fixed in place per project convention rather
+                # than left broken for if/when it's ever wired in): this
+                # used to be `((entry_price / close) - 1.0) * 100.0` — a
+                # RECIPROCAL return, not the linear percent return BUY uses
+                # right above. It is asymmetric and increasingly wrong the
+                # bigger the move: entry=100 -> close=50 (price halved, a
+                # genuine +50% short gain) gave +100.0% instead; entry=100
+                # -> close=150 (a genuine -50% short loss) gave -33.3%
+                # instead. Now mirrors BUY's own formula with entry/close
+                # swapped, giving the correct, linear percent return for
+                # both directions.
+                pos.pnl_percent = ((pos.entry_price - close) / pos.entry_price) * 100.0
 
             # --------------------------------------------------
             # RISK PIPELINE INTEGRATION
