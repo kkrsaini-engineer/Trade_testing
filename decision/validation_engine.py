@@ -42,6 +42,9 @@ from core.constants import (
     BUY,
     SELL,
     NO_TRADE,
+    MAX_CORRELATION as SHARED_MAX_CORRELATION,
+    MAX_OPEN_POSITIONS as SHARED_MAX_OPEN_POSITIONS,
+    MAX_SECTOR_EXPOSURE as SHARED_MAX_SECTOR_EXPOSURE,
 )
 
 from core.logger import get_logger
@@ -86,11 +89,16 @@ class ValidationEngine:
 
     MAX_SPREAD = 0.005
 
-    MAX_OPEN_POSITIONS = 100
+    # BUGFIX (2026-09-18, Phase 3 — see BUG_AUDIT_2026-09-18.md item
+    # #14 / core/constants.py's matching note): these 3 used to be
+    # defined here independently of risk/portfolio_rules.py's identical
+    # copies — now both import the same shared constant, so there is
+    # one source of truth instead of two hand-synced ones.
+    MAX_OPEN_POSITIONS = SHARED_MAX_OPEN_POSITIONS
 
-    MAX_SECTOR_EXPOSURE = 0.30
+    MAX_SECTOR_EXPOSURE = SHARED_MAX_SECTOR_EXPOSURE
 
-    MAX_CORRELATION = 0.80
+    MAX_CORRELATION = SHARED_MAX_CORRELATION
 
     # Phase 22: daily-loss now uses risk/portfolio_limits.py's shared
     # 4-stage hierarchy instead of this flat constant — see the DAILY LOSS
