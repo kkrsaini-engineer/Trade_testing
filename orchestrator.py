@@ -18,6 +18,7 @@ import time
 
 # Core System Utilities
 from core.logger import get_logger
+from core.notifications import notify
 from core.trading_calendar import is_trading_day, market_open_now, now_ist
 from data.watchlist import WatchlistManager
 
@@ -53,6 +54,86 @@ class OrchestratorContext:
     last_execution: Any = None
     last_portfolio: Dict[str, Any] = None
     last_analytics: Any = None
+
+
+# ==========================================================
+# ENTRY-SCAN SYSTEMIC-FAILURE DETECTION
+# ==========================================================
+#
+# BUGFIX (2026-09-18, Phase 5 — see BUG_AUDIT_2026-09-18.md item #18):
+# module-level (not a WiredOrchestrator method) specifically so it can be
+# unit-tested against a plain list of scan-result-like objects, without
+# constructing a full WiredOrchestrator (scanner/broker/portfolio/trade
+# store/watchlist all wired together) just to exercise this one piece of
+# grouping/threshold logic.
+
+
+def detect_entry_scan_systemic_failure(scan_candidates: List[Any]) -> Optional[str]:
+    """Returns a ready-to-send alert message if this scan's ERROR results
+    look systemic (same root cause across many/all symbols), else None.
+
+    Two trigger conditions, either one is enough:
+      - total_scan_failure: EVERY scanned symbol errored (mirrors
+        paper_trading_engine.py's MONITORING-path condition,
+        failed_count == total_positions).
+      - uniform_cause_failure: at least 3 symbols errored, and every
+        single one of them shares the identical (error_type, error_stage)
+        cause — the literal "sab symbols same reason se fail ho rahe
+        hain" case the audit describes, even when a few OTHER symbols
+        scanned fine (so total_scan_failure alone wouldn't catch it).
+
+    A handful of symbols failing for assorted, unrelated reasons (normal,
+    expected noise — one bad ticker, one transient timeout) triggers
+    neither condition and returns None, same as before this fix (a
+    per-symbol logger.warning is still emitted by the caller either way).
+    """
+    errored = [c for c in scan_candidates if c.action == "ERROR"]
+    if not errored:
+        return None
+
+    error_groups: dict[str, dict[str, Any]] = {}
+    for c in errored:
+        err_type = c.diagnostics.get("error_type", "UnknownError")
+        stage = c.diagnostics.get("error_stage", "Unknown")
+        key = f"{err_type}::{stage}"
+        group = error_groups.setdefault(
+            key,
+            {
+                "type": err_type,
+                "stage": stage,
+                "symbols": [],
+                "reason": c.diagnostics.get("error", ""),
+            },
+        )
+        group["symbols"].append(c.symbol)
+
+    total_scanned = len(scan_candidates)
+    failed_count = len(errored)
+    largest_group = max(error_groups.values(), key=lambda g: len(g["symbols"]))
+
+    total_scan_failure = total_scanned > 0 and failed_count == total_scanned
+    uniform_cause_failure = (
+        failed_count >= 3 and len(largest_group["symbols"]) == failed_count
+    )
+
+    if not (total_scan_failure or uniform_cause_failure):
+        return None
+
+    breakdown_lines = []
+    for g in error_groups.values():
+        symbols_preview = ", ".join(g["symbols"][:10])
+        if len(g["symbols"]) > 10:
+            symbols_preview += f" +{len(g['symbols']) - 10} more"
+        breakdown_lines.append(
+            f"{g['type']} ({g['stage']}) x{len(g['symbols'])}: "
+            f"{symbols_preview} — {g['reason']}"
+        )
+
+    return (
+        "🔴 Entry Scan — Possible Systemic Failure\n"
+        f"{failed_count}/{total_scanned} symbols errored this cycle.\n\n"
+        + "\n".join(breakdown_lines)
+    )
 
 
 # ==========================================================
@@ -143,6 +224,33 @@ class WiredOrchestrator:
             for c in errored:
                 logger.warning(
                     "Scanner error for %s: %s", c.symbol, c.diagnostics.get("error")
+                )
+
+            # BUGFIX (2026-09-18, Phase 5 — see BUG_AUDIT_2026-09-18.md item
+            # #18): this used to ONLY log a per-symbol warning for each
+            # errored candidate — nothing distinguished "a couple of
+            # symbols hit a one-off data glitch today" (normal, low
+            # severity) from "the entire scan failed for the SAME reason"
+            # (a systemic bug — bad API key, a schema change, a network
+            # outage — silently zeroing out today's whole entry-scan
+            # pipeline with only quiet per-symbol log lines to show for
+            # it). paper_trading_engine.py's MONITORING path already has
+            # exactly this aggregate check (see its "Failure Breakdown"
+            # grouping + CRITICAL alert when failed_count == total
+            # positions); this entry-scan path had no equivalent. Mirrors
+            # that same shape here via detect_entry_scan_systemic_failure()
+            # (module-level, unit-testable in isolation from the rest of
+            # this heavily-wired run_cycle()).
+            alert = detect_entry_scan_systemic_failure(scan_candidates)
+            if alert is not None:
+                notify(
+                    event_type="entry_scan_systemic_failure",
+                    message=alert,
+                    severity="🔴 CRITICAL",
+                    dedup_key=(
+                        f"entry_scan_systemic_failure::{now_ist().date().isoformat()}"
+                        f"::{now_ist().strftime('%H:%M:%S.%f')}"
+                    ),
                 )
 
         # STEP 7: RISK / KILL-SWITCH GATEWAY (portfolio-wide, before any orders)
