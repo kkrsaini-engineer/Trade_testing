@@ -1,0 +1,18 @@
+{
+  "symbol": "FIVESTAR.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 17,
+  "entry_price": 544.6500244140625,
+  "exit_price": 527.6,
+  "status": "CLOSED",
+  "realized_pnl": -289.8504150390621,
+  "realized_pnl_percent": -3.13045509038671,
+  "max_profit_percent": 1.367846369593437,
+  "max_drawdown_percent": 3.13045509038671,
+  "regime": "SIDEWAYS",
+  "confidence": 55.09,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=3 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=3 capital=10.",
+  "id": "trade_1789703334371",
+  "timestamp": 1789703334.3710902
+}

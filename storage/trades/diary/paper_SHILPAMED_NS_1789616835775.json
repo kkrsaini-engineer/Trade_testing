@@ -24,16 +24,35 @@
         "Below preferred risk/reward profile.",
         "Continue holding position."
       ]
+    },
+    {
+      "date": "2026-09-18",
+      "current_price": 961.25,
+      "current_pnl": 153.0,
+      "current_buy_confidence": 60.58,
+      "current_sell_confidence": 30.35,
+      "current_exit_score": 90.34,
+      "recommendation": "FULL_EXIT",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=3 capital=25.",
+        "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=3 capital=25."
+      ]
     }
   ],
-  "status": "OPEN",
-  "exit_date": null,
-  "exit_price": null,
-  "exit_reason": null,
-  "holding_days": 1,
-  "max_profit_percent": 0.0,
+  "status": "CLOSED",
+  "exit_date": "2026-09-18",
+  "exit_price": 961.25,
+  "exit_reason": "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=3 capital=25.",
+  "holding_days": 2,
+  "max_profit_percent": 4.14409534127844,
   "max_drawdown_percent": 0.0,
-  "final_pnl": null,
+  "final_pnl": 153.0,
   "created_at": 1789616835.775767,
-  "updated_at": 1789616934.1662204
+  "updated_at": 1789703285.0835917,
+  "final_pnl_percent": 4.14409534127844,
+  "exit_score": 90.34,
+  "target1_status": "NOT REACHED",
+  "target2_status": "NOT REACHED",
+  "stop_loss_status": "NOT HIT"
 }

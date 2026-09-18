@@ -37,16 +37,37 @@
         "Below preferred risk/reward profile.",
         "Continue holding position."
       ]
+    },
+    {
+      "date": "2026-09-18",
+      "current_price": 404.25,
+      "current_pnl": 480.69976806640625,
+      "current_buy_confidence": 71.19,
+      "current_sell_confidence": 18.87,
+      "current_exit_score": 90.56,
+      "recommendation": "FULL_EXIT",
+      "notes": [
+        "Break-even stop activated.",
+        "Partial profit target reached.",
+        "Excellent risk/reward profile.",
+        "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=3 capital=10.",
+        "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=3 capital=10."
+      ]
     }
   ],
-  "status": "OPEN",
-  "exit_date": null,
-  "exit_price": null,
-  "exit_reason": null,
-  "holding_days": 2,
-  "max_profit_percent": 0.0,
+  "status": "CLOSED",
+  "exit_date": "2026-09-18",
+  "exit_price": 404.25,
+  "exit_reason": "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=3 capital=10.",
+  "holding_days": 3,
+  "max_profit_percent": 6.676339089058174,
   "max_drawdown_percent": 0.0,
-  "final_pnl": null,
+  "final_pnl": 480.69976806640625,
   "created_at": 1789530415.606401,
-  "updated_at": 1789616921.572234
+  "updated_at": 1789703346.6863544,
+  "final_pnl_percent": 6.676339089058174,
+  "exit_score": 90.56,
+  "target1_status": "REACHED",
+  "target2_status": "NOT REACHED",
+  "stop_loss_status": "NOT HIT"
 }

@@ -1,0 +1,18 @@
+{
+  "symbol": "PNBHOUSING.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 6,
+  "entry_price": 1178.800048828125,
+  "exit_price": 1103.0,
+  "status": "CLOSED",
+  "realized_pnl": -454.80029296875,
+  "realized_pnl_percent": -6.430271945058006,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 5.777065321283701,
+  "regime": "SIDEWAYS",
+  "confidence": 47.2,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1789703341465",
+  "timestamp": 1789703341.4656014
+}

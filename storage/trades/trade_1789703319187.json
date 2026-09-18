@@ -1,0 +1,18 @@
+{
+  "symbol": "STAR.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 8,
+  "entry_price": 1202.5999755859375,
+  "exit_price": 1222.8,
+  "status": "CLOSED",
+  "realized_pnl": 161.60019531249964,
+  "realized_pnl_percent": 1.6796960605475222,
+  "max_profit_percent": 1.6796960605475222,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 71.42,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Average trading volume is too low.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Average trading volume is too low.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1789703319187",
+  "timestamp": 1789703319.1871886
+}

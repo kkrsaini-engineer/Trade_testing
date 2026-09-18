@@ -1,0 +1,18 @@
+{
+  "symbol": "VINCOFE.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 16,
+  "entry_price": 179.0,
+  "exit_price": 174.11,
+  "status": "CLOSED",
+  "realized_pnl": -78.23999999999978,
+  "realized_pnl_percent": -2.7318435754189867,
+  "max_profit_percent": 1.4692737430167573,
+  "max_drawdown_percent": 6.083798882681556,
+  "regime": "BULL",
+  "confidence": 74.84,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=3 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=3 capital=10.",
+  "id": "trade_1789703315668",
+  "timestamp": 1789703315.6681857
+}

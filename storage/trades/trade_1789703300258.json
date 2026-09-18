@@ -1,0 +1,18 @@
+{
+  "symbol": "DRREDDY.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 1,
+  "entry_price": 1130.0,
+  "exit_price": 1192.5,
+  "status": "CLOSED",
+  "realized_pnl": -62.5,
+  "realized_pnl_percent": -5.530973451327434,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 5.3097345132743365,
+  "regime": "SIDEWAYS",
+  "confidence": 51.56,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1789703300258",
+  "timestamp": 1789703300.2587411
+}
