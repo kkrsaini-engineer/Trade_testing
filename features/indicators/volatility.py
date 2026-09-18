@@ -57,8 +57,17 @@ class VolatilityIndicators:
         df["atr_14"] = wilders_smoothing(tr, 14)
 
         # Bollinger Bands(20,2)
+        # BUGFIX (2026-09-18, Phase 3 — see BUG_AUDIT_2026-09-18.md item
+        # #9): pandas' `.std()` defaults to ddof=1 (SAMPLE standard
+        # deviation, Bessel's correction), but John Bollinger's original
+        # definition — and every broker/charting platform — uses the
+        # POPULATION standard deviation (ddof=0) over the 20-bar window.
+        # sqrt(20/19) ~= 1.026, so every band (and bb_width) came out
+        # ~2.6% too wide, which can flip a value sitting right next to
+        # SQUEEZE_BB_WIDTH_THRESHOLD (0.04) to the wrong side of that
+        # threshold and change the resulting BUY/SELL decision.
         sma20 = df["close"].rolling(20, min_periods=20).mean()
-        std20 = df["close"].rolling(20, min_periods=20).std()
+        std20 = df["close"].rolling(20, min_periods=20).std(ddof=0)
 
         df["bb_middle"] = sma20
         df["bb_upper"] = sma20 + (2 * std20)

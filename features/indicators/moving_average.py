@@ -12,6 +12,7 @@ Adds columns to the incoming dataframe.
 
 from __future__ import annotations
 
+import numpy as np
 import pandas as pd
 
 from core.exceptions import IndicatorError
@@ -45,15 +46,29 @@ class MovingAverageIndicators:
             df[f"ema_{period}"] = df["close"].ewm(span=period, adjust=False).mean()
 
         # Weighted Moving Average
+        #
+        # BUGFIX (2026-09-18, Phase 4 dead-code/audit cleanup): the old
+        # version passed `raw=False` to `.apply()`, so `prices` arrived as
+        # a `pd.Series` carrying the ORIGINAL dataframe's row index (e.g.
+        # [37, 38, ..., 56] for one 20-row window), while `weights` was a
+        # fresh `pd.Series(range(1, period + 1))` with index [0, 1, ...,
+        # period - 1]. `prices * weights` aligns by INDEX, not position --
+        # since the two indices essentially never matched, almost every
+        # product came out NaN, and `.sum()` on an all-NaN Series returns
+        # 0.0 (pandas default `skipna=True`). That silently made every
+        # `wma_20`/`wma_50` value 0.0 regardless of the actual price data.
+        # Fixed by using `raw=True`, which passes `prices` as a plain
+        # numpy ndarray (purely positional, no index) so the elementwise
+        # multiply against the numpy `weights` array lines up correctly.
         for period in (20, 50):
-            weights = pd.Series(range(1, period + 1), dtype="float64")
+            weights = np.arange(1, period + 1, dtype="float64")
 
             df[f"wma_{period}"] = (
                 df["close"]
                 .rolling(period)
                 .apply(
                     lambda prices: (prices * weights).sum() / weights.sum(),
-                    raw=False,
+                    raw=True,
                 )
             )
 

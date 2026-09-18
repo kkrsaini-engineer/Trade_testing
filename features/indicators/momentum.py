@@ -51,7 +51,31 @@ class MomentumIndicators:
         avg_gain = wilders_smoothing(gain, 14)
         avg_loss = wilders_smoothing(loss, 14)
         rs = avg_gain / avg_loss.replace(0, np.nan)
-        df["rsi_14"] = 100 - (100 / (1 + rs))
+        rsi_14 = 100 - (100 / (1 + rs))
+
+        # BUGFIX (2026-09-18, Phase 2 — see BUG_AUDIT_2026-09-18.md item
+        # #7): avg_loss==0 (14 straight non-down bars — e.g. a fresh
+        # IPO/SME stock on an upper-circuit run) hits the
+        # `.replace(0, np.nan)` above, making `rs` (and therefore
+        # rsi_14) NaN. Every real RSI convention instead defines this
+        # case as RSI=100 ("maximally overbought") — exactly the
+        # mirror-image of avg_gain==0, which this SAME formula already
+        # correctly resolves to RSI=0 without needing a special case
+        # (0 avg_gain / positive avg_loss -> rs=0 -> 100-100/(1+0)=0).
+        # `strategy/buy_scoring.py` reads `rsi_14 > 80` to apply an
+        # overbought risk-penalty on the BUY side — `NaN > 80` is always
+        # False, so this bug silently SKIPPED that penalty at exactly
+        # the moment a stock was most overbought (an asymmetric bug:
+        # the SELL-side mirror case was never affected). Fixed by
+        # explicitly mapping avg_loss==0 to RSI=100, and the rarer
+        # avg_gain==0-and-avg_loss==0 case (price completely flat for
+        # all 14 bars, no up or down moves at all) to the conventional
+        # neutral RSI=50 rather than the overbought 100 the first rule
+        # alone would otherwise assign it.
+        rsi_14 = rsi_14.where(avg_loss != 0, 100.0)
+        rsi_14 = rsi_14.where(~((avg_gain == 0) & (avg_loss == 0)), 50.0)
+
+        df["rsi_14"] = rsi_14
 
         # MACD (12,26,9)
         ema12 = df["close"].ewm(span=12, adjust=False).mean()
