@@ -15,6 +15,7 @@ from __future__ import annotations
 from typing import Any
 
 from core.logger import get_logger
+from market.macro_intelligence import text_matches_any_keyword
 
 logger = get_logger(__name__)
 
@@ -66,10 +67,19 @@ class EventDetectionEngine:
         return events
 
     def _event_type(self, title: str) -> str:
+        # BUGFIX (2026-09-18, Phase 4 audit cleanup, same class of bug as
+        # BUG_AUDIT_2026-09-18.md item #4 already fixed in
+        # market/macro_intelligence.py, and news/sentiment_engine.py's own
+        # earlier ACCURACY FIX): this used to be plain substring matching
+        # ("word in text"), not whole-word. E.g. "order" (-> ORDER event)
+        # matched inside "reorder"/"disorder"/"recorder"; "merge" (->
+        # MERGER) matched inside "emerge"/"emergency"/"submerged"; "court"
+        # (-> LITIGATION) matched inside "courtesy". Now uses \b-bounded
+        # whole-word/whole-phrase matching via the shared helper.
         text = title.lower()
 
         for event, keywords in self.EVENT_MAP.items():
-            if any(word in text for word in keywords):
+            if text_matches_any_keyword(text, keywords):
                 return event
 
         return "GENERAL"

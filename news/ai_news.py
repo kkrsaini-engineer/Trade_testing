@@ -18,6 +18,7 @@ import re
 from typing import Any
 
 from core.logger import get_logger
+from market.macro_intelligence import text_matches_any_keyword
 
 logger = get_logger(__name__)
 
@@ -87,11 +88,20 @@ class AINewsEngine:
     def _detect_event(self, text: str) -> str:
         """
         Detect the primary event type.
+
+        BUGFIX (2026-09-18, Phase 4 audit cleanup, same class of bug as
+        BUG_AUDIT_2026-09-18.md item #4 already fixed in
+        market/macro_intelligence.py, and news/sentiment_engine.py's own
+        earlier ACCURACY FIX): this used to be plain substring matching
+        ("keyword in lower"), not whole-word -- e.g. "order" (-> ORDER)
+        matched inside "reorder"/"disorder", "court" (-> LITIGATION)
+        matched inside "courtesy". Now uses \\b-bounded whole-word/
+        whole-phrase matching via the shared helper.
         """
         lower = text.lower()
 
         for event, keywords in self.EVENT_KEYWORDS.items():
-            if any(keyword in lower for keyword in keywords):
+            if text_matches_any_keyword(lower, keywords):
                 return event
 
         return "GENERAL"
