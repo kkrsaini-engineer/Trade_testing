@@ -19,17 +19,33 @@ logger = get_logger(__name__)
 
 
 class FundamentalEngine:
-    """Evaluate fundamental health of a company."""
+    """Evaluate fundamental health of a company.
+
+    STATUS (2026-09-18, Phase 4 dead-code cleanup, per BUG_AUDIT_2026-09-18.md
+    MEDIUM item #20): `execution/scanner.py` does instantiate this class
+    (`self.fundamental = FundamentalEngine()`), but confirmed via grep that
+    `.evaluate()` is never called on that instance anywhere -- the live
+    fundamental-scoring path scanner.py actually uses for BUY/SELL decisions
+    is strategy/fundamental_scoring.py's `_METRICS` weight table. So this
+    engine's output is inert dead weight today. Its DEFAULT_WEIGHTS had
+    drifted from that live table (roe was 15 here vs 20 live;
+    operating_cashflow was 15 here vs 10 live) -- the kind of silent
+    divergence that would mislead anyone who edits this dead engine assuming
+    it mirrors production. BUGFIX: realigned both weights to match the live
+    values below so this engine now scores exactly like the live path if
+    `.evaluate()` is ever actually wired up. Kept in place (not deleted) per
+    team decision.
+    """
 
     DEFAULT_WEIGHTS = {
         "revenue_growth": 15,
         "earnings_growth": 15,
-        "roe": 15,
+        "roe": 20,
         "pe": 10,
         "pb": 10,
         "peg": 10,
         "debt_to_equity": 10,
-        "operating_cashflow": 15,
+        "operating_cashflow": 10,
     }
 
     def evaluate(self, fundamentals: dict[str, Any]) -> dict[str, Any]:

@@ -6,6 +6,17 @@ Responsibilities:
 - Categorize events
 - Assign impact weights
 - No BUY/SELL decisions
+
+STATUS (2026-09-18, Phase 4 dead-code cleanup, per BUG_AUDIT_2026-09-18.md
+"Dead code" section): confirmed via repo-wide grep that `CorporateActionsEngine`
+has zero live callers anywhere in the pipeline today. Read through
+`evaluate()` in full looking for a functional defect (the class it's grouped
+with in the audit, `fundamental/fundamental.py`'s `FundamentalEngine`, DOES
+have a real weight-drift bug -- see that module) and found none here: the
+IMPACT_WEIGHTS table, normalization, and score clamping are all internally
+consistent. Left unchanged rather than "fixed" for a bug that doesn't exist,
+and kept in place (not deleted) per team decision, in case corporate-actions
+scoring is wired into the live decision pipeline in the future.
 """
 
 from __future__ import annotations
