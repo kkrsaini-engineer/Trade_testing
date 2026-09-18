@@ -21,6 +21,12 @@ import yfinance as yf
 from core.schemas import MarketData
 from core.exceptions import DataError
 from core.logger import get_logger
+from core.trading_calendar import (
+    MARKET_CLOSE_TIME,
+    is_trading_day,
+    now_ist,
+    previous_trading_day,
+)
 
 logger = get_logger(__name__)
 
@@ -191,7 +197,66 @@ class MarketDataProvider:
         if df.empty:
             raise DataError(f"No valid (non-NaN) OHLC data available for {symbol}")
 
+        # BUGFIX (2026-09-18, Phase 2 — see BUG_AUDIT_2026-09-18.md item
+        # #8): fetch()'s row-count check (>=260) only proves Yahoo
+        # returned ENOUGH rows — it says nothing about whether the LAST
+        # row is actually fresh. A provider-side throttle/glitch can
+        # return a full, plausible-looking 260+ row history whose final
+        # row is really from several sessions ago (this was the real
+        # risk factor behind the earlier "14 stocks frozen for 3 days"
+        # incident: those symbols had normal row counts throughout).
+        # data/delivery_data.py already validates its OWN last-row
+        # freshness this same way (its bhavcopy DATE1 column vs.
+        # `expected_date`) — this brings market_data.py's OHLC fetch up
+        # to the same standard using the last row's own timestamp
+        # instead of trusting row count alone.
+        self._check_last_row_freshness(df, symbol)
+
         return df
+
+    # Tolerance in TRADING sessions (not calendar days) between the
+    # last row we actually have and the most recent session that should
+    # already be closed and available. 1 session of slack absorbs Yahoo
+    # occasionally publishing the very latest close a little late right
+    # after market close, without ever again silently accepting data
+    # that is genuinely multiple sessions stale (the real incident this
+    # guards against).
+    _STALENESS_TOLERANCE_TRADING_SESSIONS = 1
+
+    @classmethod
+    def _latest_expected_trading_day(cls, now: datetime):
+        """The most recent NSE session whose data should already exist
+        as of `now`: today itself once today's session has closed,
+        otherwise the most recent PRIOR trading day (correctly walks
+        back over weekends/holidays whether or not `now`'s own date is
+        a trading day)."""
+        today = now.date()
+        if is_trading_day(today) and now.time() >= MARKET_CLOSE_TIME:
+            return today
+        return previous_trading_day(today)
+
+    @classmethod
+    def _check_last_row_freshness(cls, df: pd.DataFrame, symbol: str) -> None:
+        last_ts = pd.to_datetime(df.iloc[-1]["timestamp"])
+        last_date = last_ts.date()
+
+        expected = cls._latest_expected_trading_day(now_ist())
+
+        # Walk back _STALENESS_TOLERANCE_TRADING_SESSIONS trading days
+        # from `expected` to get the oldest last-row date that still
+        # counts as "fresh enough".
+        oldest_acceptable = expected
+        for _ in range(cls._STALENESS_TOLERANCE_TRADING_SESSIONS):
+            oldest_acceptable = previous_trading_day(oldest_acceptable)
+
+        if last_date < oldest_acceptable:
+            raise DataError(
+                f"{symbol}: latest available row is from {last_date.isoformat()}, "
+                f"but the most recent expected NSE session is "
+                f"{expected.isoformat()} — data looks stale/frozen "
+                f"(possible provider throttling), rejecting rather than "
+                f"silently trading on old prices."
+            )
 
     def to_schema(self, dataframe: pd.DataFrame) -> list[MarketData]:
         """Convert dataframe into MarketData schema objects."""

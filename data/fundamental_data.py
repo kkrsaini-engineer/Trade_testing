@@ -78,6 +78,25 @@ _FIELDS = {
     "industry": "industry",
 }
 
+# BUGFIX (2026-09-18, Phase 5 — see BUG_AUDIT_2026-09-18.md item #15):
+# "sector" is the only one of these 13 real fundamental fields ("industry"
+# is just a sector-fallback helper, not a scoring input) that had ANY
+# missing-rate visibility (see the `if not result.get("sector")` warning
+# in fetch() below) — the other 12 could go universally None overnight
+# (e.g. Yahoo renaming/retiring a .info key) and nothing would notice:
+# every symbol's fetch would still "succeed" (this function never raises
+# for a missing field), the field would just quietly read as
+# always-missing, indistinguishable in the logs from "normally sparse
+# per-symbol data". FundamentalDataProvider now tracks a running
+# per-field missing count across a batch of fetch() calls (see
+# missing_rate_report() below) so a caller doing a full-universe scan
+# (execution/scanner.py) can detect "not just some symbols, EVERY symbol
+# is missing this field" and raise it as a real alert instead of it
+# passing as normal.
+_MISSING_RATE_TRACKED_FIELDS = [
+    target_key for target_key in _FIELDS.values() if target_key not in ("sector", "industry")
+]
+
 
 def normalize_fundamentals(info: dict[str, Any], symbol: str) -> dict[str, Any]:
     """Map yfinance's raw camelCase .info keys (trailingPE, returnOnEquity,
@@ -105,6 +124,35 @@ class FundamentalDataProvider:
     """Fetch normalized fundamental metrics."""
 
     _FIELDS = _FIELDS
+
+    def __init__(self) -> None:
+        # Per-field missing count + total successful-fetch count, reset
+        # at the start of each scan cycle (a fresh FundamentalDataProvider
+        # instance per DataEngine per MarketScanner run already resets
+        # this naturally; reset_missing_rate_tracking() exists for any
+        # caller that reuses one instance across multiple scan cycles).
+        self._fetch_count = 0
+        self._missing_counts: dict[str, int] = {
+            field: 0 for field in _MISSING_RATE_TRACKED_FIELDS
+        }
+
+    def reset_missing_rate_tracking(self) -> None:
+        self._fetch_count = 0
+        self._missing_counts = {field: 0 for field in _MISSING_RATE_TRACKED_FIELDS}
+
+    def missing_rate_report(self, min_symbols: int = 5) -> dict[str, float] | None:
+        """Per-field missing rate (0.0-1.0) across every fetch() call
+        since the last reset. Returns None if fewer than `min_symbols`
+        symbols have been fetched yet -- a missing-rate computed from a
+        handful of symbols is noise, not signal; this is meant to catch
+        "the WHOLE watchlist is missing this field", not normal
+        per-symbol sparsity."""
+        if self._fetch_count < min_symbols:
+            return None
+        return {
+            field: round(count / self._fetch_count, 4)
+            for field, count in self._missing_counts.items()
+        }
 
     def fetch(self, symbol: str) -> dict[str, Any]:
         """
@@ -142,6 +190,12 @@ class FundamentalDataProvider:
                 "No sector could be determined for %s (yfinance sector/industry both "
                 "missing or unmapped) — will fall back to UNKNOWN downstream.", symbol,
             )
+
+        # See _MISSING_RATE_TRACKED_FIELDS's BUGFIX comment above.
+        self._fetch_count += 1
+        for field in _MISSING_RATE_TRACKED_FIELDS:
+            if result.get(field) is None:
+                self._missing_counts[field] += 1
 
         logger.info("Loaded fundamentals for %s", symbol)
 

@@ -44,6 +44,7 @@ from typing import Any
 import requests
 
 from core.logger import get_logger
+from core.trading_calendar import now_ist
 
 logger = get_logger(__name__)
 
@@ -67,6 +68,13 @@ _RETRY_ATTEMPTS = 2
 _SATURATION_CRORES = 5000.0
 
 _FII_DII_CACHE_PATH = "storage/reports/fii_dii_cache.json"
+
+# BUGFIX (2026-09-18, Phase 5 — see BUG_AUDIT_2026-09-18.md item #17):
+# mirrors data/delivery_data.py's identical fix — no max-age limit meant
+# a weeks-old cache would be served forever, indistinguishable in the
+# logs from a normal one-day-stale fallback, if NSE's FII/DII source
+# were down/blocked for an extended period.
+_CACHE_MAX_AGE_DAYS = 7
 
 
 class FiiDiiDataProvider:
@@ -166,7 +174,13 @@ class FiiDiiDataProvider:
             path = Path(_FII_DII_CACHE_PATH)
             path.parent.mkdir(parents=True, exist_ok=True)
             with open(path, "w") as f:
-                json.dump({"cached_on": date.today().isoformat(), "data": result}, f)
+                # BUGFIX (2026-09-18, Phase 3 — see BUG_AUDIT_2026-09-18.md
+                # item #14): date.today() is the server's local/UTC date,
+                # not IST -- a manual re-run late at night IST could label
+                # this cache with the wrong calendar day, making a real
+                # day-old fallback look like "today's" data in the log
+                # message _read_cache() below prints.
+                json.dump({"cached_on": now_ist().date().isoformat(), "data": result}, f)
         except Exception as exc:
             logger.warning("Failed to write FII/DII cache: %s", exc)
 
@@ -178,9 +192,27 @@ class FiiDiiDataProvider:
                 return None
             with open(path) as f:
                 payload = json.load(f)
+
+            cached_on_raw = payload.get("cached_on")
+            if cached_on_raw:
+                try:
+                    cached_on = date.fromisoformat(cached_on_raw)
+                except ValueError:
+                    cached_on = None
+                if cached_on is not None:
+                    age_days = (now_ist().date() - cached_on).days
+                    if age_days > _CACHE_MAX_AGE_DAYS:
+                        logger.error(
+                            "FII/DII cache is %d day(s) old (from %s) — past the "
+                            "%d-day staleness limit. Refusing to use it; treating "
+                            "this as no FII/DII data available.",
+                            age_days, cached_on.isoformat(), _CACHE_MAX_AGE_DAYS,
+                        )
+                        return None
+
             logger.warning(
                 "Using cached FII/DII data from %s (live fetch failed today).",
-                payload.get("cached_on", "unknown date"),
+                cached_on_raw or "unknown date",
             )
             return payload.get("data")
         except Exception as exc:

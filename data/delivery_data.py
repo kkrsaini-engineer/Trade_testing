@@ -40,6 +40,7 @@ import pandas as pd
 import requests
 
 from core.logger import get_logger
+from core.trading_calendar import now_ist
 
 logger = get_logger(__name__)
 
@@ -62,6 +63,19 @@ _REQUEST_TIMEOUT_SECONDS = 15
 _RETRY_ATTEMPTS = 2
 
 _DELIVERY_CACHE_PATH = "storage/reports/delivery_data_cache.json"
+
+# BUGFIX (2026-09-18, Phase 5 — see BUG_AUDIT_2026-09-18.md item #17): the
+# disk cache had no max-age limit at all — if NSE's bhavcopy source were
+# down (or blocked) for weeks, _read_cache() would keep handing back the
+# same weeks-old snapshot forever, logged only as a routine "using cached
+# data" warning indistinguishable from a normal one-day-stale fallback.
+# Callers have no way to tell "yesterday's data" from "three-week-old
+# data" from the return value alone. Past this many calendar days, the
+# cache is treated as unusable and _read_cache() returns empty instead,
+# forcing callers onto their own explicit "no data" default (e.g.
+# validation_engine.py's delivery_percentage=100.0) rather than silently
+# passing off ancient data as current.
+_CACHE_MAX_AGE_DAYS = 7
 
 # Columns pulled from the bhavcopy beyond SYMBOL/SERIES/DELIV_PER, and
 # the field name each is stored under in the returned per-symbol dict.
@@ -127,7 +141,15 @@ class DeliveryDataProvider:
         except Exception as exc:
             logger.warning("NSE warm-up request failed (%s) — attempting bhavcopy fetch anyway.", exc)
 
-        today = date.today()
+        # BUGFIX (2026-09-18, Phase 3 — see BUG_AUDIT_2026-09-18.md item
+        # #14): date.today() is the running server's local date (UTC in
+        # most CI/cloud environments), not IST — NSE bhavcopy dates are
+        # an IST concept. A manual/scheduled re-run late at night IST
+        # but still the same UTC calendar day (or vice versa, right
+        # around the UTC/IST midnight boundary) could ask for the wrong
+        # day's bhavcopy. now_ist().date() is what NSE itself means by
+        # "today".
+        today = now_ist().date()
         for days_back in range(_MAX_DAYS_BACK):
             target_date = today - timedelta(days=days_back)
             data = self._fetch_for_date(session, target_date)
@@ -192,7 +214,9 @@ class DeliveryDataProvider:
             logger.warning("NSE warm-up request failed (%s) — attempting range fetch anyway.", exc)
 
         results: dict[date, dict[str, dict[str, float]]] = {}
-        today = date.today()
+        # BUGFIX 2026-09-18 (see fetch_latest_available()'s note above):
+        # IST-today, not the server's local/UTC date.
+        today = now_ist().date()
 
         for days_back in range(1, 1 + max_calendar_days_back):
             if len(results) >= trading_days:
@@ -338,6 +362,19 @@ class DeliveryDataProvider:
                     as_of = date.fromisoformat(as_of_raw)
                 except ValueError:
                     as_of = None
+
+            if as_of is not None:
+                age_days = (now_ist().date() - as_of).days
+                if age_days > _CACHE_MAX_AGE_DAYS:
+                    logger.error(
+                        "Delivery data cache is %d day(s) old (from %s) — past the "
+                        "%d-day staleness limit. Refusing to use it; treating this "
+                        "as no delivery data available. NSE bhavcopy source may be "
+                        "down/blocked for an extended period.",
+                        age_days, as_of.isoformat(), _CACHE_MAX_AGE_DAYS,
+                    )
+                    return {}, None
+
             logger.warning(
                 "Using cached delivery data from %s (live fetch failed today).",
                 as_of_raw or "unknown date",
