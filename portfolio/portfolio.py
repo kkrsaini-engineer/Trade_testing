@@ -254,7 +254,33 @@ class PortfolioEngine:
 
         pos.current_price = exit_price
 
-        pos.realized_pnl = realized_pnl
+        # BUGFIX (2026-09-18, Phase 1 critical-bug fix — see
+        # BUG_AUDIT_2026-09-18.md item #1): partial_exit() already
+        # accumulates each leg's realized P&L into pos.realized_pnl
+        # (`pos.realized_pnl += realized_pnl`) BEFORE it calls this
+        # method for the final leg. This used to be a plain `=`
+        # assignment here, which OVERWROTE that accumulated total with
+        # just this call's own leg (which is 0, since partial_exit()
+        # already zeroed pos.quantity before calling us) — silently
+        # erasing every prior partial leg's profit/loss.
+        #
+        # `+=` is correct and backward-compatible in every case:
+        #   - A position that was NEVER partial-exited always has
+        #     pos.realized_pnl == 0.0 (the dataclass default) when it
+        #     reaches this method, so 0.0 + realized_pnl == realized_pnl
+        #     -- byte-for-byte identical to the old `=` behavior.
+        #   - A position closed via partial_exit()'s final leg has
+        #     pos.quantity == 0 by the time we get here, so this leg's
+        #     own `realized_pnl` computes to 0 and the `+=` is a no-op
+        #     that correctly LEAVES the already-accumulated total intact
+        #     instead of erasing it.
+        #   - A position that was partial-exited and is LATER closed by
+        #     a caller invoking close_position() directly (not via
+        #     partial_exit()) still has its remaining, un-exited
+        #     quantity, so `realized_pnl` here correctly represents that
+        #     final leg's own P&L, and `+=` correctly adds it on top of
+        #     the earlier legs' already-accumulated P&L.
+        pos.realized_pnl += realized_pnl
 
         pos.realized_pnl_percent = realized_pnl_percent
 
@@ -482,12 +508,60 @@ class PortfolioEngine:
         paper_trading/virtual_portfolio.py's snapshot() independently
         computed as `portfolio_value` — kept here too so max_drawdown/
         daily_loss below are correct for ANY caller of this snapshot(),
-        not only ones that go through VirtualPortfolio's wrapper."""
+        not only ones that go through VirtualPortfolio's wrapper.
 
-        return self.state.available_capital + sum(
-            p.quantity * p.current_price
-            for p in self.state.open_positions.values()
-        )
+        BUGFIX (2026-09-18, Phase 1 critical-bug fix — see
+        BUG_AUDIT_2026-09-18.md item #2): the old formula was
+        `available_capital + sum(qty * current_price)` for EVERY open
+        position regardless of direction. That is correct for a BUY
+        (long) position, but backwards for a SELL (short) one: as the
+        price rises AGAINST a short (a real, growing loss), `qty *
+        current_price` goes UP, so the old formula made a short position
+        that is losing money look like it was making the portfolio
+        richer. Example: 100 shares SELL @ Rs.100, price now Rs.150 (a
+        genuine Rs.5,000 loss) — the old formula added qty*current_price
+        = Rs.15,000 here instead of subtracting the loss, overstating
+        equity by Rs.10,000. max_drawdown/daily_loss/emergency_stop all
+        read this value, so this bug made every safety circuit-breaker
+        blind to real SELL-side losses.
+
+        Fix: compute each position's mark-to-market contribution as
+        `entry_price*quantity + direction_adjusted_price_diff*quantity`
+        instead of the direction-blind `quantity * current_price`. This
+        uses the SAME direction-aware price_diff sign flip that
+        update_position() already applies to unrealized_pnl (SELL
+        inverts the sign), computed fresh from `current_price` here
+        rather than reading the separately-cached `unrealized_pnl` field
+        — so equity stays correct even if a caller mutates
+        `current_price` directly without calling update_position()
+        first, exactly like the pre-existing (and still-passing)
+        test_open_position_market_value_counts_toward_equity test does.
+        It is also independent of `used_capital`, which some tests/
+        callers legitimately don't keep in sync when they poke
+        `open_positions` directly.
+
+        This is algebraically IDENTICAL to the old formula for every BUY
+        position (entry_price*qty + (current-entry)*qty ==
+        qty*current_price — no behavior change there), and now correct
+        for SELL too: 100 shares SELL @ Rs.100, price now Rs.150 ->
+        entry_price*qty + (entry-current)*qty == 10,000 + (-5,000) ==
+        Rs.5,000 contribution, i.e. available_capital + Rs.5,000 instead
+        of the old, backwards available_capital + Rs.15,000.
+        """
+
+        equity = self.state.available_capital
+
+        for pos in self.state.open_positions.values():
+
+            price_diff = pos.current_price - pos.entry_price
+
+            if pos.direction == "SELL":
+
+                price_diff *= -1
+
+            equity += pos.entry_price * pos.quantity + price_diff * pos.quantity
+
+        return equity
 
     @staticmethod
     def _week_key(trading_day: str) -> str:
