@@ -26,6 +26,20 @@ This module does not modify, call, or depend on buy_strategy.py /
 sell_strategy.py's decision logic — it is a deliberately separate
 evaluation, reusing only shared low-level building blocks (fundamental
 scoring, news bias) the same way the entry engines do.
+
+STATUS (2026-09-18, Phase 4 — see BUG_AUDIT_2026-09-18.md's "Dead code"
+section): confirmed NOT instantiated anywhere in the live codebase.
+risk/exit_strategy.py's ExitStrategyEngine is the engine actually wired
+into paper_trading/paper_trading_engine.py's exit-monitoring path (see
+PHASE19_NOTES.md for when that switch happened) — this ExitEngine class
+was its predecessor, superseded but never deleted. Read through in full
+during the audit: no functional defect was found in it (the logic below
+is internally consistent), so it has been left as-is rather than
+"fixed" for a bug that doesn't exist here. It is being kept (not
+deleted) per an explicit decision to preserve it in case it is ever
+revisited, but any future caller should go through
+risk/exit_strategy.py instead unless there is a specific reason to
+prefer this older, simpler weighted-scoring design.
 """
 
 from __future__ import annotations

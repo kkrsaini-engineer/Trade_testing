@@ -41,6 +41,11 @@ from risk.risk_manager import RiskResult
 from risk.position_sizing import PositionSizingResult
 from risk import portfolio_limits
 
+from core.constants import (
+    MAX_CORRELATION as SHARED_MAX_CORRELATION,
+    MAX_OPEN_POSITIONS as SHARED_MAX_OPEN_POSITIONS,
+    MAX_SECTOR_EXPOSURE as SHARED_MAX_SECTOR_EXPOSURE,
+)
 from core.logger import get_logger
 
 logger = get_logger(__name__)
@@ -77,15 +82,20 @@ class PortfolioRulesEngine:
     Portfolio Governance Engine
     """
 
-    MAX_OPEN_POSITIONS = 100
+    # BUGFIX (2026-09-18, Phase 3 — see BUG_AUDIT_2026-09-18.md item
+    # #14 / core/constants.py's matching note): these 3 used to be
+    # defined here independently of decision/validation_engine.py's
+    # identical copies — now both import the same shared constant, so
+    # there is one source of truth instead of two hand-synced ones.
+    MAX_OPEN_POSITIONS = SHARED_MAX_OPEN_POSITIONS
 
     MAX_PORTFOLIO_EXPOSURE = 0.95
 
-    MAX_SECTOR_EXPOSURE = 0.30
+    MAX_SECTOR_EXPOSURE = SHARED_MAX_SECTOR_EXPOSURE
 
     MAX_SYMBOL_EXPOSURE = 0.10
 
-    MAX_CORRELATION = 0.80
+    MAX_CORRELATION = SHARED_MAX_CORRELATION
 
     MIN_CASH_RESERVE = 0.10
 
@@ -844,6 +854,28 @@ class PortfolioRulesEngine:
             warnings.append("Portfolio rules entered fail-safe mode.")
 
             diagnostics["fail_safe"] = True
+
+            # BUGFIX (2026-09-18, Phase 3 — see BUG_AUDIT_2026-09-18.md
+            # item #12): diagnostics["allowed"]/["portfolio_status"]/
+            # ["allocation_allowed"]/["rejection_reason"]/
+            # ["portfolio_score"] were all written EARLIER, before this
+            # fail-safe block runs. The top-level result built below
+            # correctly reflects the just-updated local variables, but
+            # without this, `diagnostics` itself kept showing the
+            # PRE-fail-safe values (e.g. "portfolio_status": "APPROVED"
+            # and "allowed": true) even though the trade was actually
+            # rejected — misleading/contradictory during debugging,
+            # since the top-level result and its own diagnostics
+            # disagreed with each other.
+            diagnostics["allowed"] = allowed
+
+            diagnostics["portfolio_status"] = "REJECTED"
+
+            diagnostics["allocation_allowed"] = allocation_allowed
+
+            diagnostics["rejection_reason"] = rejection_reason
+
+            diagnostics["portfolio_score"] = portfolio_score
 
         else:
 

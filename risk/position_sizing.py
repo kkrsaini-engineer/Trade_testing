@@ -510,8 +510,39 @@ class PositionSizingEngine:
         # POSITION VALUE
         # ==========================================================
 
+        # BUGFIX (2026-09-18, Phase 1 critical-bug fix — see
+        # BUG_AUDIT_2026-09-18.md item #3): this used to be
+        # `max(self.MIN_POSITION_VALUE, capital_to_use)` — an
+        # unconditional floor that forced ANY weak/small setup up to
+        # MIN_POSITION_VALUE (Rs.5,000), even when the risk-adjusted
+        # `allocation_percent` clamp above (bounded to
+        # MAX_CAPITAL_ALLOCATION = 20%) had deliberately sized it much
+        # smaller. Example: Rs.20,000 available_cash, a weak setup gets
+        # allocation_percent=2% -> capital_to_use=Rs.400 -- the old floor
+        # forced position_value up to Rs.5,000, i.e. 25% of capital,
+        # silently BREACHING the 20% MAX_CAPITAL_ALLOCATION cap this same
+        # method had just computed and enforced two steps earlier. This
+        # is the same class of bug as FIX #6 above (MIN_QUANTITY): a
+        # "never too small" floor was allowed to override this engine's
+        # own risk budget instead of being capped by it.
+        #
+        # Fix: the floor may raise position_value up to MIN_POSITION_
+        # VALUE, but never past what MAX_CAPITAL_ALLOCATION allows for
+        # this trade (`available_cash * MAX_CAPITAL_ALLOCATION`).
+        # `allocation_percent` is already clamped to
+        # <= MAX_CAPITAL_ALLOCATION above, so `capital_to_use` can never
+        # exceed this same cap -- meaning the floor this expression picks
+        # (`min(MIN_POSITION_VALUE, cap)`) is always >= capital_to_use,
+        # so this can only ever raise position_value, never lower it
+        # below the old capital_to_use, while still never exceeding the
+        # allocation cap. In the example above this now correctly yields
+        # Rs.4,000 (20% of capital) instead of the cap-breaching Rs.5,000.
+        max_position_value_under_allocation_cap = (
+            available_cash * self.MAX_CAPITAL_ALLOCATION
+        )
+
         position_value = max(
-            self.MIN_POSITION_VALUE,
+            min(self.MIN_POSITION_VALUE, max_position_value_under_allocation_cap),
             capital_to_use,
         )
 
@@ -892,6 +923,28 @@ class PositionSizingEngine:
             warnings.append("Position sizing failed internal validation.")
 
             diagnostics["fail_safe"] = True
+
+            # BUGFIX (2026-09-18, Phase 3 — see BUG_AUDIT_2026-09-18.md
+            # item #12): diagnostics["quantity"]/["capital_to_use"]/
+            # ["final_allocation_percent"]/["position_value"]/
+            # ["executable_quantity"]/["final_position_value"] were all
+            # written EARLIER, before this fail-safe block runs, and
+            # never updated here — so `diagnostics` kept showing the
+            # PRE-fail-safe sizing even though the top-level
+            # PositionSizingResult below correctly reports the
+            # zeroed-out fail-safe values. Sync so diagnostics never
+            # contradicts the actual result during debugging.
+            diagnostics["quantity"] = executable_quantity
+
+            diagnostics["executable_quantity"] = executable_quantity
+
+            diagnostics["capital_to_use"] = capital_to_use
+
+            diagnostics["final_allocation_percent"] = allocation_percent
+
+            diagnostics["position_value"] = position_value
+
+            diagnostics["final_position_value"] = position_value
 
         else:
 

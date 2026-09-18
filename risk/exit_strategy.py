@@ -1154,6 +1154,15 @@ class ExitStrategyEngine:
 
             diagnostics["fail_safe"] = True
 
+            # BUGFIX (2026-09-18, Phase 3 — see BUG_AUDIT_2026-09-18.md
+            # item #12): diagnostics["exit_percent"] was written EARLIER,
+            # before this fail-safe block runs, and never updated here —
+            # so `diagnostics` kept showing the PRE-fail-safe exit
+            # percent even though the top-level ExitDecision below
+            # correctly reports 0.0. Sync so diagnostics never
+            # contradicts the actual result during debugging.
+            diagnostics["exit_percent"] = exit_percent
+
         else:
 
             warnings = []

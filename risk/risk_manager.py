@@ -1144,6 +1144,27 @@ class RiskManager:
 
             diagnostics["fail_safe"] = True
 
+            # BUGFIX (2026-09-18, Phase 3 — see BUG_AUDIT_2026-09-18.md
+            # item #12): diagnostics["safe"]/["risk_grade"] and the
+            # nested diagnostics["summary"] dict were all written
+            # EARLIER, before this fail-safe block runs, and never
+            # updated here — so `diagnostics` kept showing "safe": true
+            # with the pre-fail-safe risk_grade/total_risk even though
+            # the top-level RiskResult below correctly reports the
+            # fail-safe values. Sync both so diagnostics never
+            # contradicts the actual result during debugging.
+            diagnostics["safe"] = safe
+
+            diagnostics["risk_grade"] = risk_grade
+
+            if isinstance(diagnostics.get("summary"), dict):
+
+                diagnostics["summary"]["safe"] = safe
+
+                diagnostics["summary"]["risk_grade"] = risk_grade
+
+                diagnostics["summary"]["total_risk"] = total_risk
+
         else:
 
             diagnostics["fail_safe"] = False
