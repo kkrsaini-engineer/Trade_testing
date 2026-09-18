@@ -45,7 +45,7 @@ from core.constants import NO_TRADE
 from core.logger import get_logger
 from core.exceptions import StrategyError
 from decision.state_rules import evaluate_entry_state
-from strategy.fundamental_scoring import sell_fundamental_evaluation
+from strategy.fundamental_scoring import sell_fundamental_relative_evaluation
 from news.news_bias import news_component
 
 logger = get_logger(__name__)
@@ -162,7 +162,17 @@ class SellStrategyEngine:
         news_score: float | None,
         market_score: float,
         sector_score: float,
+        universe_buy_fundamental_scores: list[float] | None = None,
     ) -> SellDecision:
+        """universe_buy_fundamental_scores (2026-09-18): mirrors
+        BuyStrategyEngine.evaluate()'s new parameter — the SAME
+        BUY-direction distribution (every symbol's raw
+        buy_fundamental_score() from this scan run), used to rank this
+        stock's fundamentals relatively instead of against the old,
+        structurally-wrong "100 - buy_score" mirror (see
+        fundamental_scoring.py's STRUCTURAL BUY BIAS FIX note). Defaults
+        to None so every existing caller/test keeps its exact prior
+        behavior unless it opts in."""
 
         if dataframe.empty:
             raise StrategyError("Empty dataframe.")
@@ -384,7 +394,16 @@ class SellStrategyEngine:
         # MONEY FLOW INDEX
         # --------------------------------------------------
 
-        checks["mfi"] = 20 <= row["mfi_14"] <= 50
+        # BUGFIX (2026-09-18, Phase 5 — see BUG_AUDIT_2026-09-18.md item
+        # #23): this used to be `20 <= mfi <= 50`, which together with
+        # buy_strategy.py's `50 <= mfi <= 80` meant `mfi_14 == 50` made
+        # BOTH checks["mfi"] True at once (a stock could get credited
+        # with both "accumulation" AND "distribution" money-flow evidence
+        # from the identical reading). Negligible in practice since
+        # mfi_14 is a continuous float that lands on exactly 50.0 only
+        # by coincidence, but a clean tie-break costs nothing: SELL's
+        # upper bound is now exclusive, so 50.0 belongs to BUY only.
+        checks["mfi"] = 20 <= row["mfi_14"] < 50
 
         if checks["mfi"]:
 
@@ -745,18 +764,22 @@ class SellStrategyEngine:
         # FIX #8: sector_score is now None (not a fabricated 50.0) when
         # unavailable — guard against `None >= 70` raising TypeError.
         #
-        # SEPARATE, NOT FIXED HERE: same `>= 70` threshold as
-        # buy_strategy.py's checks["sector"], reasons text below implies
-        # sector_score should be SELL-direction (high = weak sector) the
-        # way market_score needed inverting for fix #2 — but
-        # execution/scanner.py passes the identical sector_score to both
-        # buy_strat and sell_strat with no inversion. Not fixed now:
-        # sector_score is unavailable (None) in every real scan today
-        # (see execution/scanner.py's NOTE), so this has zero real
-        # impact until sector data is actually wired in — flagging so
-        # it isn't silently reintroduced as a live bug once that
-        # happens, the same way fix #2's market_score issue was found.
-        checks["sector"] = sector_score is not None and sector_score >= 70
+        # BUGFIX (2026-09-18, Phase 5 — see BUG_AUDIT_2026-09-18.md item
+        # #21): same `>= 70` threshold as buy_strategy.py's
+        # checks["sector"] used to be here, testing sector_score
+        # SELL-direction (high = weak sector) the way market_score needed
+        # inverting for fix #2 above (`checks["market_score"]`) — but
+        # execution/scanner.py passes the identical, BUY-oriented
+        # sector_score to both buy_strat and sell_strat with no inversion.
+        # This was found NOT inverted during an architecture review, same
+        # root cause/same fix shape as fix #2's market_score bug.
+        # Mirroring that fix: invert against the same 70 threshold used
+        # on the BUY side (>= 70 strong there becomes <= 30 weak here).
+        # Zero real impact today: sector_score is unavailable (None) in
+        # every real scan (see execution/scanner.py's NOTE) — fixed now
+        # so it isn't silently wrong the day sector data is wired in,
+        # the same way fix #2's market_score issue was found.
+        checks["sector"] = sector_score is not None and sector_score <= 30
 
         if checks["sector"]:
 
@@ -766,7 +789,18 @@ class SellStrategyEngine:
         # FUNDAMENTAL FILTER (weighted, never all-or-nothing)
         # ==========================================================
 
-        fundamental_evidence = sell_fundamental_evaluation(fundamentals)
+        # CHANGED 2026-09-18: relative (percentile-ranked) evaluation
+        # instead of "100 - absolute buy score" — see
+        # fundamental_scoring.py's STRUCTURAL BUY BIAS FIX note.
+        # fundamental_weakness is now "how weak is this stock's
+        # fundamentals RELATIVE to today's scanned watchlist" (50 =
+        # exactly average), not the old mirror-around-a-wrong-midpoint
+        # number that sat at ~32/100 for an average stock. Falls back
+        # to the old absolute-mirror behavior unchanged when no
+        # universe_buy_fundamental_scores is supplied.
+        fundamental_evidence = sell_fundamental_relative_evaluation(
+            fundamentals, universe_buy_fundamental_scores
+        )
         fundamental_weakness = fundamental_evidence.score
         fundamental_coverage = fundamental_evidence.coverage
 
@@ -1016,11 +1050,19 @@ class SellStrategyEngine:
 
         # Market-context blend for the Tier 3 "market" slot — mirrors the
         # BUY side, direction-inverted: WEAK breadth favors SELL (not
-        # STRONG). sector_score is NOT inverted here — same convention as
-        # the existing checks["sector"] gate above (both BUY and SELL
-        # test sector_score >= 70 directly) — see that gate's NOTE for
-        # why this is flagged but not fixed now (no real impact while
-        # sector_score is unavailable).
+        # STRONG).
+        #
+        # BUGFIX (2026-09-18, Phase 5 — see BUG_AUDIT_2026-09-18.md item
+        # #21): sector_score used to feed into this blend un-inverted
+        # (same convention the checks["sector"] gate above had, before
+        # its own fix) — a STRONG sector (high sector_score) was pushing
+        # market_context_score UP, i.e. making the setup look MORE
+        # SELL-favorable, exactly backwards. inverted_market above already
+        # gets this same 100-x treatment for the identical reason. Now
+        # inverted the same way. Zero real impact today: sector_score is
+        # unavailable (None) in every real scan (see execution/scanner.py's
+        # NOTE) — fixed now so it isn't silently wrong the day sector data
+        # is wired in.
         #
         # FIX #8 (architecture review — sector/breadth placeholders):
         # mirrors buy_strategy.py's identical fix. sector_score/breadth
@@ -1047,7 +1089,7 @@ class SellStrategyEngine:
             if has_breadth else 0.0
         )
         sector_component = (
-            min(max(sector_score, 0.0), 100.0) * sector_weight
+            (100.0 - min(max(sector_score, 0.0), 100.0)) * sector_weight
             if has_sector else 0.0
         )
         market_context_score = (

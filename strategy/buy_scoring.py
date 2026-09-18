@@ -31,7 +31,7 @@ import pandas as pd
 
 from core.logger import get_logger
 from core.exceptions import StrategyError
-from strategy.fundamental_scoring import buy_fundamental_score
+from strategy.fundamental_scoring import buy_fundamental_relative_evaluation
 from strategy.buy_strategy import BuyDecision
 
 logger = get_logger(__name__)
@@ -153,7 +153,13 @@ class BuyScoringEngine:
         market_score: float,
         sector_score: float,
         buy_decision: BuyDecision,
+        universe_buy_fundamental_scores: list[float] | None = None,
     ) -> BuyScore:
+        """universe_buy_fundamental_scores (2026-09-18): see
+        strategy/buy_strategy.py's BuyStrategyEngine.evaluate() docstring
+        — same population, threaded through to
+        _fundamental_score()/buy_fundamental_relative_evaluation(). None
+        (default) keeps the old absolute-score behavior unchanged."""
 
         if dataframe.empty:
             raise StrategyError("Empty dataframe.")
@@ -184,7 +190,9 @@ class BuyScoringEngine:
         # automatically reaches ranking too.
         result.technical = buy_decision.tier2_score
 
-        result.fundamental = self._fundamental_score(fundamentals)
+        result.fundamental = self._fundamental_score(
+            fundamentals, universe_buy_fundamental_scores
+        )
 
         has_news = news_score is not None
         result.news = self._normalize(news_score) if has_news else 0.0
@@ -266,8 +274,15 @@ class BuyScoringEngine:
     def _fundamental_score(
         self,
         fundamentals: dict[str, Any],
+        universe_buy_fundamental_scores: list[float] | None = None,
     ) -> float:
-        return buy_fundamental_score(fundamentals)
+        # CHANGED 2026-09-18: relative (percentile-ranked) score — see
+        # fundamental_scoring.py's STRUCTURAL BUY BIAS FIX note. Falls
+        # back to the old absolute score unchanged when no distribution
+        # is supplied (universe_buy_fundamental_scores=None).
+        return buy_fundamental_relative_evaluation(
+            fundamentals, universe_buy_fundamental_scores
+        ).score
 
     # ==========================================================
     # LIQUIDITY SCORE

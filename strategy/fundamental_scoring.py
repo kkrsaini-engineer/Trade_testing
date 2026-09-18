@@ -49,6 +49,36 @@ gating/rejection logic here — what a caller should DO with low coverage
 (reject the check? downweight further? just log it?) is a policy
 decision for whoever consumes fundamental_coverage, not something this
 module decides unilaterally.
+
+STRUCTURAL BUY BIAS FIX (2026-09-18) — sell_fundamental_score()'s
+"100 - buy_score" mirror is mathematically a mirror around the
+midpoint 50, but a real stock universe's average buy_fundamental_score
+is NOT 50 — measured ~68/100 across the live NSE watchlist, because
+most listed companies have "decent, not great" fundamentals (normal;
+fundamentals update quarterly, they don't track daily price action).
+That single fact meant the average stock's sell_fundamental_score sat
+at ~32/100 — structurally ~18 points below QUALIFY_THRESHOLD's
+midpoint-neutral assumption, suppressing SELL qualification regardless
+of how much a stock's PRICE was actually falling. Confirmed in
+production: 148 BUY vs only 8 SELL entries during a real one-sided
+NSE decline (2026-09-11 to 2026-09-16), losing ~₹15,000 in that one
+week alone.
+
+buy_fundamental_relative_evaluation()/sell_fundamental_relative_evaluation()
+fix this at the root: instead of mirroring around a fixed, wrong
+midpoint of 50, they rank a stock's raw buy_fundamental_score against
+the ACTUAL distribution of buy_fundamental_score() values across every
+symbol scanned that same day (see execution/scanner.py's pre-pass,
+which builds this list once per run and threads it through). A company
+at the population's own median now scores ~50 on EITHER side, whatever
+the population's raw average happens to be — removing the structural
+skew while still correctly rewarding genuinely-above/below-average
+fundamentals. Passing no distribution (universe_buy_scores=None, the
+default) falls back to the plain absolute score unchanged, so every
+existing caller/test that predates this fix keeps its exact old
+behavior — this is purely additive, not a replacement of
+buy_fundamental_score()/sell_fundamental_score() (which are unchanged
+above) or buy_fundamental_evaluation()/sell_fundamental_evaluation().
 """
 
 from __future__ import annotations
@@ -188,3 +218,91 @@ def sell_fundamental_score(fundamentals: dict[str, Any]) -> float:
     added — existing callers that only need the score need no changes.
     """
     return sell_fundamental_evaluation(fundamentals).score
+
+
+def fundamental_percentile_rank(score: float, universe_scores: list[float]) -> float:
+    """0-100 percentile rank of `score` within `universe_scores` (a real
+    population of buy_fundamental_score() values — typically every
+    symbol scanned in the same run), using "fraction strictly below,
+    plus half of exact ties" so a score sitting at the population's own
+    median lands at ~50 regardless of where the population's raw scores
+    happen to cluster.
+
+    `universe_scores` must be non-empty — callers with no population to
+    rank against should use the absolute score directly instead of
+    calling this (see buy_fundamental_relative_evaluation()'s
+    universe_buy_scores=None fallback, which does exactly that)."""
+    n = len(universe_scores)
+    below = sum(1 for s in universe_scores if s < score)
+    tied = sum(1 for s in universe_scores if s == score)
+    return round((below + 0.5 * tied) / n * 100.0, 2)
+
+
+@dataclass(slots=True, frozen=True)
+class RelativeFundamentalEvidence:
+    """Like FundamentalEvidence, but `score` is a PERCENTILE RANK against
+    a real universe distribution (0-100; 50 = exactly average for
+    today's scanned watchlist) instead of a fixed absolute reading.
+    `raw_score` keeps the original absolute 0-100 score (what
+    FundamentalEvidence.score would have been) purely for
+    diagnostics/reporting — no live check should gate on raw_score,
+    only on score."""
+
+    score: float
+    raw_score: float
+    coverage: float
+    available_metrics: int
+    total_metrics: int
+
+
+def buy_fundamental_relative_evaluation(
+    fundamentals: dict[str, Any],
+    universe_buy_scores: list[float] | None = None,
+) -> RelativeFundamentalEvidence:
+    """buy_fundamental_evaluation(), re-expressed as this stock's
+    percentile rank within `universe_buy_scores` — see this module's
+    STRUCTURAL BUY BIAS FIX docstring note for why: ranking against the
+    population's own actual distribution (instead of an assumed, wrong
+    midpoint of 50) removes the structural bias that comes from most
+    real companies having above-midpoint fundamentals.
+
+    universe_buy_scores=None or [] (the default) means no population is
+    available — e.g. a single-symbol diagnostic call, or any existing
+    test written before this fix that only cares about one stock in
+    isolation. In that case this returns the plain ABSOLUTE score
+    unchanged (raw_score == score), so every caller that doesn't pass a
+    distribution keeps its exact prior behavior, unmodified."""
+    absolute = buy_fundamental_evaluation(fundamentals)
+    if not universe_buy_scores:
+        percentile = absolute.score
+    else:
+        percentile = fundamental_percentile_rank(absolute.score, universe_buy_scores)
+    return RelativeFundamentalEvidence(
+        score=percentile,
+        raw_score=absolute.score,
+        coverage=absolute.coverage,
+        available_metrics=absolute.available_metrics,
+        total_metrics=absolute.total_metrics,
+    )
+
+
+def sell_fundamental_relative_evaluation(
+    fundamentals: dict[str, Any],
+    universe_buy_scores: list[float] | None = None,
+) -> RelativeFundamentalEvidence:
+    """Mirror of buy_fundamental_relative_evaluation(): score is
+    100-percentile, so a company sitting at the population's own median
+    lands at ~50 on the SELL side too (not the ~32 the old 100-x-on-a
+    ~68-average mirror produced). universe_buy_scores is the SAME
+    BUY-direction distribution passed to the BUY side — SELL doesn't
+    need its own separate population; a stock's relative fundamental
+    standing is one fact, BUY/SELL only decide which way "good"
+    points."""
+    buy_relative = buy_fundamental_relative_evaluation(fundamentals, universe_buy_scores)
+    return RelativeFundamentalEvidence(
+        score=round(100.0 - buy_relative.score, 2),
+        raw_score=round(100.0 - buy_relative.raw_score, 2),
+        coverage=buy_relative.coverage,
+        available_metrics=buy_relative.available_metrics,
+        total_metrics=buy_relative.total_metrics,
+    )

@@ -45,7 +45,7 @@ from core.constants import NO_TRADE
 from core.logger import get_logger
 from core.exceptions import StrategyError
 from decision.state_rules import evaluate_entry_state
-from strategy.fundamental_scoring import buy_fundamental_evaluation
+from strategy.fundamental_scoring import buy_fundamental_relative_evaluation
 from news.news_bias import news_component
 
 logger = get_logger(__name__)
@@ -155,7 +155,15 @@ class BuyStrategyEngine:
         news_score: float | None,
         market_score: float,
         sector_score: float,
+        universe_buy_fundamental_scores: list[float] | None = None,
     ) -> BuyDecision:
+        """universe_buy_fundamental_scores (2026-09-18): every symbol's
+        raw buy_fundamental_score() from the SAME scan run (see
+        execution/scanner.py's pre-pass) — used to rank this stock's
+        fundamentals relatively instead of against a fixed midpoint (see
+        strategy/fundamental_scoring.py's STRUCTURAL BUY BIAS FIX note).
+        Defaults to None (no population) so every existing caller/test
+        keeps its exact prior behavior unless it opts in."""
 
         if dataframe.empty:
             raise StrategyError("Empty dataframe.")
@@ -810,7 +818,19 @@ class BuyStrategyEngine:
         # FUNDAMENTAL FILTER (weighted, never all-or-nothing)
         # ==========================================================
 
-        fundamental_evidence = buy_fundamental_evaluation(fundamentals)
+        # CHANGED 2026-09-18: relative (percentile-ranked) evaluation
+        # instead of the plain absolute score — see fundamental_scoring.
+        # py's STRUCTURAL BUY BIAS FIX note. fundamental_health is now
+        # "how healthy is this stock's fundamentals RELATIVE to today's
+        # scanned watchlist" (50 = exactly average), not an absolute
+        # 0-100 reading — the >=55 threshold below now means "top ~45%
+        # of today's universe" rather than an absolute bar most stocks
+        # cleared anyway (population average measured ~68/100
+        # absolute). Falls back to the old absolute behavior unchanged
+        # when no universe_buy_fundamental_scores is supplied.
+        fundamental_evidence = buy_fundamental_relative_evaluation(
+            fundamentals, universe_buy_fundamental_scores
+        )
         fundamental_health = fundamental_evidence.score
         fundamental_coverage = fundamental_evidence.coverage
 

@@ -28,7 +28,7 @@ import pandas as pd
 
 from core.logger import get_logger
 from core.exceptions import StrategyError
-from strategy.fundamental_scoring import sell_fundamental_score
+from strategy.fundamental_scoring import sell_fundamental_relative_evaluation
 from strategy.sell_strategy import SellDecision
 
 logger = get_logger(__name__)
@@ -113,7 +113,13 @@ class SellScoringEngine:
         market_score: float,
         sector_score: float,
         sell_decision: SellDecision,
+        universe_buy_fundamental_scores: list[float] | None = None,
     ) -> SellScore:
+        """universe_buy_fundamental_scores (2026-09-18): mirrors
+        BuyScoringEngine.score()'s new parameter — same BUY-direction
+        population, threaded to _fundamental_score()/
+        sell_fundamental_relative_evaluation(). None (default) keeps the
+        old "100 - absolute buy score" behavior unchanged."""
 
         if dataframe.empty:
             raise StrategyError("Empty dataframe.")
@@ -138,7 +144,9 @@ class SellScoringEngine:
         # computed once per symbol scan) fixes both problems.
         result.technical = sell_decision.tier2_score
 
-        result.fundamental = self._fundamental_score(fundamentals)
+        result.fundamental = self._fundamental_score(
+            fundamentals, universe_buy_fundamental_scores
+        )
 
         has_news = news_score is not None
         result.news = self._normalize(news_score) if has_news else 0.0
@@ -162,8 +170,20 @@ class SellScoringEngine:
         # execution/scanner.py's NOTE. self._normalize() falls back to
         # 50.0 for display; has_sector below excludes it from
         # result.overall's weighted sum instead.
+        #
+        # BUGFIX (2026-09-18, Phase 5 — see BUG_AUDIT_2026-09-18.md item
+        # #21): sector_score is BUY-oriented (high = strong sector, same
+        # as market_score above), so it needs the exact same 100-x
+        # inversion market_score got just above, for the exact same
+        # reason — a SELL setup should score HIGH here when the sector is
+        # WEAK, not strong. This was found NOT inverted, same architecture
+        # review, same root cause as the market_score bug directly above
+        # it. Zero real impact today since sector_score is always None in
+        # every live scan (see execution/scanner.py's NOTE) — flagging/
+        # fixing now so it isn't silently wrong the day sector data is
+        # actually wired in, the same way the market_score bug was.
         has_sector = sector_score is not None
-        result.sector = self._normalize(sector_score)
+        result.sector = 100.0 - self._normalize(sector_score)
 
         result.liquidity = self._liquidity_score(latest)
 
@@ -223,8 +243,16 @@ class SellScoringEngine:
     def _fundamental_score(
         self,
         fundamentals: dict[str, Any],
+        universe_buy_fundamental_scores: list[float] | None = None,
     ) -> float:
-        return sell_fundamental_score(fundamentals)
+        # CHANGED 2026-09-18: relative (percentile-ranked) score — see
+        # fundamental_scoring.py's STRUCTURAL BUY BIAS FIX note. Falls
+        # back to the old "100 - absolute buy score" mirror unchanged
+        # when no distribution is supplied
+        # (universe_buy_fundamental_scores=None).
+        return sell_fundamental_relative_evaluation(
+            fundamentals, universe_buy_fundamental_scores
+        ).score
 
     # ==========================================================
     # LIQUIDITY SCORE
@@ -378,13 +406,30 @@ class SellScoringEngine:
         # RECALIBRATED (user review, mirrors strategy/buy_scoring.py) —
         # only 3 real, non-duplicate risk inputs remain after removing
         # market_regime (Phase 16) and gap's dead strategy-file copy
-        # (this phase). Rescaled proportionally so the full 0-100 range
-        # is reachable again (old 25/10/5 summed to only 40, floor was
-        # 60): 25*(100/40)=62.5, 10*(100/40)=25.0, 5*(100/40)=12.5
-        # (sums to exactly 100.0).
-        GAP_UP_PENALTY = 62.5
-        RSI_EXTREME_PENALTY = 25.0
-        LOW_VOLUME_PENALTY = 12.5
+        # (this phase).
+        #
+        # BUGFIX (2026-09-18, Phase 3 — see BUG_AUDIT_2026-09-18.md item
+        # #11): the raw gap weight here used to be 25 (a 5:2:1
+        # gap:RSI:volume ratio), while buy_scoring.py's documented,
+        # INTENTIONAL ratio (see that file's _risk_score() comment,
+        # "the original author gave gap > RSI-extreme > below-average-
+        # volume, 6:2:1") uses 30 for the same role. Nothing in this
+        # file (or anywhere else) ever explained why SELL's gap penalty
+        # should be proportionally softer than BUY's identical-purpose
+        # gap penalty — this project's own standing rule is that every
+        # strategy change must cover BUY and SELL mirrored, and a 5:2:1
+        # vs 6:2:1 split looks like undocumented drift, not a deliberate
+        # asymmetric design choice (no backtest/data exists in this
+        # sandbox to justify inventing a NEW, different ratio either).
+        # Adopting the one ratio that IS actually documented (6:2:1) for
+        # both sides removes the asymmetry without fabricating a new
+        # number: raw weights are now 30/10/5 (same as BUY), summing to
+        # 45, rescaled identically: 30*(100/45)=66.67, 10*(100/45)=22.22,
+        # 5*(100/45)=11.11 (sums to exactly 100.0) — the SAME final
+        # percentages buy_scoring.py's _risk_score() uses.
+        GAP_UP_PENALTY = 66.67
+        RSI_EXTREME_PENALTY = 22.22
+        LOW_VOLUME_PENALTY = 11.11
 
         if row.get("gap_up", False):
             score -= GAP_UP_PENALTY
