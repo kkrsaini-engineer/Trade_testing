@@ -19,6 +19,8 @@ import time
 from pathlib import Path
 from typing import Any
 
+from core.utils import write_json
+
 
 class TradeDiary:
 
@@ -38,8 +40,11 @@ class TradeDiary:
             return json.load(f)
 
     def _save_index(self, index: dict[str, list[str]]) -> None:
-        with open(self.index_path, "w") as f:
-            json.dump(index, f, indent=2)
+        # BUGFIX (2026-09-18, Phase 3 — see BUG_AUDIT_2026-09-18.md item
+        # #10): atomic write via core/utils.py's write_json() instead of
+        # a direct open()+json.dump() — see _write() below for the full
+        # rationale (identical fix, same file).
+        write_json(self.index_path, index, indent=2)
 
     def _trade_path(self, trade_id: str) -> Path:
         return self.base_path / f"{trade_id}.json"
@@ -214,8 +219,14 @@ class TradeDiary:
             return json.load(f)
 
     def _write(self, trade_id: str, record: dict[str, Any]) -> None:
-        with open(self._trade_path(trade_id), "w") as f:
-            json.dump(record, f, indent=2)
+        # BUGFIX (2026-09-18, Phase 3 — see BUG_AUDIT_2026-09-18.md item
+        # #10): was a direct open()+json.dump() — a crash mid-write
+        # (OOM, CI job timeout, watchdog) left a truncated/corrupt trade
+        # diary file with no backup and no try/except anywhere on load.
+        # Now uses core/utils.py's write_json(), which writes to a temp
+        # file and atomically renames it over the real path — a crash
+        # at any point leaves the previous, valid diary file untouched.
+        write_json(self._trade_path(trade_id), record, indent=2)
 
     def get_diary(self, trade_id: str) -> dict[str, Any] | None:
         return self._read(trade_id)
