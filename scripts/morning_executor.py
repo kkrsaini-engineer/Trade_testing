@@ -413,8 +413,27 @@ def main() -> None:
             buy_probability=0.0, buy_confidence=0.0,
             entry_reasons=entry_reasons,
         )
+        # BUGFIX (2026-09-18, Phase 2 — see BUG_AUDIT_2026-09-18.md item
+        # #6): "action" used to be written as the trade DIRECTION
+        # ("BUY"/"SELL", same as the "direction" field right next to
+        # it) instead of the lifecycle-event value every reader actually
+        # expects. orchestrator.py's save_trade() calls are the
+        # established schema this codebase reads elsewhere (see its
+        # "action": "OPEN" / "action": "CLOSE" calls) — "direction" is
+        # BUY/SELL, "action" is OPEN/CLOSE/PARTIAL_CLOSE, and it's
+        # "action" that analytics/analysis_engine.py's L86 and
+        # analytics/learning_engine.py's _estimate_holding_days() filter
+        # on to find this row. Writing the direction into "action"
+        # instead meant those two readers could NEVER match a single
+        # Morning-Executor-opened row: analysis_engine's daily
+        # BUY-executed count silently stayed 0 (reporting "100%
+        # rejected" even on days with real fills), and this trade's
+        # entry timestamp could never be found for holding-days
+        # estimation. Direction is already captured correctly in the
+        # separate "direction" field above -- "action" now matches the
+        # same OPEN/CLOSE convention every other writer uses.
         trade_store.save_trade({
-            "id": trade_id, "symbol": symbol, "direction": direction, "action": direction,
+            "id": trade_id, "symbol": symbol, "direction": direction, "action": "OPEN",
             "quantity": quantity, "entry_price": open_price, "status": "OPEN",
             "regime": "N/A", "confidence": 0.0, "reasons": "; ".join(entry_reasons),
         })
