@@ -217,8 +217,18 @@ class MarketIntelligenceEngine:
             return []
 
     def _analyze_macro(self, headlines: list[str]) -> dict[str, Any]:
+        # BUGFIX (2026-09-18, Phase 2 — see BUG_AUDIT_2026-09-18.md item
+        # #4): this used to be plain substring matching ("kw in text"),
+        # the same word-boundary bug macro_intelligence.py's own
+        # sector_bias() had (see that module's BUGFIX note) — "war"
+        # matching inside "software" etc. Now reuses that module's
+        # shared, \b-bounded text_matches_any_keyword() helper so both
+        # consumers of MACRO_KEYWORDS apply the identical, correct rule.
         text = " ".join(h.lower() for h in headlines)
-        critical_events = [kw for kw in MACRO_KEYWORDS if kw in text]
+        critical_events = [
+            kw for kw in MACRO_KEYWORDS
+            if macro_intelligence.text_matches_any_keyword(text, [kw])
+        ]
 
         macro_risk_score = min(100.0, len(critical_events) * 20.0)
 
