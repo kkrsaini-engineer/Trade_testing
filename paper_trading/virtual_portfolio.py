@@ -20,6 +20,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+from core.utils import write_json
 from portfolio.portfolio import PortfolioEngine, PortfolioState, PortfolioPosition
 
 
@@ -122,8 +123,15 @@ class VirtualPortfolio:
             "symbol_sector": self._symbol_sector,
             "saved_at": time.time(),
         }
-        with open(self.state_path, "w") as f:
-            json.dump(payload, f, indent=2)
+        # BUGFIX (2026-09-18, Phase 3 — see BUG_AUDIT_2026-09-18.md item
+        # #10): was a direct open()+json.dump() — a crash mid-write
+        # (OOM, CI timeout, watchdog) left a truncated/corrupt state
+        # file with no backup, and there was no try/except on load, so
+        # the WHOLE paper-trading engine failed to even start. Now uses
+        # core/utils.py's write_json(), which writes to a temp file and
+        # atomically renames it over the real path — a crash at any
+        # point leaves the previous, valid state file untouched.
+        write_json(self.state_path, payload, indent=2)
 
     # ==========================================================
     # SECTOR EXPOSURE
