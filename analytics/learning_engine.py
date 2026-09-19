@@ -235,7 +235,25 @@ class LearningEngine:
             return None
         return round((close_ts - candidate_open_ts) / 86400, 2)
 
+    @staticmethod
+    def _wins_and_rate(pnls: list[float]) -> tuple[int, float | None]:
+        """(wins, win_rate) with NaN-pnl entries excluded from BOTH —
+        see _win_rate()'s BUGFIX note below for why this can't just be
+        `sum(1 for p in pnls if p > 0)` / `len(pnls)` directly. `trades`
+        (the total, NaN included) is reported separately by callers,
+        matching _accuracy()'s existing trades-vs-classifiable split."""
+        valid = [p for p in pnls if not math.isnan(p)]
+        wins = sum(1 for p in valid if p > 0)
+        win_rate = round(wins / len(valid) * 100, 2) if valid else None
+        return wins, win_rate
+
     def _sector_performance(self, closed, report_by_symbol) -> dict[str, Any]:
+        # BUGFIX (2026-09-18, Phase 3 — see BUG_AUDIT_2026-09-18.md item
+        # #13): was inlining "sum(1 for p in pnls if p > 0) / len(pnls)"
+        # directly — a NaN pnl silently counted in the denominator
+        # without ever counting as a win, deflating win_rate. Now uses
+        # _wins_and_rate(), which excludes NaN entries the same way
+        # _accuracy() does.
         by_sector: dict[str, list[float]] = {}
         for t in closed:
             r = report_by_symbol.get(t.get("symbol"))
@@ -243,13 +261,11 @@ class LearningEngine:
             if not sector:
                 continue
             by_sector.setdefault(sector, []).append(self._pnl(t))
-        return {
-            sector: {
-                "trades": len(pnls), "wins": sum(1 for p in pnls if p > 0),
-                "win_rate": round(sum(1 for p in pnls if p > 0) / len(pnls) * 100, 2),
-            }
-            for sector, pnls in by_sector.items()
-        }
+        result = {}
+        for sector, pnls in by_sector.items():
+            wins, win_rate = self._wins_and_rate(pnls)
+            result[sector] = {"trades": len(pnls), "wins": wins, "win_rate": win_rate}
+        return result
 
     def _regime_performance(self, closed, report_by_symbol) -> dict[str, Any]:
         by_regime: dict[str, list[float]] = {}
@@ -258,13 +274,13 @@ class LearningEngine:
             if not regime:
                 continue
             by_regime.setdefault(regime, []).append(self._pnl(t))
-        return {
-            regime: {
-                "trades": len(pnls), "wins": sum(1 for p in pnls if p > 0),
-                "win_rate": round(sum(1 for p in pnls if p > 0) / len(pnls) * 100, 2),
-            }
-            for regime, pnls in by_regime.items()
-        }
+        # BUGFIX 2026-09-18 (see _sector_performance() above): same
+        # NaN-exclusion fix, same reason.
+        result = {}
+        for regime, pnls in by_regime.items():
+            wins, win_rate = self._wins_and_rate(pnls)
+            result[regime] = {"trades": len(pnls), "wins": wins, "win_rate": win_rate}
+        return result
 
     def _news_effectiveness(self, closed, report_by_symbol) -> dict[str, Any]:
         with_news, without_news = [], []
@@ -462,9 +478,23 @@ class LearningEngine:
 
     @staticmethod
     def _win_rate(pnls: list[float]) -> float | None:
-        if not pnls:
+        # BUGFIX (2026-09-18, Phase 3 — see BUG_AUDIT_2026-09-18.md item
+        # #13): a NaN pnl fails BOTH "p > 0" and any "<= 0"/"< 0" check
+        # (a known floating-point quirk) — _accuracy() above already
+        # documents and correctly excludes NaN trades from its win_rate
+        # denominator for exactly this reason. This shared helper (used
+        # by _news_effectiveness/_fundamental_effectiveness/
+        # _technical_effectiveness/_rule_effectiveness/
+        # _threshold_sensitivity) did NOT do the same: a NaN entry still
+        # counted in `len(pnls)` while never counting as a win, silently
+        # DEFLATING every one of those win rates. Filter NaN out first,
+        # exactly like _accuracy() does, so a NaN-pnl trade is excluded
+        # from the win-rate calculation entirely instead of being
+        # counted as a guaranteed loss.
+        valid = [p for p in pnls if not math.isnan(p)]
+        if not valid:
             return None
-        return round(sum(1 for p in pnls if p > 0) / len(pnls) * 100, 2)
+        return round(sum(1 for p in valid if p > 0) / len(valid) * 100, 2)
 
     def _append_observation(self, observation: dict) -> None:
         path = Path(self.OBSERVATIONS_PATH)
