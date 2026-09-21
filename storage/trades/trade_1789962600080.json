@@ -1,0 +1,18 @@
+{
+  "symbol": "PNGJL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 2,
+  "entry_price": 613.2000122070312,
+  "exit_price": 607.45,
+  "status": "CLOSED",
+  "realized_pnl": -11.500024414062409,
+  "realized_pnl_percent": -0.9377058207053427,
+  "max_profit_percent": 0.29354007781086444,
+  "max_drawdown_percent": 1.7449465091365108,
+  "regime": "SIDEWAYS",
+  "confidence": 56.12,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Average trading volume is too low.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Average trading volume is too low.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1789962600080",
+  "timestamp": 1789962600.0800571
+}

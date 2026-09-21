@@ -1,0 +1,18 @@
+{
+  "symbol": "GLAND.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 2,
+  "entry_price": 2827.89990234375,
+  "exit_price": 3008.0,
+  "status": "OPEN",
+  "realized_pnl": 360.2001953125,
+  "realized_pnl_percent": 0.0,
+  "max_profit_percent": 5.7958238734125835,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 73.1,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved.",
+  "id": "trade_1789962618868",
+  "timestamp": 1789962618.8683867
+}

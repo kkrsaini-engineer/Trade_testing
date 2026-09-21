@@ -1,0 +1,18 @@
+{
+  "symbol": "VAKRANGEE.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 375,
+  "entry_price": 5.349999904632568,
+  "exit_price": 5.29,
+  "status": "CLOSED",
+  "realized_pnl": 22.49996423721312,
+  "realized_pnl_percent": 1.121493564525382,
+  "max_profit_percent": 1.121493564525382,
+  "max_drawdown_percent": 0.0,
+  "regime": "BEAR",
+  "confidence": 58.67,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 42/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=12 capital=25.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 42/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=12 capital=25.",
+  "id": "trade_1789962611986",
+  "timestamp": 1789962611.9864457
+}

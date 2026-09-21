@@ -9,7 +9,7 @@
   "entry_thesis_confidence": 52.79,
   "entry_reasons": [
     "Morning Executor: gap -0.06% (0.02x ATR, NORMAL band)",
-    "No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.08 \u2014 not a blocker."
+    "No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.08 — not a blocker."
   ],
   "daily_log": [
     {
@@ -63,16 +63,35 @@
         "Below preferred risk/reward profile.",
         "Continue holding position."
       ]
+    },
+    {
+      "date": "2026-09-21",
+      "current_price": 1753.3,
+      "current_pnl": -45.700000000000045,
+      "current_buy_confidence": 50.33,
+      "current_sell_confidence": 33.87,
+      "current_exit_score": 90.53,
+      "recommendation": "FULL_EXIT",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=12 capital=75.",
+        "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=12 capital=75."
+      ]
     }
   ],
-  "status": "OPEN",
-  "exit_date": null,
-  "exit_price": null,
-  "exit_reason": null,
-  "holding_days": 4,
+  "status": "CLOSED",
+  "exit_date": "2026-09-21",
+  "exit_price": 1753.3,
+  "exit_reason": "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=12 capital=75.",
+  "holding_days": 5,
   "max_profit_percent": 0.0,
-  "max_drawdown_percent": 0.0,
-  "final_pnl": null,
+  "max_drawdown_percent": 3.2907170650361333,
+  "final_pnl": -45.700000000000045,
   "created_at": 1789444052.7425973,
-  "updated_at": 1789703329.2616816
+  "updated_at": 1789962549.4219522,
+  "final_pnl_percent": -2.5403001667593132,
+  "exit_score": 90.53,
+  "target1_status": "NOT REACHED",
+  "target2_status": "NOT REACHED",
+  "stop_loss_status": "NOT HIT"
 }

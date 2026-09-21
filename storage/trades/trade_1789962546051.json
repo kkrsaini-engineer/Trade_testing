@@ -1,0 +1,18 @@
+{
+  "symbol": "AUROPHARMA.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 3,
+  "entry_price": 1660.5,
+  "exit_price": 1730.7,
+  "status": "CLOSED",
+  "realized_pnl": 210.60000000000014,
+  "realized_pnl_percent": 4.227642276422767,
+  "max_profit_percent": 4.227642276422767,
+  "max_drawdown_percent": 0.7347184582956968,
+  "regime": "BULL",
+  "confidence": 78.87,
+  "reasons": "Break-even stop activated.; Excellent risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 35/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=35 sector=10 correlation=12 capital=95.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 35/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=35 sector=10 correlation=12 capital=95.",
+  "id": "trade_1789962546051",
+  "timestamp": 1789962546.0510445
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "SALASAR.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 288,
+  "entry_price": 4.869999885559082,
+  "exit_price": 4.87,
+  "status": "CLOSED",
+  "realized_pnl": -3.2958984405695446e-05,
+  "realized_pnl_percent": -2.34991623746606e-06,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 2.34991623746606e-06,
+  "regime": "BEAR",
+  "confidence": 66.16,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=45 portfolio=60 sector=10 correlation=12 capital=25.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=45 portfolio=60 sector=10 correlation=12 capital=25.",
+  "id": "trade_1789962560088",
+  "timestamp": 1789962560.0880187
+}

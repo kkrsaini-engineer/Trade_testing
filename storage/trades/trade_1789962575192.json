@@ -1,0 +1,18 @@
+{
+  "symbol": "PARAGMILK.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 8,
+  "entry_price": 252.0,
+  "exit_price": 279.0,
+  "status": "OPEN",
+  "realized_pnl": 216.0,
+  "realized_pnl_percent": 0.0,
+  "max_profit_percent": 10.555555555555566,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 75.08,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved.; Profit protection activated.",
+  "id": "trade_1789962575192",
+  "timestamp": 1789962575.1926794
+}

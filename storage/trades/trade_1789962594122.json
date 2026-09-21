@@ -1,0 +1,18 @@
+{
+  "symbol": "ARFIN.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 47,
+  "entry_price": 90.44999694824219,
+  "exit_price": 89.14,
+  "status": "CLOSED",
+  "realized_pnl": -61.569856567382786,
+  "realized_pnl_percent": -1.448310660520863,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 1.448310660520863,
+  "regime": "BULL",
+  "confidence": 55.67,
+  "reasons": "Below preferred risk/reward profile.; Trend reversal detected.; Trend reversal confirmed.",
+  "id": "trade_1789962594122",
+  "timestamp": 1789962594.1227965
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "IONEXCHANG.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 3,
+  "entry_price": 441.1499938964844,
+  "exit_price": 441.1,
+  "status": "CLOSED",
+  "realized_pnl": -0.1499816894530568,
+  "realized_pnl_percent": -0.011332629984368379,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.011332629984368379,
+  "regime": "BULL",
+  "confidence": 68.11,
+  "reasons": "Below preferred risk/reward profile.; High market volatility.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 47/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=85 portfolio=60 sector=10 correlation=12 capital=75.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 47/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=85 portfolio=60 sector=10 correlation=12 capital=75.",
+  "id": "trade_1789962548540",
+  "timestamp": 1789962548.5402148
+}

@@ -9,7 +9,7 @@
   "entry_thesis_confidence": 69.27,
   "entry_reasons": [
     "Morning Executor: gap -6.15% (1.52x ATR, WARNING band)",
-    "No company-specific news available. | 20 macro headline(s), bias 0.08 \u2014 not a blocker."
+    "No company-specific news available. | 20 macro headline(s), bias 0.08 — not a blocker."
   ],
   "daily_log": [
     {
@@ -50,16 +50,32 @@
         "Healthy risk/reward profile.",
         "Continue holding position."
       ]
+    },
+    {
+      "date": "2026-09-21",
+      "current_price": 278.6,
+      "current_pnl": 452.2000000000004,
+      "current_buy_confidence": 67.73,
+      "current_sell_confidence": 23.4,
+      "current_exit_score": 80.03,
+      "recommendation": "PARTIAL_EXIT",
+      "notes": [
+        "Break-even stop activated.",
+        "Partial profit target reached.",
+        "Excellent risk/reward profile.",
+        "Partial target achieved.",
+        "Profit protection activated."
+      ]
     }
   ],
   "status": "OPEN",
   "exit_date": null,
   "exit_price": null,
   "exit_reason": null,
-  "holding_days": 3,
+  "holding_days": 4,
   "max_profit_percent": 0.0,
   "max_drawdown_percent": 0.0,
   "final_pnl": null,
   "created_at": 1789530438.5351837,
-  "updated_at": 1789703325.5800269
+  "updated_at": 1789962575.1916203
 }

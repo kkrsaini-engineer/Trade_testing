@@ -1,0 +1,18 @@
+{
+  "symbol": "BLACKBUCK.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 11,
+  "entry_price": 616.0,
+  "exit_price": 633.8,
+  "status": "CLOSED",
+  "realized_pnl": 195.7999999999995,
+  "realized_pnl_percent": 2.8896103896103824,
+  "max_profit_percent": 2.8896103896103824,
+  "max_drawdown_percent": 0.5681818181818182,
+  "regime": "BULL",
+  "confidence": 69.43,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 40/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=12 capital=75.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 40/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=75 sector=10 correlation=12 capital=75.",
+  "id": "trade_1789962546864",
+  "timestamp": 1789962546.864951
+}

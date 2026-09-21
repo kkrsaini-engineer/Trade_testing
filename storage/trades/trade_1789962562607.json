@@ -1,0 +1,18 @@
+{
+  "symbol": "SOUTHBANK.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 84,
+  "entry_price": 45.83000183105469,
+  "exit_price": 45.24,
+  "status": "CLOSED",
+  "realized_pnl": -49.56015380859358,
+  "realized_pnl_percent": -1.287370297801072,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 1.287370297801072,
+  "regime": "SIDEWAYS",
+  "confidence": 52.3,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=12 capital=25.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=12 capital=25.",
+  "id": "trade_1789962562607",
+  "timestamp": 1789962562.6073406
+}

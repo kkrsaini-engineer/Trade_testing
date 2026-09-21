@@ -1,0 +1,18 @@
+{
+  "symbol": "WELCORP.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 2,
+  "entry_price": 2758.0,
+  "exit_price": 2710.0,
+  "status": "CLOSED",
+  "realized_pnl": -96.0,
+  "realized_pnl_percent": -1.7403915881073242,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 1.7403915881073242,
+  "regime": "BULL",
+  "confidence": 68.81,
+  "reasons": "Below preferred risk/reward profile.; High market volatility.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 43/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=78 portfolio=60 sector=10 correlation=12 capital=25.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 43/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=78 portfolio=60 sector=10 correlation=12 capital=25.",
+  "id": "trade_1789962567452",
+  "timestamp": 1789962567.4525204
+}
