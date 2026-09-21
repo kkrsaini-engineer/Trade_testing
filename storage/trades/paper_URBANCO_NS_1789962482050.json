@@ -1,0 +1,13 @@
+{
+  "id": "paper_URBANCO_NS_1789962482050",
+  "symbol": "URBANCO.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 7,
+  "entry_price": 168.3000030517578,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap -0.48% (0.11x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1789962482.0515785
+}

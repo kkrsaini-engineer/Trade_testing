@@ -1,0 +1,13 @@
+{
+  "id": "paper_VAKRANGEE_NS_1789962468515",
+  "symbol": "VAKRANGEE.NS",
+  "direction": "SELL",
+  "action": "OPEN",
+  "quantity": 375,
+  "entry_price": 5.349999904632568,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap +0.94% (0.29x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1789962468.5174677
+}

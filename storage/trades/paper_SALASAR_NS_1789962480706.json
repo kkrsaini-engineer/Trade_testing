@@ -1,0 +1,13 @@
+{
+  "id": "paper_SALASAR_NS_1789962480706",
+  "symbol": "SALASAR.NS",
+  "direction": "SELL",
+  "action": "OPEN",
+  "quantity": 288,
+  "entry_price": 4.869999885559082,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap -0.41% (0.09x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1789962480.7078693
+}
