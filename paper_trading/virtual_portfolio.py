@@ -95,7 +95,25 @@ class VirtualPortfolio:
                 "symbol": p.symbol, "quantity": p.quantity, "entry_price": p.entry_price,
                 "current_price": p.current_price, "direction": p.direction,
                 "unrealized_pnl": p.unrealized_pnl, "unrealized_pnl_percent": p.unrealized_pnl_percent,
-                "realized_pnl": p.realized_pnl, "highest_price": p.highest_price,
+                "realized_pnl": p.realized_pnl,
+                # BUGFIX (2026-09-22, live-repo audit — found while checking
+                # 2 days of real production data against the Phase-6
+                # partial_exit() fix): this dict is the ONLY thing that
+                # survives a save()/reload() round-trip (a daily script run
+                # is a fresh process — see this module's docstring), and it
+                # never included realized_pnl_percent even though
+                # PortfolioPosition carries that field and partial_exit()
+                # sets it. So a position that had a partial exit today would
+                # show 0.0% again tomorrow the moment this state file is
+                # saved and reloaded, even with the Phase-6 fix applied --
+                # the rupee figure (realized_pnl, below) persisted fine,
+                # only the percent silently didn't. Confirmed live:
+                # GLAND.NS / IRISDOREME.NS in the real
+                # storage/trades/virtual_portfolio_state.json both
+                # currently have a nonzero realized_pnl with no
+                # realized_pnl_percent key saved at all.
+                "realized_pnl_percent": p.realized_pnl_percent,
+                "highest_price": p.highest_price,
                 "lowest_price": p.lowest_price, "max_profit_percent": p.max_profit_percent,
                 "max_drawdown_percent": p.max_drawdown_percent, "status": p.status,
                 "updated_at": p.updated_at,
