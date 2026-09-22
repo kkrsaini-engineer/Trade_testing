@@ -331,6 +331,25 @@ class PortfolioEngine:
 
         pos.realized_pnl += realized_pnl
 
+        # BUGFIX (2026-09-19, post-Phase-5 re-audit): partial_exit() used
+        # to leave pos.realized_pnl_percent completely untouched — it
+        # only ever mutated pos.realized_pnl (the rupee total). Since
+        # PositionState.realized_pnl_percent defaults to 0.0 and nothing
+        # here ever wrote to it, a position that had a partial exit but
+        # was still open (pos.quantity > 0 after this trim) reported a
+        # real, non-zero realized P&L in rupees alongside a permanently
+        # 0.0% return -- paper_trading_engine.py's PARTIAL_CLOSE trade
+        # diary row (see its "realized_pnl_percent": remaining.
+        # realized_pnl_percent) logged every partial-exit leg as "0%
+        # return" regardless of whether it was a real profit or loss.
+        # Mirrors close_position()'s own realized_pnl_percent formula
+        # (price_diff / entry_price * 100) — this leg's own percent
+        # price move, the same convention close_position() already uses
+        # for the closing leg (it does not attempt a quantity-weighted
+        # blend across every prior leg either, it is simply overwritten
+        # each time a leg realizes P&L).
+        pos.realized_pnl_percent = (price_diff / max(pos.entry_price, 1e-9)) * 100
+
         pos.updated_at = time.time()
 
         self.state.total_pnl += realized_pnl
