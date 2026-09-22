@@ -110,7 +110,28 @@ class VolumeIndicators:
         neg_sum = negative_flow.rolling(14, min_periods=14).sum()
 
         money_ratio = pos_sum / neg_sum.replace(0, np.nan)
-        df["mfi_14"] = 100 - (100 / (1 + money_ratio))
+        mfi_14 = 100 - (100 / (1 + money_ratio))
+
+        # BUGFIX (2026-09-19, post-Phase-5 re-audit — same class of bug
+        # as BUG_AUDIT_2026-09-18.md item #7, already fixed for RSI in
+        # features/indicators/momentum.py, missed here): neg_sum == 0
+        # (14 straight non-down typical-price bars, e.g. a sustained
+        # rally) hits the `.replace(0, np.nan)` above, making
+        # money_ratio (and therefore mfi_14) NaN instead of the
+        # conventional MFI=100 ("maximally overbought on money flow") --
+        # the mirror-image case, pos_sum==0, already resolves correctly
+        # to MFI=0 without a special case (0/positive -> ratio=0 ->
+        # 100-100/(1+0)=0). strategy/buy_strategy.py's
+        # _mfi_component_score() treats a NaN mfi_14 as neutral (50.0)
+        # via its `pd.isna()` check, silently overriding what should be
+        # the MFI_HIGH_FLOOR (40.0) "deep overbought" discount, exactly
+        # when a stock's money flow is most one-sidedly bullish. Fixed
+        # the same way RSI was: explicit avg_loss(here neg_sum)==0 ->
+        # 100.0, and the rarer both-zero (money flow completely flat)
+        # case -> neutral 50.0.
+        mfi_14 = mfi_14.where(neg_sum != 0, 100.0)
+        mfi_14 = mfi_14.where(~((pos_sum == 0) & (neg_sum == 0)), 50.0)
+        df["mfi_14"] = mfi_14
 
         logger.info("Volume indicators calculated.")
 
