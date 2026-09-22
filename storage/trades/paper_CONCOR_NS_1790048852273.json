@@ -1,0 +1,13 @@
+{
+  "id": "paper_CONCOR_NS_1790048852273",
+  "symbol": "CONCOR.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 5,
+  "entry_price": 489.5,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap -2.98% (1.28x ATR, WARNING band); No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1790048852.2751832
+}

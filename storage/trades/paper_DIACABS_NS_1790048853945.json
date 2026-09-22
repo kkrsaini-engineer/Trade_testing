@@ -1,0 +1,13 @@
+{
+  "id": "paper_DIACABS_NS_1790048853945",
+  "symbol": "DIACABS.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 6,
+  "entry_price": 378.79998779296875,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap +3.27% (0.67x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1790048853.9462888
+}

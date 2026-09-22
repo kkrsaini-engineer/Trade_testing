@@ -1,0 +1,13 @@
+{
+  "id": "paper_JKPAPER_NS_1790048829499",
+  "symbol": "JKPAPER.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 11,
+  "entry_price": 423.45001220703125,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap -1.66% (0.48x ATR, NORMAL band); No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1790048829.5229115
+}

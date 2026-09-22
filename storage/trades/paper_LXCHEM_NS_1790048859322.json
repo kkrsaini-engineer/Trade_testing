@@ -1,0 +1,13 @@
+{
+  "id": "paper_LXCHEM_NS_1790048859322",
+  "symbol": "LXCHEM.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 12,
+  "entry_price": 178.5,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap +0.15% (0.04x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1790048859.323607
+}
