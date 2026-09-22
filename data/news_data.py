@@ -51,6 +51,19 @@ _RETRY_DELAY_SECONDS = 1.5
 
 MACRO_CACHE_PATH = "storage/reports/macro_headlines_cache.json"
 
+# BUGFIX (2026-09-19, post-Phase-5 re-audit — same gap
+# BUG_AUDIT_2026-09-18.md item #17 fixed for data/delivery_data.py,
+# data/fii_dii_data.py, and market/circuit_bands.py, missed here):
+# _load_macro_cache() stored a "fetched_at" timestamp but never checked
+# it, so a run where every live macro-news source is down/blocked would
+# keep serving the same increasingly-stale headline set forever, with no
+# way to tell "yesterday's headlines" from "three-week-old headlines" in
+# the logs. This feeds market/macro_intelligence.py's daily macro-bias
+# check for every symbol -- the same pipeline as the already-fixed
+# CRITICAL #4 word-boundary bug. Past this many days, the cache is
+# treated as unusable.
+_MACRO_CACHE_MAX_AGE_DAYS = 7
+
 
 def _fetch_ticker_news_with_retry(ticker_symbol: str) -> list[dict[str, Any]] | None:
     """Fetch .news for one ticker, retrying on transient failures.
@@ -228,6 +241,19 @@ class NewsDataProvider:
         try:
             with open(MACRO_CACHE_PATH) as f:
                 data = json.load(f)
+
+            fetched_at = data.get("fetched_at")
+            if isinstance(fetched_at, (int, float)):
+                age_days = (time.time() - fetched_at) / 86400.0
+                if age_days > _MACRO_CACHE_MAX_AGE_DAYS:
+                    logger.error(
+                        "Macro headline cache is %.1f day(s) old — past the "
+                        "%d-day staleness limit. Refusing to use it; treating "
+                        "this as no macro headlines available.",
+                        age_days, _MACRO_CACHE_MAX_AGE_DAYS,
+                    )
+                    return []
+
             return data.get("headlines", [])
         except (OSError, json.JSONDecodeError):
             return []
