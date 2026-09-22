@@ -1,0 +1,18 @@
+{
+  "symbol": "GRAPHITE.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 11,
+  "entry_price": 815.0,
+  "exit_price": 821.75,
+  "status": "CLOSED",
+  "realized_pnl": 74.25,
+  "realized_pnl_percent": 0.8282208588957056,
+  "max_profit_percent": 1.7239263803680924,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 70.51,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 41/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=60 sector=10 correlation=13 capital=25.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 41/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=60 sector=10 correlation=13 capital=25.",
+  "id": "trade_1790048948419",
+  "timestamp": 1790048948.419081
+}

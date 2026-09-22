@@ -1,0 +1,18 @@
+{
+  "symbol": "EMIL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 34,
+  "entry_price": 197.27999877929688,
+  "exit_price": 191.7,
+  "status": "CLOSED",
+  "realized_pnl": -189.71995849609414,
+  "realized_pnl_percent": -2.8284665520194983,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 2.8284665520194983,
+  "regime": "BULL",
+  "confidence": 63.76,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 41/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=13 capital=25.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 41/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=13 capital=25.",
+  "id": "trade_1790048946572",
+  "timestamp": 1790048946.572477
+}

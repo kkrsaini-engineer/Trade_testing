@@ -1,0 +1,18 @@
+{
+  "symbol": "SYRMA.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 1,
+  "entry_price": 1720.0,
+  "exit_price": 1745.4,
+  "status": "CLOSED",
+  "realized_pnl": 25.40000000000009,
+  "realized_pnl_percent": 1.476744186046517,
+  "max_profit_percent": 1.476744186046517,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 55.83,
+  "reasons": "Below preferred risk/reward profile.; High market volatility.; High market volatility.",
+  "id": "trade_1790048963085",
+  "timestamp": 1790048963.0856848
+}

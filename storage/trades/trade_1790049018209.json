@@ -1,0 +1,18 @@
+{
+  "symbol": "IRISDOREME.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 31,
+  "entry_price": 64.80999755859375,
+  "exit_price": 64.21,
+  "status": "OPEN",
+  "realized_pnl": -18.599924316406444,
+  "realized_pnl_percent": 0.0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.9257793260234386,
+  "regime": "BULL",
+  "confidence": 67.07,
+  "reasons": "Below preferred risk/reward profile.; High market volatility.; High market volatility.",
+  "id": "trade_1790049018209",
+  "timestamp": 1790049018.2095218
+}

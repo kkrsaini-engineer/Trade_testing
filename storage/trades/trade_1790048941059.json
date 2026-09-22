@@ -1,0 +1,18 @@
+{
+  "symbol": "TCS.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 2,
+  "entry_price": 2090.0,
+  "exit_price": 2117.3,
+  "status": "CLOSED",
+  "realized_pnl": -54.600000000000364,
+  "realized_pnl_percent": -1.3062200956937886,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 1.3062200956937886,
+  "regime": "BEAR",
+  "confidence": 53.05,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=13 capital=45.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=13 capital=45.",
+  "id": "trade_1790048941059",
+  "timestamp": 1790048941.0594978
+}

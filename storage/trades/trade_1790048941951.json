@@ -1,0 +1,18 @@
+{
+  "symbol": "GESHIP.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 4,
+  "entry_price": 1437.800048828125,
+  "exit_price": 1494.8,
+  "status": "CLOSED",
+  "realized_pnl": 227.99980468749982,
+  "realized_pnl_percent": 3.9643865096772397,
+  "max_profit_percent": 3.9643865096772397,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 71.16,
+  "reasons": "Break-even stop activated.; Excellent risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=13 capital=45.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=45 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=60 sector=10 correlation=13 capital=45.",
+  "id": "trade_1790048941951",
+  "timestamp": 1790048941.951829
+}

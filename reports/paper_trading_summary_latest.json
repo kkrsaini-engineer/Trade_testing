@@ -1,117 +1,209 @@
 {
-  "date": "2026-09-21",
-  "opening_balance": 24316.05084564211,
-  "total_capital_in_positions": 336624.19000000006,
-  "remaining_balance": 159128.96154605865,
-  "portfolio_value": 495753.1515460587,
-  "realized_pnl": -5284.909233207691,
-  "portfolio_return_percent": -0.8493696907882579,
+  "date": "2026-09-22",
+  "opening_balance": 38974.451704139705,
+  "total_capital_in_positions": 230216.02999999997,
+  "remaining_balance": 269380.4812483597,
+  "portfolio_value": 499596.5112483597,
+  "realized_pnl": -2298.0691508102336,
+  "portfolio_return_percent": -0.0806977503280621,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "AUROPHARMA.NS",
-      "pnl": 210.60000000000014
+      "symbol": "MCX.NS",
+      "pnl": 17.0
     },
     {
-      "symbol": "BLACKBUCK.NS",
-      "pnl": 195.7999999999995
+      "symbol": "INDHOTEL.NS",
+      "pnl": -32.849890136718955
     },
     {
-      "symbol": "NORTHARC.NS",
-      "pnl": -72.00018310546909
+      "symbol": "ELLEN.NS",
+      "pnl": 24.0
     },
     {
-      "symbol": "IONEXCHANG.NS",
-      "pnl": -0.1499816894530568
+      "symbol": "JTLIND.NS",
+      "pnl": 81.83990539550774
     },
     {
-      "symbol": "POLICYBZR.NS",
-      "pnl": -45.700000000000045
+      "symbol": "PARADEEP.NS",
+      "pnl": 8.449920654296875
     },
     {
-      "symbol": "PCBL.NS",
-      "pnl": 15.899926757812636
+      "symbol": "BEPL.NS",
+      "pnl": 47.499768066406034
+    },
+    {
+      "symbol": "VSSL.NS",
+      "pnl": 209.0
+    },
+    {
+      "symbol": "SKIPPER.NS",
+      "pnl": 9.600000000000136
     },
     {
       "symbol": "JKPAPER.NS",
-      "pnl": 338.0
+      "pnl": -4.95013427734375
     },
     {
-      "symbol": "MARKSANS.NS",
-      "pnl": -80.85000000000048
+      "symbol": "CONCOR.NS",
+      "pnl": -10.250000000000057
     },
     {
-      "symbol": "SHYAMMETL.NS",
-      "pnl": -57.600000000000364
+      "symbol": "USHAMART.NS",
+      "pnl": 513.8999999999992
     },
     {
-      "symbol": "ZYDUSWELL.NS",
-      "pnl": -123.24999999999989
+      "symbol": "CUB.NS",
+      "pnl": 57.749786376953125
     },
     {
-      "symbol": "NRBBEARING.NS",
-      "pnl": -53.09956054687541
+      "symbol": "TCS.NS",
+      "pnl": -54.600000000000364
+    },
+    {
+      "symbol": "GESHIP.NS",
+      "pnl": 227.99980468749982
+    },
+    {
+      "symbol": "NORTHARC.NS",
+      "pnl": 21.0
+    },
+    {
+      "symbol": "EMIL.NS",
+      "pnl": -189.71995849609414
+    },
+    {
+      "symbol": "GRAPHITE.NS",
+      "pnl": 74.25
+    },
+    {
+      "symbol": "PVRINOX.NS",
+      "pnl": 241.60000000000036
+    },
+    {
+      "symbol": "WABAG.NS",
+      "pnl": -88.09999999999991
+    },
+    {
+      "symbol": "SOLARA.NS",
+      "pnl": -11.550073242187636
+    },
+    {
+      "symbol": "PCBL.NS",
+      "pnl": 5.999902343749909
     },
     {
       "symbol": "STEELXIND.NS",
-      "pnl": 49.98003177642793
+      "pnl": 115.19982910156273
     },
     {
-      "symbol": "SALASAR.NS",
-      "pnl": -3.2958984405695446e-05
-    },
-    {
-      "symbol": "SOUTHBANK.NS",
-      "pnl": -49.56015380859358
-    },
-    {
-      "symbol": "WELCORP.NS",
-      "pnl": -96.0
-    },
-    {
-      "symbol": "VISHWARAJ.NS",
-      "pnl": 36.119885177612495
-    },
-    {
-      "symbol": "CYIENT.NS",
-      "pnl": -18.59995117187509
-    },
-    {
-      "symbol": "ATHERENERG.NS",
-      "pnl": -20.299999999999955
-    },
-    {
-      "symbol": "ARFIN.NS",
-      "pnl": -61.569856567382786
-    },
-    {
-      "symbol": "PNGJL.NS",
-      "pnl": -11.500024414062409
-    },
-    {
-      "symbol": "NITCO.NS",
-      "pnl": 13.340000000000288
+      "symbol": "GANDHAR.NS",
+      "pnl": -40.95008544921859
     },
     {
       "symbol": "SYRMA.NS",
-      "pnl": -20.799999999999955
+      "pnl": 25.40000000000009
     },
     {
-      "symbol": "VAKRANGEE.NS",
-      "pnl": 22.49996423721312
+      "symbol": "ARFIN.NS",
+      "pnl": -21.95999999999998
     },
     {
-      "symbol": "RANASUG.NS",
-      "pnl": -193.50017166137698
+      "symbol": "ONEPOINT.NS",
+      "pnl": 31.360048828124945
     },
     {
-      "symbol": "MRPL.NS",
-      "pnl": -392.4000000000001
+      "symbol": "URBANCO.NS",
+      "pnl": 25.899978637695312
+    },
+    {
+      "symbol": "DIACABS.NS",
+      "pnl": 7.2000732421875
     },
     {
       "symbol": "SAMBHV.NS",
-      "pnl": 1388.8499713134763
+      "pnl": -1.9197070312493452
+    },
+    {
+      "symbol": "CUPID.NS",
+      "pnl": -125.4999389648438
+    },
+    {
+      "symbol": "WOCKPHARMA.NS",
+      "pnl": 161.9000000000001
+    },
+    {
+      "symbol": "GOODLUCK.NS",
+      "pnl": 375.25011596679644
+    },
+    {
+      "symbol": "EDELWEISS.NS",
+      "pnl": 135.01973754882852
+    },
+    {
+      "symbol": "PRECWIRE.NS",
+      "pnl": 179.35010375976543
+    },
+    {
+      "symbol": "SSWL.NS",
+      "pnl": -23.0
+    },
+    {
+      "symbol": "CEIGALL.NS",
+      "pnl": 99.9000000000002
+    },
+    {
+      "symbol": "PFOCUS.NS",
+      "pnl": 30.79995117187491
+    },
+    {
+      "symbol": "PARAGMILK.NS",
+      "pnl": 420.2999999999999
+    },
+    {
+      "symbol": "FIVESTAR.NS",
+      "pnl": 40.20000000000027
+    },
+    {
+      "symbol": "JYOTICNC.NS",
+      "pnl": 241.500244140625
+    },
+    {
+      "symbol": "AEGISLOG.NS",
+      "pnl": 363.5999267578122
+    },
+    {
+      "symbol": "GUJTHEM.NS",
+      "pnl": -83.24999999999989
+    },
+    {
+      "symbol": "ACMESOLAR.NS",
+      "pnl": 375.0
+    },
+    {
+      "symbol": "QUESS.NS",
+      "pnl": 39.4000244140625
+    },
+    {
+      "symbol": "AEGISVOPAK.NS",
+      "pnl": 277.2000000000003
+    },
+    {
+      "symbol": "ENGINERSIN.NS",
+      "pnl": 466.90000000000066
+    },
+    {
+      "symbol": "ATHERENERG.NS",
+      "pnl": -15.099999999999909
+    },
+    {
+      "symbol": "WELCORP.NS",
+      "pnl": 23.400097656250182
+    },
+    {
+      "symbol": "ICIL.NS",
+      "pnl": 48.599999999999795
     }
   ],
-  "open_positions_now": 68
+  "open_positions_now": 49
 }

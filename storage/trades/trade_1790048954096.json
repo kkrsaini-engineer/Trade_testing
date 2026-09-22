@@ -1,0 +1,18 @@
+{
+  "symbol": "SOLARA.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 3,
+  "entry_price": 753.4000244140625,
+  "exit_price": 749.55,
+  "status": "CLOSED",
+  "realized_pnl": -11.550073242187636,
+  "realized_pnl_percent": -0.5110199481419984,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.5110199481419984,
+  "regime": "BULL",
+  "confidence": 70.53,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=45 sector=10 correlation=13 capital=25.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=45 sector=10 correlation=13 capital=25.",
+  "id": "trade_1790048954096",
+  "timestamp": 1790048954.0968919
+}

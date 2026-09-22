@@ -1,0 +1,18 @@
+{
+  "symbol": "PVRINOX.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 4,
+  "entry_price": 1277.5,
+  "exit_price": 1337.9,
+  "status": "CLOSED",
+  "realized_pnl": 241.60000000000036,
+  "realized_pnl_percent": 4.727984344422707,
+  "max_profit_percent": 4.8062622309197724,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 71.54,
+  "reasons": "Healthy risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=13 capital=25.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=13 capital=25.",
+  "id": "trade_1790048949511",
+  "timestamp": 1790048949.5114493
+}
