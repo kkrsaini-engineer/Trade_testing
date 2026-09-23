@@ -1,0 +1,18 @@
+{
+  "symbol": "OIL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 14,
+  "entry_price": 494.3999938964844,
+  "exit_price": 467.0,
+  "status": "CLOSED",
+  "realized_pnl": -383.59991455078125,
+  "realized_pnl_percent": -5.542070031299653,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 5.167879088168823,
+  "regime": "SIDEWAYS",
+  "confidence": 44.4,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1790135335698",
+  "timestamp": 1790135335.6983519
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "IRISDOREME.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 31,
+  "entry_price": 64.80999755859375,
+  "exit_price": 66.06,
+  "status": "CLOSED",
+  "realized_pnl": 20.150151367187377,
+  "realized_pnl_percent": 1.928718544197049,
+  "max_profit_percent": 1.928718544197049,
+  "max_drawdown_percent": 0.9257793260234386,
+  "regime": "BULL",
+  "confidence": 65.9,
+  "reasons": "Below preferred risk/reward profile.; High market volatility.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=70 portfolio=45 sector=10 correlation=17 capital=25.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=70 portfolio=45 sector=10 correlation=17 capital=25.",
+  "id": "trade_1790135304950",
+  "timestamp": 1790135304.950281
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "TEJASNET.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 4,
+  "entry_price": 524.75,
+  "exit_price": 518.4,
+  "status": "CLOSED",
+  "realized_pnl": -25.40000000000009,
+  "realized_pnl_percent": -1.2101000476417385,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 2.105764649833245,
+  "regime": "SIDEWAYS",
+  "confidence": 42.66,
+  "reasons": "Below preferred risk/reward profile.; Trend reversal detected.; Trend reversal confirmed.",
+  "id": "trade_1790135298707",
+  "timestamp": 1790135298.7072067
+}

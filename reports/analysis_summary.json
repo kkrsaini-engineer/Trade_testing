@@ -170,17 +170,18 @@
     "rejected_by_insufficient_history": 0,
     "rejected_by_other": 0,
     "other_reasons_breakdown": {},
-    "executed": 30
+    "executed": 18
   },
   "execution_summary": {
     "buy_generated": 357,
-    "buy_executed": 30,
-    "buy_rejected": 327,
+    "buy_executed": 18,
+    "buy_rejected": 339,
     "reasons": {
-      "Not Attempted (ranked below daily candidate limit)": 236,
+      "Not Attempted (ranked below daily candidate limit)": 247,
       "Liquidity": 52,
       "Risk Engine (execution stage)": 29,
-      "Capital / Portfolio Rules": 10
+      "Capital / Portfolio Rules": 10,
+      "Other": 1
     }
   },
   "regime_stats": {
