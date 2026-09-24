@@ -24,16 +24,35 @@
         "Below preferred risk/reward profile.",
         "Continue holding position."
       ]
+    },
+    {
+      "date": "2026-09-24",
+      "current_price": 12.03,
+      "current_pnl": 935.6199564743034,
+      "current_buy_confidence": 64.76,
+      "current_sell_confidence": 18.1,
+      "current_exit_score": 88.84,
+      "recommendation": "FULL_EXIT",
+      "notes": [
+        "Healthy risk/reward profile.",
+        "Risk engine flagged this symbol as unsafe (grade: D, total_risk: 45/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=18 capital=25.",
+        "Risk engine flagged this symbol as unsafe (grade: D, total_risk: 45/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=18 capital=25."
+      ]
     }
   ],
-  "status": "OPEN",
-  "exit_date": null,
-  "exit_price": null,
-  "exit_reason": null,
-  "holding_days": 1,
-  "max_profit_percent": 0.0,
+  "status": "CLOSED",
+  "exit_date": "2026-09-24",
+  "exit_price": 12.03,
+  "exit_reason": "Risk engine flagged this symbol as unsafe (grade: D, total_risk: 45/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=18 capital=25.",
+  "holding_days": 2,
+  "max_profit_percent": 7.3148970478377775,
   "max_drawdown_percent": 0.0,
-  "final_pnl": null,
+  "final_pnl": 935.6199564743034,
   "created_at": 1790135201.3647451,
-  "updated_at": 1790135327.9094052
+  "updated_at": 1790221728.3947213,
+  "final_pnl_percent": 7.3148970478377775,
+  "exit_score": 88.84,
+  "target1_status": "NOT REACHED",
+  "target2_status": "NOT REACHED",
+  "stop_loss_status": "NOT HIT"
 }

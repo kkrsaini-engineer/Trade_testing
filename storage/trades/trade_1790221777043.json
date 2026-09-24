@@ -1,0 +1,18 @@
+{
+  "symbol": "JSWINFRA.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 2,
+  "entry_price": 339.25,
+  "exit_price": 368.6,
+  "status": "OPEN",
+  "realized_pnl": 120.20000000000005,
+  "realized_pnl_percent": 8.65143699336773,
+  "max_profit_percent": 8.327192336035372,
+  "max_drawdown_percent": 4.215180545320563,
+  "regime": "BULL",
+  "confidence": 67.74,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved.",
+  "id": "trade_1790221777043",
+  "timestamp": 1790221777.0439663
+}

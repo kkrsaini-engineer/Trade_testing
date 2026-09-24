@@ -1,0 +1,18 @@
+{
+  "symbol": "NOCIL.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 16,
+  "entry_price": 184.1999969482422,
+  "exit_price": 204.91,
+  "status": "OPEN",
+  "realized_pnl": 331.36004882812495,
+  "realized_pnl_percent": 11.243215740973683,
+  "max_profit_percent": 9.35396489534103,
+  "max_drawdown_percent": 0.38002006505943514,
+  "regime": "BULL",
+  "confidence": 74.81,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; High market volatility.; Partial target achieved.",
+  "id": "trade_1790221756662",
+  "timestamp": 1790221756.6622555
+}

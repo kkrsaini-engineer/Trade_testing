@@ -1,0 +1,18 @@
+{
+  "symbol": "RKFORGE.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 4,
+  "entry_price": 725.0,
+  "exit_price": 705.05,
+  "status": "CLOSED",
+  "realized_pnl": -79.80000000000018,
+  "realized_pnl_percent": -2.7517241379310406,
+  "max_profit_percent": 0.26896551724138557,
+  "max_drawdown_percent": 2.7517241379310406,
+  "regime": "BULL",
+  "confidence": 54.98,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=18 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=18 capital=10.",
+  "id": "trade_1790221746045",
+  "timestamp": 1790221746.0450618
+}
