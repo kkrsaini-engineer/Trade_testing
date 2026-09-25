@@ -37,16 +37,35 @@
         "Below preferred risk/reward profile.",
         "Continue holding position."
       ]
+    },
+    {
+      "date": "2026-09-25",
+      "current_price": 362.05,
+      "current_pnl": -165.74979248046856,
+      "current_buy_confidence": 57.95,
+      "current_sell_confidence": 26.27,
+      "current_exit_score": 90.69,
+      "recommendation": "FULL_EXIT",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 37/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=35 sector=10 correlation=20 capital=25.",
+        "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 37/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=35 sector=10 correlation=20 capital=25."
+      ]
     }
   ],
-  "status": "OPEN",
-  "exit_date": null,
-  "exit_price": null,
-  "exit_reason": null,
-  "holding_days": 2,
+  "status": "CLOSED",
+  "exit_date": "2026-09-25",
+  "exit_price": 362.05,
+  "exit_reason": "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 37/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=38 portfolio=35 sector=10 correlation=20 capital=25.",
+  "holding_days": 3,
   "max_profit_percent": 0.0,
-  "max_drawdown_percent": 0.0,
-  "final_pnl": null,
+  "max_drawdown_percent": 2.6223744252508885,
+  "final_pnl": -165.74979248046856,
   "created_at": 1790135236.8344734,
-  "updated_at": 1790221769.1110523
+  "updated_at": 1790308112.0492406,
+  "final_pnl_percent": -2.6223744252508885,
+  "exit_score": 90.69,
+  "target1_status": "NOT REACHED",
+  "target2_status": "NOT REACHED",
+  "stop_loss_status": "NOT HIT"
 }

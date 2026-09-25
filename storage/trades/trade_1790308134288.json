@@ -1,0 +1,18 @@
+{
+  "symbol": "SHYAMMETL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 4,
+  "entry_price": 1105.199951171875,
+  "exit_price": 1094.3,
+  "status": "CLOSED",
+  "realized_pnl": -43.59980468750018,
+  "realized_pnl_percent": -0.9862424586897165,
+  "max_profit_percent": 1.3391286176254429,
+  "max_drawdown_percent": 0.9862424586897165,
+  "regime": "BULL",
+  "confidence": 70.42,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Average trading volume is too low.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Average trading volume is too low.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1790308134288",
+  "timestamp": 1790308134.2883463
+}

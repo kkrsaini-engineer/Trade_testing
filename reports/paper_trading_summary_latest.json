@@ -1,77 +1,61 @@
 {
-  "date": "2026-09-24",
-  "opening_balance": 127658.81205444335,
-  "total_capital_in_positions": 248214.75,
-  "remaining_balance": 250699.3020255661,
-  "portfolio_value": 498914.0520255661,
-  "realized_pnl": -2663.1390643310465,
-  "portfolio_return_percent": -0.21718959488677791,
+  "date": "2026-09-25",
+  "opening_balance": 144022.4625241852,
+  "total_capital_in_positions": 256751.97999999998,
+  "remaining_balance": 240250.38268001558,
+  "portfolio_value": 497002.36268001556,
+  "realized_pnl": -4340.818577918995,
+  "portfolio_return_percent": -0.5995274639968876,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "STEELXIND.NS",
-      "pnl": 935.6199564743034
-    },
-    {
-      "symbol": "FIVESTAR.NS",
-      "pnl": 47.2999999999995
-    },
-    {
-      "symbol": "ICIL.NS",
-      "pnl": -88.80000000000018
-    },
-    {
-      "symbol": "LTF.NS",
-      "pnl": -252.0
-    },
-    {
-      "symbol": "SYRMA.NS",
-      "pnl": -108.80019531249991
-    },
-    {
-      "symbol": "SOLARA.NS",
-      "pnl": -35.099890136718955
-    },
-    {
-      "symbol": "RKFORGE.NS",
-      "pnl": -79.80000000000018
-    },
-    {
-      "symbol": "DEVYANI.NS",
-      "pnl": -136.49998474121077
-    },
-    {
-      "symbol": "LXCHEM.NS",
-      "pnl": 83.5200000000001
-    },
-    {
-      "symbol": "NORTHARC.NS",
-      "pnl": -511.1004638671875
-    },
-    {
-      "symbol": "ARFIN.NS",
-      "pnl": 152.8797222900394
-    },
-    {
-      "symbol": "KOTAKBANK.NS",
-      "pnl": -160.6001342773435
-    },
-    {
-      "symbol": "DCBBANK.NS",
-      "pnl": -638.75
-    },
-    {
-      "symbol": "EDELWEISS.NS",
-      "pnl": -119.349765014648
+      "symbol": "DIACABS.NS",
+      "pnl": -165.74979248046856
     },
     {
       "symbol": "PCBL.NS",
-      "pnl": -123.49976806640603
+      "pnl": -55.199859619140625
     },
     {
-      "symbol": "PFOCUS.NS",
-      "pnl": 55.64999999999952
+      "symbol": "JSWINFRA.NS",
+      "pnl": 145.40000000000003
+    },
+    {
+      "symbol": "SHYAMMETL.NS",
+      "pnl": -43.59980468750018
+    },
+    {
+      "symbol": "ARFIN.NS",
+      "pnl": -89.76015563964884
+    },
+    {
+      "symbol": "SOLARA.NS",
+      "pnl": 59.40013427734425
+    },
+    {
+      "symbol": "STEELXIND.NS",
+      "pnl": -119.3502069473272
+    },
+    {
+      "symbol": "WELCORP.NS",
+      "pnl": 185.40000000000055
+    },
+    {
+      "symbol": "BLACKBUCK.NS",
+      "pnl": -355.60000000000036
+    },
+    {
+      "symbol": "RAMRAT.NS",
+      "pnl": -58.2999999999995
+    },
+    {
+      "symbol": "SAMBHV.NS",
+      "pnl": -255.83999999999935
+    },
+    {
+      "symbol": "JKPAPER.NS",
+      "pnl": -179.5498718261714
     }
   ],
-  "open_positions_now": 48
+  "open_positions_now": 47
 }

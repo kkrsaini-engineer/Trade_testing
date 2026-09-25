@@ -1,0 +1,18 @@
+{
+  "symbol": "SUZLON.NS",
+  "direction": "SELL",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 58,
+  "entry_price": 43.13999938964844,
+  "exit_price": 40.57,
+  "status": "OPEN",
+  "realized_pnl": 149.05996459960937,
+  "realized_pnl_percent": 5.957346838222524,
+  "max_profit_percent": 5.493739970281785,
+  "max_drawdown_percent": 1.8312485431817718,
+  "regime": "BEAR",
+  "confidence": 53.03,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved.",
+  "id": "trade_1790308170942",
+  "timestamp": 1790308170.9425013
+}

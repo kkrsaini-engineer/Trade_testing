@@ -1,0 +1,18 @@
+{
+  "symbol": "MCX.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 2,
+  "entry_price": 3269.0,
+  "exit_price": 3478.7,
+  "status": "OPEN",
+  "realized_pnl": 419.39999999999964,
+  "realized_pnl_percent": 6.414805750994182,
+  "max_profit_percent": 5.509330070357905,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 69.38,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved.",
+  "id": "trade_1790308176670",
+  "timestamp": 1790308176.6707366
+}
