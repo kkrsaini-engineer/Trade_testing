@@ -1,0 +1,13 @@
+{
+  "id": "paper_BLACKBUCK_NS_1790567213537",
+  "symbol": "BLACKBUCK.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 18,
+  "entry_price": 599.9500122070312,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap -5.13% (1.46x ATR, WARNING band); No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1790567213.5391304
+}
