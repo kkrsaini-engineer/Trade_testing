@@ -1,60 +1,52 @@
 {
-  "date": "2026-09-25",
-  "opening_balance": 144022.4625241852,
-  "total_capital_in_positions": 256751.97999999998,
-  "remaining_balance": 240250.38268001558,
-  "portfolio_value": 497002.36268001556,
-  "realized_pnl": -4340.818577918995,
-  "portfolio_return_percent": -0.5995274639968876,
+  "date": "2026-09-28",
+  "opening_balance": 145388.68239219667,
+  "total_capital_in_positions": 274760.82,
+  "remaining_balance": 218868.83204734803,
+  "portfolio_value": 493629.65204734803,
+  "realized_pnl": -6708.678579483024,
+  "portfolio_return_percent": -1.2740695905303931,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "DIACABS.NS",
-      "pnl": -165.74979248046856
-    },
-    {
-      "symbol": "PCBL.NS",
-      "pnl": -55.199859619140625
-    },
-    {
-      "symbol": "JSWINFRA.NS",
-      "pnl": 145.40000000000003
-    },
-    {
-      "symbol": "SHYAMMETL.NS",
-      "pnl": -43.59980468750018
-    },
-    {
-      "symbol": "ARFIN.NS",
-      "pnl": -89.76015563964884
-    },
-    {
-      "symbol": "SOLARA.NS",
-      "pnl": 59.40013427734425
+      "symbol": "BHARTIARTL.NS",
+      "pnl": 80.99995117187495
     },
     {
       "symbol": "STEELXIND.NS",
-      "pnl": -119.3502069473272
+      "pnl": -127.55995944976814
     },
     {
-      "symbol": "WELCORP.NS",
-      "pnl": 185.40000000000055
+      "symbol": "IRISDOREME.NS",
+      "pnl": -9.619661254882587
     },
     {
-      "symbol": "BLACKBUCK.NS",
-      "pnl": -355.60000000000036
+      "symbol": "INDGN.NS",
+      "pnl": 9.800024414062591
+    },
+    {
+      "symbol": "SBC.NS",
+      "pnl": 692.0098489379883
+    },
+    {
+      "symbol": "SHYAMMETL.NS",
+      "pnl": -48.60000000000082
+    },
+    {
+      "symbol": "RBLBANK.NS",
+      "pnl": 7.800000000000296
+    },
+    {
+      "symbol": "EDELWEISS.NS",
+      "pnl": -103.18046997070383
+    },
+    {
+      "symbol": "CGCL.NS",
+      "pnl": -310.4000000000001
     },
     {
       "symbol": "RAMRAT.NS",
-      "pnl": -58.2999999999995
-    },
-    {
-      "symbol": "SAMBHV.NS",
-      "pnl": -255.83999999999935
-    },
-    {
-      "symbol": "JKPAPER.NS",
-      "pnl": -179.5498718261714
+      "pnl": -217.1003173828119
     }
   ],
   "open_positions_now": 47

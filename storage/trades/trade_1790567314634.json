@@ -1,0 +1,18 @@
+{
+  "symbol": "SBC.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 99,
+  "entry_price": 47.650001525878906,
+  "exit_price": 54.64,
+  "status": "CLOSED",
+  "realized_pnl": 692.0098489379883,
+  "realized_pnl_percent": 14.66946117582976,
+  "max_profit_percent": 14.66946117582976,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 59.47,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Final profit target reached.; Healthy risk/reward profile.; Final target achieved.; Profit protection activated.",
+  "id": "trade_1790567314634",
+  "timestamp": 1790567314.6343014
+}

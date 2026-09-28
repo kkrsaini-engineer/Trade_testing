@@ -1,0 +1,18 @@
+{
+  "symbol": "ZYDUSLIFE.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 2,
+  "entry_price": 1155.0,
+  "exit_price": 1215.6,
+  "status": "OPEN",
+  "realized_pnl": 121.19999999999982,
+  "realized_pnl_percent": 5.246753246753239,
+  "max_profit_percent": 4.190476190476199,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 65.26,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved.",
+  "id": "trade_1790567305859",
+  "timestamp": 1790567305.8592927
+}

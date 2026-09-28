@@ -1,0 +1,18 @@
+{
+  "symbol": "EDELWEISS.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 77,
+  "entry_price": 138.60000610351562,
+  "exit_price": 137.26,
+  "status": "CLOSED",
+  "realized_pnl": -103.18046997070383,
+  "realized_pnl_percent": -0.9668153279263416,
+  "max_profit_percent": 0.050500644590222056,
+  "max_drawdown_percent": 0.9668153279263416,
+  "regime": "BULL",
+  "confidence": 74.78,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=22 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=22 capital=10.",
+  "id": "trade_1790567327382",
+  "timestamp": 1790567327.382735
+}

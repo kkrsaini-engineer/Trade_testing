@@ -1,0 +1,18 @@
+{
+  "symbol": "TMPV.NS",
+  "direction": "SELL",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 10,
+  "entry_price": 303.79998779296875,
+  "exit_price": 288.25,
+  "status": "OPEN",
+  "realized_pnl": 155.4998779296875,
+  "realized_pnl_percent": 5.118495200060915,
+  "max_profit_percent": 4.591832901084662,
+  "max_drawdown_percent": 0.0,
+  "regime": "BEAR",
+  "confidence": 56.0,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved.",
+  "id": "trade_1790567316471",
+  "timestamp": 1790567316.471131
+}

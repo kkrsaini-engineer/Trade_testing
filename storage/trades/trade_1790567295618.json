@@ -1,0 +1,18 @@
+{
+  "symbol": "BHARTIARTL.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 1,
+  "entry_price": 1846.199951171875,
+  "exit_price": 1765.2,
+  "status": "CLOSED",
+  "realized_pnl": 80.99995117187495,
+  "realized_pnl_percent": 4.387387786488688,
+  "max_profit_percent": 4.1003116224667036,
+  "max_drawdown_percent": 0.2220804320530097,
+  "regime": "BEAR",
+  "confidence": 53.29,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved.",
+  "id": "trade_1790567295618",
+  "timestamp": 1790567295.6188307
+}

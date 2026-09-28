@@ -1,0 +1,18 @@
+{
+  "symbol": "RBLBANK.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 26,
+  "entry_price": 409.0,
+  "exit_price": 409.3,
+  "status": "CLOSED",
+  "realized_pnl": 7.800000000000296,
+  "realized_pnl_percent": 0.07334963325183652,
+  "max_profit_percent": 3.618581907090467,
+  "max_drawdown_percent": 1.5403422982885113,
+  "regime": "BULL",
+  "confidence": 51.04,
+  "reasons": "Healthy risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Circuit breaker active.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Circuit breaker active.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1790567320001",
+  "timestamp": 1790567320.001206
+}

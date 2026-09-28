@@ -1,0 +1,18 @@
+{
+  "symbol": "INDGN.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 2,
+  "entry_price": 603.0499877929688,
+  "exit_price": 607.95,
+  "status": "CLOSED",
+  "realized_pnl": 9.800024414062591,
+  "realized_pnl_percent": 0.812538314603781,
+  "max_profit_percent": 0.812538314603781,
+  "max_drawdown_percent": 1.6831088630173945,
+  "regime": "BULL",
+  "confidence": 69.84,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Average trading volume is too low.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Average trading volume is too low.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1790567310187",
+  "timestamp": 1790567310.187916
+}
