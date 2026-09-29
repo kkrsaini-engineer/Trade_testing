@@ -1,0 +1,18 @@
+{
+  "symbol": "HINDUNILVR.NS",
+  "direction": "SELL",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 1,
+  "entry_price": 1973.0,
+  "exit_price": 1889.5,
+  "status": "OPEN",
+  "realized_pnl": 83.5,
+  "realized_pnl_percent": 4.232133806386214,
+  "max_profit_percent": 4.080081094779524,
+  "max_drawdown_percent": 0.0,
+  "regime": "BEAR",
+  "confidence": 52.68,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved.",
+  "id": "trade_1790653713600",
+  "timestamp": 1790653713.6000495
+}

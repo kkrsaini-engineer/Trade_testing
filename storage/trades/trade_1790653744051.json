@@ -1,0 +1,18 @@
+{
+  "symbol": "TMPV.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 11,
+  "entry_price": 303.79998779296875,
+  "exit_price": 276.1,
+  "status": "CLOSED",
+  "realized_pnl": 460.1997436523435,
+  "realized_pnl_percent": 9.117837032911766,
+  "max_profit_percent": 9.052004245539738,
+  "max_drawdown_percent": 0.0,
+  "regime": "BEAR",
+  "confidence": 52.09,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Final profit target reached.; Excellent risk/reward profile.; Final target achieved.",
+  "id": "trade_1790653744051",
+  "timestamp": 1790653744.051791
+}

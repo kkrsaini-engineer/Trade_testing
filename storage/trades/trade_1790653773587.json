@@ -1,0 +1,18 @@
+{
+  "symbol": "RELIGARE.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 28,
+  "entry_price": 247.25,
+  "exit_price": 232.41,
+  "status": "CLOSED",
+  "realized_pnl": -415.5200000000001,
+  "realized_pnl_percent": -6.002022244691609,
+  "max_profit_percent": 1.9898887765419566,
+  "max_drawdown_percent": 4.833164812942361,
+  "regime": "SIDEWAYS",
+  "confidence": 46.48,
+  "reasons": "Below preferred risk/reward profile.; Trend reversal detected.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1790653773587",
+  "timestamp": 1790653773.5877857
+}

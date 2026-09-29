@@ -1,0 +1,18 @@
+{
+  "symbol": "SAGILITY.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 181,
+  "entry_price": 45.93000030517578,
+  "exit_price": 43.01,
+  "status": "CLOSED",
+  "realized_pnl": -528.5200552368168,
+  "realized_pnl_percent": -6.357501166501697,
+  "max_profit_percent": 0.37012778945064184,
+  "max_drawdown_percent": 5.943828188627595,
+  "regime": "SIDEWAYS",
+  "confidence": 53.02,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1790653742431",
+  "timestamp": 1790653742.4315298
+}

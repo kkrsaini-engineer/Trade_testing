@@ -1,0 +1,18 @@
+{
+  "symbol": "UNOMINDA.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 2,
+  "entry_price": 1259.9000244140625,
+  "exit_price": 1166.2,
+  "status": "CLOSED",
+  "realized_pnl": -187.4000488281249,
+  "realized_pnl_percent": -7.437099976058752,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 6.992620264059042,
+  "regime": "SIDEWAYS",
+  "confidence": 47.24,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1790653733360",
+  "timestamp": 1790653733.3607929
+}

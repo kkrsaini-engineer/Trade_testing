@@ -1,0 +1,18 @@
+{
+  "symbol": "NOCIL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 5,
+  "entry_price": 184.1999969482422,
+  "exit_price": 169.94,
+  "status": "CLOSED",
+  "realized_pnl": 314.7401007080077,
+  "realized_pnl_percent": -7.7415837049384235,
+  "max_profit_percent": 9.35396489534103,
+  "max_drawdown_percent": 7.7415837049384235,
+  "regime": "SIDEWAYS",
+  "confidence": 45.27,
+  "reasons": "Excellent risk/reward profile.; High market volatility.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 44/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=78 portfolio=35 sector=10 correlation=25 capital=10.; Active stop-loss triggered.; Risk engine flagged this symbol as unsafe (grade: D, total_risk: 44/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=78 portfolio=35 sector=10 correlation=25 capital=10.",
+  "id": "trade_1790653765627",
+  "timestamp": 1790653765.6275778
+}

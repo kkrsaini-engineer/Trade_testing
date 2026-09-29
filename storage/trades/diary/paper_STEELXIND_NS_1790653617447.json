@@ -6,20 +6,40 @@
   "entry_price": 11.109999656677246,
   "buy_probability": 0.0,
   "buy_confidence": 0.0,
-  "entry_thesis_confidence": null,
+  "entry_thesis_confidence": 46.99,
   "entry_reasons": [
     "Morning Executor: gap -5.37% (1.07x ATR, WARNING band)",
-    "No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.06 \u2014 not a blocker."
+    "No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.06 — not a blocker."
   ],
-  "daily_log": [],
-  "status": "OPEN",
-  "exit_date": null,
-  "exit_price": null,
-  "exit_reason": null,
-  "holding_days": 0,
-  "max_profit_percent": 0.0,
+  "daily_log": [
+    {
+      "date": "2026-09-29",
+      "current_price": 11.19,
+      "current_pnl": 74.80032100677444,
+      "current_buy_confidence": 46.99,
+      "current_sell_confidence": 33.05,
+      "current_exit_score": 89.06,
+      "recommendation": "FULL_EXIT",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "Risk engine flagged this symbol as unsafe (grade: D, total_risk: 44/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=35 sector=10 correlation=25 capital=10.",
+        "Risk engine flagged this symbol as unsafe (grade: D, total_risk: 44/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=35 sector=10 correlation=25 capital=10."
+      ]
+    }
+  ],
+  "status": "CLOSED",
+  "exit_date": "2026-09-29",
+  "exit_price": 11.19,
+  "exit_reason": "Risk engine flagged this symbol as unsafe (grade: D, total_risk: 44/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=35 sector=10 correlation=25 capital=10.",
+  "holding_days": 1,
+  "max_profit_percent": 0.7200751196663829,
   "max_drawdown_percent": 0.0,
-  "final_pnl": null,
+  "final_pnl": 74.80032100677444,
   "created_at": 1790653617.447995,
-  "updated_at": 1790653617.4479952
+  "updated_at": 1790653752.5223851,
+  "final_pnl_percent": 0.7200751196663829,
+  "exit_score": 89.06,
+  "target1_status": "NOT REACHED",
+  "target2_status": "NOT REACHED",
+  "stop_loss_status": "NOT HIT"
 }

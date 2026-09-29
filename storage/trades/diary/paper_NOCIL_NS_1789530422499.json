@@ -135,16 +135,37 @@
         "High market volatility.",
         "High market volatility."
       ]
+    },
+    {
+      "date": "2026-09-29",
+      "current_price": 169.94,
+      "current_pnl": -71.29998474121095,
+      "current_buy_confidence": 45.01,
+      "current_sell_confidence": 45.27,
+      "current_exit_score": 89.06,
+      "recommendation": "FULL_EXIT",
+      "notes": [
+        "Excellent risk/reward profile.",
+        "High market volatility.",
+        "Risk engine flagged this symbol as unsafe (grade: D, total_risk: 44/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=78 portfolio=35 sector=10 correlation=25 capital=10.",
+        "Active stop-loss triggered.",
+        "Risk engine flagged this symbol as unsafe (grade: D, total_risk: 44/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=78 portfolio=35 sector=10 correlation=25 capital=10."
+      ]
     }
   ],
-  "status": "OPEN",
-  "exit_date": null,
-  "exit_price": null,
-  "exit_reason": null,
-  "holding_days": 9,
-  "max_profit_percent": 0.0,
-  "max_drawdown_percent": 0.0,
-  "final_pnl": null,
+  "status": "CLOSED",
+  "exit_date": "2026-09-29",
+  "exit_price": 169.94,
+  "exit_reason": "Risk engine flagged this symbol as unsafe (grade: D, total_risk: 44/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=75 overnight=10 news=10 liquidity=20 volatility=78 portfolio=35 sector=10 correlation=25 capital=10.",
+  "holding_days": 10,
+  "max_profit_percent": 9.35396489534103,
+  "max_drawdown_percent": 7.7415837049384235,
+  "final_pnl": 314.7401007080077,
   "created_at": 1789530422.4997563,
-  "updated_at": 1790567340.2158513
+  "updated_at": 1790653765.6278486,
+  "final_pnl_percent": -7.7415837049384235,
+  "exit_score": 89.06,
+  "target1_status": "NOT REACHED",
+  "target2_status": "NOT REACHED",
+  "stop_loss_status": "HIT"
 }

@@ -1,53 +1,89 @@
 {
-  "date": "2026-09-28",
-  "opening_balance": 145388.68239219667,
-  "total_capital_in_positions": 274760.82,
-  "remaining_balance": 218868.83204734803,
-  "portfolio_value": 493629.65204734803,
-  "realized_pnl": -6708.678579483024,
-  "portfolio_return_percent": -1.2740695905303931,
+  "date": "2026-09-29",
+  "opening_balance": 162279.18219745636,
+  "total_capital_in_positions": 188708.52000000002,
+  "remaining_balance": 301165.2827617264,
+  "portfolio_value": 489873.80276172643,
+  "realized_pnl": -7822.898524589528,
+  "portfolio_return_percent": -2.0252394476547138,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "BHARTIARTL.NS",
-      "pnl": 80.99995117187495
+      "symbol": "ICIL.NS",
+      "pnl": -184.799731445313
     },
     {
-      "symbol": "STEELXIND.NS",
-      "pnl": -127.55995944976814
+      "symbol": "WELCORP.NS",
+      "pnl": -358.7999999999993
     },
     {
-      "symbol": "IRISDOREME.NS",
-      "pnl": -9.619661254882587
+      "symbol": "SUZLON.NS",
+      "pnl": 341.18992980957023
     },
     {
-      "symbol": "INDGN.NS",
-      "pnl": 9.800024414062591
+      "symbol": "ARFIN.NS",
+      "pnl": -82.15980957031297
     },
     {
-      "symbol": "SBC.NS",
-      "pnl": 692.0098489379883
+      "symbol": "FINCABLES.NS",
+      "pnl": 114.39999999999964
     },
     {
       "symbol": "SHYAMMETL.NS",
-      "pnl": -48.60000000000082
+      "pnl": 10.399999999999636
     },
     {
-      "symbol": "RBLBANK.NS",
-      "pnl": 7.800000000000296
+      "symbol": "UNOMINDA.NS",
+      "pnl": -187.4000488281249
+    },
+    {
+      "symbol": "DIACABS.NS",
+      "pnl": -332.2000000000005
+    },
+    {
+      "symbol": "SAGILITY.NS",
+      "pnl": -528.5200552368168
+    },
+    {
+      "symbol": "TMPV.NS",
+      "pnl": 460.1997436523435
+    },
+    {
+      "symbol": "ATHERENERG.NS",
+      "pnl": -325.5
+    },
+    {
+      "symbol": "CGPOWER.NS",
+      "pnl": -115.35000000000014
+    },
+    {
+      "symbol": "STEELXIND.NS",
+      "pnl": 74.80032100677444
+    },
+    {
+      "symbol": "LXCHEM.NS",
+      "pnl": -126.68972473144578
     },
     {
       "symbol": "EDELWEISS.NS",
-      "pnl": -103.18046997070383
-    },
-    {
-      "symbol": "CGCL.NS",
-      "pnl": -310.4000000000001
+      "pnl": 13.869999999999834
     },
     {
       "symbol": "RAMRAT.NS",
-      "pnl": -217.1003173828119
+      "pnl": 3.4998291015631366
+    },
+    {
+      "symbol": "NOCIL.NS",
+      "pnl": 314.7401007080077
+    },
+    {
+      "symbol": "IRISDOREME.NS",
+      "pnl": -29.82000000000012
+    },
+    {
+      "symbol": "RELIGARE.NS",
+      "pnl": -415.5200000000001
     }
   ],
-  "open_positions_now": 47
+  "open_positions_now": 34
 }
