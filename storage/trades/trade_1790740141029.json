@@ -1,0 +1,18 @@
+{
+  "symbol": "PNB.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 12,
+  "entry_price": 116.41000366210938,
+  "exit_price": 111.8,
+  "status": "CLOSED",
+  "realized_pnl": -55.320043945312534,
+  "realized_pnl_percent": -3.9601439026583427,
+  "max_profit_percent": 1.6321589881618244,
+  "max_drawdown_percent": 3.2041951247901714,
+  "regime": "SIDEWAYS",
+  "confidence": 51.35,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1790740141029",
+  "timestamp": 1790740141.0293448
+}

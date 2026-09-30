@@ -1,0 +1,18 @@
+{
+  "symbol": "GAIL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 52,
+  "entry_price": 175.08999633789062,
+  "exit_price": 171.88,
+  "status": "CLOSED",
+  "realized_pnl": -166.91980957031274,
+  "realized_pnl_percent": -1.8333407990345392,
+  "max_profit_percent": 0.40550783994490086,
+  "max_drawdown_percent": 2.7871360100283202,
+  "regime": "SIDEWAYS",
+  "confidence": 49.27,
+  "reasons": "Below preferred risk/reward profile.; Trend reversal detected.; Trend reversal confirmed.",
+  "id": "trade_1790740145112",
+  "timestamp": 1790740145.1128073
+}

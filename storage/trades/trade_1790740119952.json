@@ -1,0 +1,18 @@
+{
+  "symbol": "SOUTHBANK.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 4,
+  "entry_price": 45.88999938964844,
+  "exit_price": 49.0,
+  "status": "OPEN",
+  "realized_pnl": 289.56004333496077,
+  "realized_pnl_percent": 6.777077035771536,
+  "max_profit_percent": 8.760079895007285,
+  "max_drawdown_percent": 0.5883621556755669,
+  "regime": "BULL",
+  "confidence": 69.5,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved.",
+  "id": "trade_1790740119952",
+  "timestamp": 1790740119.9520724
+}

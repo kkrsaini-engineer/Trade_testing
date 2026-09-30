@@ -206,16 +206,35 @@
         "Below preferred risk/reward profile.",
         "Continue holding position."
       ]
+    },
+    {
+      "date": "2026-09-30",
+      "current_price": 171.88,
+      "current_pnl": -166.91980957031274,
+      "current_buy_confidence": 49.27,
+      "current_sell_confidence": 38.07,
+      "current_exit_score": 86.58,
+      "recommendation": "FULL_EXIT",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "Trend reversal detected.",
+        "Trend reversal confirmed."
+      ]
     }
   ],
-  "status": "OPEN",
-  "exit_date": null,
-  "exit_price": null,
-  "exit_reason": null,
-  "holding_days": 15,
-  "max_profit_percent": 0.0,
-  "max_drawdown_percent": 0.0,
-  "final_pnl": null,
+  "status": "CLOSED",
+  "exit_date": "2026-09-30",
+  "exit_price": 171.88,
+  "exit_reason": "Trend reversal confirmed.",
+  "holding_days": 16,
+  "max_profit_percent": 0.40550783994490086,
+  "max_drawdown_percent": 2.7871360100283202,
+  "final_pnl": -166.91980957031274,
   "created_at": 1788839206.174015,
-  "updated_at": 1790653723.1882253
+  "updated_at": 1790740145.113117,
+  "final_pnl_percent": -1.8333407990345392,
+  "exit_score": 86.58,
+  "target1_status": "NOT REACHED",
+  "target2_status": "NOT REACHED",
+  "stop_loss_status": "NOT HIT"
 }

@@ -1,0 +1,18 @@
+{
+  "symbol": "MCX.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 1,
+  "entry_price": 3269.0,
+  "exit_price": 3281.7,
+  "status": "CLOSED",
+  "realized_pnl": 432.09999999999945,
+  "realized_pnl_percent": 0.3884980116243444,
+  "max_profit_percent": 5.509330070357905,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 57.24,
+  "reasons": "Healthy risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=23 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=23 capital=10.",
+  "id": "trade_1790740139727",
+  "timestamp": 1790740139.727748
+}
