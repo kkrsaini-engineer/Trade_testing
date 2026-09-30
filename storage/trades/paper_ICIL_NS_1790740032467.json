@@ -1,0 +1,13 @@
+{
+  "id": "paper_ICIL_NS_1790740032467",
+  "symbol": "ICIL.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 28,
+  "entry_price": 437.0,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap -2.31% (0.48x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1790740032.4703429
+}
