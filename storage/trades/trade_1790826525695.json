@@ -1,0 +1,18 @@
+{
+  "symbol": "MAHABANK.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 17,
+  "entry_price": 83.44000244140625,
+  "exit_price": 79.85,
+  "status": "CLOSED",
+  "realized_pnl": -61.03004150390635,
+  "realized_pnl_percent": -4.3024956092579805,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 4.3024956092579805,
+  "regime": "SIDEWAYS",
+  "confidence": 46.51,
+  "reasons": "Below preferred risk/reward profile.; Trend reversal detected.; Trend reversal confirmed.",
+  "id": "trade_1790826525695",
+  "timestamp": 1790826525.6956384
+}

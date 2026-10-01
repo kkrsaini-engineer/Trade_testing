@@ -1,0 +1,18 @@
+{
+  "symbol": "STEELXIND.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 1245,
+  "entry_price": 11.399999618530273,
+  "exit_price": 11.31,
+  "status": "CLOSED",
+  "realized_pnl": -112.04952507018982,
+  "realized_pnl_percent": -0.7894703644023103,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.7894703644023103,
+  "regime": "SIDEWAYS",
+  "confidence": 47.17,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=24 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=95 gap=10 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=24 capital=10.",
+  "id": "trade_1790826504792",
+  "timestamp": 1790826504.7922106
+}

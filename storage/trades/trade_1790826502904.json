@@ -1,0 +1,18 @@
+{
+  "symbol": "NAZARA.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 4,
+  "entry_price": 370.20001220703125,
+  "exit_price": 393.25,
+  "status": "OPEN",
+  "realized_pnl": 293.79986572265625,
+  "realized_pnl_percent": 6.226360624774436,
+  "max_profit_percent": 7.549969441205186,
+  "max_drawdown_percent": 0.47272073185469854,
+  "regime": "BULL",
+  "confidence": 54.35,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved.",
+  "id": "trade_1790826502904",
+  "timestamp": 1790826502.9044611
+}

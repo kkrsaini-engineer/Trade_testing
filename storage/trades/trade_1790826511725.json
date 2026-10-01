@@ -1,0 +1,18 @@
+{
+  "symbol": "RAMRAT.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 17,
+  "entry_price": 582.4000244140625,
+  "exit_price": 579.45,
+  "status": "CLOSED",
+  "realized_pnl": -50.15041503906173,
+  "realized_pnl_percent": -0.5065288960161699,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.5065288960161699,
+  "regime": "BULL",
+  "confidence": 70.15,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Average trading volume is too low.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Average trading volume is too low.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1790826511725",
+  "timestamp": 1790826511.725188
+}

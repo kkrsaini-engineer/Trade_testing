@@ -1,0 +1,18 @@
+{
+  "symbol": "DEVYANI.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 70,
+  "entry_price": 137.5,
+  "exit_price": 127.37,
+  "status": "CLOSED",
+  "realized_pnl": -709.0999999999997,
+  "realized_pnl_percent": -7.367272727272724,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 6.792727272727276,
+  "regime": "SIDEWAYS",
+  "confidence": 42.1,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1790826508363",
+  "timestamp": 1790826508.3635302
+}
