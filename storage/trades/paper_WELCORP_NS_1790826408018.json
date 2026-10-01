@@ -1,0 +1,13 @@
+{
+  "id": "paper_WELCORP_NS_1790826408018",
+  "symbol": "WELCORP.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 4,
+  "entry_price": 2708.0,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap +1.80% (0.38x ATR, NORMAL band); No NEW company-specific overnight news since last night's scan. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1790826408.0196693
+}
