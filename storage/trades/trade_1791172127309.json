@@ -1,0 +1,18 @@
+{
+  "symbol": "NORTHARC.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 39,
+  "entry_price": 303.0,
+  "exit_price": 293.6,
+  "status": "CLOSED",
+  "realized_pnl": -366.5999999999991,
+  "realized_pnl_percent": -3.102310231023095,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 5.528052805280528,
+  "regime": "SIDEWAYS",
+  "confidence": 51.21,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=35 sector=10 correlation=30 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 38/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=35 sector=10 correlation=30 capital=10.",
+  "id": "trade_1791172127309",
+  "timestamp": 1791172127.3090746
+}

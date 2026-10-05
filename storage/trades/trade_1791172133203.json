@@ -1,0 +1,18 @@
+{
+  "symbol": "MOTILALOFS.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 2,
+  "entry_price": 1001.0,
+  "exit_price": 1004.0,
+  "status": "CLOSED",
+  "realized_pnl": 6.0,
+  "realized_pnl_percent": 0.2997002997002997,
+  "max_profit_percent": 2.7372627372627463,
+  "max_drawdown_percent": 0.7842157842157865,
+  "regime": "BULL",
+  "confidence": 58.18,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Circuit breaker active.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Circuit breaker active.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1791172133203",
+  "timestamp": 1791172133.2036054
+}

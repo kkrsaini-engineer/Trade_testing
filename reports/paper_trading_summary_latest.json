@@ -1,53 +1,57 @@
 {
-  "date": "2026-10-01",
-  "opening_balance": 192609.69213817595,
-  "total_capital_in_positions": 192066.13,
-  "remaining_balance": 301306.03156551364,
-  "portfolio_value": 493372.16156551364,
-  "realized_pnl": -6615.528226203911,
-  "portfolio_return_percent": -1.3255676868972717,
+  "date": "2026-10-05",
+  "opening_balance": 223023.8021305466,
+  "total_capital_in_positions": 172677.09000000003,
+  "remaining_balance": 319252.75272579194,
+  "portfolio_value": 491929.84272579197,
+  "realized_pnl": -7476.847661170949,
+  "portfolio_return_percent": -1.6140314548416062,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "BLACKBUCK.NS",
-      "pnl": 18.8997802734375
+      "symbol": "NORTHARC.NS",
+      "pnl": -366.5999999999991
     },
     {
-      "symbol": "SHYAMMETL.NS",
-      "pnl": -134.40029296874945
-    },
-    {
-      "symbol": "IRISDOREME.NS",
-      "pnl": -59.83985733032285
+      "symbol": "NRBBEARING.NS",
+      "pnl": 214.49999999999932
     },
     {
       "symbol": "STEELXIND.NS",
-      "pnl": -112.04952507018982
+      "pnl": 147.51061386108378
     },
     {
-      "symbol": "FIVESTAR.NS",
-      "pnl": -170.3000000000003
+      "symbol": "MOTILALOFS.NS",
+      "pnl": 6.0
     },
     {
-      "symbol": "DEVYANI.NS",
-      "pnl": -709.0999999999997
+      "symbol": "GRANULES.NS",
+      "pnl": -186.60000000000014
     },
     {
-      "symbol": "RAMRAT.NS",
-      "pnl": -50.15041503906173
+      "symbol": "JKPAPER.NS",
+      "pnl": -670.7999999999997
+    },
+    {
+      "symbol": "HINDZINC.NS",
+      "pnl": -91.20004882812509
+    },
+    {
+      "symbol": "SYRMA.NS",
+      "pnl": 211.00000000000023
+    },
+    {
+      "symbol": "IRISDOREME.NS",
+      "pnl": -91.54000000000016
     },
     {
       "symbol": "WELCORP.NS",
-      "pnl": -42.399999999999636
+      "pnl": -239.99951171874955
     },
     {
-      "symbol": "SOLARA.NS",
-      "pnl": -64.49999999999932
-    },
-    {
-      "symbol": "MAHABANK.NS",
-      "pnl": -61.03004150390635
+      "symbol": "DIACABS.NS",
+      "pnl": -180.0
     }
   ],
-  "open_positions_now": 29
+  "open_positions_now": 24
 }

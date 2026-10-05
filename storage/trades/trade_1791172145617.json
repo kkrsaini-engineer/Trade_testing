@@ -1,0 +1,18 @@
+{
+  "symbol": "SAMBHV.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 8,
+  "entry_price": 154.0,
+  "exit_price": 168.69,
+  "status": "OPEN",
+  "realized_pnl": 290.4999999999997,
+  "realized_pnl_percent": 9.538961038961038,
+  "max_profit_percent": 9.538961038961038,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 64.88,
+  "reasons": "Break-even stop activated.; Excellent risk/reward profile.; High market volatility.; High market volatility.",
+  "id": "trade_1791172145617",
+  "timestamp": 1791172145.6173055
+}

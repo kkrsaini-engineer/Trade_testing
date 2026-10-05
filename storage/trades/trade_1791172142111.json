@@ -1,0 +1,18 @@
+{
+  "symbol": "JKPAPER.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 24,
+  "entry_price": 408.0,
+  "exit_price": 380.05,
+  "status": "CLOSED",
+  "realized_pnl": -670.7999999999997,
+  "realized_pnl_percent": -6.850490196078429,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 5.318627450980389,
+  "regime": "SIDEWAYS",
+  "confidence": 51.09,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1791172142111",
+  "timestamp": 1791172142.1112607
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "GRANULES.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 3,
+  "entry_price": 879.25,
+  "exit_price": 817.05,
+  "status": "CLOSED",
+  "realized_pnl": -186.60000000000014,
+  "realized_pnl_percent": -7.074210975263013,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 6.596531134489622,
+  "regime": "SIDEWAYS",
+  "confidence": 46.36,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1791172137011",
+  "timestamp": 1791172137.0111437
+}

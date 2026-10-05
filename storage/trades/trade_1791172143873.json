@@ -1,0 +1,18 @@
+{
+  "symbol": "HINDZINC.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 4,
+  "entry_price": 590.9500122070312,
+  "exit_price": 568.15,
+  "status": "CLOSED",
+  "realized_pnl": -91.20004882812509,
+  "realized_pnl_percent": -3.8581964186580984,
+  "max_profit_percent": 1.6921884400377059,
+  "max_drawdown_percent": 4.653525956337057,
+  "regime": "SIDEWAYS",
+  "confidence": 46.62,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Circuit breaker active.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Active stop-loss triggered.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Circuit breaker active.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.",
+  "id": "trade_1791172143873",
+  "timestamp": 1791172143.8730366
+}
