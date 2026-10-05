@@ -31,6 +31,7 @@ from risk.portfolio_rules import PortfolioRulesEngine
 from fundamental.fundamental import FundamentalEngine
 from news.sentiment_engine import SentimentEngine
 from market.market_regime import MarketRegimeEngine
+from market.market_breadth import MarketBreadthEngine
 from market.volatility import fetch_india_vix
 from data.news_data import NewsDataProvider
 from data.delivery_data import DeliveryDataProvider, symbol_without_suffix
@@ -153,6 +154,7 @@ class MarketScanner:
         self.fundamental = FundamentalEngine()
         self.sentiment = SentimentEngine()
         self.regime = MarketRegimeEngine()
+        self.breadth_engine = MarketBreadthEngine()
         self._news_provider = NewsDataProvider()
         self._market_headlines: list[str] | None = None  # lazy-fetched, shared across all symbols in a scan run
         self._delivery_provider = DeliveryDataProvider()
@@ -462,11 +464,150 @@ class MarketScanner:
             and "no data returned for" in str(diagnostics.get("error", "")).lower()
         )
 
+    # BREADTH_WEIGHT (2026-10-05, user-requested after live-repo audit):
+    # how strongly today's real cross-symbol advance/decline breadth
+    # pulls the per-stock market_score below. 0.0 would mean breadth is
+    # ignored entirely (old behavior); 1.0 would mean breadth completely
+    # REPLACES the per-stock EMA regime, discarding that stock's own
+    # trend information. 0.4 is a deliberate, undocumented-by-backtest
+    # judgment call (same caveat market/market_breadth.py's own docstring
+    # already gives for turning breadth on at all) — a mid-weight blend
+    # so a stock still firmly in its OWN uptrend isn't automatically
+    # forced into a SELL-eligible score during a broad selloff, but a
+    # stock that is ALREADY SIDEWAYS/BEAR on its own terms gets pushed
+    # the rest of the way down when the wider market is genuinely
+    # falling. Tune this (or revert to 0.0) once enough post-change
+    # trade history exists to actually compare outcomes.
+    _BREADTH_WEIGHT = 0.4
+
+    def _compute_universe_context(
+        self, bundles: dict[str, Any]
+    ) -> dict[str, Any]:
+        """
+        Real, non-fabricated cross-symbol context for THIS scan run,
+        built entirely from data already fetched in scan_symbols()'s
+        Pass 1 — no new network/API calls.
+
+        Fixes two gaps found during the 2026-10-05 live-repo audit (see
+        BUG_AUDIT_2026-09-18.md's already-known note that per-stock
+        "market_regime" is not the real Nifty/Sensex): confirmed live
+        that on 2026-09-24 (a real ~-1.5% Nifty selloff day per news),
+        the per-stock EMA50/200 regime still read BULL for most scanned
+        stocks (a single day cannot flip a 50/200-day trend filter at
+        ANY aggregation level, including the real index itself) — so
+        SELL's market_score<=40 gate essentially never fired that day.
+
+        1. sector_score — FIX #8 (see _evaluate_market_context()) left
+           this permanently None because "sector rotation needs a
+           cross-symbol sector-index dataframe this per-symbol scan
+           doesn't have" (market/sector_rotation.py's SectorRotationEngine
+           needs real multi-day sector-INDEX price history, which this
+           scan does not fetch and which this fix does NOT add — that
+           engine is still unwired). Instead, this builds a lighter,
+           genuinely-real same-day proxy: the average of this run's own
+           per-stock market_score (BULL=75/SIDEWAYS=50/BEAR=25, same
+           scale sector_score already expects — see buy_strategy.py's
+           `checks["sector"] = sector_score >= 70`) across every symbol
+           sharing a sector, using the sector label yfinance already
+           gives each symbol (data/fundamental_data.py). A sector where
+           most scanned members are individually BEAR pulls every
+           member's sector_score down even if one one stock's own trend
+           still looks fine — real peer-group signal, not a fabricated
+           constant.
+
+        2. breadth_score — wires up market/market_breadth.py's
+           MarketBreadthEngine (previously built but never fed any data
+           — see that module's own docstring) using the SAME advance/
+           decline idea it already proposes: today's close vs
+           yesterday's close, and today's close vs this symbol's own
+           trailing-year high/low, counted across every symbol in
+           THIS scan. ad_percent (0-100, high = more advancers) is on
+           the same BUY-oriented scale as market_score and is blended
+           into it in _evaluate_market_context() via _BREADTH_WEIGHT —
+           unlike the slow EMA regime, this reacts the same day a real
+           broad move happens.
+
+        Returns {"sector_scores": {sector: float}, "breadth_score":
+        float | None}. Never raises — any single bad/short bundle is
+        skipped (mirrors Pass 1's own fundamental-score loop), and an
+        empty/too-small universe yields {} / None so callers fall back
+        to today's existing (no blend) behavior exactly as if this
+        were never called.
+        """
+        sector_market_scores: dict[str, list[float]] = {}
+        advances = 0
+        declines = 0
+        new_highs = 0
+        new_lows = 0
+        counted = 0
+
+        for bundle in bundles.values():
+            dataframe = getattr(bundle, "market", None)
+            if dataframe is None or dataframe.empty or len(dataframe) < 2:
+                continue
+            try:
+                df = self.features.generate(dataframe)
+                df = self.regime.evaluate(df)
+                latest = df.iloc[-1]
+                prev_close = float(df["close"].iloc[-2])
+                latest_close = float(latest["close"])
+
+                regime_label = latest["market_regime"]
+                score = {"BULL": 75.0, "SIDEWAYS": 50.0, "BEAR": 25.0}.get(
+                    regime_label, 50.0
+                )
+
+                fundamentals = getattr(bundle, "fundamentals", None) or {}
+                sector = fundamentals.get("sector")
+                if sector:
+                    sector_market_scores.setdefault(sector, []).append(score)
+
+                if latest_close > prev_close:
+                    advances += 1
+                elif latest_close < prev_close:
+                    declines += 1
+
+                if latest_close >= float(df["close"].max()):
+                    new_highs += 1
+                if latest_close <= float(df["close"].min()):
+                    new_lows += 1
+                counted += 1
+            except Exception:
+                continue
+
+        sector_scores = {
+            sector: sum(scores) / len(scores)
+            for sector, scores in sector_market_scores.items()
+            if scores
+        }
+
+        breadth_score = None
+        # MarketBreadthEngine divides by (advance + decline) — needs at
+        # least one of each to be a meaningful ratio rather than a
+        # degenerate 0/0 or all-one-side reading from a tiny/odd batch.
+        if counted >= 10 and (advances + declines) > 0:
+            try:
+                breadth_df = pd.DataFrame(
+                    {
+                        "advance": [advances],
+                        "decline": [declines],
+                        "new_high": [new_highs],
+                        "new_low": [new_lows],
+                    }
+                )
+                breadth_result = self.breadth_engine.evaluate(breadth_df)
+                breadth_score = float(breadth_result["ad_percent"].iloc[-1])
+            except Exception:
+                breadth_score = None
+
+        return {"sector_scores": sector_scores, "breadth_score": breadth_score}
+
     def _evaluate_market_context(
         self,
         symbol: str,
         bundle: Any = None,
         universe_buy_fundamental_scores: list[float] | None = None,
+        universe_context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """
         SINGLE SOURCE OF TRUTH for market analysis: data fetch, feature
@@ -492,6 +633,13 @@ class MarketScanner:
         per-symbol monitoring calls, which don't have a same-run
         universe to build) falls back to the old absolute-score
         behavior unchanged.
+
+        universe_context (2026-10-05): the {"sector_scores", "breadth_
+        score"} dict built by _compute_universe_context() from this
+        same scan run's Pass 1 bundles — see that method's docstring.
+        None (default, same reasoning as universe_buy_fundamental_scores
+        above) leaves sector_score at None and market_score un-blended,
+        i.e. byte-for-byte the old behavior.
         """
         diagnostics: dict[str, Any] = {}
 
@@ -686,6 +834,32 @@ class MarketScanner:
             diagnostics["fii_dii_bias"] = fii_dii_bias
             diagnostics["fii_dii_net_cr"] = fii_dii.get("combined_net_cr")
 
+        # BREADTH BLEND (2026-10-05 — see _compute_universe_context()'s
+        # docstring for the full why): the per-stock market_score above
+        # is EMA50/200-based and structurally cannot react to a single
+        # day's real market-wide move (confirmed live: 2026-09-24's real
+        # ~-1.5% Nifty selloff still read BULL for most scanned stocks).
+        # breadth_score is today's real advance/decline ad_percent across
+        # this whole scan run — same 0-100, high=bullish scale as
+        # market_score — blended in at _BREADTH_WEIGHT so a stock firmly
+        # in its own uptrend isn't forced down to SELL-eligible on a
+        # broad red day, but one already SIDEWAYS/BEAR on its own terms
+        # gets pulled the rest of the way when the wider market is
+        # genuinely falling. None (no universe_context, or too small/odd
+        # a batch for _compute_universe_context() to trust) leaves
+        # market_score exactly as computed above — unchanged behavior.
+        breadth_score = (universe_context or {}).get("breadth_score")
+        if breadth_score is not None:
+            market_score = max(
+                0.0,
+                min(
+                    100.0,
+                    market_score * (1 - self._BREADTH_WEIGHT)
+                    + breadth_score * self._BREADTH_WEIGHT,
+                ),
+            )
+            diagnostics["breadth_score"] = round(breadth_score, 2)
+
         # Internal passthrough (not used by the report) so callers
         # like the Paper Trading Engine can re-evaluate an existing
         # position (via ExitStrategyEngine) using the SAME already-
@@ -740,7 +914,24 @@ class MarketScanner:
         # method, so every consumer can tell "unavailable" apart from
         # "actually neutral" and redistribute weight instead of quietly
         # diluting toward 50.
+        #
+        # BUGFIX (2026-10-05): this used to be an unconditional None —
+        # SectorRotationEngine's real-sector-INDEX data is still not
+        # fetched anywhere (that remains future work, not done here: no
+        # verified live sector-index ticker mapping exists yet — see
+        # _compute_universe_context()'s docstring), but a lighter, still
+        # genuinely-real proxy now IS available from this same run:
+        # _compute_universe_context() averages every OTHER scanned
+        # symbol's own per-stock market_score within this symbol's
+        # sector. Falls back to None (old behavior, unchanged) when no
+        # universe_context was passed (e.g. evaluate_position()'s
+        # monitoring path) or this symbol's sector had no peers in
+        # today's scanned batch.
         sector_score = None
+        if universe_context is not None:
+            sector_score = (universe_context.get("sector_scores") or {}).get(
+                diagnostics.get("sector")
+            )
 
         # FIX #8: was `dataframe["breadth"] = 50.0`. Same underlying gap
         # as sector_score above — market breadth needs market-wide
@@ -931,6 +1122,7 @@ class MarketScanner:
         market_state: dict[str, Any],
         bundle: Any = None,
         universe_buy_fundamental_scores: list[float] | None = None,
+        universe_context: dict[str, Any] | None = None,
     ) -> ScanResult:
         logger.info("Scanning asset node: %s", symbol)
         diagnostics = {}
@@ -940,6 +1132,7 @@ class MarketScanner:
                 symbol,
                 bundle=bundle,
                 universe_buy_fundamental_scores=universe_buy_fundamental_scores,
+                universe_context=universe_context,
             )
             dataframe = context["dataframe"]
             fundamentals = context["fundamentals"]
@@ -1133,6 +1326,7 @@ class MarketScanner:
         market_state: dict[str, Any],
         bundle: Any = None,
         universe_buy_fundamental_scores: list[float] | None = None,
+        universe_context: dict[str, Any] | None = None,
     ) -> ScanResult:
         """
         MONITORING-ONLY evaluation for an EXISTING open position.
@@ -1168,6 +1362,11 @@ class MarketScanner:
         (old absolute-score fundamental behavior) unless a caller
         happens to have one on hand (e.g. reusing the same day's entry
         scan's distribution).
+
+        universe_context (2026-10-05): same reasoning — optional,
+        passed straight through; defaults to None (sector_score stays
+        None, market_score un-blended) unless a caller has that same
+        day's entry-scan universe_context on hand to reuse.
         """
         logger.info("Evaluating existing position: %s", symbol)
         diagnostics: dict[str, Any] = {}
@@ -1177,6 +1376,7 @@ class MarketScanner:
                 symbol,
                 bundle=bundle,
                 universe_buy_fundamental_scores=universe_buy_fundamental_scores,
+                universe_context=universe_context,
             )
         except Exception as exc:
             logger.exception("Data Fetch stage failed for %s", symbol)
@@ -1453,6 +1653,14 @@ class MarketScanner:
             except Exception:
                 continue
 
+        # BUGFIX (2026-10-05, live-repo audit — see
+        # _compute_universe_context()'s docstring): built once per scan
+        # run, from the same Pass 1 bundles, no extra fetches. Reused by
+        # EVERY symbol below exactly like universe_buy_fundamental_scores
+        # above (same reasoning: today's cross-symbol breadth/sector
+        # context is identical for every symbol in this one run).
+        universe_context = self._compute_universe_context(bundles)
+
         # PASS 2: the original per-symbol evaluation loop, unchanged
         # except for reusing the pre-fetched bundle (instead of letting
         # scan_symbol() fetch it fresh) and passing down the population
@@ -1466,6 +1674,7 @@ class MarketScanner:
                 market_state=market_state,
                 bundle=bundles.get(symbol),
                 universe_buy_fundamental_scores=universe_buy_fundamental_scores,
+                universe_context=universe_context,
             )
             results.append(result)
 
