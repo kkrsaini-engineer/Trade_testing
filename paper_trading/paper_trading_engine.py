@@ -35,6 +35,7 @@ from paper_trading.virtual_portfolio import VirtualPortfolio
 from portfolio.correlation import compute_portfolio_correlation, fetch_correlation_inputs
 from risk.exit_strategy import ExitStrategyEngine
 from risk.risk_manager import RiskManager
+from risk.transaction_costs import CostModel, net_exit_price, round_trip_cost
 from storage.trades.trade_diary import TradeDiary
 from storage.trades.trade_store import TradeStore
 
@@ -260,6 +261,7 @@ class PaperTradingEngine:
         diary: TradeDiary | None = None,
         trade_store: TradeStore | None = None,
         exit_engine: ExitStrategyEngine | None = None,
+        cost_model: CostModel | None = None,
     ):
         self.scanner = scanner or MarketScanner()
         self.portfolio = portfolio or VirtualPortfolio()
@@ -270,6 +272,9 @@ class PaperTradingEngine:
         # ExitEngine — see PHASE19_NOTES.md. Kept as the sole exit-decision
         # source for open positions (one live vote per signal).
         self.exit_engine = exit_engine or ExitStrategyEngine()
+        # 2026-10-06 (BUG_AUDIT_2026-10-05_PROFITABILITY.md H13): booked
+        # at exit — see risk/transaction_costs.py. Rates from config.py.
+        self.cost_model = cost_model if cost_model is not None else CostModel.from_config()
         # Phase 26 (see PHASE26_NOTES.md, point 11): lightweight OHLCV-only
         # provider (no fundamentals/news) for the real portfolio-correlation
         # calc below — deliberately NOT the full DataEngine bundle used for
@@ -741,7 +746,17 @@ class PaperTradingEngine:
             if exit_eval.action == "FULL_EXIT":
                 closed = None
                 try:
-                    closed = self.portfolio.engine.close_position(symbol=symbol, exit_price=actual_exit_price)
+                    # 2026-10-06 (audit H13): P&L is booked net of the full
+                    # round-trip cost; the diary/journal keep the market price.
+                    trade_costs = round_trip_cost(
+                        pos.direction, pos.entry_price, actual_exit_price, pos.quantity, self.cost_model,
+                    )
+                    closed = self.portfolio.engine.close_position(
+                        symbol=symbol,
+                        exit_price=net_exit_price(
+                            pos.direction, pos.entry_price, actual_exit_price, pos.quantity, self.cost_model,
+                        ),
+                    )
                     if closed is not None:
                         self.trade_store.save_trade({
                             "symbol": closed.symbol, "direction": closed.direction, "action": "CLOSE",
@@ -753,7 +768,7 @@ class PaperTradingEngine:
                             "max_drawdown_percent": closed.max_drawdown_percent,
                             "regime": result.diagnostics.get("market_regime", ""),
                             "confidence": result.confidence,
-                            "reasons": "; ".join(exit_eval.reasons),
+                            "reasons": "; ".join(exit_eval.reasons + [f"costs Rs {trade_costs:.2f} deducted"]),
                         })
                         exit_reason_text = exit_eval.diagnostics.get("exit_reason") or (
                             exit_eval.reasons[-1] if exit_eval.reasons else "N/A"
@@ -823,8 +838,14 @@ class PaperTradingEngine:
                 exit_qty = max(1, round(pos.quantity * exit_eval.exit_percent / 100.0))
                 exit_qty = min(exit_qty, pos.quantity)
                 try:
+                    trade_costs = round_trip_cost(
+                        pos.direction, pos.entry_price, actual_exit_price, exit_qty, self.cost_model,
+                    )
                     self.portfolio.engine.partial_exit(
-                        symbol=symbol, quantity=exit_qty, exit_price=actual_exit_price,
+                        symbol=symbol, quantity=exit_qty,
+                        exit_price=net_exit_price(
+                            pos.direction, pos.entry_price, actual_exit_price, exit_qty, self.cost_model,
+                        ),
                     )
                 except Exception as exc:
                     logger.exception("Portfolio Update stage (partial exit) failed for %s — NON-RECOVERABLE, aborting cycle", symbol)
@@ -867,7 +888,7 @@ class PaperTradingEngine:
                         "max_drawdown_percent": remaining.max_drawdown_percent,
                         "regime": result.diagnostics.get("market_regime", ""),
                         "confidence": result.confidence,
-                        "reasons": "; ".join(exit_eval.reasons),
+                        "reasons": "; ".join(exit_eval.reasons + [f"costs Rs {trade_costs:.2f} deducted"]),
                     })
                     partial_exits_today.append({
                         "symbol": symbol, "direction": pos.direction,
@@ -893,7 +914,7 @@ class PaperTradingEngine:
                         "max_drawdown_percent": closed.max_drawdown_percent,
                         "regime": result.diagnostics.get("market_regime", ""),
                         "confidence": result.confidence,
-                        "reasons": "; ".join(exit_eval.reasons),
+                        "reasons": "; ".join(exit_eval.reasons + [f"costs Rs {trade_costs:.2f} deducted"]),
                     })
                     exit_reason_text = exit_eval.diagnostics.get("exit_reason") or (
                         exit_eval.reasons[-1] if exit_eval.reasons else "N/A"

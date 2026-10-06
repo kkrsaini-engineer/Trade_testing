@@ -77,6 +77,12 @@ class VirtualPortfolio:
                 engine.state.open_positions[symbol] = PortfolioPosition(**pos)
             for pos in saved.get("closed_positions", []):
                 engine.state.closed_positions.append(PortfolioPosition(**pos))
+            # 2026-10-06 (BUG_AUDIT_2026-10-05_PROFITABILITY.md M5): re-derive
+            # cash and total P&L from the position ledger on load, so state
+            # files saved by the old (drifting) accounting self-correct
+            # instead of carrying the error forward.
+            engine._recalculate_capital()
+            engine._refresh_total_pnl()
             self._symbol_sector = saved.get("symbol_sector", {})
             return engine
 
