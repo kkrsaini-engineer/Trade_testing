@@ -129,7 +129,14 @@ def test_breadth_score_is_none_when_batch_is_too_small_to_trust():
 def test_empty_bundle_batch_is_handled_safely():
     scanner = MarketScanner()
     context = scanner._compute_universe_context({})
-    assert context == {"sector_scores": {}, "breadth_score": None}
+    # 2026-10-06: two extra keys (sector_peer_stats, symbol_sector_scores)
+    # support excluding a symbol from its own sector average (audit M10).
+    assert context == {
+        "sector_scores": {},
+        "breadth_score": None,
+        "sector_peer_stats": {},
+        "symbol_sector_scores": {},
+    }
 
 
 # ==========================================================
