@@ -23,6 +23,8 @@ import time
 from datetime import date
 from typing import Any
 
+import pandas as pd
+
 from core.logger import get_logger
 from core.notifications import notify, severity_from_magnitude
 from core.trading_calendar import is_trading_day, now_ist
@@ -95,9 +97,13 @@ def _emergency_exit_breakdown(
             f"'{validation_rejection_reason}'."
         )
     else:
+        # 2026-10-06: held positions are now judged against
+        # RiskManager.MAX_EXIT_RISK (monitoring mode), not the entry
+        # threshold — report whichever one was actually applied.
+        threshold = diag.get("risk_threshold", RiskManager.MAX_TOTAL_RISK)
         trigger = (
             f"Plain weighted score exceeded the safety threshold "
-            f"(RiskManager.MAX_TOTAL_RISK={RiskManager.MAX_TOTAL_RISK:.0f})."
+            f"({threshold:.0f})."
         )
     components = (
         f"atr={risk_result.atr_risk:.0f} gap={risk_result.gap_risk:.0f} "
@@ -107,6 +113,82 @@ def _emergency_exit_breakdown(
         f"correlation={risk_result.correlation_risk:.0f} capital={risk_result.capital_risk:.0f}"
     )
     return f" {trigger} Raw components (0-100 each): {components}."
+
+
+# RiskResult.diagnostics flags that mean "the system itself decided to
+# stop" — portfolio-level kill switches that must still close a position
+# even on the day it was opened. See risk/risk_manager.py's SYSTEM SAFETY
+# OVERRIDES section.
+_HARD_OVERRIDE_FLAGS = ("circuit_override", "emergency_stop", "daily_loss_lock")
+
+
+def _should_force_exit(risk_result: Any, entered_today: bool) -> bool:
+    """
+    BUGFIX (2026-10-06, BUG_AUDIT_2026-10-05_PROFITABILITY.md C1/C2):
+    whether a RiskManager verdict should force-close a HELD position.
+
+    Before: `not risk_result.safe`, full stop — and the paper-trading
+    workflow runs ~2 minutes after the Morning Executor opens positions,
+    so 234 real trades were opened and force-closed on the same morning
+    (median 2.4 minutes apart) by a risk view the executor never applied
+    at entry. The comment above the old line said the intent was hard
+    events only ("circuit breaker, VIX spike, daily loss lock, etc.").
+
+    Now:
+      - safe -> never force.
+      - a system safety override fired (adverse circuit, portfolio
+        emergency stop, daily loss lock) -> force, even on entry day.
+      - otherwise (weighted score over RiskManager.MAX_EXIT_RISK, or an
+        upstream validation reject) -> force, EXCEPT on the day the
+        position was opened. The stop-loss is unaffected by this guard
+        and still protects an entry-day position.
+    """
+    if risk_result.safe:
+        return False
+
+    diag = getattr(risk_result, "diagnostics", None) or {}
+
+    if any(diag.get(flag) for flag in _HARD_OVERRIDE_FLAGS):
+        return True
+
+    return not entered_today
+
+
+def _previous_session_range(
+    dataframe: Any, today: str, entry_date: str | None
+) -> dict[str, float] | None:
+    """
+    2026-10-06 (BUG_AUDIT_2026-10-05_PROFITABILITY.md H1/M11): the
+    previous full trading session's open/high/low, IF this position was
+    already held during it — else None.
+
+    Monitoring runs once a day at ~9:20 on today's partial bar, so the
+    rest of yesterday's session was never checked against the stop or
+    targets (real examples: IKIO −10.66%, APOLLO −10.62% exits against
+    ~−5% configured stops). Only returned when the LAST row is today's
+    bar (so the row before it is genuinely the previous session) and
+    that previous session is on/after the entry date. If today's bar
+    isn't in the data yet, the last row already IS the previous session
+    and the normal day_high/day_low check covers it — so None here.
+    """
+    if dataframe is None or "timestamp" not in getattr(dataframe, "columns", []) or len(dataframe) < 2:
+        return None
+    try:
+        last_date = pd.Timestamp(dataframe["timestamp"].iloc[-1]).date().isoformat()
+        prev_row = dataframe.iloc[-2]
+        prev_date = pd.Timestamp(prev_row["timestamp"]).date().isoformat()
+    except (TypeError, ValueError):
+        return None
+    if last_date != today or not entry_date or prev_date < entry_date:
+        return None
+    try:
+        return {
+            "open": float(prev_row["open"]),
+            "high": float(prev_row["high"]),
+            "low": float(prev_row["low"]),
+        }
+    except (KeyError, TypeError, ValueError):
+        return None
 
 
 class PaperTradingEngine:
@@ -340,6 +422,9 @@ class PaperTradingEngine:
             trade_id = self._find_open_trade_id(symbol)
             diary_record = self.diary.get_diary(trade_id) if trade_id else None
             holding_days = len(diary_record["daily_log"]) if diary_record else 0
+            # 2026-10-06 (audit C2): opened this same trading day? (The
+            # Morning Executor opens positions minutes before this runs.)
+            entered_today = bool(diary_record) and diary_record.get("entry_date") == today
 
             # Thesis-decay time exit (Point 16, PHASE28_NOTES.md). Use
             # THIS position's HELD direction's own confidence — not
@@ -367,6 +452,17 @@ class PaperTradingEngine:
                 logger.warning("No dataframe available to evaluate exit for %s; holding by default.", symbol)
                 monitoring_errors.append(f"{symbol} [Data Fetch] MissingDataError: no market data available")
                 continue
+
+            # 2026-10-06 (audit H1/M11): previous session's range, if held
+            # through it. Folded into highest/lowest BEFORE the exit check
+            # (so the trailing stop reflects it) and passed to the exit
+            # engine to check yesterday's stop/target touches.
+            prev_session = _previous_session_range(
+                dataframe, today, diary_record.get("entry_date") if diary_record else None
+            )
+            if prev_session is not None:
+                self.portfolio.engine.observe_range(symbol, prev_session["high"], prev_session["low"])
+                pos = self.portfolio.engine.state.open_positions[symbol]
 
             # RiskManager's own verdict for this symbol THIS cycle — used
             # below both as the `risk` argument ExitStrategyEngine expects
@@ -401,6 +497,15 @@ class PaperTradingEngine:
                 "lowest_price": pos.lowest_price,
                 "day_high": result.diagnostics.get("latest_high"),
                 "day_low": result.diagnostics.get("latest_low"),
+                # 2026-10-06 (audit H2/H3/H4/H5): open for realistic
+                # gap-through fills; persisted one-time target1 flag and
+                # tighten-only stop level.
+                "day_open": result.diagnostics.get("latest_open"),
+                "prev_day_open": prev_session["open"] if prev_session else None,
+                "prev_day_high": prev_session["high"] if prev_session else None,
+                "prev_day_low": prev_session["low"] if prev_session else None,
+                "partial_taken": pos.partial_taken,
+                "stop_level": pos.stop_level,
                 "max_drawdown_percent": pos.max_drawdown_percent,
                 # Thesis-decay time exit inputs (Point 16,
                 # PHASE28_NOTES.md) — both None for a position with no
@@ -413,7 +518,10 @@ class PaperTradingEngine:
                 # same hard-risk-override behavior risk/exit_engine.py had,
                 # now expressed through ExitStrategyEngine's own
                 # emergency_exit mechanism instead of being lost.
-                "emergency_exit": not risk_result.safe,
+                # 2026-10-06 (audit C1/C2): see _should_force_exit() — hard
+                # overrides always; a weighted/validation "unsafe" verdict
+                # (now judged at MAX_EXIT_RISK) never on the entry day.
+                "emergency_exit": _should_force_exit(risk_result, entered_today),
                 "emergency_exit_reason": (
                     f"Risk engine flagged this symbol as unsafe "
                     f"(grade: {risk_result.risk_grade}, total_risk: "
@@ -591,6 +699,19 @@ class PaperTradingEngine:
                 else "NOT HIT" if dist_stop is not None else "N/A"
             )
 
+            # 2026-10-06 (audit H4/H5): remember today's live stop so
+            # tomorrow's can only be tighter (ExitStrategyEngine floors the
+            # recomputed stop by this). Saved with the portfolio state.
+            active_stop_now = exit_eval.diagnostics.get("active_stop")
+            if active_stop_now is not None and exit_eval.action != "FULL_EXIT":
+                pos.stop_level = float(active_stop_now)
+                # 2026-10-06 (audit M11): today's bar range so far — only
+                # AFTER the exit check, so today's high can't raise the
+                # trailing stop that today's low is checked against.
+                self.portfolio.engine.observe_range(
+                    symbol, result.diagnostics.get("latest_high"), result.diagnostics.get("latest_low"),
+                )
+
             if exit_eval.action == "FULL_EXIT":
                 closed = None
                 try:
@@ -704,6 +825,11 @@ class PaperTradingEngine:
                 still_open = symbol in self.portfolio.engine.state.open_positions
                 if still_open:
                     remaining = self.portfolio.engine.state.open_positions[symbol]
+                    # 2026-10-06 (audit H3): target1 is booked once. Only
+                    # a TARGET partial sets this — the high-volatility 50%
+                    # trim is a different rule and must not block target1.
+                    if exit_eval.diagnostics.get("partial_exit"):
+                        remaining.partial_taken = True
                     trigger = self._classify_exit_trigger(exit_eval)
                     self.trade_store.save_trade({
                         "symbol": symbol, "direction": pos.direction, "action": "PARTIAL_CLOSE",

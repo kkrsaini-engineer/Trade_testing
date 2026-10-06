@@ -117,6 +117,14 @@ class VirtualPortfolio:
                 "lowest_price": p.lowest_price, "max_profit_percent": p.max_profit_percent,
                 "max_drawdown_percent": p.max_drawdown_percent, "status": p.status,
                 "updated_at": p.updated_at,
+                # 2026-10-06 (audit H3/H4/H5): must survive the daily
+                # save/reload, or target1 would re-fire and the stop could
+                # widen again the very next day (same lesson as the
+                # realized_pnl_percent persistence fix above). Loading an
+                # older file without these keys falls back to the
+                # dataclass defaults (False / None) via PortfolioPosition(**pos).
+                "partial_taken": p.partial_taken,
+                "stop_level": p.stop_level,
             }
 
         payload = {
