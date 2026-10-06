@@ -21,6 +21,10 @@ from datetime import date, datetime, time, timedelta, timezone
 
 IST_OFFSET = timedelta(hours=5, minutes=30)
 
+# 2026-10-06 (BUG_AUDIT_2026-10-05_PROFITABILITY.md H12): a real tzinfo
+# for IST, so now_ist() carries the correct offset label.
+IST_TZ = timezone(IST_OFFSET, "IST")
+
 # NSE 2026 trading holidays (weekday ones only — the 4 that fall on a
 # Saturday/Sunday are already non-trading days and listed separately by
 # NSE for information only; they don't need to be in this set since
@@ -90,7 +94,14 @@ def now_ist() -> datetime:
     previous_trading_day()/next_trading_day() below when no explicit
     date is given (see the 2026-09-18 BUGFIX note on is_trading_day())
     — not just for notification timestamps."""
-    return datetime.now(timezone.utc) + IST_OFFSET
+    # BUGFIX (2026-10-06, audit H12): was `datetime.now(timezone.utc) +
+    # IST_OFFSET` — the IST wall-clock VALUE but still labelled UTC
+    # (+00:00). Anything that compared it with a genuinely-aware time,
+    # or called .timestamp()/.isoformat() on it, was 5.5 hours off — e.g.
+    # the morning executor's "news published after last night's scan"
+    # cutoff. Same wall-clock value now, correct label, so .date(),
+    # .time() and strftime() results are unchanged for every caller.
+    return datetime.now(IST_TZ)
 
 
 # NSE normal equity market session: 9:15 AM - 3:30 PM IST.
