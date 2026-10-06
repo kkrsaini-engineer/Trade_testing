@@ -144,6 +144,21 @@ class RiskManager:
     # other two files' thresholds again.
     MAX_DAILY_LOSS = portfolio_limits.DAILY_LOSS_EMERGENCY
 
+    # BUGFIX (2026-10-06, BUG_AUDIT_2026-10-05_PROFITABILITY.md C1/C2):
+    # threshold for an ALREADY-OPEN position (monitoring=True below). It
+    # used to be the same 35 as for a NEW entry — no buffer at all, so a
+    # position picked right at the entry line was sold on the next tiny
+    # tick, and 467 of 519 real closed trades exited this way (avg hold
+    # 2.2 days, net ~+₹90 — pure churn). A higher exit line than entry
+    # line (hysteresis) is standard: "risky enough not to BUY" is not the
+    # same as "risky enough to SELL what you already hold".
+    # 45 chosen from the real logged components of the 416 weighted-score
+    # exits: under the monitoring-mode rules below their median total is
+    # 24.5 and max 31.3, so none of them would exit; reaching 45 needs a
+    # genuine deterioration (adverse gap + HIGH volatility + bad news /
+    # BEAR market, etc.). Judgment call, not backtested — tune with data.
+    MAX_EXIT_RISK = 45.0
+
     def evaluate(
         self,
         validation: ValidationResult,
@@ -151,7 +166,27 @@ class RiskManager:
         dataframe: pd.DataFrame,
         portfolio: dict[str, Any],
         market: dict[str, Any],
+        monitoring: bool = False,
     ) -> RiskResult:
+        """
+        monitoring (2026-10-06): False (default) = the original NEW-ENTRY
+        evaluation, byte-for-byte unchanged. True = evaluating an
+        ALREADY-OPEN position (execution/scanner.py's evaluate_position()),
+        where three entry-only penalties don't belong — see the
+        BUG_AUDIT_2026-10-05_PROFITABILITY.md C1-C4 notes inline below:
+          1. gap risk only counts when the gap is AGAINST the held
+             direction (a gap-up on a long is a gain, not a risk);
+          2. portfolio-count/exposure risk is excluded (it answers "is
+             there room for one MORE position", not "is THIS one unsafe");
+          3. the +20 "turnover <= 0" liquidity penalty is skipped when the
+             dataframe has no "turnover" column at all (nothing in the
+             pipeline produces one, so it was a constant fake penalty);
+        and `safe` is judged against MAX_EXIT_RISK instead of
+        MAX_TOTAL_RISK. System safety overrides (circuit breaker,
+        portfolio emergency stop, daily loss lock) still force
+        safe=False exactly as before.
+        """
+        risk_threshold = self.MAX_EXIT_RISK if monitoring else self.MAX_TOTAL_RISK
 
         if not validation.passed:
 
@@ -225,7 +260,33 @@ class RiskManager:
 
         gap_down = bool(latest.get("gap_down", False))
 
-        if gap_up or gap_down:
+        if monitoring:
+
+            # BUGFIX (2026-10-06, audit C3): for a HELD position only a gap
+            # AGAINST it is a risk. Direction-blind scoring made a long's
+            # favourable gap-up add the same +75 as a gap-down — 314 of the
+            # 467 forced exits carried gap=75, and in 136 of them that gap
+            # was the entire margin over the line. decision.action here is
+            # the HELD direction (scanner.evaluate_position() passes
+            # held_decision).
+            held_direction = str(getattr(decision, "action", "BUY")).upper()
+
+            adverse_gap = (
+                (held_direction == "BUY" and gap_down)
+                or (held_direction == "SELL" and gap_up)
+            )
+
+            if adverse_gap:
+
+                gap_risk = 75.0
+
+                warnings.append("Gap against the held position.")
+
+            else:
+
+                gap_risk = 10.0
+
+        elif gap_up or gap_down:
 
             gap_risk = 75.0
 
@@ -318,7 +379,17 @@ class RiskManager:
 
             liquidity_risk += 20.0
 
-        if turnover <= 0:
+        # BUGFIX (2026-10-06, audit M1 — monitoring only for now): no
+        # module in the data/feature pipeline creates a "turnover" column,
+        # so latest.get("turnover", 0.0) is ALWAYS 0 and this +20 fired
+        # on every symbol — a fabricated penalty for data that simply
+        # doesn't exist (99 forced exits crossed the line on it alone).
+        # Skipped for held positions when the column is genuinely absent.
+        # Entry behavior is deliberately left unchanged in this phase so
+        # the exit fix can be measured on its own; revisit in Phase C.
+        turnover_missing = "turnover" not in latest.index
+
+        if turnover <= 0 and not (monitoring and turnover_missing):
 
             liquidity_risk += 20.0
 
@@ -464,6 +535,19 @@ class RiskManager:
             portfolio_risk += 10.0
 
         portfolio_risk = min(portfolio_risk, 100.0)
+
+        if monitoring:
+
+            # BUGFIX (2026-10-06, audit C4): position count / exposure
+            # answer "is there room to ADD one more position" — an entry
+            # question. Scoring it against an already-held position made
+            # the bot's own buying make every existing position "unsafe"
+            # (15+ positions = +35), which sold them, which lowered the
+            # count, which allowed re-buying the next morning. Kept in
+            # diagnostics for visibility, excluded from the weighted sum.
+            diagnostics["portfolio_risk_entry_view"] = portfolio_risk
+
+            portfolio_risk = 0.0
 
         diagnostics["portfolio_risk"] = portfolio_risk
 
@@ -692,7 +776,11 @@ class RiskManager:
         # SAFE / RISKY
         # ==========================================================
 
-        safe = total_risk <= self.MAX_TOTAL_RISK
+        safe = total_risk <= risk_threshold
+
+        diagnostics["risk_threshold"] = risk_threshold
+
+        diagnostics["monitoring_mode"] = monitoring
 
         diagnostics["safe"] = safe
 
@@ -871,7 +959,7 @@ class RiskManager:
 
         total_risk = round(min(total_risk, 100.0), 2)
 
-        if total_risk > self.MAX_TOTAL_RISK:
+        if total_risk > risk_threshold:
 
             safe = False
 

@@ -141,6 +141,52 @@ class ExitStrategyEngine:
     # never meaningfully decays can't keep a position open forever.
     HARD_CEILING_DAYS = 150
 
+    @staticmethod
+    def _realistic_fill_price(
+        direction: str,
+        kind: str,
+        level: float,
+        day_open: float | None,
+        touched_intraday: bool,
+        current_price: float,
+    ) -> float:
+        """
+        BUGFIX (2026-10-06, BUG_AUDIT_2026-10-05_PROFITABILITY.md H2):
+        the price a real resting stop / target order would have filled
+        at. This used to be the bar's extreme — stops at the day's LOW,
+        targets at the day's HIGH — which no real order gets (30 of 31
+        real stop exits were filled worse than the market price at that
+        moment; targets were booked above their own level).
+
+        - Gapped THROUGH the level at the open (stop: open already past
+          it; target: open already past it): fills at the OPEN.
+        - Otherwise, touched intraday (day_low/day_high known): fills AT
+          the level itself.
+        - Only the close is known (no intraday high/low supplied):
+          fills at the current price, the best available estimate —
+          same as the old close-only behavior.
+
+        kind is "stop" or "target"; direction is the HELD direction.
+        """
+        is_buy = str(direction).upper() == "BUY"
+
+        if kind == "stop":
+            gapped_through = day_open is not None and (
+                day_open <= level if is_buy else day_open >= level
+            )
+        else:
+            gapped_through = day_open is not None and (
+                day_open >= level if is_buy else day_open <= level
+            )
+
+        if gapped_through:
+            return float(day_open)
+
+        if touched_intraday:
+            return float(level)
+
+        return float(current_price)
+
     def evaluate(
         self,
         decision: FinalDecision,
@@ -222,6 +268,34 @@ class ExitStrategyEngine:
         day_high = float(day_high) if day_high is not None else None
         day_low = float(day_low) if day_low is not None else None
 
+        # 2026-10-06 (BUG_AUDIT_2026-10-05_PROFITABILITY.md H2): today's
+        # OPEN, used only to price a realistic fill when a stop/target is
+        # gapped through (see _realistic_fill_price()). None = unknown.
+        day_open = position.get("day_open")
+        day_open = float(day_open) if day_open is not None else None
+
+        # 2026-10-06 (audit H3): True once target1 has already been booked
+        # for this position (persisted on PortfolioPosition.partial_taken).
+        partial_taken = bool(position.get("partial_taken", False))
+
+        # 2026-10-06 (audit H4/H5): the tightest stop this position has
+        # ever had (persisted on PortfolioPosition.stop_level). None for a
+        # position that has no recorded stop yet.
+        persisted_stop = position.get("stop_level")
+        persisted_stop = float(persisted_stop) if persisted_stop is not None else None
+
+        # 2026-10-06 (audit H1): the PREVIOUS full session's range, supplied
+        # only when the position was already held during that session
+        # (see paper_trading_engine.py). Monitoring runs once a day at
+        # ~9:20, so without this everything that happened after 9:20
+        # yesterday was never checked against the stop/targets.
+        prev_day_open = position.get("prev_day_open")
+        prev_day_high = position.get("prev_day_high")
+        prev_day_low = position.get("prev_day_low")
+        prev_day_open = float(prev_day_open) if prev_day_open is not None else None
+        prev_day_high = float(prev_day_high) if prev_day_high is not None else None
+        prev_day_low = float(prev_day_low) if prev_day_low is not None else None
+
         # ==========================================================
         # INITIAL STOP LOSS + PROFIT TARGETS
         # ==========================================================
@@ -234,6 +308,9 @@ class ExitStrategyEngine:
         stop_loss, partial_target, final_target = stop_target.compute_stop_loss_targets(
             direction=decision.action, close_price=entry_price, atr=atr,
         )
+
+        # Kept before break-even/trailing adjust stop_loss below.
+        initial_stop = stop_loss
 
         diagnostics["initial_stop_loss"] = round(
             stop_loss,
@@ -325,10 +402,30 @@ class ExitStrategyEngine:
                 trailing_stop,
             )
 
-        diagnostics["active_stop"] = round(
-            active_stop,
-            2,
-        )
+        # BUGFIX (2026-10-06, audit H4/H5): the stop may only TIGHTEN.
+        # Everything above is recomputed from scratch each run with
+        # today's ATR — so a volatility spike widened the stop, and a
+        # break-even stop disappeared the moment price dipped back below
+        # the trigger (real data: MCX 5.5% MFE closed at +0.39%, GRANULES
+        # 5.29% MFE closed at +0.10%). Flooring by the persisted level
+        # fixes both: once break-even (or a trailing level) has been
+        # reached, the stop never goes back below it.
+        diagnostics["computed_stop_before_floor"] = round(active_stop, 2)
+
+        if persisted_stop is not None:
+
+            if decision.action == "BUY":
+
+                active_stop = max(active_stop, persisted_stop)
+
+            else:
+
+                active_stop = min(active_stop, persisted_stop)
+
+        # Not rounded: the caller persists this exact value back to
+        # PortfolioPosition.stop_level, and rounding a BUY stop down / a
+        # SELL stop up would let it drift looser by a fraction each day.
+        diagnostics["active_stop"] = active_stop
         # ==========================================================
         # PROFIT TARGETS (diagnostics only — values computed above
         # alongside the initial stop-loss, same shared-formula call)
@@ -371,6 +468,15 @@ class ExitStrategyEngine:
             if partial_touch_price <= partial_target:
 
                 partial_exit = True
+
+        # BUGFIX (2026-10-06, audit H3): target1 is a ONE-TIME booking.
+        # Without this, every later day the price stayed past target1
+        # sold another 50% of what was left.
+        diagnostics["partial_already_taken"] = partial_taken
+
+        if partial_taken:
+
+            partial_exit = False
 
         diagnostics["partial_exit"] = partial_exit
 
@@ -630,6 +736,37 @@ class ExitStrategyEngine:
         if stop_hit:
 
             reasons.append("Active stop-loss triggered.")
+
+        # ==========================================================
+        # PREVIOUS-SESSION TOUCHES (2026-10-06, audit H1)
+        # ==========================================================
+        # A resting stop / target order would have filled DURING the
+        # previous session if its range crossed the level. The stop that
+        # was live then is the persisted one (yesterday's active stop) —
+        # not today's, which may already trail yesterday's high (using
+        # it would be look-ahead within that bar). Falls back to the
+        # initial stop for a position with no persisted stop yet.
+        prev_stop_level = persisted_stop if persisted_stop is not None else initial_stop
+        is_buy = decision.action == "BUY"
+
+        if is_buy:
+            prev_stop_hit = prev_day_low is not None and prev_day_low <= prev_stop_level
+            prev_final_hit = prev_day_high is not None and prev_day_high >= final_target
+            prev_partial_hit = prev_day_high is not None and prev_day_high >= partial_target
+        else:
+            prev_stop_hit = prev_day_high is not None and prev_day_high >= prev_stop_level
+            prev_final_hit = prev_day_low is not None and prev_day_low <= final_target
+            prev_partial_hit = prev_day_low is not None and prev_day_low <= partial_target
+
+        prev_partial_hit = prev_partial_hit and not partial_taken
+
+        diagnostics["prev_session_stop_hit"] = prev_stop_hit
+        diagnostics["prev_session_final_hit"] = prev_final_hit
+        diagnostics["prev_session_partial_hit"] = prev_partial_hit
+
+        if prev_stop_hit:
+            diagnostics["stop_hit"] = True
+            reasons.append("Stop-loss was touched in the previous session.")
         # ==========================================================
         # EXIT PRIORITY ENGINE
         # ==========================================================
@@ -662,6 +799,63 @@ class ExitStrategyEngine:
             exit_reason = emergency_exit_reason
 
         # ==========================================================
+        # PREVIOUS SESSION (2026-10-06, audit H1) — these happened
+        # BEFORE anything in today's bar, so they are resolved first.
+        # If both the stop and a target fall inside the same previous
+        # range, the order within that bar is unknown: the stop is
+        # assumed (conservative), same as today's priority below.
+        # ==========================================================
+
+        elif prev_stop_hit:
+
+            action = FULL_EXIT
+
+            exit_percent = 100.0
+
+            confidence = 99.0
+
+            exit_reason = "Stop-loss triggered (previous session)."
+
+            resolved_exit_price = self._realistic_fill_price(
+                direction=decision.action, kind="stop", level=prev_stop_level,
+                day_open=prev_day_open, touched_intraday=True, current_price=current_price,
+            )
+
+        elif prev_final_hit:
+
+            action = FULL_EXIT
+
+            exit_percent = 100.0
+
+            confidence = 95.0
+
+            exit_reason = "Final target achieved (previous session)."
+
+            diagnostics["final_exit"] = True
+
+            resolved_exit_price = self._realistic_fill_price(
+                direction=decision.action, kind="target", level=final_target,
+                day_open=prev_day_open, touched_intraday=True, current_price=current_price,
+            )
+
+        elif prev_partial_hit:
+
+            action = PARTIAL_EXIT
+
+            exit_percent = 50.0
+
+            confidence = 85.0
+
+            exit_reason = "Partial target achieved (previous session)."
+
+            diagnostics["partial_exit"] = True
+
+            resolved_exit_price = self._realistic_fill_price(
+                direction=decision.action, kind="target", level=partial_target,
+                day_open=prev_day_open, touched_intraday=True, current_price=current_price,
+            )
+
+        # ==========================================================
         # STOP LOSS EXIT
         # ==========================================================
 
@@ -675,7 +869,12 @@ class ExitStrategyEngine:
 
             exit_reason = "Stop-loss triggered."
 
-            resolved_exit_price = stop_touch_price
+            resolved_exit_price = self._realistic_fill_price(
+                direction=decision.action, kind="stop", level=active_stop,
+                day_open=day_open,
+                touched_intraday=(day_low if decision.action == "BUY" else day_high) is not None,
+                current_price=current_price,
+            )
 
         # ==========================================================
         # FINAL TARGET
@@ -702,7 +901,12 @@ class ExitStrategyEngine:
 
             exit_reason = "Final target achieved."
 
-            resolved_exit_price = final_touch_price
+            resolved_exit_price = self._realistic_fill_price(
+                direction=decision.action, kind="target", level=final_target,
+                day_open=day_open,
+                touched_intraday=(day_high if decision.action == "BUY" else day_low) is not None,
+                current_price=current_price,
+            )
 
         # ==========================================================
         # PARTIAL TARGET
@@ -718,7 +922,12 @@ class ExitStrategyEngine:
 
             exit_reason = "Partial target achieved."
 
-            resolved_exit_price = partial_touch_price
+            resolved_exit_price = self._realistic_fill_price(
+                direction=decision.action, kind="target", level=partial_target,
+                day_open=day_open,
+                touched_intraday=(day_high if decision.action == "BUY" else day_low) is not None,
+                current_price=current_price,
+            )
 
         # ==========================================================
         # TREND REVERSAL
