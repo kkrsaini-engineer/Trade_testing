@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import json
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -129,7 +129,10 @@ class NewsDataProvider:
 
             ts = item.get("providerPublishTime")
             published = (
-                datetime.fromtimestamp(ts).isoformat()
+                # 2026-10-06 (audit H12): explicit UTC — fromtimestamp(ts)
+                # without tz gave a NAIVE runner-local time, which could not
+                # be compared with the (aware) scan cutoff at all.
+                datetime.fromtimestamp(ts, tz=timezone.utc).isoformat()
                 if isinstance(ts, (int, float))
                 else content.get("pubDate")
             )
