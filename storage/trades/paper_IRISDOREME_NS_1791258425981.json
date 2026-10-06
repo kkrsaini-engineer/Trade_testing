@@ -1,0 +1,13 @@
+{
+  "id": "paper_IRISDOREME_NS_1791258425981",
+  "symbol": "IRISDOREME.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 216,
+  "entry_price": 60.349998474121094,
+  "status": "OPEN",
+  "regime": "N/A",
+  "confidence": 0.0,
+  "reasons": "Morning Executor: gap -6.55% (1.44x ATR, WARNING band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1791258425.9831984
+}
