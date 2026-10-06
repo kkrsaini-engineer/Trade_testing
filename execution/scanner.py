@@ -535,13 +535,17 @@ class MarketScanner:
         were never called.
         """
         sector_market_scores: dict[str, list[float]] = {}
+        # 2026-10-06 (audit M10): each symbol's OWN contribution, so
+        # _evaluate_market_context() can exclude it from its own sector
+        # average ("peers", not "peers + itself").
+        symbol_sector_scores: dict[str, tuple[str, float]] = {}
         advances = 0
         declines = 0
         new_highs = 0
         new_lows = 0
         counted = 0
 
-        for bundle in bundles.values():
+        for bundle_symbol, bundle in bundles.items():
             dataframe = getattr(bundle, "market", None)
             if dataframe is None or dataframe.empty or len(dataframe) < 2:
                 continue
@@ -561,6 +565,7 @@ class MarketScanner:
                 sector = fundamentals.get("sector")
                 if sector:
                     sector_market_scores.setdefault(sector, []).append(score)
+                    symbol_sector_scores[bundle_symbol] = (sector, score)
 
                 if latest_close > prev_close:
                     advances += 1
@@ -600,7 +605,76 @@ class MarketScanner:
             except Exception:
                 breadth_score = None
 
-        return {"sector_scores": sector_scores, "breadth_score": breadth_score}
+        sector_peer_stats = {
+            sector: {"sum": sum(scores), "count": len(scores)}
+            for sector, scores in sector_market_scores.items()
+            if scores
+        }
+
+        return {
+            "sector_scores": sector_scores,
+            "breadth_score": breadth_score,
+            "sector_peer_stats": sector_peer_stats,
+            "symbol_sector_scores": symbol_sector_scores,
+        }
+
+    @staticmethod
+    def _circuit_adverse_to_position(
+        circuit_likely: Any, circuit_direction: Any, held_direction: str
+    ) -> bool:
+        """2026-10-06 (audit M2): True when a detected circuit lock should
+        still count as a safety event for a HELD position — i.e. it is
+        against the position, or its direction is unknown (conservative).
+        False when there is no circuit, or it is in the position's favour
+        (upper circuit on a BUY, lower circuit on a SELL)."""
+        if not circuit_likely:
+            return False
+
+        direction = str(circuit_direction or "").lower()
+        held = str(held_direction or "").upper()
+
+        favourable = (held == "BUY" and direction == "upper") or (
+            held == "SELL" and direction == "lower"
+        )
+
+        return not favourable
+
+    @staticmethod
+    def _peer_sector_score(
+        universe_context: dict[str, Any], symbol: str, sector: str | None
+    ) -> float | None:
+        """
+        BUGFIX (2026-10-06, BUG_AUDIT_2026-10-05_PROFITABILITY.md M10 — a
+        bug introduced by the 2026-10-05 sector_score change itself):
+        the sector average used to INCLUDE the symbol being scored, even
+        though the comment said "every OTHER" symbol. In a sector with
+        only 2-3 scanned members the stock's own regime was most of its
+        own "sector" score — double-counting its trend. Now its own
+        contribution is subtracted when it was part of the average.
+        None when it has no peers (it was the only member). Falls back to
+        the plain "sector_scores" mean for a universe_context built
+        without the per-symbol breakdown (older callers / tests).
+        """
+        if not sector:
+            return None
+
+        stats = (universe_context.get("sector_peer_stats") or {}).get(sector)
+        own = (universe_context.get("symbol_sector_scores") or {}).get(symbol)
+
+        if stats is None:
+            return (universe_context.get("sector_scores") or {}).get(sector)
+
+        total = stats["sum"]
+        count = stats["count"]
+
+        if own is not None and own[0] == sector:
+            total -= own[1]
+            count -= 1
+
+        if count <= 0:
+            return None
+
+        return total / count
 
     def _evaluate_market_context(
         self,
@@ -669,6 +743,9 @@ class MarketScanner:
         dataframe = self.features.generate(dataframe)
         latest = dataframe.iloc[-1]
         diagnostics["latest_close"] = round(float(latest["close"]), 2)
+        # 2026-10-06 (audit H2): today's open, so the exit engine can price
+        # a gapped-through stop/target at the open instead of the bar extreme.
+        diagnostics["latest_open"] = round(float(latest["open"]), 2) if "open" in latest.index else None
         diagnostics["latest_high"] = round(float(latest["high"]), 2)
         diagnostics["latest_low"] = round(float(latest["low"]), 2)
 
@@ -922,6 +999,7 @@ class MarketScanner:
         # _compute_universe_context()'s docstring), but a lighter, still
         # genuinely-real proxy now IS available from this same run:
         # _compute_universe_context() averages every OTHER scanned
+        # (own contribution subtracted — see _peer_sector_score(), 2026-10-06)
         # symbol's own per-stock market_score within this symbol's
         # sector. Falls back to None (old behavior, unchanged) when no
         # universe_context was passed (e.g. evaluate_position()'s
@@ -929,8 +1007,8 @@ class MarketScanner:
         # today's scanned batch.
         sector_score = None
         if universe_context is not None:
-            sector_score = (universe_context.get("sector_scores") or {}).get(
-                diagnostics.get("sector")
+            sector_score = self._peer_sector_score(
+                universe_context, symbol, diagnostics.get("sector")
             )
 
         # FIX #8: was `dataframe["breadth"] = 50.0`. Same underlying gap
@@ -1464,6 +1542,19 @@ class MarketScanner:
                 diagnostics, held_direction
             )
 
+            # BUGFIX (2026-10-06, BUG_AUDIT_2026-10-05_PROFITABILITY.md M2):
+            # a circuit lock IN FAVOUR of the held position (upper circuit
+            # on a long, lower on a short) is a winning day, not a reason
+            # to force-sell it — but the direction-blind flag made both
+            # validation and RiskManager treat it as a system-safety kill
+            # (15 real trades exited on "Circuit breaker active"). Only an
+            # ADVERSE (or unknown-direction) circuit still counts.
+            market_state_for_symbol["circuit_breaker"] = self._circuit_adverse_to_position(
+                diagnostics.get("circuit_likely"),
+                diagnostics.get("circuit_direction"),
+                held_direction,
+            )
+
             validation = self.validation.validate(
                 decision=held_decision,
                 dataframe=dataframe,
@@ -1471,6 +1562,9 @@ class MarketScanner:
                 broker_status=broker_status,
                 market_state=market_state_for_symbol,
                 skip_position_count=True,
+                # 2026-10-06 (audit M2): skip entry-only checks for a
+                # HELD position — see ValidationEngine.validate().
+                monitoring=True,
             )
             diagnostics["validation_passed"] = validation.passed
             diagnostics["validation_action"] = validation.action
@@ -1483,6 +1577,10 @@ class MarketScanner:
                 dataframe=dataframe,
                 portfolio=monitoring_portfolio,
                 market=market_state_for_symbol,
+                # 2026-10-06 (audit C1-C4): HELD-position risk view —
+                # exit threshold 45 (not the entry 35), direction-aware
+                # gap, no portfolio-count risk. See RiskManager.evaluate().
+                monitoring=True,
             )
             diagnostics["risk_safe"] = risk_result.safe
             diagnostics["risk_grade"] = risk_result.risk_grade
