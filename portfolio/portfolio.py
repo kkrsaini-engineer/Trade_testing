@@ -63,6 +63,23 @@ class PortfolioPosition:
 
     updated_at: float = field(default_factory=time.time)
 
+    # BUGFIX (2026-10-06, BUG_AUDIT_2026-10-05_PROFITABILITY.md H3):
+    # set True once the partial-profit target (target1) has been booked.
+    # risk/exit_strategy.py had no memory of this, so target1 re-fired a
+    # 50% sell on EVERY later day the price stayed above it (real data:
+    # SOUTHBANK 38 -> 19 -> 10 -> 4 shares on four straight days).
+    partial_taken: bool = False
+
+    # BUGFIX (2026-10-06, audit H4/H5): the highest (BUY) / lowest (SELL)
+    # stop level this position has ever had. risk/exit_strategy.py
+    # recomputed the stop from scratch every run using TODAY'S ATR, so a
+    # volatility spike pushed the stop further away, and a break-even
+    # stop lapsed the moment price dipped back. The live stop is now
+    # floored by this value, so it can only tighten, never widen. None
+    # = no stop recorded yet (new position, or state saved before this
+    # field existed) — the first monitoring run fills it in.
+    stop_level: float | None = None
+
 
 # ==========================================================
 # PORTFOLIO STATE
@@ -183,6 +200,11 @@ class PortfolioEngine:
         pos.highest_price = max(pos.highest_price or pos.current_price, pos.current_price)
         pos.lowest_price = min(pos.lowest_price or pos.current_price, pos.current_price)
 
+        self._derive_excursions(pos)
+
+    @staticmethod
+    def _derive_excursions(pos: "PortfolioPosition") -> None:
+        """MaxProfit / MaxDrawdown % from the running highest/lowest."""
         entry = max(pos.entry_price, 1e-9)
         if pos.direction == "SELL":
             # For a short, profit comes from price falling, so the best
@@ -193,6 +215,30 @@ class PortfolioEngine:
         else:
             pos.max_profit_percent = ((pos.highest_price - entry) / entry) * 100
             pos.max_drawdown_percent = ((entry - pos.lowest_price) / entry) * 100
+
+    def observe_range(
+        self,
+        symbol: str,
+        high: float | None,
+        low: float | None,
+    ) -> None:
+        """
+        BUGFIX (2026-10-06, BUG_AUDIT_2026-10-05_PROFITABILITY.md M11):
+        fold a whole price RANGE (a session's high/low) into the
+        running highest/lowest. update_position() only ever sees the
+        single 9:20 snapshot price, so every intraday high/low between
+        two monitoring runs was invisible — understating MaxProfit /
+        MaxDrawdown and keeping the trailing stop (which trails
+        highest_price) lower than the real path justified.
+        """
+        pos = self.state.open_positions.get(symbol)
+        if pos is None:
+            return
+        if high is not None:
+            pos.highest_price = max(pos.highest_price or high, float(high))
+        if low is not None:
+            pos.lowest_price = min(pos.lowest_price or low, float(low))
+        self._derive_excursions(pos)
 
     # ==========================================================
     # UPDATE POSITION
