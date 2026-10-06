@@ -72,6 +72,22 @@ def main() -> None:
     with open(BASELINE_PATH) as f:
         previous = json.load(f)
 
+    # 2026-10-06 (BUG_AUDIT_2026-10-05_PROFITABILITY.md M9): the backtest
+    # engine was rewritten to replay the real live flow. A baseline
+    # produced by a different engine version measures a different
+    # system, so comparing against it would give a meaningless
+    # KEEP/REVERT verdict — replace the baseline instead.
+    if previous.get("engine_version") != current.get("engine_version"):
+        with open(BASELINE_PATH, "w") as f:
+            json.dump(current, f, indent=2, default=str)
+        print(
+            f"Baseline was produced by backtest engine version "
+            f"{previous.get('engine_version', '(pre-2026-10-06)')}, current is "
+            f"{current.get('engine_version')} — not comparable. Saved the current "
+            f"result as the new baseline instead."
+        )
+        return
+
     validator = RegressionValidator()
     result = validator.compare(previous, current)
     report_text = validator.report(result)

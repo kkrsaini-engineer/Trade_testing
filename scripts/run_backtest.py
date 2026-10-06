@@ -113,6 +113,10 @@ def main() -> None:
     parser.add_argument("--period", default="2y", choices=["3mo", "6mo", "1y", "2y", "5y", "10y", "max"])
     parser.add_argument("--symbols", default=None, help="Comma-separated symbol list (default: representative 11-sector sample)")
     parser.add_argument("--initial-capital", type=float, default=500000.0)
+    parser.add_argument(
+        "--cost-per-side-pct", type=float, default=0.0,
+        help="Transaction cost per fill in percent (e.g. 0.12 = 0.12%% each side). Default 0.",
+    )
     args = parser.parse_args()
 
     if args.symbols:
@@ -189,6 +193,7 @@ def main() -> None:
         historical_data=historical_data,
         fundamentals=fundamentals,
         initial_capital=args.initial_capital,
+        cost_pct_per_side=args.cost_per_side_pct,
     )
 
     report_text = result.report()
