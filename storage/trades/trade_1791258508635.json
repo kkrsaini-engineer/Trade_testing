@@ -1,0 +1,18 @@
+{
+  "symbol": "NRBBEARING.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 29,
+  "entry_price": 536.0,
+  "exit_price": 541.0,
+  "status": "CLOSED",
+  "realized_pnl": 145.0,
+  "realized_pnl_percent": 0.9328358208955223,
+  "max_profit_percent": 0.9328358208955223,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 64.77,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=35 sector=10 correlation=29 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=35 sector=10 correlation=29 capital=10.",
+  "id": "trade_1791258508635",
+  "timestamp": 1791258508.6357954
+}

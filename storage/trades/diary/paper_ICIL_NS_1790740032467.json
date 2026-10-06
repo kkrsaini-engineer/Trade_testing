@@ -50,16 +50,35 @@
         "Below preferred risk/reward profile.",
         "Continue holding position."
       ]
+    },
+    {
+      "date": "2026-10-06",
+      "current_price": 456.4,
+      "current_pnl": 543.1999999999994,
+      "current_buy_confidence": 60.2,
+      "current_sell_confidence": 24.59,
+      "current_exit_score": 90.91,
+      "recommendation": "FULL_EXIT",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=35 sector=10 correlation=29 capital=10.",
+        "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=35 sector=10 correlation=29 capital=10."
+      ]
     }
   ],
-  "status": "OPEN",
-  "exit_date": null,
-  "exit_price": null,
-  "exit_reason": null,
-  "holding_days": 3,
-  "max_profit_percent": 0.0,
+  "status": "CLOSED",
+  "exit_date": "2026-10-06",
+  "exit_price": 456.4,
+  "exit_reason": "Risk engine flagged this symbol as unsafe (grade: C, total_risk: 36/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=35 sector=10 correlation=29 capital=10.",
+  "holding_days": 4,
+  "max_profit_percent": 6.098398169336379,
   "max_drawdown_percent": 0.0,
-  "final_pnl": null,
+  "final_pnl": 543.1999999999994,
   "created_at": 1790740032.4674466,
-  "updated_at": 1791172144.7407842
+  "updated_at": 1791258514.5844445,
+  "final_pnl_percent": 4.439359267734549,
+  "exit_score": 90.91,
+  "target1_status": "NOT REACHED",
+  "target2_status": "NOT REACHED",
+  "stop_loss_status": "NOT HIT"
 }

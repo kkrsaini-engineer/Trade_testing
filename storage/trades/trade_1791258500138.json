@@ -1,0 +1,18 @@
+{
+  "symbol": "APLAPOLLO.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 4,
+  "entry_price": 2224.199951171875,
+  "exit_price": 2099.6,
+  "status": "CLOSED",
+  "realized_pnl": -498.39980468750036,
+  "realized_pnl_percent": -5.602012135025293,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 5.282796230166601,
+  "regime": "BULL",
+  "confidence": 48.27,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1791258500138",
+  "timestamp": 1791258500.138866
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "MOTHERSON.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 15,
+  "entry_price": 163.6999969482422,
+  "exit_price": 155.68,
+  "status": "CLOSED",
+  "realized_pnl": -120.29995422363271,
+  "realized_pnl_percent": -4.899204091480772,
+  "max_profit_percent": 0.48259197708329865,
+  "max_drawdown_percent": 4.599876046804689,
+  "regime": "SIDEWAYS",
+  "confidence": 44.48,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1791258504290",
+  "timestamp": 1791258504.2904208
+}

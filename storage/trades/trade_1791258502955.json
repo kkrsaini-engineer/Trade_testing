@@ -1,0 +1,18 @@
+{
+  "symbol": "ANANTRAJ.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 3,
+  "entry_price": 606.0,
+  "exit_price": 593.3,
+  "status": "CLOSED",
+  "realized_pnl": -38.100000000000136,
+  "realized_pnl_percent": -2.095709570957103,
+  "max_profit_percent": 3.0610561056105534,
+  "max_drawdown_percent": 4.27392739273927,
+  "regime": "SIDEWAYS",
+  "confidence": 46.0,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=29 capital=10.; Risk engine flagged this symbol as unsafe (grade: C, total_risk: 39/100). Plain weighted score exceeded the safety threshold (RiskManager.MAX_TOTAL_RISK=35). Raw components (0-100 each): atr=70 gap=75 overnight=10 news=10 liquidity=20 volatility=30 portfolio=45 sector=10 correlation=29 capital=10.",
+  "id": "trade_1791258502955",
+  "timestamp": 1791258502.955972
+}

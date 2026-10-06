@@ -1,0 +1,18 @@
+{
+  "symbol": "STEELXIND.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 1361,
+  "entry_price": 11.149999618530273,
+  "exit_price": 11.26,
+  "status": "CLOSED",
+  "realized_pnl": 149.71051918029755,
+  "realized_pnl_percent": 0.9865505402073362,
+  "max_profit_percent": 0.9865505402073362,
+  "max_drawdown_percent": 0.0,
+  "regime": "SIDEWAYS",
+  "confidence": 44.9,
+  "reasons": "Below preferred risk/reward profile.; Trend reversal detected.; Trend reversal confirmed.",
+  "id": "trade_1791258529881",
+  "timestamp": 1791258529.881138
+}

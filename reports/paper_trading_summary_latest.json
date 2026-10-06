@@ -1,57 +1,61 @@
 {
-  "date": "2026-10-05",
-  "opening_balance": 223023.8021305466,
-  "total_capital_in_positions": 172677.09000000003,
-  "remaining_balance": 319252.75272579194,
-  "portfolio_value": 491929.84272579197,
-  "realized_pnl": -7476.847661170949,
-  "portfolio_return_percent": -1.6140314548416062,
+  "date": "2026-10-06",
+  "opening_balance": 225124.60464878083,
+  "total_capital_in_positions": 143035.37,
+  "remaining_balance": 348616.674341774,
+  "portfolio_value": 491652.044341774,
+  "realized_pnl": -8263.735830039966,
+  "portfolio_return_percent": -1.6695911316451966,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "NORTHARC.NS",
-      "pnl": -366.5999999999991
+      "symbol": "APLAPOLLO.NS",
+      "pnl": -498.39980468750036
+    },
+    {
+      "symbol": "ANANTRAJ.NS",
+      "pnl": -38.100000000000136
+    },
+    {
+      "symbol": "MOTHERSON.NS",
+      "pnl": -120.29995422363271
+    },
+    {
+      "symbol": "SAILIFE.NS",
+      "pnl": -190.0
     },
     {
       "symbol": "NRBBEARING.NS",
-      "pnl": 214.49999999999932
+      "pnl": 145.0
     },
     {
-      "symbol": "STEELXIND.NS",
-      "pnl": 147.51061386108378
-    },
-    {
-      "symbol": "MOTILALOFS.NS",
-      "pnl": 6.0
-    },
-    {
-      "symbol": "GRANULES.NS",
-      "pnl": -186.60000000000014
-    },
-    {
-      "symbol": "JKPAPER.NS",
-      "pnl": -670.7999999999997
-    },
-    {
-      "symbol": "HINDZINC.NS",
-      "pnl": -91.20004882812509
+      "symbol": "ICIL.NS",
+      "pnl": 543.1999999999994
     },
     {
       "symbol": "SYRMA.NS",
-      "pnl": 211.00000000000023
-    },
-    {
-      "symbol": "IRISDOREME.NS",
-      "pnl": -91.54000000000016
-    },
-    {
-      "symbol": "WELCORP.NS",
-      "pnl": -239.99951171874955
+      "pnl": -202.29982910156218
     },
     {
       "symbol": "DIACABS.NS",
-      "pnl": -180.0
+      "pnl": 161.69999999999925
+    },
+    {
+      "symbol": "SOLARA.NS",
+      "pnl": -623.2000000000007
+    },
+    {
+      "symbol": "WELCORP.NS",
+      "pnl": 347.00024414062455
+    },
+    {
+      "symbol": "STEELXIND.NS",
+      "pnl": 149.71051918029755
+    },
+    {
+      "symbol": "FIVESTAR.NS",
+      "pnl": 245.70065917968873
     }
   ],
-  "open_positions_now": 24
+  "open_positions_now": 19
 }

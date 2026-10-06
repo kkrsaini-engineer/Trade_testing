@@ -1,0 +1,18 @@
+{
+  "symbol": "FIVESTAR.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 27,
+  "entry_price": 519.0999755859375,
+  "exit_price": 528.2,
+  "status": "CLOSED",
+  "realized_pnl": 245.70065917968873,
+  "realized_pnl_percent": 1.7530388830765853,
+  "max_profit_percent": 1.7530388830765853,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 62.45,
+  "reasons": "Below preferred risk/reward profile.; Trend reversal detected.; Trend reversal confirmed.",
+  "id": "trade_1791258531405",
+  "timestamp": 1791258531.4057813
+}

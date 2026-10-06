@@ -1,0 +1,18 @@
+{
+  "symbol": "SAILIFE.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 2,
+  "entry_price": 1590.0,
+  "exit_price": 1495.0,
+  "status": "CLOSED",
+  "realized_pnl": -190.0,
+  "realized_pnl_percent": -5.9748427672955975,
+  "max_profit_percent": 2.4968553459119525,
+  "max_drawdown_percent": 5.515723270440255,
+  "regime": "BULL",
+  "confidence": 46.05,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.",
+  "id": "trade_1791258507195",
+  "timestamp": 1791258507.1956787
+}
