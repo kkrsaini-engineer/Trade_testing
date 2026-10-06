@@ -15,6 +15,11 @@ on:
           - "2y"
           - "5y"
           - "10y"
+      realistic_costs:
+        description: "Deduct real Indian delivery costs (STT, stamp, exchange, DP, slippage)"
+        required: true
+        default: true
+        type: boolean
       set_baseline:
         description: "Save this run as the new regression baseline (instead of comparing)"
         required: true
@@ -41,7 +46,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: PYTHONPATH=. python scripts/run_backtest.py --period "${{ inputs.period }}"
+        run: PYTHONPATH=. python scripts/run_backtest.py --period "${{ inputs.period }}" ${{ inputs.realistic_costs && '--realistic-costs' || '' }}
 
       - name: Run Regression Check (compare against baseline)
         if: ${{ inputs.set_baseline == false }}
