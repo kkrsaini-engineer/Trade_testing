@@ -245,7 +245,10 @@ def test_buy_stop_touch_detected_intraday_even_if_close_recovered():
     result = ENGINE.evaluate(decision=decision, risk=risk, dataframe=df, position=pos)
     assert result.action == FULL_EXIT
     assert result.diagnostics["stop_hit"] is True
-    assert result.suggested_exit_price == 94.0
+    # 2026-10-06 (BUG_AUDIT_2026-10-05_PROFITABILITY.md H2): a real resting
+    # order fills AT its level when touched intraday (no gap through it),
+    # not at the bar's extreme. This assertion used to expect the day's low (94.0).
+    assert result.suggested_exit_price == 96.0
 
 
 def test_buy_stop_not_falsely_triggered_without_intraday_breach():
@@ -274,7 +277,10 @@ def test_sell_stop_touch_detected_intraday_even_if_close_recovered():
     result = ENGINE.evaluate(decision=decision, risk=risk, dataframe=df, position=pos)
     assert result.action == FULL_EXIT
     assert result.diagnostics["stop_hit"] is True
-    assert result.suggested_exit_price == 105.0
+    # 2026-10-06 (BUG_AUDIT_2026-10-05_PROFITABILITY.md H2): a real resting
+    # order fills AT its level when touched intraday (no gap through it),
+    # not at the bar's extreme. This assertion used to expect the day's high (105.0).
+    assert result.suggested_exit_price == 104.0
 
 
 def test_buy_partial_target_touch_detected_intraday():
@@ -289,7 +295,10 @@ def test_buy_partial_target_touch_detected_intraday():
     )
     result = ENGINE.evaluate(decision=decision, risk=risk, dataframe=df, position=pos)
     assert result.action == PARTIAL_EXIT
-    assert result.suggested_exit_price == 106.0
+    # 2026-10-06 (BUG_AUDIT_2026-10-05_PROFITABILITY.md H2): a real resting
+    # order fills AT its level when touched intraday (no gap through it),
+    # not at the bar's extreme. This assertion used to expect the day's high (106.0).
+    assert result.suggested_exit_price == 104.0
 
 
 # ==========================================================
