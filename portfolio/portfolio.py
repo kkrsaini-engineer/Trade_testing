@@ -188,6 +188,10 @@ class PortfolioEngine:
 
         self.state.available_capital -= position_value
 
+        # 2026-10-06 (audit M5): exposure was never updated here, so a
+        # morning batch of entries all saw the stale pre-batch exposure.
+        self.state.exposure = self.state.used_capital / max(self.state.total_capital, 1e-9)
+
         self.state.updated_at = time.time()
 
         return True
@@ -340,9 +344,13 @@ class PortfolioEngine:
 
         self.state.closed_positions.append(pos)
 
-        self.state.total_pnl += realized_pnl
-
+        # 2026-10-06 (audit M5): total_pnl is re-derived from the ledger
+        # (see _refresh_total_pnl()) instead of `+= realized_pnl`, which
+        # double-counted this position whenever mark_to_market() had
+        # already folded its unrealized P&L into total_pnl.
         self._recalculate_capital()
+
+        self._refresh_total_pnl()
 
         return pos
 
@@ -398,17 +406,42 @@ class PortfolioEngine:
 
         pos.updated_at = time.time()
 
-        self.state.total_pnl += realized_pnl
-
         if pos.quantity == 0:
 
             self.close_position(symbol, exit_price)
 
+        # 2026-10-06 (audit M5): ledger-derived, see close_position().
         self._recalculate_capital()
+
+        self._refresh_total_pnl()
 
     # ==========================================================
     # CAPITAL REBALANCE
     # ==========================================================
+
+    def _realized_total(self) -> float:
+        """2026-10-06 (audit M5): all P&L actually booked so far — every
+        closed position plus partial-exit legs on still-open positions.
+        NaN records are skipped (same rule as mark_to_market())."""
+        legs = [p.realized_pnl for p in self.state.closed_positions]
+        legs += [p.realized_pnl for p in self.state.open_positions.values()]
+        return sum(v for v in legs if not (isinstance(v, float) and math.isnan(v)))
+
+    def _refresh_total_pnl(self) -> None:
+        """2026-10-06 (audit M5): total_pnl = booked P&L + current
+        unrealized P&L of open positions, computed from each position's
+        own current price and REMAINING quantity (its stored
+        unrealized_pnl can still reflect the pre-partial-exit size)."""
+        unrealized = 0.0
+        for pos in self.state.open_positions.values():
+            diff = pos.current_price - pos.entry_price
+            if pos.direction == "SELL":
+                diff *= -1
+            unrealized += diff * pos.quantity
+        self.state.total_pnl = self._realized_total() + unrealized
+        self.state.total_pnl_percent = (
+            self.state.total_pnl / max(self.state.total_capital, 1e-9)
+        ) * 100
 
     def _recalculate_capital(self) -> None:
 
@@ -420,7 +453,14 @@ class PortfolioEngine:
 
         self.state.used_capital = used
 
-        self.state.available_capital = self.state.total_capital + self.state.total_pnl - used
+        # BUGFIX (2026-10-06, BUG_AUDIT_2026-10-05_PROFITABILITY.md M5):
+        # cash = starting capital + REALIZED P&L - capital tied up in open
+        # positions. This used total_pnl, which mark_to_market() sets to
+        # realized + UNREALIZED — so paper (unrealized) gains/losses were
+        # treated as spendable cash, and the next close then added that
+        # position's P&L a second time. Real state on 2026-10-06: free
+        # cash was off by ₹428 from the ledger.
+        self.state.available_capital = self.state.total_capital + self._realized_total() - used
 
         self.state.exposure = used / max(self.state.total_capital, 1e-9)
 
@@ -465,7 +505,15 @@ class PortfolioEngine:
             p.realized_pnl for p in self.state.closed_positions
             if not (isinstance(p.realized_pnl, float) and math.isnan(p.realized_pnl))
         ]
-        self.state.total_pnl = sum(known_realized_pnl) + total_unrealized
+        # BUGFIX (2026-10-06, audit M5): also include partial-exit P&L
+        # already booked on positions that are still open — it was left
+        # out entirely (real state on 2026-10-06: total_pnl understated
+        # by ₹996.94, exactly the open positions' partial-exit P&L).
+        open_partial_realized = sum(
+            p.realized_pnl for p in self.state.open_positions.values()
+            if not (isinstance(p.realized_pnl, float) and math.isnan(p.realized_pnl))
+        )
+        self.state.total_pnl = sum(known_realized_pnl) + open_partial_realized + total_unrealized
 
         self.state.total_pnl_percent = (
             self.state.total_pnl / max(self.state.total_capital, 1e-9)
