@@ -2,7 +2,8 @@
 PHASE 2 — MODULE 4: INSTITUTIONAL BACKTESTING ENGINE
 
 Replays historical OHLCV data day-by-day through the REAL production
-pipeline (MarketScanner -> BrokerEngine -> PortfolioEngine), so the
+pipeline (MarketScanner -> Morning-Executor rules -> ExitStrategyEngine ->
+PortfolioEngine — see run()'s 2026-10-06 docstring), so the
 backtest exercises the exact same code path as live/paper trading —
 not a separate, parallel simulation that can drift out of sync.
 
@@ -32,7 +33,6 @@ import pandas as pd
 
 from core.logger import get_logger
 from data.data_engine import DataBundle
-from execution.broker import BrokerEngine, OrderRequest
 from execution.scanner import MarketScanner
 from portfolio.portfolio import PortfolioEngine, PortfolioState
 
@@ -72,6 +72,8 @@ class BacktestResult:
             f"SELL Accuracy        : {m.get('sell_accuracy', 0):.2f}% ({m.get('sell_trades', 0)} trades)",
             f"Positions Opened     : {m.get('opened_buy_count', 0)} BUY, {m.get('opened_sell_count', 0)} SELL"
             f" ({m.get('still_open_at_end', 0)} still open at backtest end)",
+            f"Avg Holding (cycles) : {m.get('avg_holding_days', 0)}",
+            f"Cost per side        : {m.get('cost_pct_per_side', 0)}%",
             f"False Positives      : {m.get('false_positives', 0)}",
             f"False Negatives      : {m.get('false_negatives', 0)} (see note below)",
             "",
@@ -80,7 +82,23 @@ class BacktestResult:
             "requires re-scoring every NO_TRADE day against what actually",
             "happened next, which Module 1 (Analysis Engine) does",
             "separately using the full_report.csv history.",
+            "",
+            "CAVEAT: fundamentals are today's snapshot for every simulated",
+            "day (no point-in-time history) and there is no historical news",
+            "— fundamental/news-driven scores are optimistic.",
         ]
+        exits = m.get("exit_breakdown") or {}
+        if exits:
+            lines.append("")
+            lines.append("Exit breakdown:")
+            for name, b in sorted(exits.items(), key=lambda kv: -kv[1]["trades"]):
+                lines.append(f"  {name}: {b['trades']} trades, {b['wins']} wins, P&L {b['pnl']:.2f}")
+        skips = m.get("entry_skips") or {}
+        if skips:
+            lines.append("")
+            lines.append("Entries skipped at the open:")
+            for name, count in sorted(skips.items(), key=lambda kv: -kv[1]):
+                lines.append(f"  {name}: {count}")
         error_count = m.get("error_count", 0)
         total_attempts = m.get("total_scan_attempts", 0)
         if error_count:
@@ -136,24 +154,70 @@ class BacktestEngine:
         fundamentals: dict[str, dict] | None = None,
         initial_capital: float = 100000.0,
         min_history: int = 250,
-        max_candidates_per_day: int = 10,
+        max_candidates_per_day: int = 100,
+        cost_pct_per_side: float = 0.0,
     ) -> BacktestResult:
         """
-        historical_data: {symbol: dataframe} — each dataframe must have a
-        "timestamp" column plus open/high/low/close/volume, ordered oldest
-        to newest, ideally spanning multiple market regimes.
-        fundamentals: optional {symbol: dict} — static snapshot used for
-        every day. STILL A KNOWN LIMITATION, NOT fixed here: historical
-        point-in-time fundamentals aren't available from this pipeline,
-        so the same fundamentals dict is scored against every simulated
-        day regardless of what the company's actual fundamentals were on
-        that historical date. Fixing this properly needs a real
-        as-reported-on-date fundamentals data source/store — new data
-        infrastructure, not a code change, and out of scope for FIX #4
-        (which addressed the separately-confirmed FII/DII / macro-news
-        / delivery-percentage live-snapshot leakage — see
-        MarketScanner.__init__'s disable_live_market_context NOTE).
+        REWRITTEN 2026-10-06 (BUG_AUDIT_2026-10-05_PROFITABILITY.md M9).
+
+        The old replay did not simulate the system that actually trades:
+          - it FILLED at the signal bar's own CLOSE — the same close the
+            signal was computed from (live: the night scan uses the
+            close, and the Morning Executor fills at the NEXT day's open);
+          - it had NO stop-loss, NO targets, NO ExitStrategyEngine and NO
+            risk-based exit at all — a position only closed when an
+            opposite BUY/SELL signal appeared, or at the end of the run;
+          - it skipped every Morning-Executor rule (gap bands, gap-chase
+            filter, stop/target sanity, capital check, sizing formula);
+          - it sliced every symbol by ROW POSITION, which silently
+            misaligns dates whenever one symbol has a missing day;
+          - fills went through BrokerEngine's RANDOM slippage, so two
+            runs of the same backtest never gave the same answer.
+        Any threshold or R:R "tuned" on it would have been tuned on a
+        different system.
+
+        Now, for each trading day D (dates aligned by timestamp):
+          1. OPEN of D: last night's candidates are executed exactly as
+             scripts/morning_executor.py does — classify_gap() SKIP band,
+             is_gap_chase(), open-vs-target1/stop sanity checks,
+             check_capital_portfolio_risk(), the same sizing formula —
+             filled at D's open (plus optional cost). News is not
+             available historically, so the news check is skipped.
+          2. Monitoring: every open position (including ones opened this
+             morning) goes through MarketScanner.evaluate_position() and
+             ExitStrategyEngine with the SAME position input live paper
+             trading builds (paper_trading_engine.build_exit_position_
+             input). D's full bar is used as "today", so a stop/target
+             touched any time during D fills at the level (or the open if
+             gapped through) — the same fill live gets via the 9:20 check
+             plus the next morning's previous-session check (audit H1),
+             only acted on a few hours earlier.
+          3. CLOSE of D: the scan runs on data up to and including D and
+             its top candidates become tomorrow's orders.
+        No look-ahead: step 3 only sees bars <= D, and step 1 only uses
+        D's open for the fill.
+
+        cost_pct_per_side: optional round-trip cost model — each fill is
+        made worse by this % (buy higher / sell lower). Default 0.0.
+
+        fundamentals: still a static snapshot for every simulated day —
+        point-in-time historical fundamentals are not available from
+        this pipeline. This IS still optimistic for any fundamental-
+        driven score; it is documented here and in the report, not fixed.
         """
+        # Imported here, not at module top: scripts/morning_executor.py
+        # pulls in yfinance/config at import time, which the rest of this
+        # module doesn't need.
+        import dataclasses
+
+        from paper_trading.paper_trading_engine import build_exit_position_input
+        from risk.exit_strategy import ExitStrategyEngine
+        from scripts.morning_executor import (
+            check_capital_portfolio_risk,
+            classify_gap,
+            is_gap_chase,
+        )
+
         fundamentals = fundamentals or {}
         symbols = list(historical_data.keys())
 
@@ -166,270 +230,381 @@ class BacktestEngine:
                 ),
             )
 
-        state = PortfolioState(total_capital=initial_capital, available_capital=initial_capital)
-        portfolio = PortfolioEngine(state=state)
-        broker = BrokerEngine()
-        result = BacktestResult()
+        data: dict[str, pd.DataFrame] = {}
+        for sym, df in historical_data.items():
+            frame = df.copy()
+            frame["timestamp"] = pd.to_datetime(frame["timestamp"])
+            if getattr(frame["timestamp"].dt, "tz", None) is not None:
+                frame["timestamp"] = frame["timestamp"].dt.tz_localize(None)
+            frame = frame.sort_values("timestamp").reset_index(drop=True)
+            data[sym] = frame
 
-        total_steps = min(len(df) for df in historical_data.values())
-        if total_steps <= min_history:
+        longest = max(len(df) for df in data.values())
+        if longest <= min_history:
             raise ValueError(
-                f"Not enough history: shortest series has {total_steps} rows, "
-                f"need at least {min_history}."
+                f"Not enough history: longest series has {longest} rows, "
+                f"need more than {min_history}."
             )
 
-        wins = 0
-        losses = 0
-        gross_profit = 0.0
-        gross_loss = 0.0
-        rr_values = []
-        buy_wins = buy_total = sell_wins = sell_total = 0
-        opened_buy_count = opened_sell_count = 0
+        all_dates = sorted({ts.normalize() for df in data.values() for ts in df["timestamp"]})
+
+        state = PortfolioState(total_capital=initial_capital, available_capital=initial_capital)
+        portfolio = PortfolioEngine(state=state)
+        exit_engine = ExitStrategyEngine()
+        result = BacktestResult()
+        cost = max(float(cost_pct_per_side), 0.0) / 100.0
+
+        broker_status = {
+            "status": "ONLINE", "mode": "BACKTEST", "connected": True,
+            "order_allowed": True, "available_margin": initial_capital,
+        }
+        market_state = {
+            "max_trade_candidates": max_candidates_per_day,
+            "max_watchlist": 50,
+            # Without these, ValidationEngine defaults market_open to False
+            # and rejects every simulated day with "Market is closed.".
+            "market_open": True,
+            "holiday": False,
+        }
+
+        pending: list[dict[str, Any]] = []
+        meta: dict[str, dict[str, Any]] = {}
+
+        counters = {
+            "wins": 0, "losses": 0, "gross_profit": 0.0, "gross_loss": 0.0,
+            "opened_buy": 0, "opened_sell": 0,
+        }
+        rr_values: list[float] = []
         error_type_counts: Counter = Counter()
         error_sample_messages: dict[str, str] = {}
         no_trade_reasons: Counter = Counter()
-        no_trade_count = [0]
-        blocked_by_portfolio = [0]
+        entry_skips: Counter = Counter()
+        no_trade_count = 0
+        blocked_by_portfolio = 0
         total_scan_attempts = 0
 
-        for step in range(min_history, total_steps):
-            broker_status = {
-                "status": "ONLINE",
-                "mode": "BACKTEST",
-                "connected": True,
-                "order_allowed": True,
-                "available_margin": initial_capital,
-            }
-            market_state = {
-                "max_trade_candidates": max_candidates_per_day,
-                "max_watchlist": 50,
-                # Without these, ValidationEngine defaults market_open to
-                # False and rejects every single simulated day with
-                # "Market is closed." — meaning the backtest could never
-                # execute a single trade regardless of signal quality.
-                "market_open": True,
-                "holiday": False,
-            }
-            portfolio_dict = portfolio.snapshot()
+        def rows_through(sym: str, day: pd.Timestamp) -> int:
+            return int(data[sym]["timestamp"].searchsorted(day + pd.Timedelta(days=1), side="left"))
 
-            bundles = {
-                sym: DataBundle(
-                    symbol=sym,
-                    market=historical_data[sym].iloc[: step + 1].copy(),
-                    fundamentals=fundamentals.get(sym, {}),
-                    news=[],
+        def bar_on(sym: str, day: pd.Timestamp):
+            n = rows_through(sym, day)
+            if n == 0:
+                return None, 0
+            row = data[sym].iloc[n - 1]
+            if row["timestamp"].normalize() != day:
+                return None, n
+            return row, n
+
+        def fill(price: float, direction: str, opening: bool) -> float:
+            # opening a BUY / closing a SELL = buying -> pay more
+            buying = (direction == "BUY") == opening
+            return price * (1 + cost) if buying else price * (1 - cost)
+
+        def record_close(closed, exit_price: float, day: pd.Timestamp, reason: str) -> None:
+            info = meta.pop(closed.symbol, {})
+            pnl = closed.realized_pnl
+            if pnl > 0:
+                counters["wins"] += 1
+                counters["gross_profit"] += pnl
+            else:
+                counters["losses"] += 1
+                counters["gross_loss"] += abs(pnl)
+            if closed.max_drawdown_percent > 0:
+                rr_values.append(closed.max_profit_percent / max(closed.max_drawdown_percent, 1e-9))
+            result.closed_trades.append({
+                "symbol": closed.symbol,
+                "direction": closed.direction,
+                "entry_price": closed.entry_price,
+                "exit_price": exit_price,
+                "realized_pnl": pnl,
+                "realized_pnl_percent": closed.realized_pnl_percent,
+                "max_profit_percent": closed.max_profit_percent,
+                "max_drawdown_percent": closed.max_drawdown_percent,
+                "entry_date": str(info.get("entry_date", ""))[:10],
+                "exit_date": str(day)[:10],
+                "holding_days": info.get("cycles", 0),
+                "exit_reason": reason,
+            })
+
+        for day in all_dates:
+            day_str = day.date().isoformat()
+            portfolio.update_equity_tracking(day_str)
+
+            # ---------------- 1. OPEN: execute last night's candidates
+            if pending:
+                todays_orders, pending = pending, []
+                for c in todays_orders:
+                    sym, direction = c["symbol"], c["direction"]
+                    row, _ = bar_on(sym, day)
+                    if row is None:
+                        entry_skips["no bar on execution day"] += 1
+                        continue
+                    open_price = float(row["open"])
+                    prev_close = c.get("prev_close")
+                    if not prev_close or open_price <= 0 or math.isnan(open_price):
+                        entry_skips["no valid open/prev_close"] += 1
+                        continue
+                    band, _ratio = classify_gap(open_price, prev_close, c.get("atr_14"))
+                    gap_pct = round((open_price - prev_close) / prev_close * 100, 2)
+                    if band == "SKIP":
+                        entry_skips["gap too large (SKIP band)"] += 1
+                        continue
+                    if is_gap_chase(direction, gap_pct):
+                        entry_skips["gap chase filter"] += 1
+                        continue
+                    target1, stop_loss = c.get("target1"), c.get("stop_loss")
+                    if direction == "BUY" and (
+                        (target1 and open_price >= target1) or (stop_loss and open_price <= stop_loss)
+                    ):
+                        entry_skips["open past target1/stop"] += 1
+                        continue
+                    if direction == "SELL" and (
+                        (target1 and open_price <= target1) or (stop_loss and open_price >= stop_loss)
+                    ):
+                        entry_skips["open past target1/stop"] += 1
+                        continue
+                    snap = portfolio.snapshot()
+                    risk_ok, _reason = check_capital_portfolio_risk(snap)
+                    if not risk_ok:
+                        entry_skips["capital/portfolio check"] += 1
+                        continue
+                    entry_price = fill(open_price, direction, opening=True)
+                    allocation = min(
+                        snap.get("available_capital", 0.0) * 0.05,
+                        initial_capital / max(len(todays_orders), 1),
+                    )
+                    quantity = int(allocation / entry_price) if entry_price > 0 else 0
+                    if quantity <= 0:
+                        entry_skips["insufficient capital"] += 1
+                        continue
+                    if not portfolio.add_position(
+                        symbol=sym, quantity=quantity, entry_price=entry_price, direction=direction,
+                    ):
+                        entry_skips["already open / no capital"] += 1
+                        continue
+                    meta[sym] = {"entry_date": day, "cycles": 0, "entry_thesis": None}
+                    if direction == "BUY":
+                        counters["opened_buy"] += 1
+                    else:
+                        counters["opened_sell"] += 1
+
+            # ---------------- 2. MONITOR open positions with D's full bar
+            for sym in list(portfolio.state.open_positions.keys()):
+                row, n = bar_on(sym, day)
+                if row is None:
+                    continue
+                pos = portfolio.state.open_positions[sym]
+                bundle = DataBundle(
+                    symbol=sym, market=data[sym].iloc[:n].copy(),
+                    fundamentals=fundamentals.get(sym, {}), news=[],
                 )
-                for sym in symbols
-            }
+                scan = self.scanner.evaluate_position(
+                    symbol=sym,
+                    position={
+                        "symbol": sym, "direction": pos.direction,
+                        "current_price": pos.current_price,
+                        "max_drawdown_percent": pos.max_drawdown_percent,
+                    },
+                    portfolio=portfolio.snapshot(),
+                    broker_status=broker_status, market_state=market_state, bundle=bundle,
+                )
+                diag = scan.diagnostics
+                risk_result = diag.get("_risk_result")
+                final_decision = diag.get("_final_decision")
+                dataframe = diag.get("_dataframe")
+                current_price = diag.get("latest_close")
+                if (
+                    scan.action == "ERROR" or risk_result is None or final_decision is None
+                    or dataframe is None or current_price is None
+                    or (isinstance(current_price, float) and math.isnan(current_price))
+                ):
+                    continue
 
-            scan_results = self.scanner.scan_symbols(
-                symbols=symbols,
-                portfolio=portfolio_dict,
-                broker_status=broker_status,
-                market_state=market_state,
-                bundles=bundles,
+                portfolio.update_position(symbol=sym, current_price=current_price)
+                pos = portfolio.state.open_positions[sym]
+                info = meta.setdefault(sym, {"entry_date": day, "cycles": 0, "entry_thesis": None})
+
+                held_conf = (
+                    diag.get("buy_decision_confidence") if pos.direction == "BUY"
+                    else diag.get("sell_decision_confidence")
+                )
+                if info["entry_thesis"] is None and held_conf is not None:
+                    info["entry_thesis"] = held_conf
+
+                position_input = build_exit_position_input(
+                    symbol=sym, pos=pos, current_price=current_price,
+                    diagnostics=diag, risk_result=risk_result,
+                    holding_days=info["cycles"],
+                    entered_today=info["entry_date"] == day,
+                    prev_session=None,
+                    entry_thesis_confidence=info["entry_thesis"],
+                    held_thesis_confidence=held_conf,
+                )
+                info["cycles"] += 1
+
+                exit_eval = exit_engine.evaluate(
+                    decision=dataclasses.replace(final_decision, action=pos.direction),
+                    risk=risk_result, dataframe=dataframe, position=position_input,
+                )
+                raw_exit = (
+                    exit_eval.suggested_exit_price
+                    if exit_eval.suggested_exit_price is not None else current_price
+                )
+                exit_price = fill(raw_exit, pos.direction, opening=False)
+                reason = exit_eval.diagnostics.get("exit_reason") or (
+                    exit_eval.reasons[-1] if exit_eval.reasons else exit_eval.action
+                )
+
+                if exit_eval.action == "FULL_EXIT":
+                    closed = portfolio.close_position(symbol=sym, exit_price=exit_price)
+                    if closed is not None:
+                        record_close(closed, exit_price, day, reason)
+                    continue
+
+                active_stop = exit_eval.diagnostics.get("active_stop")
+                if active_stop is not None:
+                    pos.stop_level = float(active_stop)
+
+                if exit_eval.action == "PARTIAL_EXIT":
+                    qty = min(max(1, round(pos.quantity * exit_eval.exit_percent / 100.0)), pos.quantity)
+                    portfolio.partial_exit(symbol=sym, quantity=qty, exit_price=exit_price)
+                    if sym not in portfolio.state.open_positions:
+                        record_close(portfolio.state.closed_positions[-1], exit_price, day, reason)
+                        continue
+                    if exit_eval.diagnostics.get("partial_exit"):
+                        portfolio.state.open_positions[sym].partial_taken = True
+
+                portfolio.observe_range(sym, diag.get("latest_high"), diag.get("latest_low"))
+
+            # ---------------- 3. CLOSE: scan -> tomorrow's orders
+            bundles = {}
+            for sym in symbols:
+                row, n = bar_on(sym, day)
+                if row is None or n < min_history:
+                    continue
+                bundles[sym] = DataBundle(
+                    symbol=sym, market=data[sym].iloc[:n].copy(),
+                    fundamentals=fundamentals.get(sym, {}), news=[],
+                )
+
+            scan_results = []
+            if bundles:
+                scan_results = self.scanner.scan_symbols(
+                    symbols=list(bundles.keys()),
+                    portfolio=portfolio.snapshot(),
+                    broker_status=broker_status,
+                    market_state=market_state,
+                    bundles=bundles,
+                )
+                full_scan_results = getattr(self.scanner, "_last_full_scan_results", scan_results)
+                for r in full_scan_results:
+                    total_scan_attempts += 1
+                    if r.action == "ERROR":
+                        err_type = r.diagnostics.get("error_type", "UnknownError")
+                        error_type_counts[err_type] += 1
+                        error_sample_messages.setdefault(err_type, str(r.diagnostics.get("error", ""))[:200])
+                    elif r.action == "NO_TRADE":
+                        no_trade_count += 1
+                        why = (
+                            r.diagnostics.get("validation_rejection_reason")
+                            or r.diagnostics.get("portfolio_rule_reason") or "score below threshold"
+                        )
+                        no_trade_reasons[str(why)[:100]] += 1
+                    elif r.action in ("BUY", "SELL") and not r.portfolio_allowed:
+                        blocked_by_portfolio += 1
+                        why = r.diagnostics.get("portfolio_rule_reason") or "unknown"
+                        no_trade_reasons[f"signal generated but portfolio blocked: {str(why)[:80]}"] += 1
+
+                candidates = sorted(
+                    (r for r in scan_results if r.action in ("BUY", "SELL") and r.portfolio_allowed),
+                    key=lambda r: r.ranking, reverse=True,
+                )[:max_candidates_per_day]
+                pending = [
+                    {
+                        "symbol": r.symbol,
+                        "direction": r.action,
+                        "prev_close": r.diagnostics.get("latest_close"),
+                        "atr_14": r.diagnostics.get("atr_14"),
+                        "stop_loss": r.diagnostics.get("stop_loss"),
+                        "target1": r.diagnostics.get("target1"),
+                    }
+                    for r in candidates
+                ]
+
+            # ---------------- mark to market at D's close
+            portfolio.mark_to_market()
+            portfolio.update_equity_tracking(day_str)
+            if not bundles and not portfolio.state.open_positions and not result.equity_curve:
+                continue  # still inside the warm-up period: nothing tradeable yet
+            result.equity_curve.append(portfolio.state.total_capital + portfolio.state.total_pnl)
+            result.dates.append(day)
+            result.regimes.append(
+                scan_results[0].diagnostics.get("market_regime", "UNKNOWN") if scan_results else "UNKNOWN"
             )
 
-            # scan_symbols() returns ONLY the already-filtered
-            # executable_results (BUY/SELL + portfolio_allowed) — by
-            # construction it can NEVER contain ERROR or NO_TRADE
-            # entries, so diagnosing "why zero trades" from THAT list
-            # is structurally blind (confirmed: an earlier version of
-            # this diagnostic always showed "0 errors" regardless of
-            # what was actually happening). The FULL per-symbol list,
-            # including NO_TRADE/ERROR and their rejection reasons, is
-            # stashed separately for exactly this purpose.
-            full_scan_results = getattr(self.scanner, "_last_full_scan_results", scan_results)
-            for r in full_scan_results:
-                total_scan_attempts += 1
-                if r.action == "ERROR":
-                    err_type = r.diagnostics.get("error_type", "UnknownError")
-                    error_type_counts[err_type] += 1
-                    if err_type not in error_sample_messages:
-                        error_sample_messages[err_type] = str(r.diagnostics.get("error", ""))[:200]
-                elif r.action == "NO_TRADE":
-                    no_trade_count[0] += 1
-                    reason = r.diagnostics.get("validation_rejection_reason") or r.diagnostics.get("portfolio_rule_reason") or "score below threshold"
-                    no_trade_reasons[str(reason)[:100]] += 1
-                elif r.action in ("BUY", "SELL") and not r.portfolio_allowed:
-                    blocked_by_portfolio[0] += 1
-                    reason = r.diagnostics.get("portfolio_rule_reason") or "unknown"
-                    no_trade_reasons[f"signal generated but portfolio blocked: {str(reason)[:80]}"] += 1
-
-            candidates = sorted(
-                (r for r in scan_results if r.action in ("BUY", "SELL") and r.portfolio_allowed),
-                key=lambda r: r.ranking,
-                reverse=True,
-            )[:max_candidates_per_day]
-
-            for candidate in candidates:
-                price = candidate.diagnostics.get("latest_close")
-                # "if not price" alone does NOT catch NaN — NaN is
-                # truthy in Python (bool(float('nan')) is True) — so a
-                # NaN price would silently pass through into trade
-                # execution, producing NaN PnL that cascades into NaN
-                # CAGR/Sortino/Expectancy in the final report (confirmed
-                # via a real backtest run). Explicit isnan check
-                # required, matching the same fix already applied in
-                # paper_trading_engine.py.
-                if not price or (isinstance(price, float) and math.isnan(price)):
-                    continue
-
-                order = OrderRequest(
-                    symbol=candidate.symbol,
-                    action=candidate.action,
-                    quantity=candidate.position_size,
-                )
-                order_result = broker.place_order(order=order, market_price=price, market_state=market_state)
-                if order_result.status not in ("FILLED", "PARTIAL"):
-                    continue
-
-                if candidate.action == "BUY":
-                    if candidate.symbol in portfolio.state.open_positions:
-                        # Existing position is a SHORT (SELL direction) —
-                        # a BUY signal here means "cover the short",
-                        # mirroring how the SELL branch closes an
-                        # existing BUY. Without this, short positions
-                        # could only ever be closed by the final forced
-                        # close-everything-at-the-end step.
-                        existing = portfolio.state.open_positions[candidate.symbol]
-                        if existing.direction == "SELL":
-                            closed = portfolio.close_position(
-                                symbol=candidate.symbol, exit_price=order_result.avg_price
-                            )
-                            if closed is not None:
-                                self._record_closed_trade(result, closed, candidate, wins, losses)
-                                if closed.realized_pnl > 0:
-                                    wins += 1
-                                    gross_profit += closed.realized_pnl
-                                else:
-                                    losses += 1
-                                    gross_loss += abs(closed.realized_pnl)
-                                if closed.max_drawdown_percent > 0:
-                                    rr_values.append(
-                                        closed.max_profit_percent / max(closed.max_drawdown_percent, 1e-9)
-                                    )
-                                # Count by the CLOSED POSITION's actual
-                                # direction (it was a SELL position being
-                                # covered here), not by candidate.action
-                                # (BUY) — this is what was previously
-                                # inverted, causing "BUY Accuracy" to
-                                # only ever reflect short-covers instead
-                                # of genuine BUY-entry trades.
-                                sell_total += 1
-                                if closed.realized_pnl > 0:
-                                    sell_wins += 1
-                    else:
-                        portfolio.add_position(
-                            symbol=candidate.symbol,
-                            quantity=order_result.filled_quantity,
-                            entry_price=order_result.avg_price,
-                            direction="BUY",
-                        )
-                        opened_buy_count += 1
-                elif candidate.action == "SELL":
-                    if candidate.symbol in portfolio.state.open_positions:
-                        existing_direction = portfolio.state.open_positions[candidate.symbol].direction
-                        closed = portfolio.close_position(symbol=candidate.symbol, exit_price=order_result.avg_price)
-                        if closed is not None:
-                            self._record_closed_trade(
-                                result, closed, candidate, wins, losses,
-                            )
-                            if closed.realized_pnl > 0:
-                                wins += 1
-                                gross_profit += closed.realized_pnl
-                            else:
-                                losses += 1
-                                gross_loss += abs(closed.realized_pnl)
-                            if closed.max_drawdown_percent > 0:
-                                rr_values.append(
-                                    closed.max_profit_percent / max(closed.max_drawdown_percent, 1e-9)
-                                )
-                            # FIXED: previously always counted here as
-                            # "sell_total" regardless of what direction
-                            # the closed position actually was. Since
-                            # the overwhelmingly common lifecycle is
-                            # BUY-entry -> SELL-signal-closes-it, this
-                            # silently mislabeled nearly every genuine
-                            # BUY trade's outcome as a SELL trade,
-                            # making "BUY Accuracy" reflect only the
-                            # rare short-cover case (confirmed via a
-                            # real backtest: 1 BUY trade vs 314 SELL).
-                            if existing_direction == "BUY":
-                                buy_total += 1
-                                if closed.realized_pnl > 0:
-                                    buy_wins += 1
-                            else:
-                                sell_total += 1
-                                if closed.realized_pnl > 0:
-                                    sell_wins += 1
-                    else:
-                        portfolio.add_position(
-                            symbol=candidate.symbol,
-                            quantity=order_result.filled_quantity,
-                            entry_price=order_result.avg_price,
-                            direction="SELL",
-                        )
-                        opened_sell_count += 1
-
-            # Mark every open position to today's close, then snapshot equity.
-            for sym in list(portfolio.state.open_positions.keys()):
-                if sym in historical_data and step < len(historical_data[sym]):
-                    price = float(historical_data[sym].iloc[step]["close"])
-                    portfolio.update_position(symbol=sym, current_price=price)
-            portfolio.mark_to_market()
-
-            equity = portfolio.state.total_capital + portfolio.state.total_pnl
-            result.equity_curve.append(equity)
-            ts_col = historical_data[symbols[0]].iloc[step].get("timestamp", step)
-            result.dates.append(ts_col)
-            # Reuses the market_regime the scanner already computed for
-            # this day (same regime-detection used live) — no separate
-            # computation needed. Falls back to "UNKNOWN" if no scan
-            # result was available (e.g. all symbols rejected pre-regime).
-            day_regime = scan_results[0].diagnostics.get("market_regime", "UNKNOWN") if scan_results else "UNKNOWN"
-            result.regimes.append(day_regime)
-
-        # Close anything still open at the end, so realized P&L covers the
-        # whole run (otherwise long-held winners/losers would be invisible
-        # to win-rate / profit-factor).
+        # Close anything still open at the end so realized P&L covers the
+        # whole run (otherwise long-held winners/losers would be invisible).
+        last_day = all_dates[-1]
         for sym in list(portfolio.state.open_positions.keys()):
-            last_price = float(historical_data[sym].iloc[-1]["close"])
+            pos = portfolio.state.open_positions[sym]
+            last_price = fill(float(data[sym].iloc[-1]["close"]), pos.direction, opening=False)
             closed = portfolio.close_position(symbol=sym, exit_price=last_price)
             if closed is not None:
-                self._record_closed_trade(result, closed, None, wins, losses)
-                if closed.realized_pnl > 0:
-                    wins += 1
-                    gross_profit += closed.realized_pnl
-                else:
-                    losses += 1
-                    gross_loss += abs(closed.realized_pnl)
+                record_close(closed, last_price, last_day, "Open at backtest end (closed at last close)")
+
+        buy_total = sum(1 for t in result.closed_trades if t["direction"] == "BUY")
+        sell_total = sum(1 for t in result.closed_trades if t["direction"] == "SELL")
+        buy_wins = sum(1 for t in result.closed_trades if t["direction"] == "BUY" and t["realized_pnl"] > 0)
+        sell_wins = sum(1 for t in result.closed_trades if t["direction"] == "SELL" and t["realized_pnl"] > 0)
 
         result.metrics = self._compute_metrics(
-            result, initial_capital, wins, losses, gross_profit, gross_loss,
+            result, initial_capital, counters["wins"], counters["losses"],
+            counters["gross_profit"], counters["gross_loss"],
             rr_values, buy_wins, buy_total, sell_wins, sell_total,
         )
-        result.metrics["opened_buy_count"] = opened_buy_count
-        result.metrics["opened_sell_count"] = opened_sell_count
-        result.metrics["still_open_at_end"] = len(portfolio.state.open_positions)
-        result.metrics["total_scan_attempts"] = total_scan_attempts
-        result.metrics["error_count"] = sum(error_type_counts.values())
-        result.metrics["error_breakdown"] = dict(error_type_counts.most_common(5))
-        result.metrics["error_samples"] = error_sample_messages
-        result.metrics["no_trade_count"] = no_trade_count[0]
-        result.metrics["blocked_by_portfolio_count"] = blocked_by_portfolio[0]
-        result.metrics["no_trade_reasons"] = dict(no_trade_reasons.most_common(5))
+        exit_breakdown: dict[str, dict[str, Any]] = {}
+        for t in result.closed_trades:
+            key = self._exit_category(t["exit_reason"])
+            bucket = exit_breakdown.setdefault(key, {"trades": 0, "pnl": 0.0, "wins": 0})
+            bucket["trades"] += 1
+            bucket["pnl"] = round(bucket["pnl"] + t["realized_pnl"], 2)
+            bucket["wins"] += t["realized_pnl"] > 0
+        holds = [t["holding_days"] for t in result.closed_trades]
+        result.metrics.update({
+            "opened_buy_count": counters["opened_buy"],
+            "opened_sell_count": counters["opened_sell"],
+            "still_open_at_end": len(portfolio.state.open_positions),
+            "total_scan_attempts": total_scan_attempts,
+            "error_count": sum(error_type_counts.values()),
+            "error_breakdown": dict(error_type_counts.most_common(5)),
+            "error_samples": error_sample_messages,
+            "no_trade_count": no_trade_count,
+            "blocked_by_portfolio_count": blocked_by_portfolio,
+            "no_trade_reasons": dict(no_trade_reasons.most_common(5)),
+            "entry_skips": dict(entry_skips),
+            "exit_breakdown": exit_breakdown,
+            "avg_holding_days": round(sum(holds) / len(holds), 2) if holds else 0.0,
+            "cost_pct_per_side": cost_pct_per_side,
+            "engine_version": "2026-10-06-live-flow",
+        })
         return result
 
-    def _record_closed_trade(self, result, closed, candidate, wins, losses):
-        result.closed_trades.append({
-            "symbol": closed.symbol,
-            "direction": closed.direction,
-            "entry_price": closed.entry_price,
-            "realized_pnl": closed.realized_pnl,
-            "max_profit_percent": closed.max_profit_percent,
-            "max_drawdown_percent": closed.max_drawdown_percent,
-        })
+    @staticmethod
+    def _exit_category(reason: str) -> str:
+        reason = reason or ""
+        if reason.startswith("Risk engine"):
+            return "risk_engine"
+        if "Stop-loss" in reason:
+            return "stop_loss"
+        if "Final target" in reason:
+            return "final_target"
+        if "Partial target" in reason:
+            return "partial_target"
+        if "Trend reversal" in reason:
+            return "trend_reversal"
+        if "backtest end" in reason:
+            return "open_at_end"
+        return "other"
 
     @staticmethod
     def _compute_walk_forward_windows(
