@@ -31,7 +31,7 @@ from __future__ import annotations
 
 import json
 import time
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -41,7 +41,7 @@ import yfinance as yf
 from config import CONFIG
 from core.logger import get_logger
 from core.notifications import notify
-from core.trading_calendar import is_trading_day, now_ist
+from core.trading_calendar import IST_TZ, is_trading_day, now_ist, previous_trading_day
 from data.news_data import NewsDataProvider
 from news.sentiment_engine import SentimentEngine
 from paper_trading.virtual_portfolio import VirtualPortfolio
@@ -65,6 +65,14 @@ BAND_NORMAL = 1.0
 BAND_WARNING = 1.75
 # > BAND_WARNING -> skip entirely
 
+# 2026-10-06 (BUG_AUDIT_2026-10-05_PROFITABILITY.md H6, user-approved):
+# don't chase an opening gap in the trade's OWN direction. Real data,
+# 115 BUY entries on a >= +1% gap-up: best move after entry (MFE) only
+# 0.66% on average vs 1.56% for entries with |gap| < 1%, win rate 33%
+# — the stock usually gave the gap back. Mirrored for SELL (gap-down).
+# 1.0% comes from that data bucket, not from a backtest.
+GAP_CHASE_PCT = 1.0
+
 
 def _signed_news_bias(scored_item: dict[str, Any]) -> float:
     """Same formula as execution/scanner.py's _signed_news_bias() —
@@ -78,6 +86,46 @@ def _signed_news_bias(scored_item: dict[str, Any]) -> float:
     if polarity == "NEGATIVE":
         return -magnitude
     return 0.0
+
+
+def _parse_iso_utc(value: Any, naive_tz: Any) -> datetime | None:
+    """2026-10-06 (audit H12): parse an ISO-8601 timestamp (accepting a
+    trailing "Z") into an aware UTC datetime. A value with no offset is
+    interpreted in `naive_tz`. Returns None when missing/unparseable."""
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(str(value).strip().replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=naive_tz)
+    return parsed.astimezone(timezone.utc)
+
+
+def is_gap_chase(direction: str, gap_pct: float) -> bool:
+    """2026-10-06 (audit H6): True when the open has already gapped
+    GAP_CHASE_PCT or more in the trade's own direction."""
+    if direction == "BUY":
+        return gap_pct >= GAP_CHASE_PCT
+    if direction == "SELL":
+        return gap_pct <= -GAP_CHASE_PCT
+    return False
+
+
+def is_stale_scan(scan_date: str | None, today: date) -> bool:
+    """2026-10-06 (audit M8): candidates must come from the most recent
+    scan — dated on/after the previous trading day and before today.
+    Without this, a failed night scan left yesterday's (or older)
+    candidates_order.json in place and it would be executed again with
+    its old prev_close / stop / target levels."""
+    if not scan_date:
+        return True
+    try:
+        scanned = date.fromisoformat(str(scan_date))
+    except ValueError:
+        return True
+    return scanned < previous_trading_day(today) or scanned >= today
 
 
 def _check_symbol_news(symbol: str, direction: str, scan_timestamp: str | None) -> tuple[bool, str]:
@@ -101,17 +149,23 @@ def _check_symbol_news(symbol: str, direction: str, scan_timestamp: str | None) 
             return True, "No company-specific news available."
 
         if scan_timestamp:
-            cutoff = datetime.fromisoformat(scan_timestamp)
+            # BUGFIX (2026-10-06, audit H12): this read h["published"], but
+            # data/news_data.py writes "published_at" — so EVERY headline
+            # was skipped and 0 of 543 real entries ever evaluated company
+            # news. Also, a naive vs aware datetime comparison raised
+            # TypeError (not caught by the ValueError handler) and the
+            # scan cutoff was mislabelled UTC. Both sides are now parsed
+            # to aware UTC before comparing.
+            cutoff = _parse_iso_utc(scan_timestamp, naive_tz=IST_TZ)
             fresh_headlines = []
             for h in headlines:
-                published = h.get("published")
-                if not published:
-                    continue  # no timestamp — can't confirm it's overnight, skip it rather than risk re-scoring old news
-                try:
-                    if datetime.fromisoformat(published) > cutoff:
-                        fresh_headlines.append(h)
-                except ValueError:
-                    continue
+                published = _parse_iso_utc(
+                    h.get("published_at") or h.get("published"), naive_tz=timezone.utc
+                )
+                if published is None or cutoff is None:
+                    continue  # no usable timestamp — can't confirm it's overnight, skip it rather than risk re-scoring old news
+                if published > cutoff:
+                    fresh_headlines.append(h)
             headlines = fresh_headlines
 
         if not headlines:
@@ -316,6 +370,24 @@ def main() -> None:
         logger.info("candidates_order.json has no candidates — nothing to execute.")
         return
 
+    if is_stale_scan(scan_date, today_date):
+        logger.warning(
+            "candidates_order.json is from %s — not the latest scan for %s. "
+            "Refusing to execute stale candidates.", scan_date, today_date.isoformat(),
+        )
+        notify(
+            event_type="morning_execution_stale_candidates",
+            message=(
+                f"🟠 Morning Executor — stale candidates skipped\n"
+                f"candidates_order.json is dated {scan_date}; today is "
+                f"{today_date.isoformat()}. Last night's scan probably failed. "
+                f"No new positions opened today."
+            ),
+            severity="🟠 HIGH",
+            dedup_key=f"morning_exec_stale::{today_date.isoformat()}",
+        )
+        return
+
     portfolio = VirtualPortfolio()
     diary = TradeDiary()
     trade_store = TradeStore()
@@ -340,6 +412,10 @@ def main() -> None:
 
         if band == "SKIP":
             skipped.append((symbol, direction, f"Gap {gap_pct:+.2f}% = {ratio:.2f}x ATR (> {BAND_WARNING}x) — too large, skipped."))
+            continue
+
+        if is_gap_chase(direction, gap_pct):
+            skipped.append((symbol, direction, f"Gap {gap_pct:+.2f}% in the trade's own direction (>= {GAP_CHASE_PCT}%) — chase filter, skipped."))
             continue
 
         # Target/Stop sanity check (already-computed boundaries reused
