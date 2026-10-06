@@ -26,6 +26,7 @@ from paper_trading.virtual_portfolio import VirtualPortfolio
 from portfolio.portfolio import PortfolioEngine, PortfolioState
 from risk.exit_strategy import ExitStrategyEngine, FULL_EXIT, HOLD, PARTIAL_EXIT
 from risk.risk_manager import RiskResult
+from risk.transaction_costs import ZERO_COSTS
 from storage.trades.trade_diary import TradeDiary
 from storage.trades.trade_store import TradeStore
 from tests.test_paper_trading_exit_wiring import FakeScanner
@@ -227,7 +228,12 @@ def test_engine_closes_on_previous_session_stop_at_stop_price(engine_setup, dire
     portfolio, diary, trade_store = engine_setup
     _open(portfolio, diary, direction)
     scanner = _SessionScanner(direction, prev_high, prev_low, close)
-    engine = PaperTradingEngine(scanner=scanner, portfolio=portfolio, diary=diary, trade_store=trade_store)
+    # ZERO_COSTS: this test checks the fill PRICE; transaction costs
+    # (2026-10-06, audit H13) are booked into the exit price and are
+    # tested separately in test_phase12_costs_accounting_2026_10_06.py.
+    engine = PaperTradingEngine(
+        scanner=scanner, portfolio=portfolio, diary=diary, trade_store=trade_store, cost_model=ZERO_COSTS,
+    )
 
     engine.run_cycle(["TESTCO.NS"], force=True)
 
