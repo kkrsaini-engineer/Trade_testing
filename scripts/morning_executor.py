@@ -45,6 +45,8 @@ from core.trading_calendar import IST_TZ, is_trading_day, now_ist, previous_trad
 from data.news_data import NewsDataProvider
 from news.sentiment_engine import SentimentEngine
 from paper_trading.virtual_portfolio import VirtualPortfolio
+from decision.validation_engine import ValidationEngine
+from risk import portfolio_limits
 from risk.risk_manager import RiskManager
 from storage.trades.trade_diary import TradeDiary
 from storage.trades.trade_store import TradeStore
@@ -350,6 +352,29 @@ def check_capital_portfolio_risk(portfolio_snapshot: dict[str, Any]) -> tuple[bo
     return True, "Capital/portfolio check passed."
 
 
+def check_loss_limits(portfolio_snapshot: dict[str, Any]) -> tuple[bool, str]:
+    """
+    2026-10-06 (BUG_AUDIT_2026-10-05_PROFITABILITY.md M6): portfolio
+    loss limits were only enforced in the evening scan (ValidationEngine),
+    never here — so if the limits were crossed overnight, this morning's
+    entries still went through. Same thresholds as ValidationEngine:
+    weekly loss > MAX_WEEKLY_LOSS, monthly loss > MAX_MONTHLY_LOSS,
+    drawdown in the "halt" band. The DAILY limit is deliberately not
+    checked here: at 9:16 the stored day-start equity and prices are
+    still yesterday's, so "today's loss" would really be yesterday's.
+    """
+    weekly = float(portfolio_snapshot.get("weekly_loss", 0.0) or 0.0)
+    monthly = float(portfolio_snapshot.get("monthly_loss", 0.0) or 0.0)
+    drawdown = float(portfolio_snapshot.get("max_drawdown", 0.0) or 0.0)
+    if weekly > ValidationEngine.MAX_WEEKLY_LOSS:
+        return False, f"Weekly loss {weekly:.1%} exceeds {ValidationEngine.MAX_WEEKLY_LOSS:.0%} limit."
+    if monthly > ValidationEngine.MAX_MONTHLY_LOSS:
+        return False, f"Monthly loss {monthly:.1%} exceeds {ValidationEngine.MAX_MONTHLY_LOSS:.0%} limit."
+    if portfolio_limits.drawdown_band_label(drawdown) == "halt":
+        return False, f"Portfolio drawdown {drawdown:.1%} is in the halt band."
+    return True, "Loss limits OK."
+
+
 def main() -> None:
     today_date = date.today()
     if not is_trading_day(today_date):
@@ -446,6 +471,10 @@ def main() -> None:
         # market-regime/VIX inputs that don't genuinely exist yet this
         # morning without a fresh scan).
         snap = portfolio.snapshot()
+        loss_ok, loss_reason = check_loss_limits(snap)
+        if not loss_ok:
+            skipped.append((symbol, direction, f"Loss limit: {loss_reason}"))
+            continue
         risk_ok, risk_reason = check_capital_portfolio_risk(snap)
         if not risk_ok:
             skipped.append((symbol, direction, f"Risk check failed: {risk_reason}"))
@@ -486,7 +515,11 @@ def main() -> None:
         diary.open_trade(
             trade_id=trade_id, symbol=symbol, direction=direction,
             entry_price=open_price, entry_date=today_date.isoformat(),
-            buy_probability=0.0, buy_confidence=0.0,
+            # 2026-10-06 (audit M7): real values from last night's scan
+            # (were hardcoded 0.0 on every one of 519 trades). The diary
+            # field names say "buy_" but hold the trade's own direction.
+            buy_probability=float(c.get("probability") or 0.0),
+            buy_confidence=float(c.get("confidence") or 0.0),
             entry_reasons=entry_reasons,
         )
         # BUGFIX (2026-09-18, Phase 2 — see BUG_AUDIT_2026-09-18.md item
@@ -511,7 +544,9 @@ def main() -> None:
         trade_store.save_trade({
             "id": trade_id, "symbol": symbol, "direction": direction, "action": "OPEN",
             "quantity": quantity, "entry_price": open_price, "status": "OPEN",
-            "regime": "N/A", "confidence": 0.0, "reasons": "; ".join(entry_reasons),
+            "regime": c.get("market_regime") or "N/A",
+            "confidence": float(c.get("confidence") or 0.0),
+            "reasons": "; ".join(entry_reasons),
         })
 
         executed.append((symbol, direction, open_price, quantity, gap_pct, band, ratio))

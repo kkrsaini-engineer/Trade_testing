@@ -600,6 +600,12 @@ def main() -> None:
             "target2": d.get("target2"),
             "overall_score": round(r.score, 2),
             "ranking": round(r.ranking, 2),
+            # 2026-10-06 (BUG_AUDIT_2026-10-05_PROFITABILITY.md M7): carried
+            # through so the Morning Executor can record the real entry-time
+            # values instead of hardcoded 0.0 / "N/A".
+            "probability": round(r.probability, 2),
+            "confidence": round(r.confidence, 2),
+            "market_regime": d.get("market_regime"),
             "sector": d.get("sector"),
             "scan_date": today_date.isoformat(),
         })

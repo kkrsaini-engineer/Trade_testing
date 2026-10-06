@@ -49,6 +49,7 @@ from core.logger import get_logger  # noqa: E402
 from core.notifications import notify  # noqa: E402
 from analytics.backtest_engine import BacktestEngine  # noqa: E402
 from data.fundamental_data import normalize_fundamentals  # noqa: E402
+from risk.transaction_costs import CostModel  # noqa: E402
 
 logger = get_logger(__name__)
 
@@ -113,6 +114,10 @@ def main() -> None:
     parser.add_argument("--period", default="2y", choices=["3mo", "6mo", "1y", "2y", "5y", "10y", "max"])
     parser.add_argument("--symbols", default=None, help="Comma-separated symbol list (default: representative 11-sector sample)")
     parser.add_argument("--initial-capital", type=float, default=500000.0)
+    parser.add_argument(
+        "--realistic-costs", action="store_true",
+        help="Apply the same Indian delivery cost model as live paper trading (config.py COST_*).",
+    )
     parser.add_argument(
         "--cost-per-side-pct", type=float, default=0.0,
         help="Transaction cost per fill in percent (e.g. 0.12 = 0.12%% each side). Default 0.",
@@ -194,6 +199,7 @@ def main() -> None:
         fundamentals=fundamentals,
         initial_capital=args.initial_capital,
         cost_pct_per_side=args.cost_per_side_pct,
+        cost_model=CostModel.from_config() if args.realistic_costs else None,
     )
 
     report_text = result.report()
