@@ -191,6 +191,66 @@ def _previous_session_range(
         return None
 
 
+def build_exit_position_input(
+    *,
+    symbol: str,
+    pos: Any,
+    current_price: float,
+    diagnostics: dict[str, Any],
+    risk_result: Any,
+    holding_days: int,
+    entered_today: bool,
+    prev_session: dict[str, float] | None,
+    entry_thesis_confidence: float | None,
+    held_thesis_confidence: float | None,
+) -> dict[str, Any]:
+    """
+    The `position` dict ExitStrategyEngine.evaluate() receives for one
+    held position. Extracted 2026-10-06 (BUG_AUDIT_2026-10-05_
+    PROFITABILITY.md M9) — previously built inline in run_cycle() — so
+    analytics/backtest_engine.py can feed the exit engine EXACTLY the
+    same inputs live paper trading does, instead of a parallel copy that
+    could drift. No behavior change for live paper trading.
+    """
+    return {
+        "symbol": symbol,
+        "direction": pos.direction,
+        "entry_price": pos.entry_price,
+        "current_price": current_price,
+        "holding_days": holding_days,
+        "highest_price": pos.highest_price,
+        "lowest_price": pos.lowest_price,
+        "day_high": diagnostics.get("latest_high"),
+        "day_low": diagnostics.get("latest_low"),
+        # 2026-10-06 (audit H2/H3/H4/H5): open for realistic gap-through
+        # fills; persisted one-time target1 flag and tighten-only stop.
+        "day_open": diagnostics.get("latest_open"),
+        "prev_day_open": prev_session["open"] if prev_session else None,
+        "prev_day_high": prev_session["high"] if prev_session else None,
+        "prev_day_low": prev_session["low"] if prev_session else None,
+        "partial_taken": pos.partial_taken,
+        "stop_level": pos.stop_level,
+        "max_drawdown_percent": pos.max_drawdown_percent,
+        # Thesis-decay time exit inputs (Point 16, PHASE28_NOTES.md) —
+        # both None for a position with no captured baseline yet (falls
+        # back to the old flat MAX_HOLD_DAYS behavior inside
+        # ExitStrategyEngine).
+        "entry_thesis_confidence": entry_thesis_confidence,
+        "held_thesis_confidence": held_thesis_confidence,
+        # A RiskManager-unsafe verdict forces an immediate FULL_EXIT —
+        # 2026-10-06 (audit C1/C2): see _should_force_exit() — hard
+        # overrides always; a weighted/validation "unsafe" verdict (now
+        # judged at MAX_EXIT_RISK) never on the entry day.
+        "emergency_exit": _should_force_exit(risk_result, entered_today),
+        "emergency_exit_reason": (
+            f"Risk engine flagged this symbol as unsafe "
+            f"(grade: {risk_result.risk_grade}, total_risk: "
+            f"{risk_result.total_risk:.0f}/100)."
+            f"{_emergency_exit_breakdown(risk_result, diagnostics.get('validation_rejection_reason'))}"
+        ),
+    }
+
+
 class PaperTradingEngine:
 
     def __init__(
@@ -487,48 +547,14 @@ class PaperTradingEngine:
             # stop_loss/target1/target2 in evaluate_position().
             held_decision = dataclasses.replace(final_decision, action=pos.direction)
 
-            position_input = {
-                "symbol": symbol,
-                "direction": pos.direction,
-                "entry_price": pos.entry_price,
-                "current_price": current_price,
-                "holding_days": holding_days,
-                "highest_price": pos.highest_price,
-                "lowest_price": pos.lowest_price,
-                "day_high": result.diagnostics.get("latest_high"),
-                "day_low": result.diagnostics.get("latest_low"),
-                # 2026-10-06 (audit H2/H3/H4/H5): open for realistic
-                # gap-through fills; persisted one-time target1 flag and
-                # tighten-only stop level.
-                "day_open": result.diagnostics.get("latest_open"),
-                "prev_day_open": prev_session["open"] if prev_session else None,
-                "prev_day_high": prev_session["high"] if prev_session else None,
-                "prev_day_low": prev_session["low"] if prev_session else None,
-                "partial_taken": pos.partial_taken,
-                "stop_level": pos.stop_level,
-                "max_drawdown_percent": pos.max_drawdown_percent,
-                # Thesis-decay time exit inputs (Point 16,
-                # PHASE28_NOTES.md) — both None for a position with no
-                # captured baseline yet (falls back to the old flat
-                # MAX_HOLD_DAYS behavior inside ExitStrategyEngine).
-                "entry_thesis_confidence": entry_thesis_confidence,
-                "held_thesis_confidence": held_thesis_confidence,
-                # A RiskManager-unsafe verdict (circuit breaker, VIX spike,
-                # daily loss lock, etc.) forces an immediate FULL_EXIT —
-                # same hard-risk-override behavior risk/exit_engine.py had,
-                # now expressed through ExitStrategyEngine's own
-                # emergency_exit mechanism instead of being lost.
-                # 2026-10-06 (audit C1/C2): see _should_force_exit() — hard
-                # overrides always; a weighted/validation "unsafe" verdict
-                # (now judged at MAX_EXIT_RISK) never on the entry day.
-                "emergency_exit": _should_force_exit(risk_result, entered_today),
-                "emergency_exit_reason": (
-                    f"Risk engine flagged this symbol as unsafe "
-                    f"(grade: {risk_result.risk_grade}, total_risk: "
-                    f"{risk_result.total_risk:.0f}/100)."
-                    f"{_emergency_exit_breakdown(risk_result, result.diagnostics.get('validation_rejection_reason'))}"
-                ),
-            }
+            position_input = build_exit_position_input(
+                symbol=symbol, pos=pos, current_price=current_price,
+                diagnostics=result.diagnostics, risk_result=risk_result,
+                holding_days=holding_days, entered_today=entered_today,
+                prev_session=prev_session,
+                entry_thesis_confidence=entry_thesis_confidence,
+                held_thesis_confidence=held_thesis_confidence,
+            )
             try:
                 exit_eval = self.exit_engine.evaluate(
                     decision=held_decision, risk=risk_result,
