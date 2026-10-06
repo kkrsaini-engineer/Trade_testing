@@ -116,7 +116,24 @@ class ValidationEngine:
         broker_status: dict[str, Any],
         market_state: dict[str, Any],
         skip_position_count: bool = False,
+        monitoring: bool = False,
     ) -> ValidationResult:
+        """
+        monitoring (2026-10-06, BUG_AUDIT_2026-10-05_PROFITABILITY.md M2):
+        True when validating an ALREADY-OPEN position (execution/
+        scanner.py's evaluate_position()). A failed validation there makes
+        RiskManager return its all-100 REJECT, which paper trading turns
+        into a forced FULL_EXIT — so every "can I ADD a new position?"
+        check here was silently also a "must I SELL what I hold?" check.
+        In monitoring mode these entry-only checks are skipped (reported
+        as passed, with diagnostics["skipped_for_monitoring"] listing
+        them): average_volume (36 real trades were force-sold on it —
+        a 9:20 partial bar drags the 20-day average down), capital,
+        sector_exposure, correlation, portfolio_risk. Data-integrity,
+        market-status, circuit, loss-limit and drawdown checks are NOT
+        skipped. Same idea as the existing skip_position_count flag.
+        Default False keeps every entry-path caller unchanged.
+        """
 
         checks = {}
 
@@ -125,6 +142,8 @@ class ValidationEngine:
         diagnostics = {}
 
         rejection_reason = None
+
+        skipped_for_monitoring: list[str] = []
 
         logger.info("Starting validation engine.")
 
@@ -300,7 +319,11 @@ class ValidationEngine:
             )
         )
 
-        checks["average_volume"] = avg_volume >= self.MIN_AVG_VOLUME
+        if monitoring:
+            checks["average_volume"] = True
+            skipped_for_monitoring.append("average_volume")
+        else:
+            checks["average_volume"] = avg_volume >= self.MIN_AVG_VOLUME
 
         if rejection_reason is None and not checks["average_volume"]:
 
@@ -486,7 +509,11 @@ class ValidationEngine:
             )
         )
 
-        checks["capital"] = available_cash > 0
+        if monitoring:
+            checks["capital"] = True
+            skipped_for_monitoring.append("capital")
+        else:
+            checks["capital"] = available_cash > 0
 
         if rejection_reason is None and not checks["capital"]:
 
@@ -532,7 +559,11 @@ class ValidationEngine:
             )
         )
 
-        checks["sector_exposure"] = sector_exposure <= self.MAX_SECTOR_EXPOSURE
+        if monitoring:
+            checks["sector_exposure"] = True
+            skipped_for_monitoring.append("sector_exposure")
+        else:
+            checks["sector_exposure"] = sector_exposure <= self.MAX_SECTOR_EXPOSURE
 
         if rejection_reason is None and not checks["sector_exposure"]:
 
@@ -551,7 +582,11 @@ class ValidationEngine:
             )
         )
 
-        checks["correlation"] = correlation <= self.MAX_CORRELATION
+        if monitoring:
+            checks["correlation"] = True
+            skipped_for_monitoring.append("correlation")
+        else:
+            checks["correlation"] = correlation <= self.MAX_CORRELATION
 
         if rejection_reason is None and not checks["correlation"]:
 
@@ -700,7 +735,11 @@ class ValidationEngine:
             )
         )
 
-        checks["portfolio_risk"] = portfolio_risk <= 0.30
+        if monitoring:
+            checks["portfolio_risk"] = True
+            skipped_for_monitoring.append("portfolio_risk")
+        else:
+            checks["portfolio_risk"] = portfolio_risk <= 0.30
 
         if rejection_reason is None and not checks["portfolio_risk"]:
 
@@ -952,6 +991,8 @@ class ValidationEngine:
         diagnostics["passed"] = passed
 
         diagnostics["rejection_reason"] = rejection_reason
+
+        diagnostics["skipped_for_monitoring"] = skipped_for_monitoring
 
         # ==========================================================
         # VALIDATION SUMMARY
