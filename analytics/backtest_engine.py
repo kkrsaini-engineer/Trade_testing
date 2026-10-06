@@ -156,6 +156,7 @@ class BacktestEngine:
         min_history: int = 250,
         max_candidates_per_day: int = 100,
         cost_pct_per_side: float = 0.0,
+        cost_model: Any = None,
     ) -> BacktestResult:
         """
         REWRITTEN 2026-10-06 (BUG_AUDIT_2026-10-05_PROFITABILITY.md M9).
@@ -200,6 +201,12 @@ class BacktestEngine:
         cost_pct_per_side: optional round-trip cost model — each fill is
         made worse by this % (buy higher / sell lower). Default 0.0.
 
+        cost_model: optional risk.transaction_costs.CostModel — the SAME
+        realistic Indian delivery cost model live paper trading uses
+        (2026-10-06, audit H13), booked at exit exactly like live. Use
+        CostModel.from_config(). Can be combined with cost_pct_per_side,
+        but normally use one or the other.
+
         fundamentals: still a static snapshot for every simulated day —
         point-in-time historical fundamentals are not available from
         this pipeline. This IS still optimistic for any fundamental-
@@ -212,6 +219,7 @@ class BacktestEngine:
 
         from paper_trading.paper_trading_engine import build_exit_position_input
         from risk.exit_strategy import ExitStrategyEngine
+        from risk.transaction_costs import ZERO_COSTS, net_exit_price
         from scripts.morning_executor import (
             check_capital_portfolio_risk,
             classify_gap,
@@ -253,6 +261,7 @@ class BacktestEngine:
         exit_engine = ExitStrategyEngine()
         result = BacktestResult()
         cost = max(float(cost_pct_per_side), 0.0) / 100.0
+        costs = cost_model if cost_model is not None else ZERO_COSTS
 
         broker_status = {
             "status": "ONLINE", "mode": "BACKTEST", "connected": True,
@@ -456,6 +465,7 @@ class BacktestEngine:
                 )
 
                 if exit_eval.action == "FULL_EXIT":
+                    exit_price = net_exit_price(pos.direction, pos.entry_price, exit_price, pos.quantity, costs)
                     closed = portfolio.close_position(symbol=sym, exit_price=exit_price)
                     if closed is not None:
                         record_close(closed, exit_price, day, reason)
@@ -467,6 +477,7 @@ class BacktestEngine:
 
                 if exit_eval.action == "PARTIAL_EXIT":
                     qty = min(max(1, round(pos.quantity * exit_eval.exit_percent / 100.0)), pos.quantity)
+                    exit_price = net_exit_price(pos.direction, pos.entry_price, exit_price, qty, costs)
                     portfolio.partial_exit(symbol=sym, quantity=qty, exit_price=exit_price)
                     if sym not in portfolio.state.open_positions:
                         record_close(portfolio.state.closed_positions[-1], exit_price, day, reason)
@@ -548,6 +559,7 @@ class BacktestEngine:
         for sym in list(portfolio.state.open_positions.keys()):
             pos = portfolio.state.open_positions[sym]
             last_price = fill(float(data[sym].iloc[-1]["close"]), pos.direction, opening=False)
+            last_price = net_exit_price(pos.direction, pos.entry_price, last_price, pos.quantity, costs)
             closed = portfolio.close_position(symbol=sym, exit_price=last_price)
             if closed is not None:
                 record_close(closed, last_price, last_day, "Open at backtest end (closed at last close)")
@@ -585,6 +597,7 @@ class BacktestEngine:
             "exit_breakdown": exit_breakdown,
             "avg_holding_days": round(sum(holds) / len(holds), 2) if holds else 0.0,
             "cost_pct_per_side": cost_pct_per_side,
+            "cost_model": vars(costs) if hasattr(costs, "__dict__") else str(costs),
             "engine_version": "2026-10-06-live-flow",
         })
         return result
