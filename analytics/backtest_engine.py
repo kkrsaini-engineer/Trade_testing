@@ -39,6 +39,26 @@ from portfolio.portfolio import PortfolioEngine, PortfolioState
 logger = get_logger(__name__)
 
 
+def _fmt(value: Any, digits: int = 2) -> str:
+    return "n/a" if value is None else f"{value:.{digits}f}"
+
+
+def _cost_line(m: dict[str, Any]) -> str:
+    model = m.get("cost_model") or {}
+    per_side = m.get("cost_pct_per_side") or 0.0
+    parts = []
+    if isinstance(model, dict) and any(float(v or 0) for v in model.values()):
+        parts.append(
+            f"Indian delivery model (buy {model.get('buy_pct')}%, sell {model.get('sell_pct')}%, "
+            f"DP Rs {model.get('sell_flat_rupees')}, slippage {model.get('slippage_pct')}%/side)"
+        )
+    if per_side:
+        parts.append(f"flat {per_side}% per side")
+    if not parts:
+        return "NONE (gross P&L)"
+    return " + ".join(parts) + f"; total Rs {m.get('total_costs', 0):.2f}"
+
+
 @dataclass
 class BacktestResult:
     equity_curve: list[float] = field(default_factory=list)
@@ -67,13 +87,19 @@ class BacktestResult:
             f"Sharpe Ratio         : {m.get('sharpe', 0):.2f}",
             f"Sortino Ratio        : {m.get('sortino', 0):.2f}",
             f"Expectancy           : {m.get('expectancy', 0):.2f}",
-            f"Average R:R          : {m.get('avg_rr', 0):.2f}",
+            f"Avg win / Avg loss   : Rs {m.get('avg_win', 0):.2f} / Rs {m.get('avg_loss', 0):.2f}"
+            f"  (payoff {_fmt(m.get('payoff_ratio'))}, break-even win rate {_fmt(m.get('breakeven_win_rate'))}%)",
+            f"Avg net R per trade  : {_fmt(m.get('avg_r_multiple'))}",
             f"BUY Accuracy         : {m.get('buy_accuracy', 0):.2f}%  ({m.get('buy_trades', 0)} trades)",
             f"SELL Accuracy        : {m.get('sell_accuracy', 0):.2f}% ({m.get('sell_trades', 0)} trades)",
             f"Positions Opened     : {m.get('opened_buy_count', 0)} BUY, {m.get('opened_sell_count', 0)} SELL"
             f" ({m.get('still_open_at_end', 0)} still open at backtest end)",
             f"Avg Holding (cycles) : {m.get('avg_holding_days', 0)}",
-            f"Cost per side        : {m.get('cost_pct_per_side', 0)}%",
+            f"Costs                : {_cost_line(m)}",
+            f"P&L before costs     : Rs {m.get('pnl_before_costs', 0):.2f}"
+            f" (profit factor {_fmt(m.get('profit_factor_before_costs'))})",
+            f"Signal path          : {m.get('signal_path', '?')}"
+            + ("  (= production nightly scan)" if m.get("signal_path") == "live" else "  (NOT what production runs)"),
             f"False Positives      : {m.get('false_positives', 0)}",
             f"False Negatives      : {m.get('false_negatives', 0)} (see note below)",
             "",
@@ -87,6 +113,22 @@ class BacktestResult:
             "day (no point-in-time history) and there is no historical news",
             "— fundamental/news-driven scores are optimistic.",
         ]
+        by_dir = m.get("by_direction") or {}
+        if by_dir:
+            lines.append("")
+            lines.append("By direction (net of costs):")
+            for name in ("BUY", "SELL"):
+                b = by_dir.get(name) or {}
+                if b.get("trades"):
+                    lines.append(
+                        f"  {name}: {b['trades']} trades, win {_fmt(b.get('win_rate'))}%, "
+                        f"PF {_fmt(b.get('profit_factor'))}, P&L {b.get('pnl', 0):.2f}"
+                    )
+        if m.get("stop_losers"):
+            lines.append(
+                f"Losing stop-outs     : {m['stop_losers']} — of these {m.get('stop_losers_reached_half_r', 0)}"
+                f" were up >=0.5R and {m.get('stop_losers_reached_1r', 0)} were up >=1R before stopping out"
+            )
         exits = m.get("exit_breakdown") or {}
         if exits:
             lines.append("")
@@ -157,6 +199,7 @@ class BacktestEngine:
         max_candidates_per_day: int = 100,
         cost_pct_per_side: float = 0.0,
         cost_model: Any = None,
+        signal_path: str = "live",
     ) -> BacktestResult:
         """
         REWRITTEN 2026-10-06 (BUG_AUDIT_2026-10-05_PROFITABILITY.md M9).
@@ -207,6 +250,15 @@ class BacktestEngine:
         CostModel.from_config(). Can be combined with cost_pct_per_side,
         but normally use one or the other.
 
+        signal_path (2026-10-07): "live" (default) scans every symbol on
+        its own with scanner.scan_symbol(), exactly like the production
+        nightly scan (scripts/generate_full_report.py). "universe" uses
+        scanner.scan_symbols() — the two-pass path with the 2026-09-18
+        fundamental percentile ranking and the 2026-10-05 sector/breadth
+        context, which production does NOT run. Until 2026-10-07 the
+        backtest always used "universe", i.e. it tested signals the live
+        bot never generated. Run both to compare before switching live.
+
         fundamentals: still a static snapshot for every simulated day —
         point-in-time historical fundamentals are not available from
         this pipeline. This IS still optimistic for any fundamental-
@@ -218,14 +270,17 @@ class BacktestEngine:
         import dataclasses
 
         from paper_trading.paper_trading_engine import build_exit_position_input
+        from risk import stop_target
         from risk.exit_strategy import ExitStrategyEngine
-        from risk.transaction_costs import ZERO_COSTS, net_exit_price
+        from risk.transaction_costs import ZERO_COSTS, net_exit_price, round_trip_cost
         from scripts.morning_executor import (
             check_capital_portfolio_risk,
             classify_gap,
             is_gap_chase,
         )
 
+        if signal_path not in ("live", "universe"):
+            raise ValueError(f"signal_path must be 'live' or 'universe', got {signal_path!r}")
         fundamentals = fundamentals or {}
         symbols = list(historical_data.keys())
 
@@ -309,9 +364,25 @@ class BacktestEngine:
             buying = (direction == "BUY") == opening
             return price * (1 + cost) if buying else price * (1 - cost)
 
+        def book_cost(sym: str, direction: str, entry: float, market_exit: float, qty: int) -> None:
+            # Same figure net_exit_price() deducts — kept per trade so the
+            # trade log can show gross vs net (2026-10-07).
+            info = meta.setdefault(sym, {"entry_date": None, "cycles": 0, "entry_thesis": None})
+            info["costs"] = info.get("costs", 0.0) + round_trip_cost(direction, entry, market_exit, qty, costs)
+
         def record_close(closed, exit_price: float, day: pd.Timestamp, reason: str) -> None:
             info = meta.pop(closed.symbol, {})
             pnl = closed.realized_pnl
+            trade_costs = float(info.get("costs", 0.0))
+            risk_per_share = float(info.get("risk_per_share") or 0.0)
+            initial_qty = int(info.get("initial_quantity") or 0)
+            risk_rupees = risk_per_share * initial_qty
+            entry_px = float(closed.entry_price)
+
+            def in_r(pct: float) -> float | None:
+                if not risk_per_share:
+                    return None
+                return round(float(pct) / 100.0 * entry_px / risk_per_share, 3)
             if pnl > 0:
                 counters["wins"] += 1
                 counters["gross_profit"] += pnl
@@ -333,6 +404,18 @@ class BacktestEngine:
                 "exit_date": str(day)[:10],
                 "holding_days": info.get("cycles", 0),
                 "exit_reason": reason,
+                "exit_category": BacktestEngine._exit_category(reason),
+                "initial_quantity": initial_qty,
+                "initial_stop": info.get("initial_stop"),
+                "target1": info.get("target1"),
+                "target2": info.get("target2"),
+                "risk_per_share": round(risk_per_share, 4) if risk_per_share else None,
+                "costs": round(trade_costs, 2),
+                "gross_pnl": round(pnl + trade_costs, 2),
+                # net P&L in units of the risk taken at entry (1R = entry->initial stop)
+                "r_multiple": round(pnl / risk_rupees, 3) if risk_rupees else None,
+                "mfe_r": in_r(closed.max_profit_percent),
+                "mae_r": in_r(closed.max_drawdown_percent),
             })
 
         for day in all_dates:
@@ -391,7 +474,17 @@ class BacktestEngine:
                     ):
                         entry_skips["already open / no capital"] += 1
                         continue
-                    meta[sym] = {"entry_date": day, "cycles": 0, "entry_thesis": None}
+                    init_stop, init_t1, init_t2 = stop_target.compute_stop_loss_targets(
+                        direction=direction, close_price=entry_price, atr=c.get("atr_14") or 0.0,
+                    )
+                    meta[sym] = {
+                        "entry_date": day, "cycles": 0, "entry_thesis": None,
+                        "initial_quantity": quantity, "costs": 0.0,
+                        "initial_stop": round(init_stop, 2) if init_stop else None,
+                        "target1": round(init_t1, 2) if init_t1 else None,
+                        "target2": round(init_t2, 2) if init_t2 else None,
+                        "risk_per_share": abs(entry_price - init_stop) if init_stop else None,
+                    }
                     if direction == "BUY":
                         counters["opened_buy"] += 1
                     else:
@@ -465,6 +558,7 @@ class BacktestEngine:
                 )
 
                 if exit_eval.action == "FULL_EXIT":
+                    book_cost(sym, pos.direction, pos.entry_price, exit_price, pos.quantity)
                     exit_price = net_exit_price(pos.direction, pos.entry_price, exit_price, pos.quantity, costs)
                     closed = portfolio.close_position(symbol=sym, exit_price=exit_price)
                     if closed is not None:
@@ -477,6 +571,7 @@ class BacktestEngine:
 
                 if exit_eval.action == "PARTIAL_EXIT":
                     qty = min(max(1, round(pos.quantity * exit_eval.exit_percent / 100.0)), pos.quantity)
+                    book_cost(sym, pos.direction, pos.entry_price, exit_price, qty)
                     exit_price = net_exit_price(pos.direction, pos.entry_price, exit_price, qty, costs)
                     portfolio.partial_exit(symbol=sym, quantity=qty, exit_price=exit_price)
                     if sym not in portfolio.state.open_positions:
@@ -500,14 +595,26 @@ class BacktestEngine:
 
             scan_results = []
             if bundles:
-                scan_results = self.scanner.scan_symbols(
-                    symbols=list(bundles.keys()),
-                    portfolio=portfolio.snapshot(),
-                    broker_status=broker_status,
-                    market_state=market_state,
-                    bundles=bundles,
-                )
-                full_scan_results = getattr(self.scanner, "_last_full_scan_results", scan_results)
+                if signal_path == "universe":
+                    scan_results = self.scanner.scan_symbols(
+                        symbols=list(bundles.keys()),
+                        portfolio=portfolio.snapshot(),
+                        broker_status=broker_status,
+                        market_state=market_state,
+                        bundles=bundles,
+                    )
+                    full_scan_results = getattr(self.scanner, "_last_full_scan_results", scan_results)
+                else:
+                    # Same call, one symbol at a time, as generate_full_report.py.
+                    snapshot = portfolio.snapshot()
+                    scan_results = [
+                        self.scanner.scan_symbol(
+                            symbol=sym, portfolio=snapshot, broker_status=broker_status,
+                            market_state=market_state, bundle=bundle,
+                        )
+                        for sym, bundle in bundles.items()
+                    ]
+                    full_scan_results = scan_results
                 for r in full_scan_results:
                     total_scan_attempts += 1
                     if r.action == "ERROR":
@@ -559,6 +666,7 @@ class BacktestEngine:
         for sym in list(portfolio.state.open_positions.keys()):
             pos = portfolio.state.open_positions[sym]
             last_price = fill(float(data[sym].iloc[-1]["close"]), pos.direction, opening=False)
+            book_cost(sym, pos.direction, pos.entry_price, last_price, pos.quantity)
             last_price = net_exit_price(pos.direction, pos.entry_price, last_price, pos.quantity, costs)
             closed = portfolio.close_position(symbol=sym, exit_price=last_price)
             if closed is not None:
@@ -598,9 +706,65 @@ class BacktestEngine:
             "avg_holding_days": round(sum(holds) / len(holds), 2) if holds else 0.0,
             "cost_pct_per_side": cost_pct_per_side,
             "cost_model": vars(costs) if hasattr(costs, "__dict__") else str(costs),
-            "engine_version": "2026-10-06-live-flow",
+            "signal_path": signal_path,
+            "engine_version": "2026-10-07-trade-log",
         })
+        result.metrics.update(self._trade_quality_metrics(result.closed_trades))
         return result
+
+    @staticmethod
+    def _trade_quality_metrics(trades: list[dict[str, Any]]) -> dict[str, Any]:
+        """
+        2026-10-07: the numbers needed to tune stops/targets honestly.
+        "avg_rr" (kept for regression compatibility) is the mean of each
+        trade's MFE%/MAE% ratio — NOT a reward:risk ratio; one trade with a
+        tiny adverse move makes it huge (it printed 11.90 on a run whose
+        real average win/average loss was ~1.0). payoff_ratio is the real one.
+        """
+        def side(rows):
+            wins = [t["realized_pnl"] for t in rows if t["realized_pnl"] > 0]
+            losses = [-t["realized_pnl"] for t in rows if t["realized_pnl"] <= 0]
+            gp, gl = sum(wins), sum(losses)
+            return {
+                "trades": len(rows),
+                "pnl": round(gp - gl, 2),
+                "profit_factor": round(gp / gl, 3) if gl > 0 else None,
+                "win_rate": round(len(wins) / len(rows) * 100, 2) if rows else None,
+            }
+
+        wins = [t["realized_pnl"] for t in trades if t["realized_pnl"] > 0]
+        losses = [-t["realized_pnl"] for t in trades if t["realized_pnl"] <= 0]
+        avg_win = sum(wins) / len(wins) if wins else 0.0
+        avg_loss = sum(losses) / len(losses) if losses else 0.0
+        payoff = avg_win / avg_loss if avg_loss > 0 else None
+        total_costs = sum(float(t.get("costs") or 0.0) for t in trades)
+        gross = [float(t.get("gross_pnl", t["realized_pnl"])) for t in trades]
+        gross_profit = sum(g for g in gross if g > 0)
+        gross_loss = -sum(g for g in gross if g <= 0)
+        r_values = [t["r_multiple"] for t in trades if t.get("r_multiple") is not None]
+        stop_losers = [
+            t for t in trades
+            if t.get("exit_category") == "stop_loss" and t["realized_pnl"] <= 0
+        ]
+        reached_1r = [t for t in stop_losers if (t.get("mfe_r") or 0.0) >= 1.0]
+        reached_half_r = [t for t in stop_losers if (t.get("mfe_r") or 0.0) >= 0.5]
+        return {
+            "avg_win": round(avg_win, 2),
+            "avg_loss": round(avg_loss, 2),
+            "payoff_ratio": round(payoff, 3) if payoff is not None else None,
+            "breakeven_win_rate": round(100.0 / (1.0 + payoff), 2) if payoff else None,
+            "total_costs": round(total_costs, 2),
+            "pnl_before_costs": round(sum(gross), 2),
+            "profit_factor_before_costs": round(gross_profit / gross_loss, 3) if gross_loss > 0 else None,
+            "avg_r_multiple": round(sum(r_values) / len(r_values), 3) if r_values else None,
+            "stop_losers": len(stop_losers),
+            "stop_losers_reached_1r": len(reached_1r),
+            "stop_losers_reached_half_r": len(reached_half_r),
+            "by_direction": {
+                "BUY": side([t for t in trades if t["direction"] == "BUY"]),
+                "SELL": side([t for t in trades if t["direction"] == "SELL"]),
+            },
+        }
 
     @staticmethod
     def _exit_category(reason: str) -> str:
