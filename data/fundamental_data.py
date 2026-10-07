@@ -10,13 +10,16 @@ Responsibilities:
 
 from __future__ import annotations
 
+import json
 import time
+from pathlib import Path
 from typing import Any
 
 import yfinance as yf
 
 from core.exceptions import DataError
 from core.logger import get_logger
+from core.utils import write_json
 
 logger = get_logger(__name__)
 
@@ -135,6 +138,63 @@ class FundamentalDataProvider:
         self._missing_counts: dict[str, int] = {
             field: 0 for field in _MISSING_RATE_TRACKED_FIELDS
         }
+        # 2026-10-06 (daily-scan runtime fix): optional on-disk cache —
+        # OFF unless enable_cache() is called (only the nightly scan does).
+        self._cache_dir: Path | None = None
+        self._cache_max_age_seconds = 0.0
+        self.cache_hits = 0
+
+    def enable_cache(self, cache_dir: str, max_age_days: float = 7.0) -> None:
+        """
+        2026-10-06: the nightly Daily Scan had been killed by GitHub's
+        6-hour job limit on every trading day since 2026-09-22 (2,395
+        symbols x 3 network calls each), so no fresh candidates were
+        produced and the Morning Executor kept re-trading the 2026-09-21
+        list. Fundamentals change quarterly, so re-downloading every
+        symbol's .info every night is the cheapest call to cut: a cached
+        copy younger than `max_age_days` is reused instead. The cache is
+        persisted between runs by the workflow (actions/cache).
+        """
+        self._cache_dir = Path(cache_dir)
+        self._cache_dir.mkdir(parents=True, exist_ok=True)
+        self._cache_max_age_seconds = max_age_days * 86400.0
+
+    def _cache_path(self, symbol: str) -> Path | None:
+        if self._cache_dir is None:
+            return None
+        safe = "".join(ch if ch.isalnum() or ch in "-_." else "_" for ch in symbol)
+        return self._cache_dir / f"{safe}.json"
+
+    def _read_cache(self, symbol: str) -> dict[str, Any] | None:
+        path = self._cache_path(symbol)
+        if path is None or not path.exists():
+            return None
+        try:
+            with open(path) as f:
+                payload = json.load(f)
+            fetched_at = float(payload.get("fetched_at", 0))
+            data = payload.get("data")
+        except (OSError, ValueError, TypeError, json.JSONDecodeError):
+            return None
+        if not isinstance(data, dict) or time.time() - fetched_at > self._cache_max_age_seconds:
+            return None
+        return data
+
+    def _write_cache(self, symbol: str, data: dict[str, Any]) -> None:
+        path = self._cache_path(symbol)
+        if path is None:
+            return
+        try:
+            write_json(path, {"fetched_at": time.time(), "data": data})
+        except OSError as exc:
+            logger.warning("Could not write fundamentals cache for %s: %s", symbol, exc)
+
+    def _track_missing(self, result: dict[str, Any]) -> None:
+        # See _MISSING_RATE_TRACKED_FIELDS's BUGFIX comment above.
+        self._fetch_count += 1
+        for field in _MISSING_RATE_TRACKED_FIELDS:
+            if result.get(field) is None:
+                self._missing_counts[field] += 1
 
     def reset_missing_rate_tracking(self) -> None:
         self._fetch_count = 0
@@ -158,6 +218,14 @@ class FundamentalDataProvider:
         """
         Fetch normalized fundamental data for a symbol.
         """
+        cached = self._read_cache(symbol)
+        if cached is not None:
+            self.cache_hits += 1
+            # Still counted, so the whole-watchlist missing-field alert
+            # keeps working on cached data too.
+            self._track_missing(cached)
+            return dict(cached)
+
         info = None
         last_exc: Exception | None = None
         for attempt in range(1, _RETRY_ATTEMPTS + 1):
@@ -191,11 +259,8 @@ class FundamentalDataProvider:
                 "missing or unmapped) — will fall back to UNKNOWN downstream.", symbol,
             )
 
-        # See _MISSING_RATE_TRACKED_FIELDS's BUGFIX comment above.
-        self._fetch_count += 1
-        for field in _MISSING_RATE_TRACKED_FIELDS:
-            if result.get(field) is None:
-                self._missing_counts[field] += 1
+        self._track_missing(result)
+        self._write_cache(symbol, result)
 
         logger.info("Loaded fundamentals for %s", symbol)
 
