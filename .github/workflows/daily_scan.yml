@@ -25,6 +25,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # 2026-10-06: fundamentals change quarterly — reuse last run's
+      # downloaded copies (<= 7 days old, see scripts/generate_full_report.py)
+      # instead of re-fetching all ~2,400 every night. Restores the most
+      # recent cache; a fresh one is saved automatically at the end.
+      - name: Restore fundamentals cache
+        uses: actions/cache@v4
+        with:
+          path: storage/cache/fundamentals
+          key: fundamentals-${{ github.run_id }}
+          restore-keys: |
+            fundamentals-
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
