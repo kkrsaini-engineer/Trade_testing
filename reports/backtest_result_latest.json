@@ -1,129 +1,134 @@
 {
-  "total_trades": 125,
-  "win_rate": 47.199999999999996,
-  "profit_factor": 0.912066065735205,
-  "cagr": -0.6546068790244663,
-  "max_drawdown": 3.029414431333213,
-  "sharpe": -0.3619596431420902,
-  "sortino": -0.477291284351552,
-  "expectancy": -32.4967224848654,
-  "avg_rr": 11.90358820331675,
-  "buy_trades": 48,
-  "sell_trades": 77,
-  "buy_accuracy": 47.91666666666667,
-  "sell_accuracy": 46.75324675324675,
+  "total_trades": 430,
+  "win_rate": 42.55813953488372,
+  "profit_factor": 0.9139278665614825,
+  "cagr": -2.183550900206088,
+  "max_drawdown": 6.4715515342205325,
+  "sharpe": -0.461826765183157,
+  "sortino": -0.6104541470200436,
+  "expectancy": -32.40172035992538,
+  "avg_rr": 23363.718247068835,
+  "buy_trades": 384,
+  "sell_trades": 46,
+  "buy_accuracy": 41.92708333333333,
+  "sell_accuracy": 47.82608695652174,
   "regime_breakdown": {
-    "BEAR": {
-      "days": 163,
-      "win_rate": 57.06,
-      "avg_daily_return_pct": 0.0074
-    },
     "BULL": {
-      "days": 117,
-      "win_rate": 51.28,
-      "avg_daily_return_pct": -0.0054
+      "days": 79,
+      "win_rate": 53.16,
+      "avg_daily_return_pct": 0.0022
     },
-    "UNKNOWN": {
-      "days": 32,
-      "win_rate": 31.25,
-      "avg_daily_return_pct": -0.043
+    "SIDEWAYS": {
+      "days": 89,
+      "win_rate": 44.94,
+      "avg_daily_return_pct": -0.0379
+    },
+    "BEAR": {
+      "days": 144,
+      "win_rate": 51.39,
+      "avg_daily_return_pct": 0.0041
     }
   },
   "walk_forward_windows": [
     {
       "window": 1,
       "days": 78,
-      "return_pct": -0.17,
+      "return_pct": -1.4,
       "win_rate": 46.75,
-      "sharpe": -0.38,
+      "sharpe": -1.36,
       "start_date": "2025-07-10 00:00:00",
       "end_date": "2025-10-31 00:00:00"
     },
     {
       "window": 2,
       "days": 78,
-      "return_pct": 0.36,
-      "win_rate": 62.34,
-      "sharpe": 0.73,
+      "return_pct": -3.01,
+      "win_rate": 49.35,
+      "sharpe": -2.05,
       "start_date": "2025-11-03 00:00:00",
       "end_date": "2026-02-23 00:00:00"
     },
     {
       "window": 3,
       "days": 78,
-      "return_pct": -0.97,
-      "win_rate": 49.35,
-      "sharpe": -1.26,
+      "return_pct": 0.34,
+      "win_rate": 51.95,
+      "sharpe": 0.23,
       "start_date": "2026-02-24 00:00:00",
       "end_date": "2026-06-18 00:00:00"
     },
     {
       "window": 4,
       "days": 79,
-      "return_pct": -0.38,
-      "win_rate": 48.72,
-      "sharpe": -0.96,
+      "return_pct": 1.01,
+      "win_rate": 50.0,
+      "sharpe": 0.75,
       "start_date": "2026-06-19 00:00:00",
       "end_date": "2026-10-07 00:00:00"
     }
   ],
-  "false_positives": 66,
+  "false_positives": 247,
   "false_negatives": null,
-  "final_equity": 495937.90968939185,
-  "opened_buy_count": 48,
-  "opened_sell_count": 77,
+  "final_equity": 486475.4930108232,
+  "opened_buy_count": 384,
+  "opened_sell_count": 46,
   "still_open_at_end": 0,
-  "total_scan_attempts": 3443,
+  "total_scan_attempts": 14107,
   "error_count": 0,
   "error_breakdown": {},
   "error_samples": {},
-  "no_trade_count": 2776,
-  "blocked_by_portfolio_count": 76,
+  "no_trade_count": 11206,
+  "blocked_by_portfolio_count": 596,
   "no_trade_reasons": {
-    "Decision engine rejected trade.": 2776,
-    "signal generated but portfolio blocked: Average trading volume is too low.": 34,
-    "signal generated but portfolio blocked: Risk manager rejected trade.": 19,
-    "signal generated but portfolio blocked: Current volume unavailable.": 15,
-    "signal generated but portfolio blocked: Invalid position size.": 8
+    "Decision engine rejected trade.": 11206,
+    "signal generated but portfolio blocked: Average trading volume is too low.": 296,
+    "signal generated but portfolio blocked: Risk manager rejected trade.": 221,
+    "signal generated but portfolio blocked: Current volume unavailable.": 43,
+    "signal generated but portfolio blocked: Invalid position size.": 36
   },
   "entry_skips": {
-    "gap chase filter": 33,
-    "already open / no capital": 426,
-    "gap too large (SKIP band)": 4
+    "already open / no capital": 1688,
+    "gap chase filter": 165,
+    "gap too large (SKIP band)": 15
   },
   "exit_breakdown": {
-    "final_target": {
-      "trades": 27,
-      "pnl": 28994.93,
-      "wins": 27
-    },
     "stop_loss": {
-      "trades": 71,
-      "pnl": -35913.95,
-      "wins": 18
+      "trades": 252,
+      "pnl": -129420.75,
+      "wins": 51
+    },
+    "final_target": {
+      "trades": 83,
+      "pnl": 101986.63,
+      "wins": 82
+    },
+    "other": {
+      "trades": 9,
+      "pnl": 2754.18,
+      "wins": 6
+    },
+    "risk_engine": {
+      "trades": 67,
+      "pnl": 11663.45,
+      "wins": 36
     },
     "trend_reversal": {
-      "trades": 5,
-      "pnl": -869.67,
+      "trades": 9,
+      "pnl": -2478.57,
       "wins": 1
     },
     "partial_target": {
-      "trades": 2,
-      "pnl": 919.78,
-      "wins": 2
+      "trades": 4,
+      "pnl": 1160.8,
+      "wins": 4
     },
-    "risk_engine": {
-      "trades": 19,
-      "pnl": 2684.92,
-      "wins": 10
-    },
-    "other": {
-      "trades": 1,
-      "pnl": 121.86,
-      "wins": 1
+    "open_at_end": {
+      "trades": 6,
+      "pnl": 401.49,
+      "wins": 3
     }
   },
-  "avg_holding_days": 9.61,
+  "avg_holding_days": 9.28,
   "cost_pct_per_side": 0.0,
   "cost_model": {
     "buy_pct": 0.1189,
@@ -131,5 +136,39 @@
     "sell_flat_rupees": 15.93,
     "slippage_pct": 0.05
   },
-  "engine_version": "2026-10-06-live-flow"
+  "signal_path": "live",
+  "engine_version": "2026-10-07-trade-log",
+  "avg_win": 808.42,
+  "avg_loss": 655.36,
+  "payoff_ratio": 1.234,
+  "breakeven_win_rate": 44.77,
+  "total_costs": 32049.59,
+  "pnl_before_costs": 18116.82,
+  "profit_factor_before_costs": 1.125,
+  "avg_r_multiple": -0.078,
+  "stop_losers": 201,
+  "stop_losers_reached_1r": 16,
+  "stop_losers_reached_half_r": 76,
+  "by_direction": {
+    "BUY": {
+      "trades": 384,
+      "pnl": -10486.11,
+      "profit_factor": 0.927,
+      "win_rate": 41.93
+    },
+    "SELL": {
+      "trades": 46,
+      "pnl": -3446.63,
+      "profit_factor": 0.8,
+      "win_rate": 47.83
+    }
+  },
+  "run_config": {
+    "period": "2y",
+    "universe": "top50",
+    "symbols": 50,
+    "signal_path": "live",
+    "realistic_costs": true,
+    "cost_per_side_pct": 0.0
+  }
 }
