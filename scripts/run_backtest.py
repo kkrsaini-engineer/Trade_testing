@@ -173,6 +173,16 @@ def main() -> None:
         "--signal-path", default="live", choices=["live", "universe"],
         help="live = same per-symbol scan as the production nightly scan (default).",
     )
+    # 2026-10-07 experiment switches — all off by default (= live rules).
+    parser.add_argument("--buy-only", action="store_true", help="Skip every SELL candidate (H14).")
+    parser.add_argument(
+        "--max-new-entries-per-day", type=int, default=0,
+        help="Open at most N new positions per morning, best-ranked first (0 = no cap).",
+    )
+    parser.add_argument(
+        "--min-target-to-cost", type=float, default=0.0,
+        help="Skip entries whose move to target2 is < X times the round-trip cost (0 = off; needs --realistic-costs).",
+    )
     args = parser.parse_args()
 
     if args.symbols:
@@ -257,6 +267,9 @@ def main() -> None:
         cost_pct_per_side=args.cost_per_side_pct,
         cost_model=CostModel.from_config() if args.realistic_costs else None,
         signal_path=args.signal_path,
+        buy_only=args.buy_only,
+        max_new_entries_per_day=args.max_new_entries_per_day,
+        min_target_to_cost=args.min_target_to_cost,
     )
 
     report_text = result.report()
@@ -269,6 +282,9 @@ def main() -> None:
         "signal_path": args.signal_path,
         "realistic_costs": bool(args.realistic_costs),
         "cost_per_side_pct": args.cost_per_side_pct,
+        "buy_only": bool(args.buy_only),
+        "max_new_entries_per_day": args.max_new_entries_per_day,
+        "min_target_to_cost": args.min_target_to_cost,
     }
     Path("reports").mkdir(exist_ok=True)
     with open(OUTPUT_PATH, "w") as f:
@@ -281,7 +297,9 @@ def main() -> None:
         event_type="backtest_result",
         message=(
             f"📈 Backtest Result ({args.period}, {len(historical_data)} symbols, "
-            f"universe={args.universe if not args.symbols else 'custom'}, signal={args.signal_path})\n\n{report_text}"
+            f"universe={args.universe if not args.symbols else 'custom'}, signal={args.signal_path}, "
+            f"buy_only={args.buy_only}, max_entries/day={args.max_new_entries_per_day or 'off'}, "
+            f"min_target_to_cost={args.min_target_to_cost or 'off'})\n\n{report_text}"
         ),
         dedup_key=f"backtest_result::{time.strftime('%Y-%m-%d %H:%M:%S')}",
     )
