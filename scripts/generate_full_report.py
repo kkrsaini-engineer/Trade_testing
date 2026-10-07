@@ -21,6 +21,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import sys
 import time
 from datetime import date
@@ -33,6 +34,7 @@ from core.notifications import notify, SEVERITY_HIGH, SEVERITY_MEDIUM  # noqa: E
 from core.rejection_classifier import classify_tier4_block  # noqa: E402
 from core.trading_calendar import is_trading_day, now_ist, skip_reason  # noqa: E402
 from data import bhavcopy_status_log  # noqa: E402
+from data import liquidity_history  # noqa: E402
 from data.market_data import MarketDataProvider  # noqa: E402
 from data.watchlist import WatchlistManager  # noqa: E402
 from execution.scanner import MarketScanner  # noqa: E402
@@ -44,6 +46,49 @@ from storage.trades.trade_store import TradeStore  # noqa: E402
 logger = get_logger(__name__)
 
 WATCHLIST = WatchlistManager("storage/watchlist/nifty500.json").load()
+
+# 2026-10-06 (daily-scan runtime fix): GitHub Actions kills any job at 6
+# hours. With 2,395 symbols x 3 network calls each, this scan ran 4h40m-
+# 5h54m through 2026-09-21 and was killed on every trading day after that
+# — no commit, so reports/candidates_order.json stayed frozen at the
+# 2026-09-21 scan and the Morning Executor re-traded that same 30-symbol
+# list every morning (112 of 112 entries 2026-09-22..10-06). The scan now
+# stops starting new symbols after this many minutes and still writes the
+# report + candidates for everything it finished, so a slow night gives a
+# smaller scan instead of none. 300 min leaves room for setup + commit.
+SCAN_TIME_BUDGET_MINUTES = float(os.getenv("SCAN_TIME_BUDGET_MINUTES", "300"))
+FUNDAMENTALS_CACHE_DIR = "storage/cache/fundamentals"
+FUNDAMENTALS_CACHE_MAX_AGE_DAYS = 7.0
+
+
+def order_by_liquidity(symbols: list[str], history: dict[str, list[dict]] | None = None) -> list[str]:
+    """
+    2026-10-06: most liquid symbols first (average NSE turnover over the
+    last liquidity_history.WINDOW_DAYS sessions, from the real bhavcopy
+    history the scan already keeps), so if the time budget ever cuts the
+    scan short it drops the LEAST tradeable names, not an alphabetical
+    tail. Symbols with no history keep their original relative order, at
+    the end. Nothing is added or removed — only the order changes.
+    """
+    if history is None:
+        try:
+            history = liquidity_history.load_history()
+        except Exception:
+            history = {}
+
+    def avg_turnover(symbol: str) -> float | None:
+        entries = (history or {}).get(symbol.split(".")[0]) or []
+        values = [
+            float(e["turnover_lacs"]) for e in entries[-liquidity_history.WINDOW_DAYS:]
+            if isinstance(e, dict) and e.get("turnover_lacs") is not None
+        ]
+        return sum(values) / len(values) if values else None
+
+    ranked = [(avg_turnover(sym), idx, sym) for idx, sym in enumerate(symbols)]
+    with_data = sorted((r for r in ranked if r[0] is not None), key=lambda r: (-r[0], r[1]))
+    without = [r for r in ranked if r[0] is None]
+    return [sym for _, _, sym in with_data + without]
+
 
 # Exact column order the person asked for.
 FIELDNAMES = [
@@ -295,7 +340,12 @@ def main() -> None:
         dedup_key=f"scan_started::{today_date.isoformat()}::{ist_now.strftime('%H:%M:%S.%f')}",
     )
 
+    scan_started_at = time.monotonic()
     scanner = MarketScanner()
+    # 2026-10-06: see FUNDAMENTALS_CACHE_DIR / SCAN_TIME_BUDGET_MINUTES.
+    fundamental_provider = getattr(scanner.data_engine, "fundamental_provider", None)
+    if fundamental_provider is not None and hasattr(fundamental_provider, "enable_cache"):
+        fundamental_provider.enable_cache(FUNDAMENTALS_CACHE_DIR, FUNDAMENTALS_CACHE_MAX_AGE_DAYS)
     trade_lookup = latest_trade_by_symbol(TradeStore())
 
     # Phase 26 (see PHASE26_NOTES.md, point 11): this used to be a
@@ -369,7 +419,20 @@ def main() -> None:
     # the full scan (not per-symbol — 2000+ watchlist entries would make
     # a per-symbol alert unusable spam).
     possibly_delisted_or_renamed = []
-    for i, symbol in enumerate(WATCHLIST, start=0):
+    scan_order = order_by_liquidity(list(WATCHLIST))
+    scanned_count = 0
+    scan_truncated = False
+    for i, symbol in enumerate(scan_order, start=0):
+        elapsed_minutes = (time.monotonic() - scan_started_at) / 60.0
+        if elapsed_minutes > SCAN_TIME_BUDGET_MINUTES:
+            scan_truncated = True
+            logger.warning(
+                "Scan time budget (%.0f min) reached after %d/%d symbols — "
+                "stopping here and writing results for what was scanned.",
+                SCAN_TIME_BUDGET_MINUTES, scanned_count, total,
+            )
+            break
+        scanned_count += 1
         logger.info("[%d/%d] Full report scan: %s", i + 1, total, symbol)
         r = scanner.scan_symbol(
             symbol=symbol,
@@ -385,6 +448,19 @@ def main() -> None:
         rows.append(build_row(next_id + i, r, trade_lookup.get(symbol)))
         if r.action in ("BUY", "SELL") and r.portfolio_allowed:
             pending_candidates.append(r)
+
+    if scan_truncated:
+        notify(
+            event_type="daily_scan_truncated",
+            message=(
+                f"🟠 Daily Scan Cut Short (time budget)\n"
+                f"Scanned {scanned_count}/{total} symbols (most liquid first) before "
+                f"the {SCAN_TIME_BUDGET_MINUTES:.0f}-minute budget ran out. Report and "
+                f"candidates were still written for the scanned symbols."
+            ),
+            severity=SEVERITY_MEDIUM,
+            dedup_key=f"scan_truncated::{today_date.isoformat()}",
+        )
 
     # Only fires when at least one symbol actually looks this way — a
     # healthy scan stays silent, same convention as every other notify()
@@ -614,6 +690,10 @@ def main() -> None:
         json.dump({
             "scan_date": today_date.isoformat(),
             "scan_timestamp": scan_timestamp,
+            "scanned_symbols": scanned_count,
+            "watchlist_symbols": total,
+            "scan_truncated": scan_truncated,
+            "fundamentals_cache_hits": getattr(fundamental_provider, "cache_hits", 0),
             "candidates": pending_orders,
         }, f, indent=2)
     logger.info("Wrote %d pending candidates to %s", len(pending_orders), pending_path)
