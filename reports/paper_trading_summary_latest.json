@@ -1,61 +1,12 @@
 {
-  "date": "2026-10-06",
-  "opening_balance": 225124.60464878083,
-  "total_capital_in_positions": 143035.37,
-  "remaining_balance": 348616.674341774,
-  "portfolio_value": 491652.044341774,
-  "realized_pnl": -8263.735830039966,
-  "portfolio_return_percent": -1.6695911316451966,
+  "date": "2026-10-07",
+  "opening_balance": 349045.0339896011,
+  "total_capital_in_positions": 133275.73000000004,
+  "remaining_balance": 361479.4487621208,
+  "portfolio_value": 494755.17876212084,
+  "realized_pnl": -4957.901147242007,
+  "portfolio_return_percent": -1.0489642475758332,
   "opened_today": [],
-  "closed_today": [
-    {
-      "symbol": "APLAPOLLO.NS",
-      "pnl": -498.39980468750036
-    },
-    {
-      "symbol": "ANANTRAJ.NS",
-      "pnl": -38.100000000000136
-    },
-    {
-      "symbol": "MOTHERSON.NS",
-      "pnl": -120.29995422363271
-    },
-    {
-      "symbol": "SAILIFE.NS",
-      "pnl": -190.0
-    },
-    {
-      "symbol": "NRBBEARING.NS",
-      "pnl": 145.0
-    },
-    {
-      "symbol": "ICIL.NS",
-      "pnl": 543.1999999999994
-    },
-    {
-      "symbol": "SYRMA.NS",
-      "pnl": -202.29982910156218
-    },
-    {
-      "symbol": "DIACABS.NS",
-      "pnl": 161.69999999999925
-    },
-    {
-      "symbol": "SOLARA.NS",
-      "pnl": -623.2000000000007
-    },
-    {
-      "symbol": "WELCORP.NS",
-      "pnl": 347.00024414062455
-    },
-    {
-      "symbol": "STEELXIND.NS",
-      "pnl": 149.71051918029755
-    },
-    {
-      "symbol": "FIVESTAR.NS",
-      "pnl": 245.70065917968873
-    }
-  ],
+  "closed_today": [],
   "open_positions_now": 19
 }

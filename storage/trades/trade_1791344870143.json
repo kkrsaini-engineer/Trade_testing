@@ -1,0 +1,18 @@
+{
+  "symbol": "MSUMI.NS",
+  "direction": "SELL",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 27,
+  "entry_price": 34.9900016784668,
+  "exit_price": 33.4,
+  "status": "OPEN",
+  "realized_pnl": 157.67305621606516,
+  "realized_pnl_percent": 4.229035138327205,
+  "max_profit_percent": 6.54472936746566,
+  "max_drawdown_percent": 3.286648374872541,
+  "regime": "BEAR",
+  "confidence": 56.49,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved (previous session).; costs Rs 2.98 deducted",
+  "id": "trade_1791344870143",
+  "timestamp": 1791344870.14322
+}

@@ -1,14 +1,14 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 348616.674341774,
-  "used_capital": 143949.56992340088,
-  "total_pnl": -8263.735830039966,
-  "total_pnl_percent": -1.6527471660079933,
-  "exposure": 0.28789913984680177,
+  "available_capital": 361479.4487621208,
+  "used_capital": 132525.85968399048,
+  "total_pnl": -4957.901147242007,
+  "total_pnl_percent": -0.9915802294484015,
+  "exposure": 0.26505171936798094,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
-  "day_start_equity": 492699.76308834075,
-  "current_trading_day": "2026-10-06",
+  "day_start_equity": 492733.2041708756,
+  "current_trading_day": "2026-10-07",
   "week_start_equity": 493810.8819280625,
   "current_trading_week": "2026-W41",
   "month_start_equity": 492546.24235477427,
@@ -18,10 +18,10 @@
       "symbol": "SONACOMS.NS",
       "quantity": 2,
       "entry_price": 788.0,
-      "current_price": 797.3,
+      "current_price": 815.45,
       "direction": "BUY",
-      "unrealized_pnl": 18.59999999999991,
-      "unrealized_pnl_percent": 1.1802030456852735,
+      "unrealized_pnl": 54.90000000000009,
+      "unrealized_pnl_percent": 3.483502538071072,
       "realized_pnl": 0.0,
       "realized_pnl_percent": 0.0,
       "highest_price": 828.0,
@@ -29,33 +29,37 @@
       "max_profit_percent": 5.0761421319796955,
       "max_drawdown_percent": 2.9314720812182773,
       "status": "OPEN",
-      "updated_at": 1791258513.0804343
+      "updated_at": 1791344881.5369134,
+      "partial_taken": false,
+      "stop_level": 763.9914863529118
     },
     "MSUMI.NS": {
       "symbol": "MSUMI.NS",
-      "quantity": 54,
+      "quantity": 27,
       "entry_price": 34.9900016784668,
-      "current_price": 32.99,
+      "current_price": 33.01,
       "direction": "SELL",
-      "unrealized_pnl": 108.00009063720692,
-      "unrealized_pnl_percent": 5.715923356750269,
-      "realized_pnl": 117.72009063720691,
-      "realized_pnl_percent": 6.230356027128715,
+      "unrealized_pnl": 53.46004531860357,
+      "unrealized_pnl_percent": 5.658764171152676,
+      "realized_pnl": 157.67305621606516,
+      "realized_pnl_percent": 4.229035138327205,
       "highest_price": 36.14,
-      "lowest_price": 32.99,
-      "max_profit_percent": 5.715923356750269,
+      "lowest_price": 32.70000076293945,
+      "max_profit_percent": 6.54472936746566,
       "max_drawdown_percent": 3.286648374872541,
       "status": "OPEN",
-      "updated_at": 1791258505.7288854
+      "updated_at": 1791344870.1430035,
+      "partial_taken": true,
+      "stop_level": 34.9900016784668
     },
     "CIPLA.NS": {
       "symbol": "CIPLA.NS",
       "quantity": 6,
       "entry_price": 1362.5,
-      "current_price": 1326.1,
+      "current_price": 1347.5,
       "direction": "SELL",
-      "unrealized_pnl": 218.40000000000055,
-      "unrealized_pnl_percent": 2.6715596330275293,
+      "unrealized_pnl": 90.0,
+      "unrealized_pnl_percent": 1.1009174311926606,
       "realized_pnl": 0.0,
       "realized_pnl_percent": 0.0,
       "highest_price": 1400.8,
@@ -63,50 +67,56 @@
       "max_profit_percent": 2.8990825688073394,
       "max_drawdown_percent": 2.8110091743119234,
       "status": "OPEN",
-      "updated_at": 1791258541.294524
+      "updated_at": 1791344869.0991385,
+      "partial_taken": false,
+      "stop_level": 1391.4770263528724
     },
     "TFCILTD.NS": {
       "symbol": "TFCILTD.NS",
       "quantity": 62,
       "entry_price": 139.6999969482422,
-      "current_price": 140.98,
+      "current_price": 144.76,
       "direction": "BUY",
-      "unrealized_pnl": 79.36018920898374,
-      "unrealized_pnl_percent": 0.9162513097491576,
+      "unrealized_pnl": 313.7201892089838,
+      "unrealized_pnl_percent": 3.6220495077265444,
       "realized_pnl": 0.0,
       "realized_pnl_percent": 0.0,
-      "highest_price": 143.73,
+      "highest_price": 144.95,
       "lowest_price": 137.34,
-      "max_profit_percent": 2.8847552897591604,
+      "max_profit_percent": 3.758055237254506,
       "max_drawdown_percent": 1.6893321401549817,
       "status": "OPEN",
-      "updated_at": 1791258522.5212772
+      "updated_at": 1791344871.1655767,
+      "partial_taken": false,
+      "stop_level": 131.3502534923988
     },
     "PETRONET.NS": {
       "symbol": "PETRONET.NS",
       "quantity": 32,
       "entry_price": 287.0,
-      "current_price": 292.25,
+      "current_price": 295.0,
       "direction": "BUY",
-      "unrealized_pnl": 168.0,
-      "unrealized_pnl_percent": 1.8292682926829267,
+      "unrealized_pnl": 256.0,
+      "unrealized_pnl_percent": 2.7874564459930316,
       "realized_pnl": 0.0,
       "realized_pnl_percent": 0.0,
-      "highest_price": 293.05,
+      "highest_price": 295.4,
       "lowest_price": 283.35,
-      "max_profit_percent": 2.108013937282234,
+      "max_profit_percent": 2.9268292682926753,
       "max_drawdown_percent": 1.2717770034843126,
       "status": "OPEN",
-      "updated_at": 1791258517.3592534
+      "updated_at": 1791344880.4436584,
+      "partial_taken": false,
+      "stop_level": 277.12299254289707
     },
     "NAZARA.NS": {
       "symbol": "NAZARA.NS",
       "quantity": 3,
       "entry_price": 370.20001220703125,
-      "current_price": 386.55,
+      "current_price": 379.6,
       "direction": "BUY",
-      "unrealized_pnl": 49.049963378906284,
-      "unrealized_pnl_percent": 4.416528161491569,
+      "unrealized_pnl": 28.199963378906318,
+      "unrealized_pnl_percent": 2.5391646361459084,
       "realized_pnl": 293.79986572265625,
       "realized_pnl_percent": 6.226360624774436,
       "highest_price": 398.15,
@@ -114,84 +124,94 @@
       "max_profit_percent": 7.549969441205186,
       "max_drawdown_percent": 0.47272073185469854,
       "status": "OPEN",
-      "updated_at": 1791258519.5967467
+      "updated_at": 1791344862.271151,
+      "partial_taken": false,
+      "stop_level": 360.9507626724676
     },
     "SOUTHBANK.NS": {
       "symbol": "SOUTHBANK.NS",
-      "quantity": 3,
+      "quantity": 1,
       "entry_price": 45.88999938964844,
-      "current_price": 48.38,
+      "current_price": 46.77,
       "direction": "BUY",
-      "unrealized_pnl": 7.470001831054695,
-      "unrealized_pnl_percent": 5.426020142665862,
-      "realized_pnl": 294.9200445556639,
-      "realized_pnl_percent": 5.840053706682113,
+      "unrealized_pnl": 0.8800006103515656,
+      "unrealized_pnl_percent": 1.9176304686333694,
+      "realized_pnl": 283.9856232384288,
+      "realized_pnl_percent": -11.91373007481628,
       "highest_price": 49.91,
       "lowest_price": 45.62,
       "max_profit_percent": 8.760079895007285,
       "max_drawdown_percent": 0.5883621556755669,
       "status": "OPEN",
-      "updated_at": 1791258524.068789
+      "updated_at": 1791344879.4536645,
+      "partial_taken": true,
+      "stop_level": 45.94089979508019
     },
     "MUFIN.NS": {
       "symbol": "MUFIN.NS",
       "quantity": 15,
       "entry_price": 132.83999633789062,
-      "current_price": 132.59,
+      "current_price": 135.33,
       "direction": "BUY",
-      "unrealized_pnl": -3.749945068359324,
-      "unrealized_pnl_percent": -0.18819357481366766,
+      "unrealized_pnl": 37.35005493164081,
+      "unrealized_pnl_percent": 1.874438219477089,
       "realized_pnl": 0.0,
       "realized_pnl_percent": 0.0,
-      "highest_price": 133.59,
+      "highest_price": 137.5,
       "lowest_price": 129.25,
-      "max_profit_percent": 0.5645917515698177,
+      "max_profit_percent": 3.5079823777292427,
       "max_drawdown_percent": 2.702496564934511,
       "status": "OPEN",
-      "updated_at": 1791258528.368514
+      "updated_at": 1791344864.728319,
+      "partial_taken": false,
+      "stop_level": 126.06298276013842
     },
     "PARADEEP.NS": {
       "symbol": "PARADEEP.NS",
       "quantity": 37,
       "entry_price": 154.5,
-      "current_price": 153.46,
+      "current_price": 156.77,
       "direction": "BUY",
-      "unrealized_pnl": -38.479999999999706,
-      "unrealized_pnl_percent": -0.6731391585760466,
+      "unrealized_pnl": 83.99000000000038,
+      "unrealized_pnl_percent": 1.4692556634304272,
       "realized_pnl": 0.0,
       "realized_pnl_percent": 0.0,
-      "highest_price": 155.41,
+      "highest_price": 157.44000244140625,
       "lowest_price": 152.75,
-      "max_profit_percent": 0.5889967637540431,
+      "max_profit_percent": 1.9029142015574434,
       "max_drawdown_percent": 1.132686084142395,
       "status": "OPEN",
-      "updated_at": 1791258498.7968192
+      "updated_at": 1791344874.1605594,
+      "partial_taken": false,
+      "stop_level": 146.27
     },
     "PCBL.NS": {
       "symbol": "PCBL.NS",
       "quantity": 25,
       "entry_price": 338.1499938964844,
-      "current_price": 325.8,
+      "current_price": 325.35,
       "direction": "BUY",
-      "unrealized_pnl": -308.7498474121091,
-      "unrealized_pnl_percent": -3.6522236047311556,
+      "unrealized_pnl": -319.9998474121088,
+      "unrealized_pnl_percent": -3.7853006439511367,
       "realized_pnl": 0.0,
       "realized_pnl_percent": 0.0,
       "highest_price": 338.1499938964844,
-      "lowest_price": 325.25,
+      "lowest_price": 320.79998779296875,
       "max_profit_percent": 0.0,
-      "max_drawdown_percent": 3.8148733193333624,
+      "max_drawdown_percent": 5.130860983787824,
       "status": "OPEN",
-      "updated_at": 1791258534.1241143
+      "updated_at": 1791344877.3776367,
+      "partial_taken": false,
+      "stop_level": 319.23
     },
     "SAMBHV.NS": {
       "symbol": "SAMBHV.NS",
       "quantity": 9,
       "entry_price": 154.0,
-      "current_price": 165.23,
+      "current_price": 161.0,
       "direction": "BUY",
-      "unrealized_pnl": 101.06999999999991,
-      "unrealized_pnl_percent": 7.292207792207786,
+      "unrealized_pnl": 63.0,
+      "unrealized_pnl_percent": 4.545454545454546,
       "realized_pnl": 290.4999999999997,
       "realized_pnl_percent": 9.538961038961038,
       "highest_price": 168.69,
@@ -199,143 +219,161 @@
       "max_profit_percent": 9.538961038961038,
       "max_drawdown_percent": 0.0,
       "status": "OPEN",
-      "updated_at": 1791258537.096712
+      "updated_at": 1791344863.7134671,
+      "partial_taken": false,
+      "stop_level": 147.83195374823563
     },
     "EDELWEISS.NS": {
       "symbol": "EDELWEISS.NS",
       "quantity": 103,
       "entry_price": 137.6999969482422,
-      "current_price": 136.84,
+      "current_price": 135.93,
       "direction": "BUY",
-      "unrealized_pnl": -88.57968566894496,
-      "unrealized_pnl_percent": -0.6245439123469512,
+      "unrealized_pnl": -182.3096856689446,
+      "unrealized_pnl_percent": -1.2854008623598416,
       "realized_pnl": 0.0,
       "realized_pnl_percent": 0.0,
       "highest_price": 139.84,
-      "lowest_price": 136.84,
+      "lowest_price": 133.8000030517578,
       "max_profit_percent": 1.554105373409839,
-      "max_drawdown_percent": 0.6245439123469512,
+      "max_drawdown_percent": 2.832239639010508,
       "status": "OPEN",
-      "updated_at": 1791258538.6442652
+      "updated_at": 1791344875.2873607,
+      "partial_taken": false,
+      "stop_level": 127.92
     },
     "ARFIN.NS": {
       "symbol": "ARFIN.NS",
-      "quantity": 127,
+      "quantity": 63,
       "entry_price": 88.05000305175781,
-      "current_price": 87.8,
+      "current_price": 98.81,
       "direction": "BUY",
-      "unrealized_pnl": -31.75038757324255,
-      "unrealized_pnl_percent": -0.28393304155918975,
-      "realized_pnl": 0.0,
-      "realized_pnl_percent": 0.0,
-      "highest_price": 89.06,
-      "lowest_price": 87.57,
-      "max_profit_percent": 1.1470720195756159,
-      "max_drawdown_percent": 0.5451482511314196,
+      "unrealized_pnl": 677.879807739258,
+      "unrealized_pnl_percent": 12.220325468832996,
+      "realized_pnl": 633.6500955576175,
+      "realized_pnl_percent": 11.2445001702815,
+      "highest_price": 99.63,
+      "lowest_price": 86.41999816894531,
+      "max_profit_percent": 13.151614476873096,
+      "max_drawdown_percent": 1.8512263785548604,
       "status": "OPEN",
-      "updated_at": 1791258501.4470823
+      "updated_at": 1791344867.9833784,
+      "partial_taken": true,
+      "stop_level": 88.05000305175781
     },
     "LXCHEM.NS": {
       "symbol": "LXCHEM.NS",
-      "quantity": 54,
+      "quantity": 27,
       "entry_price": 176.0,
-      "current_price": 180.0,
+      "current_price": 186.44,
       "direction": "BUY",
-      "unrealized_pnl": 216.0,
-      "unrealized_pnl_percent": 2.272727272727273,
-      "realized_pnl": 0.0,
-      "realized_pnl_percent": 0.0,
-      "highest_price": 182.17,
+      "unrealized_pnl": 281.87999999999994,
+      "unrealized_pnl_percent": 5.931818181818181,
+      "realized_pnl": 348.03589328999976,
+      "realized_pnl_percent": 7.323987653409087,
+      "highest_price": 190.89999389648438,
       "lowest_price": 176.0,
-      "max_profit_percent": 3.5056818181818112,
+      "max_profit_percent": 8.465905623002486,
       "max_drawdown_percent": 0.0,
       "status": "OPEN",
-      "updated_at": 1791258532.746378
+      "updated_at": 1791344873.1892784,
+      "partial_taken": true,
+      "stop_level": 169.79020177234423
     },
     "MCX.NS": {
       "symbol": "MCX.NS",
       "quantity": 3,
       "entry_price": 3300.0,
-      "current_price": 3228.0,
+      "current_price": 3303.1,
       "direction": "BUY",
-      "unrealized_pnl": -216.0,
-      "unrealized_pnl_percent": -2.181818181818182,
+      "unrealized_pnl": 9.299999999999727,
+      "unrealized_pnl_percent": 0.09393939393939119,
       "realized_pnl": 0.0,
       "realized_pnl_percent": 0.0,
-      "highest_price": 3320.3,
-      "lowest_price": 3228.0,
-      "max_profit_percent": 0.6151515151515207,
-      "max_drawdown_percent": 2.181818181818182,
+      "highest_price": 3323.0,
+      "lowest_price": 3185.0,
+      "max_profit_percent": 0.6969696969696969,
+      "max_drawdown_percent": 3.4848484848484853,
       "status": "OPEN",
-      "updated_at": 1791258539.9809344
+      "updated_at": 1791344865.998224,
+      "partial_taken": false,
+      "stop_level": 3100.32
     },
     "BEPL.NS": {
       "symbol": "BEPL.NS",
       "quantity": 94,
       "entry_price": 124.95999908447266,
-      "current_price": 125.92,
+      "current_price": 128.28,
       "direction": "BUY",
-      "unrealized_pnl": 90.24008605957047,
-      "unrealized_pnl_percent": 0.7682465769533073,
+      "unrealized_pnl": 312.0800860595704,
+      "unrealized_pnl_percent": 2.656850944183372,
       "realized_pnl": 0.0,
       "realized_pnl_percent": 0.0,
-      "highest_price": 125.92,
-      "lowest_price": 123.91,
-      "max_profit_percent": 0.7682465769533073,
-      "max_drawdown_percent": 0.8402681595434894,
+      "highest_price": 129.6,
+      "lowest_price": 122.62000274658203,
+      "max_profit_percent": 3.7131889800917084,
+      "max_drawdown_percent": 1.8725963148485565,
       "status": "OPEN",
-      "updated_at": 1791258535.4345953
+      "updated_at": 1791344878.410887,
+      "partial_taken": false,
+      "stop_level": 116.26
     },
     "BLACKBUCK.NS": {
       "symbol": "BLACKBUCK.NS",
       "quantity": 22,
       "entry_price": 612.1500244140625,
-      "current_price": 598.25,
+      "current_price": 597.0,
       "direction": "BUY",
-      "unrealized_pnl": -305.800537109375,
-      "unrealized_pnl_percent": -2.270689187240876,
+      "unrealized_pnl": -333.300537109375,
+      "unrealized_pnl_percent": -2.474887496502805,
       "realized_pnl": 0.0,
       "realized_pnl_percent": 0.0,
-      "highest_price": 613.0,
-      "lowest_price": 598.25,
-      "max_profit_percent": 0.1388508620498838,
-      "max_drawdown_percent": 2.270689187240876,
+      "highest_price": 619.0,
+      "lowest_price": 593.75,
+      "max_profit_percent": 1.1190027465071422,
+      "max_drawdown_percent": 3.0058031005838197,
       "status": "OPEN",
-      "updated_at": 1791258510.299493
+      "updated_at": 1791344876.4191773,
+      "partial_taken": false,
+      "stop_level": 569.26
     },
     "SHYAMMETL.NS": {
       "symbol": "SHYAMMETL.NS",
       "quantity": 12,
       "entry_price": 1054.0,
-      "current_price": 1030.2,
+      "current_price": 1066.3,
       "direction": "BUY",
-      "unrealized_pnl": -285.59999999999945,
-      "unrealized_pnl_percent": -2.258064516129028,
+      "unrealized_pnl": 147.59999999999945,
+      "unrealized_pnl_percent": 1.166982922201134,
       "realized_pnl": 0.0,
       "realized_pnl_percent": 0.0,
-      "highest_price": 1054.0,
-      "lowest_price": 1030.2,
-      "max_profit_percent": 0.0,
-      "max_drawdown_percent": 2.258064516129028,
+      "highest_price": 1066.6,
+      "lowest_price": 1015.0,
+      "max_profit_percent": 1.1954459203035968,
+      "max_drawdown_percent": 3.700189753320683,
       "status": "OPEN",
-      "updated_at": 1791258527.0938554
+      "updated_at": 1791344872.0827284,
+      "partial_taken": false,
+      "stop_level": 991.57
     },
     "IRISDOREME.NS": {
       "symbol": "IRISDOREME.NS",
       "quantity": 216,
       "entry_price": 60.349998474121094,
-      "current_price": 60.17,
+      "current_price": 57.86,
       "direction": "BUY",
-      "unrealized_pnl": -38.87967041015588,
-      "unrealized_pnl_percent": -0.2982576282885539,
+      "unrealized_pnl": -537.8396704101564,
+      "unrealized_pnl_percent": -4.125929638902708,
       "realized_pnl": 0.0,
       "realized_pnl_percent": 0.0,
       "highest_price": 60.349998474121094,
-      "lowest_price": 60.17,
+      "lowest_price": 57.8,
       "max_profit_percent": 0.0,
-      "max_drawdown_percent": 0.2982576282885539,
+      "max_drawdown_percent": 4.225349691126456,
       "status": "OPEN",
-      "updated_at": 1791258511.6549075
+      "updated_at": 1791344867.0058367,
+      "partial_taken": false,
+      "stop_level": 54.15
     }
   },
   "closed_positions": [
@@ -354,7 +392,9 @@
       "max_profit_percent": 0.555762245846148,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788407279.0345843
+      "updated_at": 1788407279.0345843,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DEEPAKNTR.NS",
@@ -371,7 +411,9 @@
       "max_profit_percent": 0.4019306679025042,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788407279.9108534
+      "updated_at": 1788407279.9108534,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NORTHARC.NS",
@@ -388,7 +430,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.16518407230498514,
       "status": "CLOSED",
-      "updated_at": 1788407280.859209
+      "updated_at": 1788407280.859209,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "KAMDHENU.NS",
@@ -405,7 +449,9 @@
       "max_profit_percent": 0.7733333333333311,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788407282.503922
+      "updated_at": 1788407282.503922,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JINDWORLD.NS",
@@ -422,7 +468,9 @@
       "max_profit_percent": 0.8144114968120671,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788407283.3369138
+      "updated_at": 1788407283.3369138,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "TNPETRO.NS",
@@ -439,7 +487,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.6409352128749338,
       "status": "CLOSED",
-      "updated_at": 1788407289.497915
+      "updated_at": 1788407289.497915,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SPORTKING.NS",
@@ -456,7 +506,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.004395979619277437,
       "status": "CLOSED",
-      "updated_at": 1788407293.0730398
+      "updated_at": 1788407293.0730398,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MUKKA.NS",
@@ -473,7 +525,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.8009329027308842,
       "status": "CLOSED",
-      "updated_at": 1788493687.0897832
+      "updated_at": 1788493687.0897832,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "KAMDHENU.NS",
@@ -490,7 +544,9 @@
       "max_profit_percent": 0.6658150269378257,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788493689.939475
+      "updated_at": 1788493689.939475,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "OBEROIRLTY.NS",
@@ -507,7 +563,9 @@
       "max_profit_percent": 0.07314524555904342,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788493696.8138657
+      "updated_at": 1788493696.8138657,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "AVTNPL.NS",
@@ -524,7 +582,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.0036340223736926,
       "status": "CLOSED",
-      "updated_at": 1788493699.9889874
+      "updated_at": 1788493699.9889874,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "FINCABLES.NS",
@@ -541,7 +601,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.23702492848386522,
       "status": "CLOSED",
-      "updated_at": 1788493703.6912515
+      "updated_at": 1788493703.6912515,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "EDELWEISS.NS",
@@ -558,7 +620,9 @@
       "max_profit_percent": 6.752941176470599,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788493708.3735263
+      "updated_at": 1788493708.3735263,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PAISALO.NS",
@@ -575,7 +639,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.3956755123274003,
       "status": "CLOSED",
-      "updated_at": 1788493709.370216
+      "updated_at": 1788493709.370216,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GRAPHITE.NS",
@@ -592,7 +658,9 @@
       "max_profit_percent": 0.49315068493150993,
       "max_drawdown_percent": 1.5068493150684932,
       "status": "CLOSED",
-      "updated_at": 1788753155.5356507
+      "updated_at": 1788753155.5356507,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "TEJASNET.NS",
@@ -609,7 +677,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.1056910569105765,
       "status": "CLOSED",
-      "updated_at": 1788753157.0215585
+      "updated_at": 1788753157.0215585,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "THELEELA.NS",
@@ -626,7 +696,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.37841466093126075,
       "status": "CLOSED",
-      "updated_at": 1788753160.0432537
+      "updated_at": 1788753160.0432537,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CYIENTDLM.NS",
@@ -643,7 +715,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.035046728971957306,
       "status": "CLOSED",
-      "updated_at": 1788753163.0472074
+      "updated_at": 1788753163.0472074,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "BRIGADE.NS",
@@ -660,7 +734,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.3071428571428539,
       "status": "CLOSED",
-      "updated_at": 1788753165.8605306
+      "updated_at": 1788753165.8605306,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MARKSANS.NS",
@@ -677,7 +753,9 @@
       "max_profit_percent": 0.38167938931297707,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788753168.6634784
+      "updated_at": 1788753168.6634784,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NORTHARC.NS",
@@ -694,7 +772,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.0041152263374522,
       "status": "CLOSED",
-      "updated_at": 1788753171.6145337
+      "updated_at": 1788753171.6145337,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MCX.NS",
@@ -711,7 +791,9 @@
       "max_profit_percent": 1.8340535093325363,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788753173.047626
+      "updated_at": 1788753173.047626,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JINDALSTEL.NS",
@@ -728,7 +810,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.6745384285100904,
       "status": "CLOSED",
-      "updated_at": 1788753177.5861573
+      "updated_at": 1788753177.5861573,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SHREEJISPG.NS",
@@ -745,7 +829,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.45652173913043154,
       "status": "CLOSED",
-      "updated_at": 1788753182.0647871
+      "updated_at": 1788753182.0647871,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GHCLTEXTIL.NS",
@@ -762,7 +848,9 @@
       "max_profit_percent": 0.27065962965482826,
       "max_drawdown_percent": 1.4387421540585694,
       "status": "CLOSED",
-      "updated_at": 1788753183.2526994
+      "updated_at": 1788753183.2526994,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GIPCL.NS",
@@ -779,7 +867,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.7281553398058253,
       "status": "CLOSED",
-      "updated_at": 1788753184.5765862
+      "updated_at": 1788753184.5765862,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "AHCL.NS",
@@ -796,7 +886,9 @@
       "max_profit_percent": 0.8290796702427862,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788753188.8926013
+      "updated_at": 1788753188.8926013,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "AEROENTER.NS",
@@ -813,7 +905,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.20945035012758503,
       "status": "CLOSED",
-      "updated_at": 1788753200.9238617
+      "updated_at": 1788753200.9238617,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "VISAKAIND.NS",
@@ -830,7 +924,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.8333333333333304,
       "status": "CLOSED",
-      "updated_at": 1788753202.166029
+      "updated_at": 1788753202.166029,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "AEGISVOPAK.NS",
@@ -847,7 +943,9 @@
       "max_profit_percent": 0.47932048030215707,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788753203.5695665
+      "updated_at": 1788753203.5695665,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IMAGICAA.NS",
@@ -864,7 +962,9 @@
       "max_profit_percent": 0.5898109607875737,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788753211.3216798
+      "updated_at": 1788753211.3216798,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SOTL.NS",
@@ -881,7 +981,9 @@
       "max_profit_percent": 3.1357260735899786,
       "max_drawdown_percent": 0.8142100655890758,
       "status": "CLOSED",
-      "updated_at": 1788753221.4732661
+      "updated_at": 1788753221.4732661,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ONEPOINT.NS",
@@ -898,7 +1000,9 @@
       "max_profit_percent": 0.6086956521739155,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788753222.74758
+      "updated_at": 1788753222.74758,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CGCL.NS",
@@ -915,7 +1019,9 @@
       "max_profit_percent": 4.288321167883212,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788753231.57544
+      "updated_at": 1788753231.57544,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CENTENKA.NS",
@@ -932,7 +1038,9 @@
       "max_profit_percent": 0.17741935483871335,
       "max_drawdown_percent": 1.7741935483870968,
       "status": "CLOSED",
-      "updated_at": 1788753236.803349
+      "updated_at": 1788753236.803349,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NSLNISP.NS",
@@ -949,7 +1057,9 @@
       "max_profit_percent": 0.4604240009608259,
       "max_drawdown_percent": 0.08770140279823577,
       "status": "CLOSED",
-      "updated_at": 1788753243.2121904
+      "updated_at": 1788753243.2121904,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "BEML.NS",
@@ -966,7 +1076,9 @@
       "max_profit_percent": 0.16932752781809385,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788753248.1115713
+      "updated_at": 1788753248.1115713,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NIACL.NS",
@@ -983,7 +1095,9 @@
       "max_profit_percent": 14.341693581873463,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788753249.4013655
+      "updated_at": 1788753249.4013655,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ACMESOLAR.NS",
@@ -1000,7 +1114,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.7450302469051201,
       "status": "CLOSED",
-      "updated_at": 1788753250.6784003
+      "updated_at": 1788753250.6784003,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "VINCOFE.NS",
@@ -1017,7 +1133,9 @@
       "max_profit_percent": 1.6384180790960483,
       "max_drawdown_percent": 0.3446327683615896,
       "status": "CLOSED",
-      "updated_at": 1788753255.6264167
+      "updated_at": 1788753255.6264167,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "QUESS.NS",
@@ -1034,7 +1152,9 @@
       "max_profit_percent": 0.4129860071995787,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788753256.9980774
+      "updated_at": 1788753256.9980774,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JINDALSAW.NS",
@@ -1051,7 +1171,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.607717041800643,
       "status": "CLOSED",
-      "updated_at": 1788753258.210442
+      "updated_at": 1788753258.210442,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "EXICOM.NS",
@@ -1068,7 +1190,9 @@
       "max_profit_percent": 4.41899441340782,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788839329.6888385
+      "updated_at": 1788839329.6888385,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "LTFOODS.NS",
@@ -1085,7 +1209,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.34478652765141793,
       "status": "CLOSED",
-      "updated_at": 1788839330.6721978
+      "updated_at": 1788839330.6721978,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "EMIL.NS",
@@ -1102,7 +1228,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.2573018080667544,
       "status": "CLOSED",
-      "updated_at": 1788839331.5804398
+      "updated_at": 1788839331.5804398,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GIPCL.NS",
@@ -1119,7 +1247,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.3964336172743403,
       "status": "CLOSED",
-      "updated_at": 1788839333.573157
+      "updated_at": 1788839333.573157,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MUNJALAU.NS",
@@ -1136,7 +1266,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.836277163233333,
       "status": "CLOSED",
-      "updated_at": 1788839335.347757
+      "updated_at": 1788839335.347757,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PPLPHARMA.NS",
@@ -1153,7 +1285,9 @@
       "max_profit_percent": 0.7659216633871637,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788839336.2925482
+      "updated_at": 1788839336.2925482,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GANDHAR.NS",
@@ -1170,7 +1304,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.0111731843575336,
       "status": "CLOSED",
-      "updated_at": 1788839338.1824353
+      "updated_at": 1788839338.1824353,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CUB.NS",
@@ -1187,7 +1323,9 @@
       "max_profit_percent": 1.8717948717948698,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788839339.1339085
+      "updated_at": 1788839339.1339085,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "TDPOWERSYS.NS",
@@ -1204,7 +1342,9 @@
       "max_profit_percent": 3.267663043478255,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788839341.0871773
+      "updated_at": 1788839341.0871773,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SAMBHV.NS",
@@ -1221,7 +1361,9 @@
       "max_profit_percent": 2.962958113919569,
       "max_drawdown_percent": 0.9567947878992993,
       "status": "CLOSED",
-      "updated_at": 1788839341.9732466
+      "updated_at": 1788839341.9732466,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PAYTM.NS",
@@ -1238,7 +1380,9 @@
       "max_profit_percent": 0.22294676238206898,
       "max_drawdown_percent": 0.9158818877766561,
       "status": "CLOSED",
-      "updated_at": 1788839343.8137257
+      "updated_at": 1788839343.8137257,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DCBBANK.NS",
@@ -1255,7 +1399,9 @@
       "max_profit_percent": 1.861513586840553,
       "max_drawdown_percent": 0.863306631823939,
       "status": "CLOSED",
-      "updated_at": 1788839344.7568457
+      "updated_at": 1788839344.7568457,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CHENNPETRO.NS",
@@ -1272,7 +1418,9 @@
       "max_profit_percent": 0.4123711340206186,
       "max_drawdown_percent": 1.6494845360824744,
       "status": "CLOSED",
-      "updated_at": 1788839345.7096088
+      "updated_at": 1788839345.7096088,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ANANTRAJ.NS",
@@ -1289,7 +1437,9 @@
       "max_profit_percent": 1.929260450160772,
       "max_drawdown_percent": 0.41800643086817085,
       "status": "CLOSED",
-      "updated_at": 1788839346.614963
+      "updated_at": 1788839346.614963,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "BEPL.NS",
@@ -1306,7 +1456,9 @@
       "max_profit_percent": 1.9607843137254901,
       "max_drawdown_percent": 0.21960784313725581,
       "status": "CLOSED",
-      "updated_at": 1788839348.66549
+      "updated_at": 1788839348.66549,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IKIO.NS",
@@ -1323,7 +1475,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 3.743993818875288,
       "status": "CLOSED",
-      "updated_at": 1788839349.5039616
+      "updated_at": 1788839349.5039616,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SOLARA.NS",
@@ -1340,7 +1494,9 @@
       "max_profit_percent": 7.012506969962,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788839359.7277136
+      "updated_at": 1788839359.7277136,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PNGJL.NS",
@@ -1357,7 +1513,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.09342726276129,
       "status": "CLOSED",
-      "updated_at": 1788839363.5940087
+      "updated_at": 1788839363.5940087,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PARAS.NS",
@@ -1374,7 +1532,9 @@
       "max_profit_percent": 1.1560307383895727,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788839364.4499881
+      "updated_at": 1788839364.4499881,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ONEPOINT.NS",
@@ -1391,7 +1551,9 @@
       "max_profit_percent": 0.15562539528917188,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788839368.1190968
+      "updated_at": 1788839368.1190968,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MARKSANS.NS",
@@ -1408,7 +1570,9 @@
       "max_profit_percent": 2.1333333333333298,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788839374.834006
+      "updated_at": 1788839374.834006,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PFOCUS.NS",
@@ -1425,7 +1589,9 @@
       "max_profit_percent": 0.7142857142857143,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788839380.4952624
+      "updated_at": 1788839380.4952624,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "KAMDHENU.NS",
@@ -1442,7 +1608,9 @@
       "max_profit_percent": 1.741102481170288,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788839382.9494474
+      "updated_at": 1788839382.9494474,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "AEROFLEX.NS",
@@ -1459,7 +1627,9 @@
       "max_profit_percent": 2.852951574221074,
       "max_drawdown_percent": 0.2201610530857455,
       "status": "CLOSED",
-      "updated_at": 1788839387.275455
+      "updated_at": 1788839387.275455,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ROLEXRINGS.NS",
@@ -1476,7 +1646,9 @@
       "max_profit_percent": 0.3220338983050809,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788839388.136604
+      "updated_at": 1788839388.136604,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ATHERENERG.NS",
@@ -1493,7 +1665,9 @@
       "max_profit_percent": 1.650793650793651,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788839389.1154108
+      "updated_at": 1788839389.1154108,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GCSL.NS",
@@ -1510,7 +1684,9 @@
       "max_profit_percent": 0.30684616205405313,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788839394.0450635
+      "updated_at": 1788839394.0450635,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PARADEEP.NS",
@@ -1527,7 +1703,9 @@
       "max_profit_percent": 3.5069925778687754,
       "max_drawdown_percent": 2.7191830129924592,
       "status": "CLOSED",
-      "updated_at": 1788839401.0874283
+      "updated_at": 1788839401.0874283,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "YATHARTH.NS",
@@ -1544,7 +1722,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.7338146243009379,
       "status": "CLOSED",
-      "updated_at": 1788839403.4372869
+      "updated_at": 1788839403.4372869,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GVKPIL.NS",
@@ -1561,7 +1741,9 @@
       "max_profit_percent": 5.372812766508693e-06,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788839404.1522686
+      "updated_at": 1788839404.1522686,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NORTHARC.NS",
@@ -1578,7 +1760,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.0555355507986928,
       "status": "CLOSED",
-      "updated_at": 1788839408.861057
+      "updated_at": 1788839408.861057,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SYRMA.NS",
@@ -1595,7 +1779,9 @@
       "max_profit_percent": 0.049170251997538696,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788839413.6143432
+      "updated_at": 1788839413.6143432,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "BRIGADE.NS",
@@ -1612,7 +1798,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.27374782870452613,
       "status": "CLOSED",
-      "updated_at": 1788839415.5713553
+      "updated_at": 1788839415.5713553,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "KRBL.NS",
@@ -1629,7 +1817,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.3493232225909164,
       "status": "CLOSED",
-      "updated_at": 1788839420.3302782
+      "updated_at": 1788839420.3302782,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MARINE.NS",
@@ -1646,7 +1836,9 @@
       "max_profit_percent": 2.61516615313469,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788925744.9788098
+      "updated_at": 1788925744.9788098,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "STYLEBAAZA.NS",
@@ -1663,7 +1855,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 3.351604336431626,
       "status": "CLOSED",
-      "updated_at": 1788925746.9065478
+      "updated_at": 1788925746.9065478,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "REDINGTON.NS",
@@ -1680,7 +1874,9 @@
       "max_profit_percent": 1.4289546449604955,
       "max_drawdown_percent": 0.6009599180459616,
       "status": "CLOSED",
-      "updated_at": 1788925747.9559116
+      "updated_at": 1788925747.9559116,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SAILIFE.NS",
@@ -1697,7 +1893,9 @@
       "max_profit_percent": 4.539125444558583,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788925749.8068988
+      "updated_at": 1788925749.8068988,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SAMBHV.NS",
@@ -1714,7 +1912,9 @@
       "max_profit_percent": 0.2420905434238064,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788925750.8301654
+      "updated_at": 1788925750.8301654,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MANORAMA.NS",
@@ -1731,7 +1931,9 @@
       "max_profit_percent": 6.069076956267247,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788925752.740826
+      "updated_at": 1788925752.740826,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IKIO.NS",
@@ -1748,7 +1950,9 @@
       "max_profit_percent": 1.815866904857389,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788925753.6400335
+      "updated_at": 1788925753.6400335,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GHCLTEXTIL.NS",
@@ -1765,7 +1969,9 @@
       "max_profit_percent": 0.9438217574382546,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788925754.5594513
+      "updated_at": 1788925754.5594513,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "AHCL.NS",
@@ -1782,7 +1988,9 @@
       "max_profit_percent": 2.316602567765037,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788925758.4944544
+      "updated_at": 1788925758.4944544,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CHENNPETRO.NS",
@@ -1799,7 +2007,9 @@
       "max_profit_percent": 3.157176951926352,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788925759.5082395
+      "updated_at": 1788925759.5082395,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GCSL.NS",
@@ -1816,7 +2026,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.20909799573326418,
       "status": "CLOSED",
-      "updated_at": 1788925763.5295346
+      "updated_at": 1788925763.5295346,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ACMESOLAR.NS",
@@ -1833,7 +2045,9 @@
       "max_profit_percent": 1.637931034482753,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788925766.4929092
+      "updated_at": 1788925766.4929092,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ONEPOINT.NS",
@@ -1850,7 +2064,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.5527849873981615,
       "status": "CLOSED",
-      "updated_at": 1788925769.8119597
+      "updated_at": 1788925769.8119597,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ESAFSFB.NS",
@@ -1867,7 +2083,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.2048192771084338,
       "status": "CLOSED",
-      "updated_at": 1788925770.485371
+      "updated_at": 1788925770.485371,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "BRIGADE.NS",
@@ -1884,7 +2102,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.6011644832605532,
       "status": "CLOSED",
-      "updated_at": 1788925771.8826985
+      "updated_at": 1788925771.8826985,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MARKSANS.NS",
@@ -1901,7 +2121,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.014880952380955765,
       "status": "CLOSED",
-      "updated_at": 1788925772.877581
+      "updated_at": 1788925772.877581,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CUB.NS",
@@ -1918,7 +2140,9 @@
       "max_profit_percent": 0.17600474656753154,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788925773.8116107
+      "updated_at": 1788925773.8116107,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "KAMDHENU.NS",
@@ -1935,7 +2159,9 @@
       "max_profit_percent": 0.02471999226687059,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788925777.415767
+      "updated_at": 1788925777.415767,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "EXICOM.NS",
@@ -1952,7 +2178,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.17179105208359544,
       "status": "CLOSED",
-      "updated_at": 1788925779.332917
+      "updated_at": 1788925779.332917,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "TNPETRO.NS",
@@ -1969,7 +2197,9 @@
       "max_profit_percent": 7.375869438318515,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788925787.931045
+      "updated_at": 1788925787.931045,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SUDARSCHEM.NS",
@@ -1986,7 +2216,9 @@
       "max_profit_percent": 0.24801788346157763,
       "max_drawdown_percent": 1.7441414503757746,
       "status": "CLOSED",
-      "updated_at": 1788925793.083885
+      "updated_at": 1788925793.083885,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SSWL.NS",
@@ -2003,7 +2235,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.25337036300900134,
       "status": "CLOSED",
-      "updated_at": 1788925797.1647508
+      "updated_at": 1788925797.1647508,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "KRBL.NS",
@@ -2020,7 +2254,9 @@
       "max_profit_percent": 0.9437191110067152,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788925808.1992564
+      "updated_at": 1788925808.1992564,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "FINCABLES.NS",
@@ -2037,7 +2273,9 @@
       "max_profit_percent": 6.15335000537164,
       "max_drawdown_percent": 0.1700247451580801,
       "status": "CLOSED",
-      "updated_at": 1788925812.0687056
+      "updated_at": 1788925812.0687056,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ANTHEM.NS",
@@ -2054,7 +2292,9 @@
       "max_profit_percent": 1.5714720268496054,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788925821.113665
+      "updated_at": 1788925821.113665,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CENTENKA.NS",
@@ -2071,7 +2311,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.2632663050065507,
       "status": "CLOSED",
-      "updated_at": 1788925825.0551536
+      "updated_at": 1788925825.0551536,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "YATHARTH.NS",
@@ -2088,7 +2330,9 @@
       "max_profit_percent": 0.6900102986611787,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788925829.1438901
+      "updated_at": 1788925829.1438901,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "VISAKAIND.NS",
@@ -2105,7 +2349,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.7626192113402136,
       "status": "CLOSED",
-      "updated_at": 1788925831.156797
+      "updated_at": 1788925831.156797,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "BCLIND.NS",
@@ -2122,7 +2368,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.5291001064312258,
       "status": "CLOSED",
-      "updated_at": 1788925836.0731077
+      "updated_at": 1788925836.0731077,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "RPTECH.NS",
@@ -2139,7 +2387,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.0660146699266475,
       "status": "CLOSED",
-      "updated_at": 1788925837.086938
+      "updated_at": 1788925837.086938,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MUNJALAU.NS",
@@ -2156,7 +2406,9 @@
       "max_profit_percent": 0.43707018729887354,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1788925842.4092035
+      "updated_at": 1788925842.4092035,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "APLAPOLLO.NS",
@@ -2173,7 +2425,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.2791479818144769,
       "status": "CLOSED",
-      "updated_at": 1788925844.2272406
+      "updated_at": 1788925844.2272406,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DEVYANI.NS",
@@ -2190,7 +2444,9 @@
       "max_profit_percent": 0.6910007736479843,
       "max_drawdown_percent": 1.1876432467910734,
       "status": "CLOSED",
-      "updated_at": 1789012143.2846584
+      "updated_at": 1789012143.2846584,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "BEPL.NS",
@@ -2207,7 +2463,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.8065068040766864,
       "status": "CLOSED",
-      "updated_at": 1789012144.3029838
+      "updated_at": 1789012144.3029838,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JINDRILL.NS",
@@ -2224,7 +2482,9 @@
       "max_profit_percent": 5.658246799598669,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789012145.3274992
+      "updated_at": 1789012145.3274992,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "AARTIPHARM.NS",
@@ -2241,7 +2501,9 @@
       "max_profit_percent": 0.4498760498447842,
       "max_drawdown_percent": 4.35459953292512,
       "status": "CLOSED",
-      "updated_at": 1789012146.305877
+      "updated_at": 1789012146.305877,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CUB.NS",
@@ -2258,7 +2520,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.7672413793103453,
       "status": "CLOSED",
-      "updated_at": 1789012147.2874036
+      "updated_at": 1789012147.2874036,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SHREEJISPG.NS",
@@ -2275,7 +2539,9 @@
       "max_profit_percent": 0.3070481507327349,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789012148.2244673
+      "updated_at": 1789012148.2244673,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MANINDS.NS",
@@ -2292,7 +2558,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 3.1276547036580076,
       "status": "CLOSED",
-      "updated_at": 1789012149.1562262
+      "updated_at": 1789012149.1562262,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "AGARWALEYE.NS",
@@ -2309,7 +2577,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.7911239749155856,
       "status": "CLOSED",
-      "updated_at": 1789012150.1308959
+      "updated_at": 1789012150.1308959,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IDEA.NS",
@@ -2326,7 +2596,9 @@
       "max_profit_percent": 3.313451572936934,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789012151.1942945
+      "updated_at": 1789012151.1942945,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NOCIL.NS",
@@ -2343,7 +2615,9 @@
       "max_profit_percent": 0.4408334534121555,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789012153.2891607
+      "updated_at": 1789012153.2891607,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "AEGISVOPAK.NS",
@@ -2360,7 +2634,9 @@
       "max_profit_percent": 2.5773195876288657,
       "max_drawdown_percent": 0.3436426116838488,
       "status": "CLOSED",
-      "updated_at": 1789012154.353697
+      "updated_at": 1789012154.353697,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GIPCL.NS",
@@ -2377,7 +2653,9 @@
       "max_profit_percent": 0.5594059405940571,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789012155.2828314
+      "updated_at": 1789012155.2828314,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GANDHAR.NS",
@@ -2394,7 +2672,9 @@
       "max_profit_percent": 4.449919617585434,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789012157.291816
+      "updated_at": 1789012157.291816,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "EDELWEISS.NS",
@@ -2411,7 +2691,9 @@
       "max_profit_percent": 3.3582089552238807,
       "max_drawdown_percent": 0.6194029850746362,
       "status": "CLOSED",
-      "updated_at": 1789012158.2643046
+      "updated_at": 1789012158.2643046,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ASIANENE.NS",
@@ -2428,7 +2710,9 @@
       "max_profit_percent": 6.297934423244669,
       "max_drawdown_percent": 2.1376487936779953,
       "status": "CLOSED",
-      "updated_at": 1789012159.229073
+      "updated_at": 1789012159.229073,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "AEGISLOG.NS",
@@ -2445,7 +2729,9 @@
       "max_profit_percent": 2.316463140853354,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789012160.625767
+      "updated_at": 1789012160.625767,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NSLNISP.NS",
@@ -2462,7 +2748,9 @@
       "max_profit_percent": 0.33185671355903207,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789012161.5409832
+      "updated_at": 1789012161.5409832,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IIFL.NS",
@@ -2479,7 +2767,9 @@
       "max_profit_percent": 4.615144375034324,
       "max_drawdown_percent": 5.250117944269437,
       "status": "CLOSED",
-      "updated_at": 1789012163.5328014
+      "updated_at": 1789012163.5328014,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MBAPL.NS",
@@ -2496,7 +2786,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.38238521770218414,
       "status": "CLOSED",
-      "updated_at": 1789012165.925581
+      "updated_at": 1789012165.925581,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GENUSPOWER.NS",
@@ -2513,7 +2805,9 @@
       "max_profit_percent": 2.4477611940298476,
       "max_drawdown_percent": 1.0895522388059635,
       "status": "CLOSED",
-      "updated_at": 1789012177.21722
+      "updated_at": 1789012177.21722,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PARACABLES.NS",
@@ -2530,7 +2824,9 @@
       "max_profit_percent": 1.0534282677289655,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789012194.2283874
+      "updated_at": 1789012194.2283874,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MSTCLTD.NS",
@@ -2547,7 +2843,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.5235602094240838,
       "status": "CLOSED",
-      "updated_at": 1789012201.3029609
+      "updated_at": 1789012201.3029609,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PARADEEP.NS",
@@ -2564,7 +2862,9 @@
       "max_profit_percent": 0.16300263439162113,
       "max_drawdown_percent": 0.9967992988475776,
       "status": "CLOSED",
-      "updated_at": 1789012206.2908096
+      "updated_at": 1789012206.2908096,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "FEDFINA.NS",
@@ -2581,7 +2881,9 @@
       "max_profit_percent": 1.4733873284697632,
       "max_drawdown_percent": 2.87310418514609,
       "status": "CLOSED",
-      "updated_at": 1789012209.5978074
+      "updated_at": 1789012209.5978074,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "VAKRANGEE.NS",
@@ -2598,7 +2900,9 @@
       "max_profit_percent": 2.6362048455537863,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789012210.5197048
+      "updated_at": 1789012210.5197048,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "REDINGTON.NS",
@@ -2615,7 +2919,9 @@
       "max_profit_percent": 0.11568123393315903,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789012213.5005891
+      "updated_at": 1789012213.5005891,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SAMBHV.NS",
@@ -2632,7 +2938,9 @@
       "max_profit_percent": 0.8769230769230665,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789012218.5566082
+      "updated_at": 1789012218.5566082,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "APOLLO.NS",
@@ -2649,7 +2957,9 @@
       "max_profit_percent": 7.301790281329926,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789012219.654554
+      "updated_at": 1789012219.654554,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JKPAPER.NS",
@@ -2666,7 +2976,9 @@
       "max_profit_percent": 0.4041641151255303,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789012221.7490125
+      "updated_at": 1789012221.7490125,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SAILIFE.NS",
@@ -2683,7 +2995,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.656083548143996,
       "status": "CLOSED",
-      "updated_at": 1789012222.702666
+      "updated_at": 1789012222.702666,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "FINCABLES.NS",
@@ -2700,7 +3014,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.1512915129151224,
       "status": "CLOSED",
-      "updated_at": 1789012226.926974
+      "updated_at": 1789012226.926974,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ANDHRSUGAR.NS",
@@ -2717,7 +3033,9 @@
       "max_profit_percent": 1.2562282252294583,
       "max_drawdown_percent": 2.0937218223953042,
       "status": "CLOSED",
-      "updated_at": 1789012229.7975376
+      "updated_at": 1789012229.7975376,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MUNJALAU.NS",
@@ -2734,7 +3052,9 @@
       "max_profit_percent": 0.33666830662778807,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789012239.4232752
+      "updated_at": 1789012239.4232752,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "HONASA.NS",
@@ -2751,7 +3071,9 @@
       "max_profit_percent": 0.2229299363057349,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789012243.838617
+      "updated_at": 1789012243.838617,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MANYAVAR.NS",
@@ -2768,7 +3090,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.1535199321458787,
       "status": "CLOSED",
-      "updated_at": 1789012257.9134493
+      "updated_at": 1789012257.9134493,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PANAMAPET.NS",
@@ -2785,7 +3109,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.0959878592196546,
       "status": "CLOSED",
-      "updated_at": 1789098575.9089873
+      "updated_at": 1789098575.9089873,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PARADEEP.NS",
@@ -2802,7 +3128,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.7104000000000088,
       "status": "CLOSED",
-      "updated_at": 1789098576.7818003
+      "updated_at": 1789098576.7818003,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SBILIFE.NS",
@@ -2819,7 +3147,9 @@
       "max_profit_percent": 3.2399386819403935,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789098577.829112
+      "updated_at": 1789098577.829112,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ETERNAL.NS",
@@ -2836,7 +3166,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.7508559012406915,
       "status": "CLOSED",
-      "updated_at": 1789098578.7024305
+      "updated_at": 1789098578.7024305,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "TMPV.NS",
@@ -2853,7 +3185,9 @@
       "max_profit_percent": 1.7161716171617123,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789098579.7287412
+      "updated_at": 1789098579.7287412,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CHENNPETRO.NS",
@@ -2870,7 +3204,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.1686746987951806,
       "status": "CLOSED",
-      "updated_at": 1789098581.7470176
+      "updated_at": 1789098581.7470176,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JINDALSTEL.NS",
@@ -2887,7 +3223,9 @@
       "max_profit_percent": 0.19305233952214576,
       "max_drawdown_percent": 2.7729006899714994,
       "status": "CLOSED",
-      "updated_at": 1789098582.9706063
+      "updated_at": 1789098582.9706063,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PAYTM.NS",
@@ -2904,7 +3242,9 @@
       "max_profit_percent": 3.7567084078711988,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789098583.8926632
+      "updated_at": 1789098583.8926632,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "URJA.NS",
@@ -2921,7 +3261,9 @@
       "max_profit_percent": 0.5555555555555635,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789098584.8056314
+      "updated_at": 1789098584.8056314,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "REDINGTON.NS",
@@ -2938,7 +3280,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.0083380020049066,
       "status": "CLOSED",
-      "updated_at": 1789098585.7404904
+      "updated_at": 1789098585.7404904,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PNBHOUSING.NS",
@@ -2955,7 +3299,9 @@
       "max_profit_percent": 0.5746140651801068,
       "max_drawdown_percent": 2.178387650085771,
       "status": "CLOSED",
-      "updated_at": 1789098586.7404401
+      "updated_at": 1789098586.7404401,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SITINET.NS",
@@ -2972,7 +3318,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 3.5714281304758373,
       "status": "CLOSED",
-      "updated_at": 1789098587.4107375
+      "updated_at": 1789098587.4107375,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IONEXCHANG.NS",
@@ -2989,7 +3337,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789098588.3271983
+      "updated_at": 1789098588.3271983,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SAIL.NS",
@@ -3006,7 +3356,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 8.660340635279626,
       "status": "CLOSED",
-      "updated_at": 1789098589.223581
+      "updated_at": 1789098589.223581,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MSUMI.NS",
@@ -3023,7 +3375,9 @@
       "max_profit_percent": 0.4135661865743553,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789098590.175648
+      "updated_at": 1789098590.175648,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "INDGN.NS",
@@ -3040,7 +3394,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 5.250495758775453,
       "status": "CLOSED",
-      "updated_at": 1789098591.0589137
+      "updated_at": 1789098591.0589137,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JINDRILL.NS",
@@ -3057,7 +3413,9 @@
       "max_profit_percent": 1.8000412730029665,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789098592.1198182
+      "updated_at": 1789098592.1198182,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GOODLUCK.NS",
@@ -3074,7 +3432,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.10580758097051067,
       "status": "CLOSED",
-      "updated_at": 1789098593.0953128
+      "updated_at": 1789098593.0953128,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "USHAMART.NS",
@@ -3091,7 +3451,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 5.008270580830539,
       "status": "CLOSED",
-      "updated_at": 1789098595.1141741
+      "updated_at": 1789098595.1141741,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MARKSANS.NS",
@@ -3108,7 +3470,9 @@
       "max_profit_percent": 2.0307692307692378,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789098596.1270201
+      "updated_at": 1789098596.1270201,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "OIL.NS",
@@ -3125,7 +3489,9 @@
       "max_profit_percent": 4.502855084901417,
       "max_drawdown_percent": 0.865930704701135,
       "status": "CLOSED",
-      "updated_at": 1789098598.0111206
+      "updated_at": 1789098598.0111206,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ROLEXRINGS.NS",
@@ -3142,7 +3508,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.6273686002363879,
       "status": "CLOSED",
-      "updated_at": 1789098598.9665694
+      "updated_at": 1789098598.9665694,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SOUTHBANK.NS",
@@ -3159,7 +3527,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 4.859229876676692,
       "status": "CLOSED",
-      "updated_at": 1789098600.0100935
+      "updated_at": 1789098600.0100935,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DLF.NS",
@@ -3176,7 +3546,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 4.58818436988214,
       "status": "CLOSED",
-      "updated_at": 1789098601.885909
+      "updated_at": 1789098601.885909,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CENTENKA.NS",
@@ -3193,7 +3565,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.9710427408991025,
       "status": "CLOSED",
-      "updated_at": 1789098602.830585
+      "updated_at": 1789098602.830585,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "HINDALCO.NS",
@@ -3210,7 +3584,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.474747474747477,
       "status": "CLOSED",
-      "updated_at": 1789098605.8209314
+      "updated_at": 1789098605.8209314,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GAYAPROJ.NS",
@@ -3227,7 +3603,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.094858707680043,
       "status": "CLOSED",
-      "updated_at": 1789098606.7368326
+      "updated_at": 1789098606.7368326,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "KARURVYSYA.NS",
@@ -3244,7 +3622,9 @@
       "max_profit_percent": 1.4478246513095414,
       "max_drawdown_percent": 4.902519607632128,
       "status": "CLOSED",
-      "updated_at": 1789098609.6180794
+      "updated_at": 1789098609.6180794,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GLAND.NS",
@@ -3261,7 +3641,9 @@
       "max_profit_percent": 2.601034264188888,
       "max_drawdown_percent": 0.32086623917614165,
       "status": "CLOSED",
-      "updated_at": 1789098613.6491604
+      "updated_at": 1789098613.6491604,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PCBL.NS",
@@ -3278,7 +3660,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.7244152977357001,
       "status": "CLOSED",
-      "updated_at": 1789098615.7625246
+      "updated_at": 1789098615.7625246,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GIPCL.NS",
@@ -3295,7 +3679,9 @@
       "max_profit_percent": 0.09669211195928637,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789098616.9423656
+      "updated_at": 1789098616.9423656,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NMDC.NS",
@@ -3312,7 +3698,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.2650685093033676,
       "status": "CLOSED",
-      "updated_at": 1789098617.9479032
+      "updated_at": 1789098617.9479032,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MRPL.NS",
@@ -3329,7 +3717,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.4620389221435155,
       "status": "CLOSED",
-      "updated_at": 1789098619.0584974
+      "updated_at": 1789098619.0584974,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NOCIL.NS",
@@ -3346,7 +3736,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.7855297157622793,
       "status": "CLOSED",
-      "updated_at": 1789098619.999548
+      "updated_at": 1789098619.999548,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "KAMDHENU.NS",
@@ -3363,7 +3755,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 3.75,
       "status": "CLOSED",
-      "updated_at": 1789098621.7061944
+      "updated_at": 1789098621.7061944,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ANANTRAJ.NS",
@@ -3380,7 +3774,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 4.413183279742772,
       "status": "CLOSED",
-      "updated_at": 1789098625.3505895
+      "updated_at": 1789098625.3505895,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PAISALO.NS",
@@ -3397,7 +3793,9 @@
       "max_profit_percent": 4.7486005108284415,
       "max_drawdown_percent": 1.6886771205642797,
       "status": "CLOSED",
-      "updated_at": 1789098626.352957
+      "updated_at": 1789098626.352957,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DATAPATTNS.NS",
@@ -3414,7 +3812,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 4.665283239626553,
       "status": "CLOSED",
-      "updated_at": 1789098627.205138
+      "updated_at": 1789098627.205138,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SONACOMS.NS",
@@ -3431,7 +3831,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.5889724310776999,
       "status": "CLOSED",
-      "updated_at": 1789098629.1037922
+      "updated_at": 1789098629.1037922,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "STAR.NS",
@@ -3448,7 +3850,9 @@
       "max_profit_percent": 0.16820857863751051,
       "max_drawdown_percent": 0.4457527333893991,
       "status": "CLOSED",
-      "updated_at": 1789098630.0218194
+      "updated_at": 1789098630.0218194,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IDEA.NS",
@@ -3465,7 +3869,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.3262594477314957,
       "status": "CLOSED",
-      "updated_at": 1789098630.962015
+      "updated_at": 1789098630.962015,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "HINDZINC.NS",
@@ -3482,7 +3888,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 6.499589153656525,
       "status": "CLOSED",
-      "updated_at": 1789098632.8477712
+      "updated_at": 1789098632.8477712,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PNGJL.NS",
@@ -3499,7 +3907,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 4.347133757961776,
       "status": "CLOSED",
-      "updated_at": 1789098633.7677774
+      "updated_at": 1789098633.7677774,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SKIPPER.NS",
@@ -3516,7 +3926,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 6.421487603305789,
       "status": "CLOSED",
-      "updated_at": 1789098635.796839
+      "updated_at": 1789098635.796839,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "LXCHEM.NS",
@@ -3533,7 +3945,9 @@
       "max_profit_percent": 0.546478873239436,
       "max_drawdown_percent": 4.647887323943662,
       "status": "CLOSED",
-      "updated_at": 1789098640.386341
+      "updated_at": 1789098640.386341,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "RAIN.NS",
@@ -3550,7 +3964,9 @@
       "max_profit_percent": 2.0546697038724333,
       "max_drawdown_percent": 3.558086560364466,
       "status": "CLOSED",
-      "updated_at": 1789098643.1102254
+      "updated_at": 1789098643.1102254,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MSTCLTD.NS",
@@ -3567,7 +3983,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.0247592847317806,
       "status": "CLOSED",
-      "updated_at": 1789098646.9242122
+      "updated_at": 1789098646.9242122,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CHOLAFIN.NS",
@@ -3584,7 +4002,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.6138692535820591,
       "status": "CLOSED",
-      "updated_at": 1789098649.796781
+      "updated_at": 1789098649.796781,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "TEJASNET.NS",
@@ -3601,7 +4021,9 @@
       "max_profit_percent": 0.5203941127151305,
       "max_drawdown_percent": 9.023000017725495,
       "status": "CLOSED",
-      "updated_at": 1789098653.4095922
+      "updated_at": 1789098653.4095922,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ARVIND.NS",
@@ -3618,7 +4040,9 @@
       "max_profit_percent": 0.2961672473867675,
       "max_drawdown_percent": 3.6062717770034927,
       "status": "CLOSED",
-      "updated_at": 1789098655.4149277
+      "updated_at": 1789098655.4149277,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "EXICOM.NS",
@@ -3635,7 +4059,9 @@
       "max_profit_percent": 1.4687960636011195,
       "max_drawdown_percent": 4.0128579106656295,
       "status": "CLOSED",
-      "updated_at": 1789098656.3962393
+      "updated_at": 1789098656.3962393,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MOTILALOFS.NS",
@@ -3652,7 +4078,9 @@
       "max_profit_percent": 0.5400192864030771,
       "max_drawdown_percent": 4.406943105110901,
       "status": "CLOSED",
-      "updated_at": 1789098657.3349915
+      "updated_at": 1789098657.3349915,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SHYAMMETL.NS",
@@ -3669,7 +4097,9 @@
       "max_profit_percent": 1.5771732630707036,
       "max_drawdown_percent": 0.8167434820386338,
       "status": "CLOSED",
-      "updated_at": 1789098659.2446666
+      "updated_at": 1789098659.2446666,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MAHABANK.NS",
@@ -3686,7 +4116,9 @@
       "max_profit_percent": 1.772217105235244e-06,
       "max_drawdown_percent": 3.391403630510801,
       "status": "CLOSED",
-      "updated_at": 1789098661.189356
+      "updated_at": 1789098661.189356,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JTLIND.NS",
@@ -3703,7 +4135,9 @@
       "max_profit_percent": 0.43279833147407454,
       "max_drawdown_percent": 3.4758060470034032e-06,
       "status": "CLOSED",
-      "updated_at": 1789098662.1905966
+      "updated_at": 1789098662.1905966,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ZYDUSLIFE.NS",
@@ -3720,7 +4154,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 4.450370435130192,
       "status": "CLOSED",
-      "updated_at": 1789098664.1182237
+      "updated_at": 1789098664.1182237,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "BEPL.NS",
@@ -3737,7 +4173,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.7596899224806122,
       "status": "CLOSED",
-      "updated_at": 1789098668.8083882
+      "updated_at": 1789098668.8083882,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PFOCUS.NS",
@@ -3754,7 +4192,9 @@
       "max_profit_percent": 0.2741935483871041,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789098670.7523658
+      "updated_at": 1789098670.7523658,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PVRINOX.NS",
@@ -3771,7 +4211,9 @@
       "max_profit_percent": 3.8382978723404175,
       "max_drawdown_percent": 0.6042553191489285,
       "status": "CLOSED",
-      "updated_at": 1789098677.3222702
+      "updated_at": 1789098677.3222702,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "AHCL.NS",
@@ -3788,7 +4230,9 @@
       "max_profit_percent": 9.689214913908954,
       "max_drawdown_percent": 1.8281526520514901,
       "status": "CLOSED",
-      "updated_at": 1789098682.431374
+      "updated_at": 1789098682.431374,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DEEPINDS.NS",
@@ -3805,7 +4249,9 @@
       "max_profit_percent": 2.9003878869080553,
       "max_drawdown_percent": 0.21531097704411442,
       "status": "CLOSED",
-      "updated_at": 1789098689.0697222
+      "updated_at": 1789098689.0697222,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DEEPINDS.NS",
@@ -3822,7 +4268,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.4537543441677063,
       "status": "CLOSED",
-      "updated_at": 1789444173.0290685
+      "updated_at": 1789444173.0290685,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "BLUESTONE.NS",
@@ -3839,7 +4287,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.7730812013348215,
       "status": "CLOSED",
-      "updated_at": 1789444174.2778535
+      "updated_at": 1789444174.2778535,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "EMIL.NS",
@@ -3856,7 +4306,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.3820724306100916,
       "status": "CLOSED",
-      "updated_at": 1789444175.506086
+      "updated_at": 1789444175.506086,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "VSSL.NS",
@@ -3873,7 +4325,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.2833402050360427,
       "status": "CLOSED",
-      "updated_at": 1789444176.8157804
+      "updated_at": 1789444176.8157804,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "BECTORFOOD.NS",
@@ -3890,7 +4344,9 @@
       "max_profit_percent": 0.3676913600583084,
       "max_drawdown_percent": 4.292502755943412,
       "status": "CLOSED",
-      "updated_at": 1789444179.2036145
+      "updated_at": 1789444179.2036145,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JTLIND.NS",
@@ -3907,7 +4363,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.7830846788544685,
       "status": "CLOSED",
-      "updated_at": 1789444181.8590045
+      "updated_at": 1789444181.8590045,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CUB.NS",
@@ -3924,7 +4382,9 @@
       "max_profit_percent": 0.5278869598441248,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789444183.042674
+      "updated_at": 1789444183.042674,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JINDALSAW.NS",
@@ -3941,7 +4401,9 @@
       "max_profit_percent": 0.3184713375796179,
       "max_drawdown_percent": 2.388535031847134,
       "status": "CLOSED",
-      "updated_at": 1789444184.3226743
+      "updated_at": 1789444184.3226743,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IONEXCHANG.NS",
@@ -3958,7 +4420,9 @@
       "max_profit_percent": 1.0629951508569593,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789444185.5955503
+      "updated_at": 1789444185.5955503,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "FINCABLES.NS",
@@ -3975,7 +4439,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 4.102675157311773,
       "status": "CLOSED",
-      "updated_at": 1789444188.231271
+      "updated_at": 1789444188.231271,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ZYDUSWELL.NS",
@@ -3992,7 +4458,9 @@
       "max_profit_percent": 0.13652943431235173,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789444191.9105227
+      "updated_at": 1789444191.9105227,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PFOCUS.NS",
@@ -4009,7 +4477,9 @@
       "max_profit_percent": 0.6753457824502623,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789444193.0273323
+      "updated_at": 1789444193.0273323,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "AEGISLOG.NS",
@@ -4026,7 +4496,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.5566577716486781,
       "status": "CLOSED",
-      "updated_at": 1789444194.290691
+      "updated_at": 1789444194.290691,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SMCGLOBAL.NS",
@@ -4043,7 +4515,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.5551072209169873,
       "status": "CLOSED",
-      "updated_at": 1789444195.442381
+      "updated_at": 1789444195.442381,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "AEGISVOPAK.NS",
@@ -4060,7 +4534,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.1058961005304604,
       "status": "CLOSED",
-      "updated_at": 1789444206.2471652
+      "updated_at": 1789444206.2471652,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IOLCP.NS",
@@ -4077,7 +4553,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.41515073948935066,
       "status": "CLOSED",
-      "updated_at": 1789444208.2085938
+      "updated_at": 1789444208.2085938,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GRAPHITE.NS",
@@ -4094,7 +4572,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.7147183525136254,
       "status": "CLOSED",
-      "updated_at": 1789444209.1765885
+      "updated_at": 1789444209.1765885,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SHAREINDIA.NS",
@@ -4111,7 +4591,9 @@
       "max_profit_percent": 2.2639593908629485,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789444210.1030965
+      "updated_at": 1789444210.1030965,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SOLARA.NS",
@@ -4128,7 +4610,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.7223077180194203,
       "status": "CLOSED",
-      "updated_at": 1789444214.5483282
+      "updated_at": 1789444214.5483282,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IPCALAB.NS",
@@ -4145,7 +4629,9 @@
       "max_profit_percent": 0.9286175498354069,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789444215.567843
+      "updated_at": 1789444215.567843,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "KOTAKBANK.NS",
@@ -4162,7 +4648,9 @@
       "max_profit_percent": 0.4150376209765181,
       "max_drawdown_percent": 2.786670002743801,
       "status": "CLOSED",
-      "updated_at": 1789444216.6223202
+      "updated_at": 1789444216.6223202,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "KAMDHENU.NS",
@@ -4179,7 +4667,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.8316539885024529,
       "status": "CLOSED",
-      "updated_at": 1789444218.65193
+      "updated_at": 1789444218.65193,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PCBL.NS",
@@ -4196,7 +4686,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.0155280516531062,
       "status": "CLOSED",
-      "updated_at": 1789444221.5416682
+      "updated_at": 1789444221.5416682,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JSWSTEEL.NS",
@@ -4213,7 +4705,9 @@
       "max_profit_percent": 0.1977186311787003,
       "max_drawdown_percent": 4.365019011406851,
       "status": "CLOSED",
-      "updated_at": 1789444225.7266622
+      "updated_at": 1789444225.7266622,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MSTCLTD.NS",
@@ -4230,7 +4724,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.3478013400504985,
       "status": "CLOSED",
-      "updated_at": 1789444231.648693
+      "updated_at": 1789444231.648693,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JINDRILL.NS",
@@ -4247,7 +4743,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.8593749999999964,
       "status": "CLOSED",
-      "updated_at": 1789444237.3839815
+      "updated_at": 1789444237.3839815,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "AEROFLEX.NS",
@@ -4264,7 +4762,9 @@
       "max_profit_percent": 0.4375000000000081,
       "max_drawdown_percent": 4.758928571428568,
       "status": "CLOSED",
-      "updated_at": 1789444247.2415018
+      "updated_at": 1789444247.2415018,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NOCIL.NS",
@@ -4281,7 +4781,9 @@
       "max_profit_percent": 0.010437550015514432,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789444254.0480852
+      "updated_at": 1789444254.0480852,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "FIVESTAR.NS",
@@ -4298,7 +4800,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.5089605734767026,
       "status": "CLOSED",
-      "updated_at": 1789444265.601913
+      "updated_at": 1789444265.601913,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CONFIPET.NS",
@@ -4315,7 +4819,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.8536551821437576,
       "status": "CLOSED",
-      "updated_at": 1789444266.6457562
+      "updated_at": 1789444266.6457562,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SUDARSCHEM.NS",
@@ -4332,7 +4838,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.4908802537668482,
       "status": "CLOSED",
-      "updated_at": 1789444267.6120021
+      "updated_at": 1789444267.6120021,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SKIPPER.NS",
@@ -4349,7 +4857,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.3408071748878845,
       "status": "CLOSED",
-      "updated_at": 1789444273.1962593
+      "updated_at": 1789444273.1962593,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "TDPOWERSYS.NS",
@@ -4366,7 +4876,9 @@
       "max_profit_percent": 1.961550070989641,
       "max_drawdown_percent": 3.1956336948636928,
       "status": "CLOSED",
-      "updated_at": 1789444279.203291
+      "updated_at": 1789444279.203291,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "URJA.NS",
@@ -4383,7 +4895,9 @@
       "max_profit_percent": 0.7650231852306582,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789444281.0379918
+      "updated_at": 1789444281.0379918,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "STLTECH.NS",
@@ -4400,7 +4914,9 @@
       "max_profit_percent": 2.4398614764259268,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789444284.7985897
+      "updated_at": 1789444284.7985897,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MCX.NS",
@@ -4417,7 +4933,9 @@
       "max_profit_percent": 0.6865671641791045,
       "max_drawdown_percent": 5.820895522388059,
       "status": "CLOSED",
-      "updated_at": 1789530531.6181421
+      "updated_at": 1789530531.6181421,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "LXCHEM.NS",
@@ -4434,7 +4952,9 @@
       "max_profit_percent": 0.970183647674441,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789530532.5872986
+      "updated_at": 1789530532.5872986,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MIDHANI.NS",
@@ -4451,7 +4971,9 @@
       "max_profit_percent": 0.9482758620689606,
       "max_drawdown_percent": 12.586206896551719,
       "status": "CLOSED",
-      "updated_at": 1789530533.586586
+      "updated_at": 1789530533.586586,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ABCAPITAL.NS",
@@ -4468,7 +4990,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 5.5569306930693045,
       "status": "CLOSED",
-      "updated_at": 1789530534.6697795
+      "updated_at": 1789530534.6697795,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "RKFORGE.NS",
@@ -4485,7 +5009,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 4.701388888888892,
       "status": "CLOSED",
-      "updated_at": 1789530535.7024052
+      "updated_at": 1789530535.7024052,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SHILPAMED.NS",
@@ -4502,7 +5028,9 @@
       "max_profit_percent": 1.4397159286124137,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789530536.7845569
+      "updated_at": 1789530536.7845569,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ENGINERSIN.NS",
@@ -4519,7 +5047,9 @@
       "max_profit_percent": 2.4496507008023545,
       "max_drawdown_percent": 4.264194633823375,
       "status": "CLOSED",
-      "updated_at": 1789530537.8076148
+      "updated_at": 1789530537.8076148,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IRISDOREME.NS",
@@ -4536,7 +5066,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 7.1578598050356215,
       "status": "CLOSED",
-      "updated_at": 1789530540.238427
+      "updated_at": 1789530540.238427,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JKPAPER.NS",
@@ -4553,7 +5085,9 @@
       "max_profit_percent": 0.47347186295640575,
       "max_drawdown_percent": 2.1488420474349192,
       "status": "CLOSED",
-      "updated_at": 1789530541.3342798
+      "updated_at": 1789530541.3342798,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NORTHARC.NS",
@@ -4570,7 +5104,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 5.769230769230769,
       "status": "CLOSED",
-      "updated_at": 1789530542.3619726
+      "updated_at": 1789530542.3619726,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SBC.NS",
@@ -4587,7 +5123,9 @@
       "max_profit_percent": 0.20768114424118583,
       "max_drawdown_percent": 0.7476666967194573,
       "status": "CLOSED",
-      "updated_at": 1789530544.4368553
+      "updated_at": 1789530544.4368553,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "STYLEBAAZA.NS",
@@ -4604,7 +5142,9 @@
       "max_profit_percent": 0.2963917525773137,
       "max_drawdown_percent": 3.1701030927835077,
       "status": "CLOSED",
-      "updated_at": 1789530546.6846368
+      "updated_at": 1789530546.6846368,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "KRBL.NS",
@@ -4621,7 +5161,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 6.1725467421755535,
       "status": "CLOSED",
-      "updated_at": 1789530547.7313545
+      "updated_at": 1789530547.7313545,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GOODLUCK.NS",
@@ -4638,7 +5180,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.0576923076923077,
       "status": "CLOSED",
-      "updated_at": 1789530550.9114907
+      "updated_at": 1789530550.9114907,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PETRONET.NS",
@@ -4655,7 +5199,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 3.0933190683721725,
       "status": "CLOSED",
-      "updated_at": 1789530552.016343
+      "updated_at": 1789530552.016343,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "RELIGARE.NS",
@@ -4672,7 +5218,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 3.664186615806014,
       "status": "CLOSED",
-      "updated_at": 1789530555.1068263
+      "updated_at": 1789530555.1068263,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GANDHAR.NS",
@@ -4689,7 +5237,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.2667221087721085,
       "status": "CLOSED",
-      "updated_at": 1789530556.1337054
+      "updated_at": 1789530556.1337054,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GHCLTEXTIL.NS",
@@ -4706,7 +5256,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 9.09160163175049,
       "status": "CLOSED",
-      "updated_at": 1789530557.1047673
+      "updated_at": 1789530557.1047673,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PARADEEP.NS",
@@ -4723,7 +5275,9 @@
       "max_profit_percent": 0.11575171983955507,
       "max_drawdown_percent": 3.89042165812049,
       "status": "CLOSED",
-      "updated_at": 1789530558.1294398
+      "updated_at": 1789530558.1294398,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CGCL.NS",
@@ -4740,7 +5294,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 6.575591985428055,
       "status": "CLOSED",
-      "updated_at": 1789530559.3212373
+      "updated_at": 1789530559.3212373,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DEEPINDS.NS",
@@ -4757,7 +5313,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.2032469829689865,
       "status": "CLOSED",
-      "updated_at": 1789530565.5368817
+      "updated_at": 1789530565.5368817,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "LTFOODS.NS",
@@ -4774,7 +5332,9 @@
       "max_profit_percent": 0.15425566898662135,
       "max_drawdown_percent": 6.8422187369326855,
       "status": "CLOSED",
-      "updated_at": 1789530566.5599358
+      "updated_at": 1789530566.5599358,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "HAL.NS",
@@ -4791,7 +5351,9 @@
       "max_profit_percent": 0.4466600199401722,
       "max_drawdown_percent": 6.550348953140578,
       "status": "CLOSED",
-      "updated_at": 1789530567.6827025
+      "updated_at": 1789530567.6827025,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SSWL.NS",
@@ -4808,7 +5370,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 8.378378378378379,
       "status": "CLOSED",
-      "updated_at": 1789530569.6650074
+      "updated_at": 1789530569.6650074,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "RAMRAT.NS",
@@ -4825,7 +5389,9 @@
       "max_profit_percent": 0.5326153137909888,
       "max_drawdown_percent": 3.4199171035092966,
       "status": "CLOSED",
-      "updated_at": 1789530570.7066388
+      "updated_at": 1789530570.7066388,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CONFIPET.NS",
@@ -4842,7 +5408,9 @@
       "max_profit_percent": 0.01176470588235896,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789530571.7762995
+      "updated_at": 1789530571.7762995,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "URJA.NS",
@@ -4859,7 +5427,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.45402472733413,
       "status": "CLOSED",
-      "updated_at": 1789530575.8619845
+      "updated_at": 1789530575.8619845,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "HDFCLIFE.NS",
@@ -4876,7 +5446,9 @@
       "max_profit_percent": 0.3160919540229842,
       "max_drawdown_percent": 1.2547892720306426,
       "status": "CLOSED",
-      "updated_at": 1789530576.9062994
+      "updated_at": 1789530576.9062994,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ELGIEQUIP.NS",
@@ -4893,7 +5465,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 5.993180795609178,
       "status": "CLOSED",
-      "updated_at": 1789530577.9135983
+      "updated_at": 1789530577.9135983,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MANORAMA.NS",
@@ -4910,7 +5484,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 3.7024390243902485,
       "status": "CLOSED",
-      "updated_at": 1789530579.9864798
+      "updated_at": 1789530579.9864798,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "TITAGARH.NS",
@@ -4927,7 +5503,9 @@
       "max_profit_percent": 1.4338549075391207,
       "max_drawdown_percent": 6.805120910384063,
       "status": "CLOSED",
-      "updated_at": 1789530581.1235914
+      "updated_at": 1789530581.1235914,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "UFLEX.NS",
@@ -4944,7 +5522,9 @@
       "max_profit_percent": 0.21223462755504482,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789530584.2276375
+      "updated_at": 1789530584.2276375,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "BLUESTONE.NS",
@@ -4961,7 +5541,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.44749403341288785,
       "status": "CLOSED",
-      "updated_at": 1789530585.2122185
+      "updated_at": 1789530585.2122185,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IPCALAB.NS",
@@ -4978,7 +5560,9 @@
       "max_profit_percent": 0.16808185655802424,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789530587.232877
+      "updated_at": 1789530587.232877,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "AEGISLOG.NS",
@@ -4995,7 +5579,9 @@
       "max_profit_percent": 0.1583315309179502,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789530592.352846
+      "updated_at": 1789530592.352846,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MOTILALOFS.NS",
@@ -5012,7 +5598,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 4.120505344995139,
       "status": "CLOSED",
-      "updated_at": 1789530593.4281662
+      "updated_at": 1789530593.4281662,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MOL.NS",
@@ -5029,7 +5617,9 @@
       "max_profit_percent": 0.15225746695844106,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789530594.4570835
+      "updated_at": 1789530594.4570835,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GNFC.NS",
@@ -5046,7 +5636,9 @@
       "max_profit_percent": 1.927317900390712,
       "max_drawdown_percent": 8.524371257075417,
       "status": "CLOSED",
-      "updated_at": 1789530595.4371219
+      "updated_at": 1789530595.4371219,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "FEDFINA.NS",
@@ -5063,7 +5655,9 @@
       "max_profit_percent": 1.7203884491865127,
       "max_drawdown_percent": 2.0593505997584405,
       "status": "CLOSED",
-      "updated_at": 1789530598.6564205
+      "updated_at": 1789530598.6564205,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PAYTM.NS",
@@ -5080,7 +5674,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.206858407079651,
       "status": "CLOSED",
-      "updated_at": 1789530600.6591597
+      "updated_at": 1789530600.6591597,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CUB.NS",
@@ -5097,7 +5693,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.031111111111108078,
       "status": "CLOSED",
-      "updated_at": 1789530604.985676
+      "updated_at": 1789530604.985676,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GRANULES.NS",
@@ -5114,7 +5712,9 @@
       "max_profit_percent": 5.2876869965477615,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789530607.0767543
+      "updated_at": 1789530607.0767543,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MARINE.NS",
@@ -5131,7 +5731,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 10.094786729857825,
       "status": "CLOSED",
-      "updated_at": 1789530611.7033138
+      "updated_at": 1789530611.7033138,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "QUESS.NS",
@@ -5148,7 +5750,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.357010544446455,
       "status": "CLOSED",
-      "updated_at": 1789530612.8525865
+      "updated_at": 1789530612.8525865,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "HONASA.NS",
@@ -5165,7 +5769,9 @@
       "max_profit_percent": 0.3395959087855066,
       "max_drawdown_percent": 1.729808766223819,
       "status": "CLOSED",
-      "updated_at": 1789530613.9486914
+      "updated_at": 1789530613.9486914,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ADANIENT.NS",
@@ -5182,7 +5788,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 5.384491892759667,
       "status": "CLOSED",
-      "updated_at": 1789530614.9803703
+      "updated_at": 1789530614.9803703,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IKIO.NS",
@@ -5199,7 +5807,9 @@
       "max_profit_percent": 0.09829059829059392,
       "max_drawdown_percent": 9.499999999999996,
       "status": "CLOSED",
-      "updated_at": 1789530617.002235
+      "updated_at": 1789530617.002235,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "BEPL.NS",
@@ -5216,7 +5826,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 4.906834551252408,
       "status": "CLOSED",
-      "updated_at": 1789530619.0749476
+      "updated_at": 1789530619.0749476,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SAMBHV.NS",
@@ -5233,7 +5845,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.5190839694656557,
       "status": "CLOSED",
-      "updated_at": 1789530621.09142
+      "updated_at": 1789530621.09142,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "APOLLO.NS",
@@ -5250,7 +5864,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 9.779664311679571,
       "status": "CLOSED",
-      "updated_at": 1789530622.3111033
+      "updated_at": 1789530622.3111033,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "EXICOM.NS",
@@ -5267,7 +5883,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 8.105893665728404,
       "status": "CLOSED",
-      "updated_at": 1789530623.3721988
+      "updated_at": 1789530623.3721988,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GLAND.NS",
@@ -5284,7 +5902,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.2764505119453955,
       "status": "CLOSED",
-      "updated_at": 1789530633.9274254
+      "updated_at": 1789530633.9274254,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IMAGICAA.NS",
@@ -5301,7 +5921,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 4.81041011559015,
       "status": "CLOSED",
-      "updated_at": 1789530634.970559
+      "updated_at": 1789530634.970559,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SUDARSCHEM.NS",
@@ -5318,7 +5940,9 @@
       "max_profit_percent": 0.7404255319148975,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789530635.999936
+      "updated_at": 1789530635.999936,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CGPOWER.NS",
@@ -5335,7 +5959,9 @@
       "max_profit_percent": 2.3946784922394704,
       "max_drawdown_percent": 5.055432372505546,
       "status": "CLOSED",
-      "updated_at": 1789530637.0285811
+      "updated_at": 1789530637.0285811,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "KTKBANK.NS",
@@ -5352,7 +5978,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 6.011730205278592,
       "status": "CLOSED",
-      "updated_at": 1789530642.3569264
+      "updated_at": 1789530642.3569264,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "AVTNPL.NS",
@@ -5369,7 +5997,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 6.515400165233477,
       "status": "CLOSED",
-      "updated_at": 1789530643.3906279
+      "updated_at": 1789530643.3906279,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "INDUSINDBK.NS",
@@ -5386,7 +6016,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 4.282439660537294,
       "status": "CLOSED",
-      "updated_at": 1789530644.513713
+      "updated_at": 1789530644.513713,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "EMIL.NS",
@@ -5403,7 +6035,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.23874283476502753,
       "status": "CLOSED",
-      "updated_at": 1789530645.6343465
+      "updated_at": 1789530645.6343465,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "THELEELA.NS",
@@ -5420,7 +6054,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.7230483271375423,
       "status": "CLOSED",
-      "updated_at": 1789530646.6884913
+      "updated_at": 1789530646.6884913,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GANDHAR.NS",
@@ -5437,7 +6073,9 @@
       "max_profit_percent": 1.0493635192877508,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789616906.6904097
+      "updated_at": 1789616906.6904097,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GUJTHEM.NS",
@@ -5454,7 +6092,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 3.5102122823974504,
       "status": "CLOSED",
-      "updated_at": 1789616908.8396273
+      "updated_at": 1789616908.8396273,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SHREEJISPG.NS",
@@ -5471,7 +6111,9 @@
       "max_profit_percent": 0.8456812432237113,
       "max_drawdown_percent": 1.1709432598482143,
       "status": "CLOSED",
-      "updated_at": 1789616910.8968284
+      "updated_at": 1789616910.8968284,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SMCGLOBAL.NS",
@@ -5488,7 +6130,9 @@
       "max_profit_percent": 0.8892167079686014,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789616913.9370012
+      "updated_at": 1789616913.9370012,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "TFCILTD.NS",
@@ -5505,7 +6149,9 @@
       "max_profit_percent": 1.089387044945784,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789616915.191209
+      "updated_at": 1789616915.191209,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "FINCABLES.NS",
@@ -5522,7 +6168,9 @@
       "max_profit_percent": 1.4729987760275767,
       "max_drawdown_percent": 0.4463585321993347,
       "status": "CLOSED",
-      "updated_at": 1789616916.2701683
+      "updated_at": 1789616916.2701683,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JKPAPER.NS",
@@ -5539,7 +6187,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.2511961722488065,
       "status": "CLOSED",
-      "updated_at": 1789616917.3873613
+      "updated_at": 1789616917.3873613,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GRAPHITE.NS",
@@ -5556,7 +6206,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.2224938875305624,
       "status": "CLOSED",
-      "updated_at": 1789616922.5755596
+      "updated_at": 1789616922.5755596,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GIPCL.NS",
@@ -5573,7 +6225,9 @@
       "max_profit_percent": 0.025062656641609705,
       "max_drawdown_percent": 6.952380952380954,
       "status": "CLOSED",
-      "updated_at": 1789616924.6230395
+      "updated_at": 1789616924.6230395,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GRANULES.NS",
@@ -5590,7 +6244,9 @@
       "max_profit_percent": 0.47562425683709864,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789616927.8295274
+      "updated_at": 1789616927.8295274,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MANYAVAR.NS",
@@ -5607,7 +6263,9 @@
       "max_profit_percent": 0.2524070178156761,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789616928.920491
+      "updated_at": 1789616928.920491,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DELTACORP.NS",
@@ -5624,7 +6282,9 @@
       "max_profit_percent": 0.9604717316414746,
       "max_drawdown_percent": 3.176949814817371,
       "status": "CLOSED",
-      "updated_at": 1789616933.0013385
+      "updated_at": 1789616933.0013385,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GCSL.NS",
@@ -5641,7 +6301,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.8111108217173753,
       "status": "CLOSED",
-      "updated_at": 1789616938.2943752
+      "updated_at": 1789616938.2943752,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CYIENTDLM.NS",
@@ -5658,7 +6320,9 @@
       "max_profit_percent": 5.197833790750239,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789616941.318507
+      "updated_at": 1789616941.318507,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "COCHINSHIP.NS",
@@ -5675,7 +6339,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.9146341463414633,
       "status": "CLOSED",
-      "updated_at": 1789616948.596154
+      "updated_at": 1789616948.596154,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "STEELXIND.NS",
@@ -5692,7 +6358,9 @@
       "max_profit_percent": 2.655676938460942,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789616953.8871772
+      "updated_at": 1789616953.8871772,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NYKAA.NS",
@@ -5709,7 +6377,9 @@
       "max_profit_percent": 0.728760325314462,
       "max_drawdown_percent": 5.523972734960444,
       "status": "CLOSED",
-      "updated_at": 1789616954.8958187
+      "updated_at": 1789616954.8958187,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "STAR.NS",
@@ -5726,7 +6396,9 @@
       "max_profit_percent": 0.6762468300929839,
       "max_drawdown_percent": 3.1614539306847074,
       "status": "CLOSED",
-      "updated_at": 1789616959.093171
+      "updated_at": 1789616959.093171,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "BHEL.NS",
@@ -5743,7 +6415,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 4.836483559797375,
       "status": "CLOSED",
-      "updated_at": 1789616961.2820032
+      "updated_at": 1789616961.2820032,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "WELENT.NS",
@@ -5760,7 +6434,9 @@
       "max_profit_percent": 0.42262678803641096,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789616962.2840111
+      "updated_at": 1789616962.2840111,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SKIPPER.NS",
@@ -5777,7 +6453,9 @@
       "max_profit_percent": 0.1594746716697979,
       "max_drawdown_percent": 2.4296435272045116,
       "status": "CLOSED",
-      "updated_at": 1789616966.6012435
+      "updated_at": 1789616966.6012435,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ACMESOLAR.NS",
@@ -5794,7 +6472,9 @@
       "max_profit_percent": 1.0894594698031521,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789616967.56905
+      "updated_at": 1789616967.56905,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "KROSS.NS",
@@ -5811,7 +6491,9 @@
       "max_profit_percent": 0.06250000000000236,
       "max_drawdown_percent": 5.12083333333333,
       "status": "CLOSED",
-      "updated_at": 1789616969.5287228
+      "updated_at": 1789616969.5287228,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DEEPINDS.NS",
@@ -5828,7 +6510,9 @@
       "max_profit_percent": 0.26494565217391924,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789616971.863103
+      "updated_at": 1789616971.863103,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IONEXCHANG.NS",
@@ -5845,7 +6529,9 @@
       "max_profit_percent": 0.7062978222483813,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789616973.867579
+      "updated_at": 1789616973.867579,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GOODLUCK.NS",
@@ -5862,7 +6548,9 @@
       "max_profit_percent": 0.31658213748283837,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789616981.3566136
+      "updated_at": 1789616981.3566136,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SHAREINDIA.NS",
@@ -5879,7 +6567,9 @@
       "max_profit_percent": 3.670372515789338,
       "max_drawdown_percent": 0.7836213487581327,
       "status": "CLOSED",
-      "updated_at": 1789616985.610086
+      "updated_at": 1789616985.610086,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GCSL.NS",
@@ -5896,7 +6586,9 @@
       "max_profit_percent": 1.1043195181229664,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789703281.6942976
+      "updated_at": 1789703281.6942976,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SHILPAMED.NS",
@@ -5913,7 +6605,9 @@
       "max_profit_percent": 4.14409534127844,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789703285.0832562
+      "updated_at": 1789703285.0832562,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MAHABANK.NS",
@@ -5930,7 +6624,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 4.002371817559244,
       "status": "CLOSED",
-      "updated_at": 1789703287.3164117
+      "updated_at": 1789703287.3164117,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PAISALO.NS",
@@ -5947,7 +6643,9 @@
       "max_profit_percent": 7.440476190476191,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789703289.934292
+      "updated_at": 1789703289.934292,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CEIGALL.NS",
@@ -5964,7 +6662,9 @@
       "max_profit_percent": 3.5145888594164454,
       "max_drawdown_percent": 1.4190981432360803,
       "status": "CLOSED",
-      "updated_at": 1789703296.2212477
+      "updated_at": 1789703296.2212477,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DRREDDY.NS",
@@ -5981,7 +6681,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 5.3097345132743365,
       "status": "CLOSED",
-      "updated_at": 1789703300.258719
+      "updated_at": 1789703300.258719,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "VINCOFE.NS",
@@ -5998,7 +6700,9 @@
       "max_profit_percent": 1.4692737430167573,
       "max_drawdown_percent": 6.083798882681556,
       "status": "CLOSED",
-      "updated_at": 1789703315.668163
+      "updated_at": 1789703315.668163,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "STAR.NS",
@@ -6015,7 +6719,9 @@
       "max_profit_percent": 1.6796960605475222,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789703319.187166
+      "updated_at": 1789703319.187166,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GODREJAGRO.NS",
@@ -6032,7 +6738,9 @@
       "max_profit_percent": 2.0138422288875826,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789703324.6046443
+      "updated_at": 1789703324.6046443,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DIACABS.NS",
@@ -6049,7 +6757,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.4,
       "status": "CLOSED",
-      "updated_at": 1789703326.28575
+      "updated_at": 1789703326.28575,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "WELSPUNLIV.NS",
@@ -6066,7 +6776,9 @@
       "max_profit_percent": 5.853466876566159,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789703330.334381
+      "updated_at": 1789703330.334381,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PFOCUS.NS",
@@ -6083,7 +6795,9 @@
       "max_profit_percent": 5.121794868129192,
       "max_drawdown_percent": 0.7963810461638943,
       "status": "CLOSED",
-      "updated_at": 1789703333.3318048
+      "updated_at": 1789703333.3318048,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "FIVESTAR.NS",
@@ -6100,7 +6814,9 @@
       "max_profit_percent": 1.367846369593437,
       "max_drawdown_percent": 3.13045509038671,
       "status": "CLOSED",
-      "updated_at": 1789703334.3710687
+      "updated_at": 1789703334.3710687,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ACMESOLAR.NS",
@@ -6117,7 +6833,9 @@
       "max_profit_percent": 4.179829890643982,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789703335.4222236
+      "updated_at": 1789703335.4222236,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PNBHOUSING.NS",
@@ -6134,7 +6852,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 5.777065321283701,
       "status": "CLOSED",
-      "updated_at": 1789703341.4655724
+      "updated_at": 1789703341.4655724,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CHENNPETRO.NS",
@@ -6151,7 +6871,9 @@
       "max_profit_percent": 2.1153846153846123,
       "max_drawdown_percent": 3.5851648351648384,
       "status": "CLOSED",
-      "updated_at": 1789703342.539844
+      "updated_at": 1789703342.539844,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "TMPV.NS",
@@ -6168,7 +6890,9 @@
       "max_profit_percent": 1.485790055823707,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789703344.6078072
+      "updated_at": 1789703344.6078072,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "REDINGTON.NS",
@@ -6185,7 +6909,9 @@
       "max_profit_percent": 6.676339089058174,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789703346.6860223
+      "updated_at": 1789703346.6860223,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "AUROPHARMA.NS",
@@ -6202,7 +6928,9 @@
       "max_profit_percent": 4.227642276422767,
       "max_drawdown_percent": 0.7347184582956968,
       "status": "CLOSED",
-      "updated_at": 1789962546.0510173
+      "updated_at": 1789962546.0510173,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "BLACKBUCK.NS",
@@ -6219,7 +6947,9 @@
       "max_profit_percent": 2.8896103896103824,
       "max_drawdown_percent": 0.5681818181818182,
       "status": "CLOSED",
-      "updated_at": 1789962546.8649216
+      "updated_at": 1789962546.8649216,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NORTHARC.NS",
@@ -6236,7 +6966,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.7653080538281058,
       "status": "CLOSED",
-      "updated_at": 1789962547.731738
+      "updated_at": 1789962547.731738,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IONEXCHANG.NS",
@@ -6253,7 +6985,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.011332629984368379,
       "status": "CLOSED",
-      "updated_at": 1789962548.5401874
+      "updated_at": 1789962548.5401874,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "POLICYBZR.NS",
@@ -6270,7 +7004,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 3.2907170650361333,
       "status": "CLOSED",
-      "updated_at": 1789962549.4215379
+      "updated_at": 1789962549.4215379,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PCBL.NS",
@@ -6287,7 +7023,9 @@
       "max_profit_percent": 0.7870471330245569,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789962551.0637803
+      "updated_at": 1789962551.0637803,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JKPAPER.NS",
@@ -6304,7 +7042,9 @@
       "max_profit_percent": 3.117505995203837,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789962552.746804
+      "updated_at": 1789962552.746804,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MARKSANS.NS",
@@ -6321,7 +7061,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 4.742424242424235,
       "status": "CLOSED",
-      "updated_at": 1789962554.394947
+      "updated_at": 1789962554.394947,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SHYAMMETL.NS",
@@ -6338,7 +7080,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.6480648064806521,
       "status": "CLOSED",
-      "updated_at": 1789962556.034193
+      "updated_at": 1789962556.034193,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ZYDUSWELL.NS",
@@ -6355,7 +7099,9 @@
       "max_profit_percent": 1.1055276381909465,
       "max_drawdown_percent": 4.5043398812243,
       "status": "CLOSED",
-      "updated_at": 1789962557.713703
+      "updated_at": 1789962557.713703,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NRBBEARING.NS",
@@ -6372,7 +7118,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.555446379503775,
       "status": "CLOSED",
-      "updated_at": 1789962558.52486
+      "updated_at": 1789962558.52486,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "STEELXIND.NS",
@@ -6389,7 +7137,9 @@
       "max_profit_percent": 0.5199310081915965,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789962559.3388555
+      "updated_at": 1789962559.3388555,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SALASAR.NS",
@@ -6406,7 +7156,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.34991623746606e-06,
       "status": "CLOSED",
-      "updated_at": 1789962560.087989
+      "updated_at": 1789962560.087989,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SOUTHBANK.NS",
@@ -6423,7 +7175,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.287370297801072,
       "status": "CLOSED",
-      "updated_at": 1789962562.6073153
+      "updated_at": 1789962562.6073153,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "WELCORP.NS",
@@ -6440,7 +7194,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.7403915881073242,
       "status": "CLOSED",
-      "updated_at": 1789962567.4524949
+      "updated_at": 1789962567.4524949,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "VISHWARAJ.NS",
@@ -6457,7 +7213,9 @@
       "max_profit_percent": 1.1009139699993356,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789962570.2619727
+      "updated_at": 1789962570.2619727,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CYIENT.NS",
@@ -6474,7 +7232,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.713176016246368,
       "status": "CLOSED",
-      "updated_at": 1789962574.4165645
+      "updated_at": 1789962574.4165645,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ATHERENERG.NS",
@@ -6491,7 +7251,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.2523133867982699,
       "status": "CLOSED",
-      "updated_at": 1789962583.0819485
+      "updated_at": 1789962583.0819485,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ARFIN.NS",
@@ -6508,7 +7270,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.448310660520863,
       "status": "CLOSED",
-      "updated_at": 1789962594.1227717
+      "updated_at": 1789962594.1227717,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PNGJL.NS",
@@ -6525,7 +7289,9 @@
       "max_profit_percent": 0.29354007781086444,
       "max_drawdown_percent": 1.7449465091365108,
       "status": "CLOSED",
-      "updated_at": 1789962600.0800326
+      "updated_at": 1789962600.0800326,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NITCO.NS",
@@ -6542,7 +7308,9 @@
       "max_profit_percent": 0.33333333333334053,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789962603.394381
+      "updated_at": 1789962603.394381,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SYRMA.NS",
@@ -6559,7 +7327,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.2085996513654824,
       "status": "CLOSED",
-      "updated_at": 1789962609.5846667
+      "updated_at": 1789962609.5846667,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "VAKRANGEE.NS",
@@ -6576,7 +7346,9 @@
       "max_profit_percent": 1.121493564525382,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789962611.9864218
+      "updated_at": 1789962611.9864218,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "RANASUG.NS",
@@ -6593,7 +7365,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.895625390059208,
       "status": "CLOSED",
-      "updated_at": 1789962615.675623
+      "updated_at": 1789962615.675623,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MRPL.NS",
@@ -6610,7 +7384,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 6.319088319088322,
       "status": "CLOSED",
-      "updated_at": 1789962622.1497123
+      "updated_at": 1789962622.1497123,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SAMBHV.NS",
@@ -6627,7 +7403,9 @@
       "max_profit_percent": 23.066114471051474,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1789962624.7242744
+      "updated_at": 1789962624.7242744,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MCX.NS",
@@ -6644,7 +7422,9 @@
       "max_profit_percent": 0.5279503105590062,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048925.7305572
+      "updated_at": 1790048925.7305572,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "INDHOTEL.NS",
@@ -6661,7 +7441,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.4879336745579826,
       "status": "CLOSED",
-      "updated_at": 1790048926.6832395
+      "updated_at": 1790048926.6832395,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ELLEN.NS",
@@ -6678,7 +7460,9 @@
       "max_profit_percent": 0.5333333333333333,
       "max_drawdown_percent": 1.119999999999997,
       "status": "CLOSED",
-      "updated_at": 1790048927.5688605
+      "updated_at": 1790048927.5688605,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JTLIND.NS",
@@ -6695,7 +7479,9 @@
       "max_profit_percent": 3.0240513813922805,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048930.369582
+      "updated_at": 1790048930.369582,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PARADEEP.NS",
@@ -6712,7 +7498,9 @@
       "max_profit_percent": 0.41773385024930865,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048931.257048
+      "updated_at": 1790048931.257048,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "BEPL.NS",
@@ -6729,7 +7517,9 @@
       "max_profit_percent": 0.9663655488999591,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048932.1099482
+      "updated_at": 1790048932.1099482,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "VSSL.NS",
@@ -6746,7 +7536,9 @@
       "max_profit_percent": 5.392405063291142,
       "max_drawdown_percent": 0.8987341772151927,
       "status": "CLOSED",
-      "updated_at": 1790048933.1158597
+      "updated_at": 1790048933.1158597,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SKIPPER.NS",
@@ -6763,7 +7555,9 @@
       "max_profit_percent": 0.5683836589698127,
       "max_drawdown_percent": 0.17761989342806395,
       "status": "CLOSED",
-      "updated_at": 1790048934.8903391
+      "updated_at": 1790048934.8903391,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JKPAPER.NS",
@@ -6780,7 +7574,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.10627280530369476,
       "status": "CLOSED",
-      "updated_at": 1790048935.8684146
+      "updated_at": 1790048935.8684146,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CONCOR.NS",
@@ -6797,7 +7593,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.41879468845761214,
       "status": "CLOSED",
-      "updated_at": 1790048937.8872652
+      "updated_at": 1790048937.8872652,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "USHAMART.NS",
@@ -6814,7 +7612,9 @@
       "max_profit_percent": 5.598039215686266,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048939.1700058
+      "updated_at": 1790048939.1700058,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CUB.NS",
@@ -6831,7 +7631,9 @@
       "max_profit_percent": 1.7746087168267972,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048940.1190293
+      "updated_at": 1790048940.1190293,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "TCS.NS",
@@ -6848,7 +7650,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.3062200956937886,
       "status": "CLOSED",
-      "updated_at": 1790048941.059468
+      "updated_at": 1790048941.059468,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GESHIP.NS",
@@ -6865,7 +7669,9 @@
       "max_profit_percent": 3.9643865096772397,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048941.9518
+      "updated_at": 1790048941.9518,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NORTHARC.NS",
@@ -6882,7 +7688,9 @@
       "max_profit_percent": 0.3134796238244514,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048943.7993758
+      "updated_at": 1790048943.7993758,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "EMIL.NS",
@@ -6899,7 +7707,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.8284665520194983,
       "status": "CLOSED",
-      "updated_at": 1790048946.5724502
+      "updated_at": 1790048946.5724502,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GRAPHITE.NS",
@@ -6916,7 +7726,9 @@
       "max_profit_percent": 1.7239263803680924,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048948.4190388
+      "updated_at": 1790048948.4190388,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PVRINOX.NS",
@@ -6933,7 +7745,9 @@
       "max_profit_percent": 4.8062622309197724,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048949.511422
+      "updated_at": 1790048949.511422,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "WABAG.NS",
@@ -6950,7 +7764,9 @@
       "max_profit_percent": 2.195899772209559,
       "max_drawdown_percent": 6.446469248291571,
       "status": "CLOSED",
-      "updated_at": 1790048951.825494
+      "updated_at": 1790048951.825494,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SOLARA.NS",
@@ -6967,7 +7783,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.5110199481419984,
       "status": "CLOSED",
-      "updated_at": 1790048954.096867
+      "updated_at": 1790048954.096867,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PCBL.NS",
@@ -6984,7 +7802,9 @@
       "max_profit_percent": 0.21663424798501682,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048955.0862727
+      "updated_at": 1790048955.0862727,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "STEELXIND.NS",
@@ -7001,7 +7821,9 @@
       "max_profit_percent": 1.6042756567496756,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048956.9236567
+      "updated_at": 1790048956.9236567,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GANDHAR.NS",
@@ -7018,7 +7840,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.118034738769756,
       "status": "CLOSED",
-      "updated_at": 1790048961.1237655
+      "updated_at": 1790048961.1237655,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SYRMA.NS",
@@ -7035,7 +7859,9 @@
       "max_profit_percent": 1.476744186046517,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048963.0856516
+      "updated_at": 1790048963.0856516,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ARFIN.NS",
@@ -7052,7 +7878,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.6703296703296697,
       "status": "CLOSED",
-      "updated_at": 1790048963.9419692
+      "updated_at": 1790048963.9419692,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ONEPOINT.NS",
@@ -7069,7 +7897,9 @@
       "max_profit_percent": 0.8126049239454989,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048965.7792008
+      "updated_at": 1790048965.7792008,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "URBANCO.NS",
@@ -7086,7 +7916,9 @@
       "max_profit_percent": 2.198453286482898,
       "max_drawdown_percent": 0.22578909380112222,
       "status": "CLOSED",
-      "updated_at": 1790048972.290361
+      "updated_at": 1790048972.290361,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DIACABS.NS",
@@ -7103,7 +7935,9 @@
       "max_profit_percent": 0.31679309548634693,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048974.7406526
+      "updated_at": 1790048974.7406526,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SAMBHV.NS",
@@ -7120,7 +7954,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.025653558723624327,
       "status": "CLOSED",
-      "updated_at": 1790048975.599502
+      "updated_at": 1790048975.599502,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CUPID.NS",
@@ -7137,7 +7973,9 @@
       "max_profit_percent": 2.174304926911178,
       "max_drawdown_percent": 8.946707854249219,
       "status": "CLOSED",
-      "updated_at": 1790048976.5036757
+      "updated_at": 1790048976.5036757,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "WOCKPHARMA.NS",
@@ -7154,7 +7992,9 @@
       "max_profit_percent": 7.8975609756097604,
       "max_drawdown_percent": 0.4878048780487805,
       "status": "CLOSED",
-      "updated_at": 1790048977.3684142
+      "updated_at": 1790048977.3684142,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GOODLUCK.NS",
@@ -7171,7 +8011,9 @@
       "max_profit_percent": 3.8733097352272345,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048981.6426911
+      "updated_at": 1790048981.6426911,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "EDELWEISS.NS",
@@ -7188,7 +8030,9 @@
       "max_profit_percent": 2.2332814794990754,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048983.5009212
+      "updated_at": 1790048983.5009212,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PRECWIRE.NS",
@@ -7205,7 +8049,9 @@
       "max_profit_percent": 2.205268862482137,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048989.1260679
+      "updated_at": 1790048989.1260679,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SSWL.NS",
@@ -7222,7 +8068,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.5333333333333332,
       "status": "CLOSED",
-      "updated_at": 1790048990.909948
+      "updated_at": 1790048990.909948,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CEIGALL.NS",
@@ -7239,7 +8087,9 @@
       "max_profit_percent": 1.48395721925134,
       "max_drawdown_percent": 0.4010695187165776,
       "status": "CLOSED",
-      "updated_at": 1790048992.7585719
+      "updated_at": 1790048992.7585719,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PFOCUS.NS",
@@ -7256,7 +8106,9 @@
       "max_profit_percent": 1.0918870759616748,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048993.7041576
+      "updated_at": 1790048993.7041576,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PARAGMILK.NS",
@@ -7273,7 +8125,9 @@
       "max_profit_percent": 10.555555555555566,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048995.4923532
+      "updated_at": 1790048995.4923532,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "FIVESTAR.NS",
@@ -7290,7 +8144,9 @@
       "max_profit_percent": 0.6380952380952425,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790048997.3074555
+      "updated_at": 1790048997.3074555,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JYOTICNC.NS",
@@ -7307,7 +8163,9 @@
       "max_profit_percent": 4.564359389228512,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790049000.1914334
+      "updated_at": 1790049000.1914334,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "AEGISLOG.NS",
@@ -7324,7 +8182,9 @@
       "max_profit_percent": 8.770531402033026,
       "max_drawdown_percent": 1.3532110922417435,
       "status": "CLOSED",
-      "updated_at": 1790049001.9460676
+      "updated_at": 1790049001.9460676,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GUJTHEM.NS",
@@ -7341,7 +8201,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 3.8586326767091492,
       "status": "CLOSED",
-      "updated_at": 1790049003.7613974
+      "updated_at": 1790049003.7613974,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ACMESOLAR.NS",
@@ -7358,7 +8220,9 @@
       "max_profit_percent": 4.271070615034168,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790049004.692017
+      "updated_at": 1790049004.692017,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "QUESS.NS",
@@ -7375,7 +8239,9 @@
       "max_profit_percent": 2.8010824042315163,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790049013.1524215
+      "updated_at": 1790049013.1524215,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "AEGISVOPAK.NS",
@@ -7392,7 +8258,9 @@
       "max_profit_percent": 3.786885245901643,
       "max_drawdown_percent": 3.655737704918025,
       "status": "CLOSED",
-      "updated_at": 1790049014.9851065
+      "updated_at": 1790049014.9851065,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ENGINERSIN.NS",
@@ -7409,7 +8277,9 @@
       "max_profit_percent": 6.0018639328984245,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790049017.2371168
+      "updated_at": 1790049017.2371168,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ATHERENERG.NS",
@@ -7426,7 +8296,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.9355638166047031,
       "status": "CLOSED",
-      "updated_at": 1790049019.1535904
+      "updated_at": 1790049019.1535904,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "WELCORP.NS",
@@ -7443,7 +8315,9 @@
       "max_profit_percent": 0.4235005261125876,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790049020.0459747
+      "updated_at": 1790049020.0459747,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ICIL.NS",
@@ -7460,7 +8334,9 @@
       "max_profit_percent": 1.2378223495701954,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790049021.947097
+      "updated_at": 1790049021.947097,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "TEJASNET.NS",
@@ -7477,7 +8353,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.105764649833245,
       "status": "CLOSED",
-      "updated_at": 1790135298.7071702
+      "updated_at": 1790135298.7071702,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SAMBHV.NS",
@@ -7494,7 +8372,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.1374365494526037,
       "status": "CLOSED",
-      "updated_at": 1790135301.3267932
+      "updated_at": 1790135301.3267932,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PFOCUS.NS",
@@ -7511,7 +8391,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.0067543554995426,
       "status": "CLOSED",
-      "updated_at": 1790135303.9754598
+      "updated_at": 1790135303.9754598,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IRISDOREME.NS",
@@ -7528,7 +8410,9 @@
       "max_profit_percent": 1.928718544197049,
       "max_drawdown_percent": 0.9257793260234386,
       "status": "CLOSED",
-      "updated_at": 1790135304.9502547
+      "updated_at": 1790135304.9502547,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NRBBEARING.NS",
@@ -7545,7 +8429,9 @@
       "max_profit_percent": 0.285281902216747,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790135325.2250738
+      "updated_at": 1790135325.2250738,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "OIL.NS",
@@ -7562,7 +8448,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 5.167879088168823,
       "status": "CLOSED",
-      "updated_at": 1790135335.698322
+      "updated_at": 1790135335.698322,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ICIL.NS",
@@ -7579,7 +8467,9 @@
       "max_profit_percent": 0.1448131642298498,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790135342.2541142
+      "updated_at": 1790135342.2541142,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SHREEJISPG.NS",
@@ -7596,7 +8486,9 @@
       "max_profit_percent": 5.029348094649559,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790135345.93221
+      "updated_at": 1790135345.93221,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "RAMRAT.NS",
@@ -7613,7 +8505,9 @@
       "max_profit_percent": 4.708239513458469,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790135354.4830115
+      "updated_at": 1790135354.4830115,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "STEELXIND.NS",
@@ -7630,7 +8524,9 @@
       "max_profit_percent": 7.3148970478377775,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790221728.3943915
+      "updated_at": 1790221728.3943915,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "FIVESTAR.NS",
@@ -7647,7 +8543,9 @@
       "max_profit_percent": 0.9342230695900814,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790221730.26585
+      "updated_at": 1790221730.26585,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ICIL.NS",
@@ -7664,7 +8562,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.1696522655426789,
       "status": "CLOSED",
-      "updated_at": 1790221733.135547
+      "updated_at": 1790221733.135547,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "LTF.NS",
@@ -7681,7 +8581,9 @@
       "max_profit_percent": 0.25723472668810654,
       "max_drawdown_percent": 9.003215434083602,
       "status": "CLOSED",
-      "updated_at": 1790221734.4239035
+      "updated_at": 1790221734.4239035,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SYRMA.NS",
@@ -7698,7 +8600,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.759529650956888,
       "status": "CLOSED",
-      "updated_at": 1790221737.6003575
+      "updated_at": 1790221737.6003575,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SOLARA.NS",
@@ -7715,7 +8619,9 @@
       "max_profit_percent": 0.04029443448392008,
       "max_drawdown_percent": 0.5238046950385837,
       "status": "CLOSED",
-      "updated_at": 1790221740.741324
+      "updated_at": 1790221740.741324,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "RKFORGE.NS",
@@ -7732,7 +8638,9 @@
       "max_profit_percent": 0.26896551724138557,
       "max_drawdown_percent": 2.7517241379310406,
       "status": "CLOSED",
-      "updated_at": 1790221746.045037
+      "updated_at": 1790221746.045037,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DEVYANI.NS",
@@ -7749,7 +8657,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 3.7945648848485765,
       "status": "CLOSED",
-      "updated_at": 1790221752.9269025
+      "updated_at": 1790221752.9269025,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "LXCHEM.NS",
@@ -7766,7 +8676,9 @@
       "max_profit_percent": 3.8991596638655506,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790221753.7954786
+      "updated_at": 1790221753.7954786,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NORTHARC.NS",
@@ -7783,7 +8695,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 4.233557346628763,
       "status": "CLOSED",
-      "updated_at": 1790221754.7324758
+      "updated_at": 1790221754.7324758,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ARFIN.NS",
@@ -7800,7 +8714,9 @@
       "max_profit_percent": 1.8812955104474904,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790221763.476696
+      "updated_at": 1790221763.476696,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "KOTAKBANK.NS",
@@ -7817,7 +8733,9 @@
       "max_profit_percent": 0.9671164984178653,
       "max_drawdown_percent": 1.7649917784789808,
       "status": "CLOSED",
-      "updated_at": 1790221764.567219
+      "updated_at": 1790221764.567219,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DCBBANK.NS",
@@ -7834,7 +8752,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 7.969432314410481,
       "status": "CLOSED",
-      "updated_at": 1790221773.277638
+      "updated_at": 1790221773.277638,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "EDELWEISS.NS",
@@ -7851,7 +8771,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.0900119419878385,
       "status": "CLOSED",
-      "updated_at": 1790221775.1605644
+      "updated_at": 1790221775.1605644,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PCBL.NS",
@@ -7868,7 +8790,9 @@
       "max_profit_percent": 0.43284151200933774,
       "max_drawdown_percent": 1.8756277656693712,
       "status": "CLOSED",
-      "updated_at": 1790221776.1058939
+      "updated_at": 1790221776.1058939,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PFOCUS.NS",
@@ -7885,7 +8809,9 @@
       "max_profit_percent": 0.8054711246200539,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790221780.0025008
+      "updated_at": 1790221780.0025008,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DIACABS.NS",
@@ -7902,7 +8828,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.6223744252508885,
       "status": "CLOSED",
-      "updated_at": 1790308112.0489688
+      "updated_at": 1790308112.0489688,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PCBL.NS",
@@ -7919,7 +8847,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.7071284442086241,
       "status": "CLOSED",
-      "updated_at": 1790308113.2334757
+      "updated_at": 1790308113.2334757,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JSWINFRA.NS",
@@ -7936,7 +8866,9 @@
       "max_profit_percent": 8.327192336035372,
       "max_drawdown_percent": 4.215180545320563,
       "status": "CLOSED",
-      "updated_at": 1790308115.4938252
+      "updated_at": 1790308115.4938252,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SHYAMMETL.NS",
@@ -7953,7 +8885,9 @@
       "max_profit_percent": 1.3391286176254429,
       "max_drawdown_percent": 0.9862424586897165,
       "status": "CLOSED",
-      "updated_at": 1790308134.2883236
+      "updated_at": 1790308134.2883236,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ARFIN.NS",
@@ -7970,7 +8904,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.9788670866992033,
       "status": "CLOSED",
-      "updated_at": 1790308141.160079
+      "updated_at": 1790308141.160079,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SOLARA.NS",
@@ -7987,7 +8923,9 @@
       "max_profit_percent": 0.7351456397482476,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790308142.4899466
+      "updated_at": 1790308142.4899466,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "STEELXIND.NS",
@@ -8004,7 +8942,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.9523825880375597,
       "status": "CLOSED",
-      "updated_at": 1790308144.843316
+      "updated_at": 1790308144.843316,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "WELCORP.NS",
@@ -8021,7 +8961,9 @@
       "max_profit_percent": 2.255062944718124,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790308147.2092342
+      "updated_at": 1790308147.2092342,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "BLACKBUCK.NS",
@@ -8038,7 +8980,9 @@
       "max_profit_percent": 0.8582677165354402,
       "max_drawdown_percent": 7.000000000000008,
       "status": "CLOSED",
-      "updated_at": 1790308149.554395
+      "updated_at": 1790308149.554395,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "RAMRAT.NS",
@@ -8055,7 +8999,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.9468512728896747,
       "status": "CLOSED",
-      "updated_at": 1790308153.469528
+      "updated_at": 1790308153.469528,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SAMBHV.NS",
@@ -8072,7 +9018,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 3.1337579617834317,
       "status": "CLOSED",
-      "updated_at": 1790308169.6745653
+      "updated_at": 1790308169.6745653,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JKPAPER.NS",
@@ -8089,7 +9037,9 @@
       "max_profit_percent": 0.14374846964286903,
       "max_drawdown_percent": 2.0483933927906954,
       "status": "CLOSED",
-      "updated_at": 1790308174.3570154
+      "updated_at": 1790308174.3570154,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "BHARTIARTL.NS",
@@ -8106,7 +9056,9 @@
       "max_profit_percent": 4.1003116224667036,
       "max_drawdown_percent": 0.2220804320530097,
       "status": "CLOSED",
-      "updated_at": 1790567295.6187975
+      "updated_at": 1790567295.6187975,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "STEELXIND.NS",
@@ -8123,7 +9075,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.0628871767802188,
       "status": "CLOSED",
-      "updated_at": 1790567299.2808647
+      "updated_at": 1790567299.2808647,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IRISDOREME.NS",
@@ -8140,7 +9094,9 @@
       "max_profit_percent": 0.15106201868256286,
       "max_drawdown_percent": 0.7250709522199367,
       "status": "CLOSED",
-      "updated_at": 1790567303.0005338
+      "updated_at": 1790567303.0005338,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "INDGN.NS",
@@ -8157,7 +9113,9 @@
       "max_profit_percent": 0.812538314603781,
       "max_drawdown_percent": 1.6831088630173945,
       "status": "CLOSED",
-      "updated_at": 1790567310.1878898
+      "updated_at": 1790567310.1878898,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SBC.NS",
@@ -8174,7 +9132,9 @@
       "max_profit_percent": 14.66946117582976,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790567314.634279
+      "updated_at": 1790567314.634279,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SHYAMMETL.NS",
@@ -8191,7 +9151,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.4976958525345706,
       "status": "CLOSED",
-      "updated_at": 1790567317.3181112
+      "updated_at": 1790567317.3181112,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "RBLBANK.NS",
@@ -8208,7 +9170,9 @@
       "max_profit_percent": 3.618581907090467,
       "max_drawdown_percent": 1.5403422982885113,
       "status": "CLOSED",
-      "updated_at": 1790567320.0011811
+      "updated_at": 1790567320.0011811,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "EDELWEISS.NS",
@@ -8225,7 +9189,9 @@
       "max_profit_percent": 0.050500644590222056,
       "max_drawdown_percent": 0.9668153279263416,
       "status": "CLOSED",
-      "updated_at": 1790567327.38271
+      "updated_at": 1790567327.38271,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CGCL.NS",
@@ -8242,7 +9208,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 7.10575139146568,
       "status": "CLOSED",
-      "updated_at": 1790567328.3330326
+      "updated_at": 1790567328.3330326,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "RAMRAT.NS",
@@ -8259,7 +9227,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.8922798247210686,
       "status": "CLOSED",
-      "updated_at": 1790567338.2828553
+      "updated_at": 1790567338.2828553,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ICIL.NS",
@@ -8276,7 +9246,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 2.3358281353248196,
       "status": "CLOSED",
-      "updated_at": 1790653714.7665393
+      "updated_at": 1790653714.7665393,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "WELCORP.NS",
@@ -8293,7 +9265,9 @@
       "max_profit_percent": 0.021201413427558623,
       "max_drawdown_percent": 3.1696113074204884,
       "status": "CLOSED",
-      "updated_at": 1790653716.0986784
+      "updated_at": 1790653716.0986784,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SUZLON.NS",
@@ -8310,7 +9284,9 @@
       "max_profit_percent": 8.252200834529152,
       "max_drawdown_percent": 1.8312485431817718,
       "status": "CLOSED",
-      "updated_at": 1790653720.935371
+      "updated_at": 1790653720.935371,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ARFIN.NS",
@@ -8327,7 +9303,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.8834692296154347,
       "status": "CLOSED",
-      "updated_at": 1790653722.0226822
+      "updated_at": 1790653722.0226822,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "FINCABLES.NS",
@@ -8344,7 +9322,9 @@
       "max_profit_percent": 5.646890636168692,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790653724.391926
+      "updated_at": 1790653724.391926,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SHYAMMETL.NS",
@@ -8361,7 +9341,9 @@
       "max_profit_percent": 0.12218045112781528,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790653725.622907
+      "updated_at": 1790653725.622907,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "UNOMINDA.NS",
@@ -8378,7 +9360,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 6.992620264059042,
       "status": "CLOSED",
-      "updated_at": 1790653733.3607724
+      "updated_at": 1790653733.3607724,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DIACABS.NS",
@@ -8395,7 +9379,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 4.2776203966005735,
       "status": "CLOSED",
-      "updated_at": 1790653734.2348378
+      "updated_at": 1790653734.2348378,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SAGILITY.NS",
@@ -8412,7 +9398,9 @@
       "max_profit_percent": 0.37012778945064184,
       "max_drawdown_percent": 5.943828188627595,
       "status": "CLOSED",
-      "updated_at": 1790653742.4315114
+      "updated_at": 1790653742.4315114,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "TMPV.NS",
@@ -8429,7 +9417,9 @@
       "max_profit_percent": 9.052004245539738,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790653744.051771
+      "updated_at": 1790653744.051771,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ATHERENERG.NS",
@@ -8446,7 +9436,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 7.02720207253886,
       "status": "CLOSED",
-      "updated_at": 1790653745.280435
+      "updated_at": 1790653745.280435,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "CGPOWER.NS",
@@ -8463,7 +9455,9 @@
       "max_profit_percent": 2.2425249169435215,
       "max_drawdown_percent": 4.258028792912519,
       "status": "CLOSED",
-      "updated_at": 1790653748.8537676
+      "updated_at": 1790653748.8537676,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "STEELXIND.NS",
@@ -8480,7 +9474,9 @@
       "max_profit_percent": 0.7200751196663829,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790653752.5221264
+      "updated_at": 1790653752.5221264,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "LXCHEM.NS",
@@ -8497,7 +9493,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.7091616797852032,
       "status": "CLOSED",
-      "updated_at": 1790653754.8013365
+      "updated_at": 1790653754.8013365,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "EDELWEISS.NS",
@@ -8514,7 +9512,9 @@
       "max_profit_percent": 0.14074074074073906,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790653756.5614216
+      "updated_at": 1790653756.5614216,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "RAMRAT.NS",
@@ -8531,7 +9531,9 @@
       "max_profit_percent": 0.043996442731104535,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790653763.146403
+      "updated_at": 1790653763.146403,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NOCIL.NS",
@@ -8548,7 +9550,9 @@
       "max_profit_percent": 9.35396489534103,
       "max_drawdown_percent": 7.7415837049384235,
       "status": "CLOSED",
-      "updated_at": 1790653765.6275597
+      "updated_at": 1790653765.6275597,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IRISDOREME.NS",
@@ -8565,7 +9569,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.3333333333333347,
       "status": "CLOSED",
-      "updated_at": 1790653766.8174508
+      "updated_at": 1790653766.8174508,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "RELIGARE.NS",
@@ -8582,7 +9588,9 @@
       "max_profit_percent": 1.9898887765419566,
       "max_drawdown_percent": 4.833164812942361,
       "status": "CLOSED",
-      "updated_at": 1790653773.5877683
+      "updated_at": 1790653773.5877683,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SOLARA.NS",
@@ -8599,7 +9607,9 @@
       "max_profit_percent": 1.8403650489840686,
       "max_drawdown_percent": 1.853850880508433,
       "status": "CLOSED",
-      "updated_at": 1790740116.0891356
+      "updated_at": 1790740116.0891356,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DIACABS.NS",
@@ -8616,7 +9626,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.14306151645207438,
       "status": "CLOSED",
-      "updated_at": 1790740123.521283
+      "updated_at": 1790740123.521283,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "BEPL.NS",
@@ -8633,7 +9645,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 4.55727086322651,
       "status": "CLOSED",
-      "updated_at": 1790740132.8528783
+      "updated_at": 1790740132.8528783,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "HINDUNILVR.NS",
@@ -8650,7 +9664,9 @@
       "max_profit_percent": 4.718702483527618,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790740134.3357468
+      "updated_at": 1790740134.3357468,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GLAND.NS",
@@ -8667,7 +9683,9 @@
       "max_profit_percent": 5.7958238734125835,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790740137.0231142
+      "updated_at": 1790740137.0231142,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MCX.NS",
@@ -8684,7 +9702,9 @@
       "max_profit_percent": 5.509330070357905,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790740139.7277267
+      "updated_at": 1790740139.7277267,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "PNB.NS",
@@ -8701,7 +9721,9 @@
       "max_profit_percent": 1.6321589881618244,
       "max_drawdown_percent": 3.2041951247901714,
       "status": "CLOSED",
-      "updated_at": 1790740141.0293248
+      "updated_at": 1790740141.0293248,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "RAMRAT.NS",
@@ -8718,7 +9740,9 @@
       "max_profit_percent": 0.47481562404745775,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790740142.4470425
+      "updated_at": 1790740142.4470425,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GAIL.NS",
@@ -8735,7 +9759,9 @@
       "max_profit_percent": 0.40550783994490086,
       "max_drawdown_percent": 2.7871360100283202,
       "status": "CLOSED",
-      "updated_at": 1790740145.1127872
+      "updated_at": 1790740145.1127872,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "WELCORP.NS",
@@ -8752,7 +9778,9 @@
       "max_profit_percent": 0.27123483226266626,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790740149.3930402
+      "updated_at": 1790740149.3930402,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ZYDUSLIFE.NS",
@@ -8769,7 +9797,9 @@
       "max_profit_percent": 6.415584415584408,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790740152.2773786
+      "updated_at": 1790740152.2773786,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "STEELXIND.NS",
@@ -8786,7 +9816,9 @@
       "max_profit_percent": 1.3392874400834909,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790740157.7684214
+      "updated_at": 1790740157.7684214,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "FIVESTAR.NS",
@@ -8803,7 +9835,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 3.767671349678113,
       "status": "CLOSED",
-      "updated_at": 1790740174.1298223
+      "updated_at": 1790740174.1298223,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "BLACKBUCK.NS",
@@ -8820,7 +9854,9 @@
       "max_profit_percent": 4.0086652727110135,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1790826494.3886218
+      "updated_at": 1790826494.3886218,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SHYAMMETL.NS",
@@ -8837,7 +9873,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.0400245296824417,
       "status": "CLOSED",
-      "updated_at": 1790826499.1044705
+      "updated_at": 1790826499.1044705,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IRISDOREME.NS",
@@ -8854,7 +9892,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.5732471997357933,
       "status": "CLOSED",
-      "updated_at": 1790826501.90425
+      "updated_at": 1790826501.90425,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "STEELXIND.NS",
@@ -8871,7 +9911,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.7894703644023103,
       "status": "CLOSED",
-      "updated_at": 1790826504.7921917
+      "updated_at": 1790826504.7921917,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "FIVESTAR.NS",
@@ -8888,7 +9930,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.275559883154822,
       "status": "CLOSED",
-      "updated_at": 1790826507.4688735
+      "updated_at": 1790826507.4688735,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DEVYANI.NS",
@@ -8905,7 +9949,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 6.792727272727276,
       "status": "CLOSED",
-      "updated_at": 1790826508.3635097
+      "updated_at": 1790826508.3635097,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "RAMRAT.NS",
@@ -8922,7 +9968,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.5065288960161699,
       "status": "CLOSED",
-      "updated_at": 1790826511.7251701
+      "updated_at": 1790826511.7251701,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "WELCORP.NS",
@@ -8939,7 +9987,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.3914327917282094,
       "status": "CLOSED",
-      "updated_at": 1790826514.4882774
+      "updated_at": 1790826514.4882774,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SOLARA.NS",
@@ -8956,7 +10006,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.5922865013774042,
       "status": "CLOSED",
-      "updated_at": 1790826522.8355887
+      "updated_at": 1790826522.8355887,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MAHABANK.NS",
@@ -8973,7 +10025,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 4.3024956092579805,
       "status": "CLOSED",
-      "updated_at": 1790826525.695621
+      "updated_at": 1790826525.695621,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NORTHARC.NS",
@@ -8990,7 +10044,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 5.528052805280528,
       "status": "CLOSED",
-      "updated_at": 1791172127.3090568
+      "updated_at": 1791172127.3090568,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NRBBEARING.NS",
@@ -9007,7 +10063,9 @@
       "max_profit_percent": 2.6579925650557534,
       "max_drawdown_percent": 2.565055762081776,
       "status": "CLOSED",
-      "updated_at": 1791172129.8233974
+      "updated_at": 1791172129.8233974,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "STEELXIND.NS",
@@ -9024,7 +10082,9 @@
       "max_profit_percent": 0.9795232613319089,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1791172132.260813
+      "updated_at": 1791172132.260813,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MOTILALOFS.NS",
@@ -9041,7 +10101,9 @@
       "max_profit_percent": 2.7372627372627463,
       "max_drawdown_percent": 0.7842157842157865,
       "status": "CLOSED",
-      "updated_at": 1791172133.2035456
+      "updated_at": 1791172133.2035456,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "GRANULES.NS",
@@ -9058,7 +10120,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 6.596531134489622,
       "status": "CLOSED",
-      "updated_at": 1791172137.0111258
+      "updated_at": 1791172137.0111258,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "JKPAPER.NS",
@@ -9075,7 +10139,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 5.318627450980389,
       "status": "CLOSED",
-      "updated_at": 1791172142.1112423
+      "updated_at": 1791172142.1112423,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "HINDZINC.NS",
@@ -9092,7 +10158,9 @@
       "max_profit_percent": 1.6921884400377059,
       "max_drawdown_percent": 4.653525956337057,
       "status": "CLOSED",
-      "updated_at": 1791172143.8730187
+      "updated_at": 1791172143.8730187,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SYRMA.NS",
@@ -9109,7 +10177,9 @@
       "max_profit_percent": 4.462712859659425,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1791172148.0036187
+      "updated_at": 1791172148.0036187,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "IRISDOREME.NS",
@@ -9126,7 +10196,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 0.7419354838709692,
       "status": "CLOSED",
-      "updated_at": 1791172148.958429
+      "updated_at": 1791172148.958429,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "WELCORP.NS",
@@ -9143,7 +10215,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.8113854904970397,
       "status": "CLOSED",
-      "updated_at": 1791172155.0891995
+      "updated_at": 1791172155.0891995,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DIACABS.NS",
@@ -9160,7 +10234,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.6901408450704223,
       "status": "CLOSED",
-      "updated_at": 1791172156.527813
+      "updated_at": 1791172156.527813,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "APLAPOLLO.NS",
@@ -9177,7 +10253,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 5.282796230166601,
       "status": "CLOSED",
-      "updated_at": 1791258500.1388474
+      "updated_at": 1791258500.1388474,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ANANTRAJ.NS",
@@ -9194,7 +10272,9 @@
       "max_profit_percent": 3.0610561056105534,
       "max_drawdown_percent": 4.27392739273927,
       "status": "CLOSED",
-      "updated_at": 1791258502.9559522
+      "updated_at": 1791258502.9559522,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "MOTHERSON.NS",
@@ -9211,7 +10291,9 @@
       "max_profit_percent": 0.48259197708329865,
       "max_drawdown_percent": 4.599876046804689,
       "status": "CLOSED",
-      "updated_at": 1791258504.2904012
+      "updated_at": 1791258504.2904012,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SAILIFE.NS",
@@ -9228,7 +10310,9 @@
       "max_profit_percent": 2.4968553459119525,
       "max_drawdown_percent": 5.515723270440255,
       "status": "CLOSED",
-      "updated_at": 1791258507.1956606
+      "updated_at": 1791258507.1956606,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "NRBBEARING.NS",
@@ -9245,7 +10329,9 @@
       "max_profit_percent": 0.9328358208955223,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1791258508.6357765
+      "updated_at": 1791258508.6357765,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "ICIL.NS",
@@ -9262,7 +10348,9 @@
       "max_profit_percent": 6.098398169336379,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1791258514.584092
+      "updated_at": 1791258514.584092,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SYRMA.NS",
@@ -9279,7 +10367,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 1.6627337893031655,
       "status": "CLOSED",
-      "updated_at": 1791258516.1036737
+      "updated_at": 1791258516.1036737,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "DIACABS.NS",
@@ -9296,7 +10386,9 @@
       "max_profit_percent": 1.3999999999999935,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1791258518.3500733
+      "updated_at": 1791258518.3500733,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "SOLARA.NS",
@@ -9313,7 +10405,9 @@
       "max_profit_percent": 0.0,
       "max_drawdown_percent": 5.4097222222222285,
       "status": "CLOSED",
-      "updated_at": 1791258521.0986032
+      "updated_at": 1791258521.0986032,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "WELCORP.NS",
@@ -9330,7 +10424,9 @@
       "max_profit_percent": 2.7450379783433068,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1791258525.589693
+      "updated_at": 1791258525.589693,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "STEELXIND.NS",
@@ -9347,7 +10443,9 @@
       "max_profit_percent": 0.9865505402073362,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1791258529.881122
+      "updated_at": 1791258529.881122,
+      "partial_taken": false,
+      "stop_level": null
     },
     {
       "symbol": "FIVESTAR.NS",
@@ -9364,7 +10462,9 @@
       "max_profit_percent": 1.7530388830765853,
       "max_drawdown_percent": 0.0,
       "status": "CLOSED",
-      "updated_at": 1791258531.4057643
+      "updated_at": 1791258531.4057643,
+      "partial_taken": false,
+      "stop_level": null
     }
   ],
   "symbol_sector": {
@@ -9595,5 +10695,5 @@
     "MUFIN.NS": "Financial Services",
     "ICIL.NS": "Consumer Cyclical"
   },
-  "saved_at": 1791258546.391498
+  "saved_at": 1791344883.7096934
 }

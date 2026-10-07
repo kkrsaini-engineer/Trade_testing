@@ -1,0 +1,18 @@
+{
+  "symbol": "LXCHEM.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 27,
+  "entry_price": 176.0,
+  "exit_price": 190.07,
+  "status": "OPEN",
+  "realized_pnl": 348.03589328999976,
+  "realized_pnl_percent": 7.323987653409087,
+  "max_profit_percent": 8.465905623002486,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 72.42,
+  "reasons": "Excellent risk/reward profile.; Partial target achieved (previous session).; costs Rs 31.85 deducted",
+  "id": "trade_1791344873189",
+  "timestamp": 1791344873.1895
+}
