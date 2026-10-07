@@ -48,26 +48,35 @@ class FakeScanner:
         self.signals = signals
         self._last_full_scan_results = []
         self.scanned_last_dates = []
+        self.calls = []
 
+    def _result(self, sym, bundle):
+        df = bundle.market
+        last = df.iloc[-1]
+        day = pd.Timestamp(last["timestamp"]).date().isoformat()
+        self.scanned_last_dates.append(day)
+        signal = self.signals.get(day)
+        action = signal[1] if signal and signal[0] == sym else "NO_TRADE"
+        close = float(last["close"])
+        stop, t1 = (close - 4.0, close + 4.0) if action == "BUY" else (close + 4.0, close - 4.0)
+        return ScanResult(
+            symbol=sym, action=action, score=70.0, probability=70.0, confidence=80.0,
+            ranking=70.0, position_size=0, portfolio_allowed=action in ("BUY", "SELL"),
+            diagnostics={
+                "latest_close": close, "atr_14": 2.0, "stop_loss": stop, "target1": t1,
+                "market_regime": "BULL",
+            },
+        )
+
+    # signal_path="live" (default, = production nightly scan)
+    def scan_symbol(self, symbol, portfolio, broker_status, market_state, bundle=None):
+        self.calls.append("scan_symbol")
+        return self._result(symbol, bundle)
+
+    # signal_path="universe"
     def scan_symbols(self, symbols, portfolio, broker_status, market_state, bundles):
-        results = []
-        for sym in symbols:
-            df = bundles[sym].market
-            last = df.iloc[-1]
-            day = pd.Timestamp(last["timestamp"]).date().isoformat()
-            self.scanned_last_dates.append(day)
-            signal = self.signals.get(day)
-            action = signal[1] if signal and signal[0] == sym else "NO_TRADE"
-            close = float(last["close"])
-            stop, t1 = (close - 4.0, close + 4.0) if action == "BUY" else (close + 4.0, close - 4.0)
-            results.append(ScanResult(
-                symbol=sym, action=action, score=70.0, probability=70.0, confidence=80.0,
-                ranking=70.0, position_size=0, portfolio_allowed=action in ("BUY", "SELL"),
-                diagnostics={
-                    "latest_close": close, "atr_14": 2.0, "stop_loss": stop, "target1": t1,
-                    "market_regime": "BULL",
-                },
-            ))
+        self.calls.append("scan_symbols")
+        results = [self._result(sym, bundles[sym]) for sym in symbols]
         self._last_full_scan_results = results
         return [r for r in results if r.action in ("BUY", "SELL")]
 
