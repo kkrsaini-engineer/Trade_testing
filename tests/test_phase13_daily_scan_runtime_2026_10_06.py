@@ -2,12 +2,16 @@
 2026-10-06 — Daily Scan runtime fix.
 
 Found while verifying uploads: the nightly scan (scripts/generate_full_
-report.py) had not completed on a single trading day since 2026-09-22.
-It ran 4h40m-5h54m through 2026-09-21 on a 2,395-symbol watchlist
-(3 network calls per symbol) and GitHub Actions kills jobs at 6 hours —
-so nothing was committed, reports/candidates_order.json stayed at the
-2026-09-21 scan, and all 112 entries 2026-09-22..10-06 were that same
-30-symbol list re-traded every morning.
+report.py) had not pushed a result on a single trading day since
+2026-09-22, so reports/candidates_order.json stayed at the 2026-09-21
+scan and all 112 entries 2026-09-22..10-06 were that same 30-symbol list.
+The scan ran 4h40m-5h54m on a 2,395-symbol watchlist, close to GitHub's
+6-hour job limit — that was the first hypothesis.
+
+CORRECTION 2026-10-07: the real log showed the scan finished and the push
+was rejected because reports/full_report.csv crossed 100 MB (GH001) —
+fixed in test_phase14_full_report_rotation_2026_10_07.py. The changes below
+are kept as a runtime safety margin.
 
 Fix (user-approved, universe unchanged):
   1. scan the most liquid symbols first (real NSE turnover history);
