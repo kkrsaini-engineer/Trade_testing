@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import gzip
 import json
 import os
 import sys
@@ -48,17 +49,122 @@ logger = get_logger(__name__)
 WATCHLIST = WatchlistManager("storage/watchlist/nifty500.json").load()
 
 # 2026-10-06 (daily-scan runtime fix): GitHub Actions kills any job at 6
-# hours. With 2,395 symbols x 3 network calls each, this scan ran 4h40m-
-# 5h54m through 2026-09-21 and was killed on every trading day after that
-# — no commit, so reports/candidates_order.json stayed frozen at the
-# 2026-09-21 scan and the Morning Executor re-traded that same 30-symbol
-# list every morning (112 of 112 entries 2026-09-22..10-06). The scan now
-# stops starting new symbols after this many minutes and still writes the
-# report + candidates for everything it finished, so a slow night gives a
-# smaller scan instead of none. 300 min leaves room for setup + commit.
+# hours, and with 2,395 symbols x 3 network calls each this scan ran ~4h40m-
+# 5h54m through 2026-09-21 — too close to that limit. The scan now stops
+# starting new symbols after this many minutes and still writes the report
+# + candidates for everything it finished, so a slow night gives a smaller
+# scan instead of none. 300 min leaves room for setup + commit.
+#
+# CORRECTION 2026-10-07: the 6-hour limit was NOT what broke the scan from
+# 2026-09-22 on. The real Daily Scan log (2026-10-05 run) shows the scan
+# finished and committed, then `git push` was rejected by GitHub (GH001):
+# reports/full_report.csv had grown to 102.11 MB, over GitHub's 100 MB
+# per-file limit. Every run since 2026-09-22 started from the same
+# 95.3 MiB file and added one ~7 MB scan, so every push failed the same way
+# and candidates_order.json stayed at 2026-09-21. Fixed by
+# rotate_full_report() below. The time budget is kept as a safety margin.
 SCAN_TIME_BUDGET_MINUTES = float(os.getenv("SCAN_TIME_BUDGET_MINUTES", "300"))
 FUNDAMENTALS_CACHE_DIR = "storage/cache/fundamentals"
 FUNDAMENTALS_CACHE_MAX_AGE_DAYS = 7.0
+
+# 2026-10-07 (GH001 fix): full_report.csv keeps only the newest N scan
+# dates; every older scan date moves, unchanged, to its own compressed file
+# reports/archive/full_report_<date>.csv.gz (~0.7 MB per scan vs ~7 MB raw;
+# written once, so git stores each only once). Nothing is deleted. Every
+# reader in the repo (analysis/learning/email/sector reports) filters to
+# the LATEST date anyway. 5 scans ~ 36 MB, below GitHub's 50 MB warning; if
+# the file is still over FULL_REPORT_MAX_MB, fewer dates are kept.
+FULL_REPORT_KEEP_SCANS = int(os.getenv("FULL_REPORT_KEEP_SCANS", "5"))
+FULL_REPORT_MAX_MB = float(os.getenv("FULL_REPORT_MAX_MB", "90"))
+FULL_REPORT_ARCHIVE_DIR = "reports/archive"
+
+
+def next_trade_id(path: str) -> int:
+    """
+    Next unique TradeID for full_report.csv. Was "row count + 1", which
+    would re-issue old IDs once rows are archived; uses the highest
+    existing TradeID instead (rotation always keeps the NEWEST rows, so the
+    maximum survives). Falls back to the row count for non-numeric IDs.
+    """
+    if not Path(path).exists():
+        return 1
+    highest = 0
+    count = 0
+    with open(path, newline="") as f:
+        for row in csv.DictReader(f):
+            count += 1
+            try:
+                highest = max(highest, int(float(row.get("TradeID") or 0)))
+            except ValueError:
+                continue
+    return max(highest, count) + 1
+
+
+def _rotate_once(path: str, keep_scans: int, archive_dir: str) -> list[str]:
+    with open(path, newline="") as f:
+        reader = csv.reader(f)
+        header = next(reader, None)
+        if not header or "Date" not in header:
+            return []
+        date_idx = header.index("Date")
+        dates = {row[date_idx] for row in reader if len(row) > date_idx and row[date_idx]}
+    keep = set(sorted(dates)[-keep_scans:]) if keep_scans > 0 else set()
+    to_archive = sorted(dates - keep)
+    if not to_archive:
+        return []
+
+    Path(archive_dir).mkdir(parents=True, exist_ok=True)
+    archive_set = set(to_archive)
+    writers: dict[str, tuple] = {}
+    tmp_path = path + ".tmp"
+    try:
+        with open(path, newline="") as src, open(tmp_path, "w", newline="") as dst:
+            reader = csv.reader(src)
+            next(reader)
+            main_writer = csv.writer(dst)
+            main_writer.writerow(header)
+            for row in reader:
+                row_date = row[date_idx] if len(row) > date_idx else ""
+                if row_date not in archive_set:
+                    main_writer.writerow(row)
+                    continue
+                if row_date not in writers:
+                    gz_path = Path(archive_dir) / f"full_report_{row_date}.csv.gz"
+                    is_new = not gz_path.exists()
+                    handle = gzip.open(gz_path, "at", newline="")
+                    writer = csv.writer(handle)
+                    if is_new:
+                        writer.writerow(header)
+                    writers[row_date] = (handle, writer)
+                writers[row_date][1].writerow(row)
+    finally:
+        for handle, _ in writers.values():
+            handle.close()
+    os.replace(tmp_path, path)
+    return to_archive
+
+
+def rotate_full_report(
+    path: str,
+    keep_scans: int = FULL_REPORT_KEEP_SCANS,
+    max_mb: float = FULL_REPORT_MAX_MB,
+    archive_dir: str = FULL_REPORT_ARCHIVE_DIR,
+) -> list[str]:
+    """
+    Keep only the newest `keep_scans` scan dates in `path`; move every
+    older date's rows (byte-for-byte the same CSV rows, with the same
+    header) into archive_dir/full_report_<date>.csv.gz. If the file is
+    still larger than `max_mb`, keep one date fewer until it fits (never
+    fewer than the latest scan). Returns the archived dates.
+    """
+    if not Path(path).exists():
+        return []
+    archived = _rotate_once(path, keep_scans, archive_dir)
+    keep = keep_scans
+    while keep > 1 and Path(path).stat().st_size > max_mb * 1024 * 1024:
+        keep -= 1
+        archived += _rotate_once(path, keep, archive_dir)
+    return sorted(set(archived))
 
 
 def order_by_liquidity(symbols: list[str], history: dict[str, list[dict]] | None = None) -> list[str]:
@@ -400,11 +506,9 @@ def main() -> None:
     Path("reports").mkdir(exist_ok=True)
 
     # TradeID must stay unique across runs since we're appending, not
-    # overwriting — start counting from how many rows already exist.
-    next_id = 1
-    if Path(out_path).exists():
-        with open(out_path, newline="") as f:
-            next_id = sum(1 for _ in csv.DictReader(f)) + 1
+    # overwriting — continue from the highest existing ID (not the row
+    # count: older scans get archived, see rotate_full_report()).
+    next_id = next_trade_id(out_path)
 
     total = len(WATCHLIST)
     rows = []
@@ -552,10 +656,12 @@ def main() -> None:
                 dedup_key=f"bhavcopy_status::{today_date.isoformat()}",
             )
 
-    # APPEND mode: this is ONE running file that accumulates a full history
-    # (filter by the "Date" column to see any day/month) rather than being
+    # APPEND mode: this is ONE running file that accumulates history
+    # (filter by the "Date" column to see any day) rather than being
     # overwritten each run. Write the header only the first time the file
-    # is created.
+    # is created. Since 2026-10-07 only the newest FULL_REPORT_KEEP_SCANS
+    # scan dates stay here; older ones are in reports/archive/ (see
+    # rotate_full_report()).
     #
     # CRITICAL: the header is written ONCE, ever. If FIELDNAMES has grown
     # since then (adding new columns, as happens whenever a new diagnostic
@@ -593,6 +699,14 @@ def main() -> None:
         writer.writerows(rows)
 
     logger.info("Wrote %d rows to %s", len(rows), out_path)
+
+    # 2026-10-07 (GH001): keep the file under GitHub's 100 MB push limit.
+    archived_dates = rotate_full_report(out_path)
+    if archived_dates:
+        logger.info(
+            "Archived %d older scan date(s) from %s to %s: %s",
+            len(archived_dates), out_path, FULL_REPORT_ARCHIVE_DIR, ", ".join(archived_dates),
+        )
     print(f"\nWrote {len(rows)} rows to {out_path}")
 
     buy_count = sum(1 for r in rows if r["Signal"] == "BUY")
