@@ -37,6 +37,21 @@ on:
         options:
           - "live"
           - "universe"
+      buy_only:
+        description: "Experiment: skip all SELL trades"
+        required: true
+        default: false
+        type: boolean
+      max_new_entries_per_day:
+        description: "Experiment: max new positions per morning (0 = no cap, same as live)"
+        required: true
+        default: "0"
+        type: string
+      min_target_to_cost:
+        description: "Experiment: skip trades whose target move is < X times its costs (0 = off, same as live)"
+        required: true
+        default: "0"
+        type: string
       set_baseline:
         description: "Save this run as the new regression baseline (instead of comparing)"
         required: true
@@ -64,7 +79,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: PYTHONPATH=. python scripts/run_backtest.py --period "${{ inputs.period }}" --universe "${{ inputs.universe }}" --signal-path "${{ inputs.signal_path }}" ${{ inputs.realistic_costs && '--realistic-costs' || '' }}
+        run: PYTHONPATH=. python scripts/run_backtest.py --period "${{ inputs.period }}" --universe "${{ inputs.universe }}" --signal-path "${{ inputs.signal_path }}" --max-new-entries-per-day "${{ inputs.max_new_entries_per_day }}" --min-target-to-cost "${{ inputs.min_target_to_cost }}" ${{ inputs.buy_only && '--buy-only' || '' }} ${{ inputs.realistic_costs && '--realistic-costs' || '' }}
 
       - name: Run Regression Check (compare against baseline)
         if: ${{ inputs.set_baseline == false }}
