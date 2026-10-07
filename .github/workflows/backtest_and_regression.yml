@@ -20,6 +20,23 @@ on:
         required: true
         default: true
         type: boolean
+      universe:
+        description: "Stocks to test: default = 11 large caps; top50/top100 = most liquid watchlist stocks (slower: ~1.5h / ~3h)"
+        required: true
+        default: "default"
+        type: choice
+        options:
+          - "default"
+          - "top50"
+          - "top100"
+      signal_path:
+        description: "live = same scan as the production nightly scan; universe = two-pass path production does NOT run"
+        required: true
+        default: "live"
+        type: choice
+        options:
+          - "live"
+          - "universe"
       set_baseline:
         description: "Save this run as the new regression baseline (instead of comparing)"
         required: true
@@ -29,6 +46,7 @@ on:
 jobs:
   backtest:
     runs-on: ubuntu-latest
+    timeout-minutes: 340
     permissions:
       contents: write
     steps:
@@ -46,7 +64,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: PYTHONPATH=. python scripts/run_backtest.py --period "${{ inputs.period }}" ${{ inputs.realistic_costs && '--realistic-costs' || '' }}
+        run: PYTHONPATH=. python scripts/run_backtest.py --period "${{ inputs.period }}" --universe "${{ inputs.universe }}" --signal-path "${{ inputs.signal_path }}" ${{ inputs.realistic_costs && '--realistic-costs' || '' }}
 
       - name: Run Regression Check (compare against baseline)
         if: ${{ inputs.set_baseline == false }}
@@ -65,4 +83,13 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A -- reports/
           git diff --staged --quiet || git commit -m "Backtest + regression update: $(date -u +'%Y-%m-%d %H:%M UTC')"
-          git push
+          # 2026-10-07: retry like the other workflows — a Daily Scan /
+          # Paper Trading push in the meantime used to fail this step.
+          for i in 1 2 3 4 5; do
+            if git push; then exit 0; fi
+            echo "Push rejected — pulling and retrying ($i/5)..."
+            git pull --rebase origin main
+            sleep 30
+          done
+          echo "::error::Push failed after 5 attempts — results are still in this log and on Telegram."
+          exit 1
