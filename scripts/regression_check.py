@@ -88,6 +88,18 @@ def main() -> None:
         )
         return
 
+    # 2026-10-07: a run on a different stock set / signal path / period /
+    # cost setting measures something else — compare like with like only.
+    # The baseline is kept; use --set-baseline to adopt the new setup.
+    prev_cfg, cur_cfg = previous.get("run_config"), current.get("run_config")
+    if prev_cfg and cur_cfg and prev_cfg != cur_cfg:
+        print(
+            f"Run setup differs from the baseline (baseline {prev_cfg}, current {cur_cfg}) — "
+            f"not comparable, regression check skipped. Baseline unchanged; run with "
+            f"--set-baseline to make this setup the baseline."
+        )
+        return
+
     validator = RegressionValidator()
     result = validator.compare(previous, current)
     report_text = validator.report(result)

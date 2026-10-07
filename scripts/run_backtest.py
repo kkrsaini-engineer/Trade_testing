@@ -28,6 +28,14 @@ market conditions.
 Usage:
     python scripts/run_backtest.py --period 2y
     python scripts/run_backtest.py --period 5y --symbols RELIANCE.NS,TCS.NS
+    python scripts/run_backtest.py --period 2y --universe top50 --realistic-costs
+
+2026-10-07: every closed trade is also written to
+reports/backtest_trades_latest.csv (entry/exit, exit reason, costs, net R,
+MFE/MAE in R) so stop/target changes can be judged trade by trade.
+--universe topN picks the N most liquid watchlist symbols (NSE turnover
+history) instead of the 11-stock sample. --signal-path universe tests the
+two-pass scan path production does NOT run (see BacktestEngine.run()).
 """
 
 from __future__ import annotations
@@ -81,6 +89,15 @@ for _warn_heavy_logger in ["decision.validation_engine", "risk.risk_manager"]:
     logging.getLogger(_warn_heavy_logger).setLevel(logging.ERROR)
 
 OUTPUT_PATH = "reports/backtest_result_latest.json"
+TRADES_PATH = "reports/backtest_trades_latest.csv"
+TRADE_COLUMNS = [
+    "symbol", "direction", "entry_date", "exit_date", "holding_days",
+    "entry_price", "exit_price", "initial_quantity", "initial_stop", "target1", "target2",
+    "risk_per_share", "exit_category", "exit_reason", "gross_pnl", "costs", "realized_pnl",
+    "realized_pnl_percent", "r_multiple", "mfe_r", "mae_r",
+    "max_profit_percent", "max_drawdown_percent",
+]
+UNIVERSE_SIZES = {"default": 0, "top50": 50, "top100": 100}
 
 # Default representative sample spanning multiple sectors — kept small
 # enough for a reasonable multi-year fetch runtime. Override with
@@ -109,6 +126,32 @@ def _load_watchlist_symbols() -> list[str] | None:
     return symbols or None
 
 
+def top_liquid_symbols(n: int, watchlist: list[str] | None = None, history: dict | None = None) -> list[str]:
+    """The n most liquid watchlist symbols by average NSE turnover (same
+    ranking the nightly scan uses). Only symbols WITH turnover history are
+    eligible. NOTE: ranked by TODAY's liquidity, so a mild survivorship
+    bias towards names that are big now."""
+    from data import liquidity_history
+    from data.watchlist import WatchlistManager
+    from scripts.generate_full_report import order_by_liquidity
+
+    if watchlist is None:
+        watchlist = WatchlistManager("storage/watchlist/nifty500.json").load()
+    if history is None:
+        history = liquidity_history.load_history()
+    eligible = [s for s in watchlist if (history or {}).get(s.split(".")[0])]
+    return order_by_liquidity(eligible, history)[:n]
+
+
+def write_trades_csv(trades: list[dict], path: str = TRADES_PATH) -> None:
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=TRADE_COLUMNS, extrasaction="ignore")
+        writer.writeheader()
+        for t in trades:
+            writer.writerow({k: t.get(k) for k in TRADE_COLUMNS})
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--period", default="2y", choices=["3mo", "6mo", "1y", "2y", "5y", "10y", "max"])
@@ -122,10 +165,23 @@ def main() -> None:
         "--cost-per-side-pct", type=float, default=0.0,
         help="Transaction cost per fill in percent (e.g. 0.12 = 0.12%% each side). Default 0.",
     )
+    parser.add_argument(
+        "--universe", default="default", choices=sorted(UNIVERSE_SIZES),
+        help="default = 11-stock sample; topN = N most liquid watchlist symbols. Ignored with --symbols.",
+    )
+    parser.add_argument(
+        "--signal-path", default="live", choices=["live", "universe"],
+        help="live = same per-symbol scan as the production nightly scan (default).",
+    )
     args = parser.parse_args()
 
     if args.symbols:
         symbols = [s.strip() for s in args.symbols.split(",") if s.strip()]
+    elif UNIVERSE_SIZES[args.universe]:
+        symbols = top_liquid_symbols(UNIVERSE_SIZES[args.universe])
+        if not symbols:
+            print("No liquidity history available — falling back to the default 11-symbol sample.")
+            symbols = DEFAULT_SYMBOLS
     else:
         symbols = DEFAULT_SYMBOLS
 
@@ -200,19 +256,33 @@ def main() -> None:
         initial_capital=args.initial_capital,
         cost_pct_per_side=args.cost_per_side_pct,
         cost_model=CostModel.from_config() if args.realistic_costs else None,
+        signal_path=args.signal_path,
     )
 
     report_text = result.report()
     print(report_text)
 
+    result.metrics["run_config"] = {
+        "period": args.period,
+        "universe": "custom" if args.symbols else args.universe,
+        "symbols": len(historical_data),
+        "signal_path": args.signal_path,
+        "realistic_costs": bool(args.realistic_costs),
+        "cost_per_side_pct": args.cost_per_side_pct,
+    }
     Path("reports").mkdir(exist_ok=True)
     with open(OUTPUT_PATH, "w") as f:
         json.dump(result.metrics, f, indent=2, default=str)
     logger.info("Backtest result written to %s", OUTPUT_PATH)
+    write_trades_csv(result.closed_trades)
+    logger.info("%d closed trades written to %s", len(result.closed_trades), TRADES_PATH)
 
     notify(
         event_type="backtest_result",
-        message=f"📈 Backtest Result ({args.period}, {len(historical_data)} symbols)\n\n{report_text}",
+        message=(
+            f"📈 Backtest Result ({args.period}, {len(historical_data)} symbols, "
+            f"universe={args.universe if not args.symbols else 'custom'}, signal={args.signal_path})\n\n{report_text}"
+        ),
         dedup_key=f"backtest_result::{time.strftime('%Y-%m-%d %H:%M:%S')}",
     )
 
