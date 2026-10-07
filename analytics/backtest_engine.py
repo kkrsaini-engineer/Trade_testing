@@ -59,6 +59,18 @@ def _cost_line(m: dict[str, Any]) -> str:
     return " + ".join(parts) + f"; total Rs {m.get('total_costs', 0):.2f}"
 
 
+def _experiments_line(m: dict[str, Any]) -> str:
+    e = m.get("experiments") or {}
+    on = []
+    if e.get("buy_only"):
+        on.append("BUY only")
+    if e.get("max_new_entries_per_day"):
+        on.append(f"max {e['max_new_entries_per_day']} new entries/day")
+    if e.get("min_target_to_cost"):
+        on.append(f"target >= {e['min_target_to_cost']:g}x costs")
+    return ", ".join(on) if on else "none (same rules as live)"
+
+
 @dataclass
 class BacktestResult:
     equity_curve: list[float] = field(default_factory=list)
@@ -100,6 +112,7 @@ class BacktestResult:
             f" (profit factor {_fmt(m.get('profit_factor_before_costs'))})",
             f"Signal path          : {m.get('signal_path', '?')}"
             + ("  (= production nightly scan)" if m.get("signal_path") == "live" else "  (NOT what production runs)"),
+            f"Experiments          : {_experiments_line(m)}",
             f"False Positives      : {m.get('false_positives', 0)}",
             f"False Negatives      : {m.get('false_negatives', 0)} (see note below)",
             "",
@@ -200,6 +213,9 @@ class BacktestEngine:
         cost_pct_per_side: float = 0.0,
         cost_model: Any = None,
         signal_path: str = "live",
+        buy_only: bool = False,
+        max_new_entries_per_day: int = 0,
+        min_target_to_cost: float = 0.0,
     ) -> BacktestResult:
         """
         REWRITTEN 2026-10-06 (BUG_AUDIT_2026-10-05_PROFITABILITY.md M9).
@@ -258,6 +274,19 @@ class BacktestEngine:
         context, which production does NOT run. Until 2026-10-07 the
         backtest always used "universe", i.e. it tested signals the live
         bot never generated. Run both to compare before switching live.
+
+        EXPERIMENT SWITCHES (2026-10-07, all OFF by default — nothing
+        here changes live trading; they exist to test a rule BEFORE it is
+        proposed for the Morning Executor):
+          buy_only: skip every SELL candidate at the open (delivery
+            accounts cannot hold a short overnight — audit H14).
+          max_new_entries_per_day: open at most N new positions per
+            morning, best-ranked first (0 = no cap). The top50 run lost
+            most of its money on the 11 days with >= 5 entries.
+          min_target_to_cost: skip an entry whose move to target2 is less
+            than this many times its round-trip cost (0 = off; needs a
+            cost model). In practice this drops low-volatility, tight-stop
+            setups, where costs are a large share of the risk.
 
         fundamentals: still a static snapshot for every simulated day —
         point-in-time historical fundamentals are not available from
@@ -383,6 +412,13 @@ class BacktestEngine:
                 if not risk_per_share:
                     return None
                 return round(float(pct) / 100.0 * entry_px / risk_per_share, 3)
+
+            def full_range_r(key: str, fallback_pct: float) -> float | None:
+                price = info.get(key)
+                if price is None or not risk_per_share:
+                    return in_r(fallback_pct)
+                move = abs(float(price) - entry_px)
+                return round(max(move / risk_per_share, in_r(fallback_pct) or 0.0), 3)
             if pnl > 0:
                 counters["wins"] += 1
                 counters["gross_profit"] += pnl
@@ -414,8 +450,9 @@ class BacktestEngine:
                 "gross_pnl": round(pnl + trade_costs, 2),
                 # net P&L in units of the risk taken at entry (1R = entry->initial stop)
                 "r_multiple": round(pnl / risk_rupees, 3) if risk_rupees else None,
-                "mfe_r": in_r(closed.max_profit_percent),
-                "mae_r": in_r(closed.max_drawdown_percent),
+                # incl. the exit day's high/low (2026-10-07)
+                "mfe_r": full_range_r("best_price", closed.max_profit_percent),
+                "mae_r": full_range_r("worst_price", closed.max_drawdown_percent),
             })
 
         for day in all_dates:
@@ -425,8 +462,18 @@ class BacktestEngine:
             # ---------------- 1. OPEN: execute last night's candidates
             if pending:
                 todays_orders, pending = pending, []
+                entered_this_morning = 0
                 for c in todays_orders:
                     sym, direction = c["symbol"], c["direction"]
+                    if buy_only and direction == "SELL":
+                        entry_skips["SELL disabled (buy_only)"] += 1
+                        continue
+                    if (
+                        max_new_entries_per_day and entered_this_morning >= max_new_entries_per_day
+                        and sym not in portfolio.state.open_positions
+                    ):
+                        entry_skips["daily entry cap reached"] += 1
+                        continue
                     row, _ = bar_on(sym, day)
                     if row is None:
                         entry_skips["no bar on execution day"] += 1
@@ -469,6 +516,15 @@ class BacktestEngine:
                     if quantity <= 0:
                         entry_skips["insufficient capital"] += 1
                         continue
+                    if min_target_to_cost > 0 and sym not in portfolio.state.open_positions:
+                        _s, _t1, t2 = stop_target.compute_stop_loss_targets(
+                            direction=direction, close_price=entry_price, atr=c.get("atr_14") or 0.0,
+                        )
+                        trade_cost = round_trip_cost(direction, entry_price, t2 or entry_price, quantity, costs)
+                        target_gain = abs((t2 or entry_price) - entry_price) * quantity
+                        if trade_cost > 0 and target_gain < min_target_to_cost * trade_cost:
+                            entry_skips["target too small vs costs"] += 1
+                            continue
                     if not portfolio.add_position(
                         symbol=sym, quantity=quantity, entry_price=entry_price, direction=direction,
                     ):
@@ -484,7 +540,9 @@ class BacktestEngine:
                         "target1": round(init_t1, 2) if init_t1 else None,
                         "target2": round(init_t2, 2) if init_t2 else None,
                         "risk_per_share": abs(entry_price - init_stop) if init_stop else None,
+                        "best_price": entry_price, "worst_price": entry_price,
                     }
+                    entered_this_morning += 1
                     if direction == "BUY":
                         counters["opened_buy"] += 1
                     else:
@@ -525,6 +583,20 @@ class BacktestEngine:
                 portfolio.update_position(symbol=sym, current_price=current_price)
                 pos = portfolio.state.open_positions[sym]
                 info = meta.setdefault(sym, {"entry_date": day, "cycles": 0, "entry_thesis": None})
+                # Measurement only (never fed to the exit engine): best/worst
+                # price INCLUDING the exit day's bar. Portfolio MFE/MAE only
+                # sees ranges via observe_range() after the exit check, so a
+                # trade's exit day was missing from mfe_r/mae_r.
+                day_high, day_low = diag.get("latest_high"), diag.get("latest_low")
+                if day_high is not None and day_low is not None:
+                    up, down = float(day_high), float(day_low)
+                    if pos.direction == "SELL":
+                        up, down = down, up
+                        info["best_price"] = min(info.get("best_price", up), up)
+                        info["worst_price"] = max(info.get("worst_price", down), down)
+                    else:
+                        info["best_price"] = max(info.get("best_price", up), up)
+                        info["worst_price"] = min(info.get("worst_price", down), down)
 
                 held_conf = (
                     diag.get("buy_decision_confidence") if pos.direction == "BUY"
@@ -707,7 +779,12 @@ class BacktestEngine:
             "cost_pct_per_side": cost_pct_per_side,
             "cost_model": vars(costs) if hasattr(costs, "__dict__") else str(costs),
             "signal_path": signal_path,
-            "engine_version": "2026-10-07-trade-log",
+            "experiments": {
+                "buy_only": bool(buy_only),
+                "max_new_entries_per_day": int(max_new_entries_per_day or 0),
+                "min_target_to_cost": float(min_target_to_cost or 0.0),
+            },
+            "engine_version": "2026-10-07-trade-log-v2",
         })
         result.metrics.update(self._trade_quality_metrics(result.closed_trades))
         return result
