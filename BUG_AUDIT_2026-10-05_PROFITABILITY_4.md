@@ -213,4 +213,34 @@ Agar aisa nahi hua, to audit ka ye hissa galat tha.
 
 - Phase M9 (2026-10-06): backtest engine ab live flow replay karta hai — raat ka scan, agle din open pe entry (Morning Executor ke rules ke saath), roz ExitStrategyEngine se stop/target/risk exits, date se alignment, deterministic fills, optional cost. Pehle wala backtest signal ke close pe bharta tha aur usme stop/target/exit engine tha hi nahi — positions sirf ulte signal pe band hoti thi.
 
-**Baaki:** C5 (1R target — ab naye backtest se tune hoga), H7–H10 (signal), H11 (cooldown — data se zyada support nahi: re-entries per trade first entries se bure nahi), H13 (cost model), H14 (SELL overnight), M3, M4, M5, M6, M7, M12. Targets bhi abhi roz ke ATR se dobara bante hain — stop ki tarah inhe bhi entry pe fix karna baaki hai.
+- 2026-10-06 batch: H13 (transaction cost model — paper trading + backtest, rates config.py me), M5 (cash/P&L accounting ledger se; purani state file load pe khud theek hoti hai), M6 (morning executor weekly/monthly/drawdown limit), M7 (diary/journal me asli probability/confidence/regime). M7 ka learning-engine wala hissa (trade ko entry-night scan row se match karna) abhi baaki — sirf reporting.
+
+**Baaki:** C5 (1R target — ab naye backtest se tune hoga), H7–H10 (signal), H11 (cooldown — data se zyada support nahi: re-entries per trade first entries se bure nahi), H14 (SELL overnight), M3, M4, M7 (learning-engine matching), M12. Targets bhi abhi roz ke ATR se dobara bante hain — stop ki tarah inhe bhi entry pe fix karna baaki hai.
+
+---
+
+## 9. CRITICAL (2026-10-06) — raat ka scan 22 Sep se band tha
+
+**Saboot:** "Daily scan update" commits 22 Sep ke baad sirf chhutti ke dino (26, 27 Sep, 2, 3, 4 Oct) pe hain, aur unme sirf `telegram_dedup.json` badla. `reports/candidates_order.json` aur `reports/full_report.csv` ka aakhri update 21 Sep ka hai. 22 Sep – 6 Oct ke **112 me se 112 entries** usi 21 Sep wali 30-symbol list se thi — executor roz purani list purane prev_close/stop/target ke saath dobara execute kar raha tha (STEELXIND 10 baar, H11 re-entry churn ki asli wajah).
+
+**Wajah (strong hypothesis, Actions logs se confirm karna baaki):** watchlist `nifty500.json` me 2,395 symbols, har symbol pe 3 network calls; scan 4h40m–5h54m le raha tha (start 15:00 UTC, commit 19:42–20:54 UTC), GitHub Actions ki 6 ghante ki limit paar hone lagi.
+
+**Fix (deliver):** liquid symbols pehle (NSE turnover history se), 300 minute ka time budget (budget khatam to jo scan hua uske candidates phir bhi likhe jaate hain), fundamentals 7 din tak cache (actions/cache). M8 (stale file guard) ab purani file execute nahi hone deta.
+
+**Ek aur zaroori disclosure:** production scan (`generate_full_report.py`) har symbol ke liye `scan_symbol()` alag se chalata hai — `scan_symbols()` wala two-pass path use hi nahi karta. Isliye ye do fixes **live scan me kabhi active hi nahi hue**: (1) 2026-09-18 ka fundamental percentile-ranking ("STRUCTURAL BUY BIAS FIX"), (2) 2026-10-05 ka sector score + breadth blend. Ye sirf backtest/orchestrator path me chalte hain. Inhe live me chalu karna ek alag faisla hai (entry signals badlenge, aur Pass 1 ka fetch time scan budget me fit karna hoga).
+
+### 9a. CORRECTION (2026-10-07) — asli wajah 6 ghante ka timeout NAHI, 100 MB file limit thi
+
+Upar wali "strong hypothesis" (6 ghante ki limit) **galat thi**. User ne 2026-10-05 ka asli Daily Scan log diya: scan poora hua, commit bhi bana (`[main 81a92a9] Daily scan update: 2026-10-05 22:50 UTC, 8 files changed`), lekin `git push` reject hua:
+
+`remote: error: File reports/full_report.csv is 102.11 MB; this exceeds GitHub's file size limit of 100.00 MB` (GH001)
+
+**Saboot ki ganit:** 21 Sep wali `full_report.csv` 99,926,591 bytes (= 95.3 MiB) hai, 14 scan dates × 2,395 rows. Ek scan ~7.1 MB jodta hai → ~107 MB = 102.1 MiB, log se exact match. Push kabhi hua hi nahi, isliye har run usi 95.3 MiB file se shuru hota, wahi ~7 MB jodta aur har baar wahi GH001 aata. Matlab 22 Sep se har trading day pe yahi failure hua (deterministic). Workflow 12 baar × 5 min retry karta raha (log me step ka time 1h 1m), jabki retry se ye kabhi theek ho hi nahi sakta tha.
+
+**Fix (deliver):**
+- `full_report.csv` me sirf latest 5 scan dates rehti hain (~36 MB). Purani har date ki rows bina badle `reports/archive/full_report_<date>.csv.gz` me jaati hain (~0.7 MB per scan, ek baar likhi jaati hai). Kuch delete nahi hota: real file pe dry-run kiya, 33,530 rows = 11,975 main + 21,555 archive, content hash match.
+- TradeID ab highest existing ID se aage chalta hai (pehle row count + 1 tha, jo archive ke baad purane IDs dobara de deta).
+- Workflow: 99 MB se badi koi bhi file commit se pehle unstage hoti hai, error ke saath, taaki baaki scan (candidates_order.json) phir bhi push ho. GH001 aaye to retry band.
+- Repo ke saare readers (analysis, learning, email, sector report) waise bhi sirf latest date padhte hain, to unpe asar nahi.
+
+Time budget aur fundamentals cache safety margin ke liye rakhe hain (scan 4h40m–5h54m leta tha, jo 6h ke kareeb hai), lekin push failure ka fix yahi rotation hai.

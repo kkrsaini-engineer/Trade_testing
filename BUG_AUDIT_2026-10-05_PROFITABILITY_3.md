@@ -213,4 +213,18 @@ Agar aisa nahi hua, to audit ka ye hissa galat tha.
 
 - Phase M9 (2026-10-06): backtest engine ab live flow replay karta hai — raat ka scan, agle din open pe entry (Morning Executor ke rules ke saath), roz ExitStrategyEngine se stop/target/risk exits, date se alignment, deterministic fills, optional cost. Pehle wala backtest signal ke close pe bharta tha aur usme stop/target/exit engine tha hi nahi — positions sirf ulte signal pe band hoti thi.
 
-**Baaki:** C5 (1R target — ab naye backtest se tune hoga), H7–H10 (signal), H11 (cooldown — data se zyada support nahi: re-entries per trade first entries se bure nahi), H13 (cost model), H14 (SELL overnight), M3, M4, M5, M6, M7, M12. Targets bhi abhi roz ke ATR se dobara bante hain — stop ki tarah inhe bhi entry pe fix karna baaki hai.
+- 2026-10-06 batch: H13 (transaction cost model — paper trading + backtest, rates config.py me), M5 (cash/P&L accounting ledger se; purani state file load pe khud theek hoti hai), M6 (morning executor weekly/monthly/drawdown limit), M7 (diary/journal me asli probability/confidence/regime). M7 ka learning-engine wala hissa (trade ko entry-night scan row se match karna) abhi baaki — sirf reporting.
+
+**Baaki:** C5 (1R target — ab naye backtest se tune hoga), H7–H10 (signal), H11 (cooldown — data se zyada support nahi: re-entries per trade first entries se bure nahi), H14 (SELL overnight), M3, M4, M7 (learning-engine matching), M12. Targets bhi abhi roz ke ATR se dobara bante hain — stop ki tarah inhe bhi entry pe fix karna baaki hai.
+
+---
+
+## 9. CRITICAL (2026-10-06) — raat ka scan 22 Sep se band tha
+
+**Saboot:** "Daily scan update" commits 22 Sep ke baad sirf chhutti ke dino (26, 27 Sep, 2, 3, 4 Oct) pe hain, aur unme sirf `telegram_dedup.json` badla. `reports/candidates_order.json` aur `reports/full_report.csv` ka aakhri update 21 Sep ka hai. 22 Sep – 6 Oct ke **112 me se 112 entries** usi 21 Sep wali 30-symbol list se thi — executor roz purani list purane prev_close/stop/target ke saath dobara execute kar raha tha (STEELXIND 10 baar, H11 re-entry churn ki asli wajah).
+
+**Wajah (strong hypothesis, Actions logs se confirm karna baaki):** watchlist `nifty500.json` me 2,395 symbols, har symbol pe 3 network calls; scan 4h40m–5h54m le raha tha (start 15:00 UTC, commit 19:42–20:54 UTC), GitHub Actions ki 6 ghante ki limit paar hone lagi.
+
+**Fix (deliver):** liquid symbols pehle (NSE turnover history se), 300 minute ka time budget (budget khatam to jo scan hua uske candidates phir bhi likhe jaate hain), fundamentals 7 din tak cache (actions/cache). M8 (stale file guard) ab purani file execute nahi hone deta.
+
+**Ek aur zaroori disclosure:** production scan (`generate_full_report.py`) har symbol ke liye `scan_symbol()` alag se chalata hai — `scan_symbols()` wala two-pass path use hi nahi karta. Isliye ye do fixes **live scan me kabhi active hi nahi hue**: (1) 2026-09-18 ka fundamental percentile-ranking ("STRUCTURAL BUY BIAS FIX"), (2) 2026-10-05 ka sector score + breadth blend. Ye sirf backtest/orchestrator path me chalte hain. Inhe live me chalu karna ek alag faisla hai (entry signals badlenge, aur Pass 1 ka fetch time scan budget me fit karna hoga).
