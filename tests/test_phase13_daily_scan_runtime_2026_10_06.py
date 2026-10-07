@@ -25,7 +25,6 @@ import time
 from pathlib import Path
 
 import pytest
-import yaml
 
 import data.fundamental_data as fd
 from data.fundamental_data import FundamentalDataProvider
@@ -152,9 +151,10 @@ def test_scan_has_a_time_budget_and_records_truncation():
 
 
 def test_daily_scan_workflow_restores_the_fundamentals_cache():
-    workflow = yaml.safe_load(Path(".github/workflows/daily_scan.yml").read_text())
-    steps = workflow["jobs"]["scan"]["steps"]
-    cache_steps = [s for s in steps if str(s.get("uses", "")).startswith("actions/cache@")]
-    assert cache_steps and cache_steps[0]["with"]["path"] == "storage/cache/fundamentals"
-    names = [s.get("name", s.get("uses")) for s in steps]
-    assert names.index("Restore fundamentals cache") < names.index("Run Full Report Scan")
+    # Plain-text checks: PyYAML is not in requirements.txt (CI has no yaml).
+    workflow = Path(".github/workflows/daily_scan.yml").read_text()
+    cache_at = workflow.index("- name: Restore fundamentals cache")
+    cache_block = workflow[cache_at:workflow.index("- name:", cache_at + 1)]
+    assert "uses: actions/cache@" in cache_block
+    assert "path: storage/cache/fundamentals" in cache_block
+    assert cache_at < workflow.index("- name: Run Full Report Scan")

@@ -18,7 +18,6 @@ import csv
 import gzip
 from pathlib import Path
 
-import yaml
 
 from scripts.generate_full_report import FIELDNAMES, next_trade_id, rotate_full_report
 
@@ -159,9 +158,9 @@ def test_main_rotates_after_writing_and_ids_continue():
 
 
 def test_workflow_unstages_oversized_files_and_stops_retrying_on_gh001():
-    workflow = yaml.safe_load(Path(".github/workflows/daily_scan.yml").read_text())
-    commit = next(s for s in workflow["jobs"]["scan"]["steps"] if s.get("name") == "Commit updated report back to repo")
-    script = commit["run"]
+    # Plain-text check: PyYAML is not in requirements.txt (CI has no yaml).
+    workflow = Path(".github/workflows/daily_scan.yml").read_text()
+    script = workflow[workflow.index("- name: Commit updated report back to repo"):]
     assert '-gt 99000000' in script and 'git reset -q -- "$f"' in script
     assert script.index("git reset -q") < script.index("git commit")
     assert 'grep -q "GH001"' in script

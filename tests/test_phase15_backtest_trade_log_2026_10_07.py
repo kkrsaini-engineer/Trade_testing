@@ -19,7 +19,6 @@ import json
 import sys
 
 import pytest
-import yaml
 
 from analytics.backtest_engine import BacktestEngine
 from risk.transaction_costs import CostModel, round_trip_cost
@@ -224,9 +223,12 @@ def test_regression_skips_different_setup_and_keeps_baseline(tmp_path, monkeypat
 
 
 def test_backtest_workflow_exposes_universe_and_signal_path():
-    wf = yaml.safe_load(open(".github/workflows/backtest_and_regression.yml").read())
-    inputs = wf[True]["workflow_dispatch"]["inputs"]  # PyYAML reads the "on:" key as True
-    assert inputs["universe"]["options"] == ["default", "top50", "top100"]
-    assert inputs["signal_path"]["default"] == "live"
-    run = next(s["run"] for s in wf["jobs"]["backtest"]["steps"] if s.get("name") == "Run Institutional Backtest")
+    # Plain-text checks: PyYAML is not in requirements.txt (CI has no yaml).
+    wf = open(".github/workflows/backtest_and_regression.yml").read()
+    universe = wf[wf.index("      universe:"):wf.index("      signal_path:")]
+    for option in ('"default"', '"top50"', '"top100"'):
+        assert f"- {option}" in universe
+    signal = wf[wf.index("      signal_path:"):wf.index("      set_baseline:")]
+    assert 'default: "live"' in signal
+    run = wf[wf.index("- name: Run Institutional Backtest"):wf.index("- name: Run Regression Check")]
     assert '--universe "${{ inputs.universe }}"' in run and '--signal-path "${{ inputs.signal_path }}"' in run
