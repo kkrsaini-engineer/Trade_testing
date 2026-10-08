@@ -37,6 +37,7 @@ on:
         options:
           - "live"
           - "universe"
+          - "random"
       buy_only:
         description: "Experiment: skip all SELL trades"
         required: true
@@ -56,6 +57,11 @@ on:
         description: "Experiment: move stop to entry once price is X R in profit (0 = off, same as live)"
         required: true
         default: "0"
+        type: string
+      random_setup:
+        description: "Only for signal_path=random (control): seeds,candidates_per_day e.g. 5,2 = average 5 random runs, 2 random candidates a day (compare the trade count with the live run and adjust)"
+        required: true
+        default: "5,2"
         type: string
       set_baseline:
         description: "Save this run as the new regression baseline (instead of comparing)"
@@ -84,7 +90,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: PYTHONPATH=. python scripts/run_backtest.py --period "${{ inputs.period }}" --universe "${{ inputs.universe }}" --signal-path "${{ inputs.signal_path }}" --max-new-entries-per-day "${{ inputs.max_new_entries_per_day }}" --min-target-to-cost "${{ inputs.min_target_to_cost }}" --breakeven-after-r "${{ inputs.breakeven_after_r }}" ${{ inputs.buy_only && '--buy-only' || '' }} ${{ inputs.realistic_costs && '--realistic-costs' || '' }}
+        run: RS="${{ inputs.random_setup }}"; PYTHONPATH=. python scripts/run_backtest.py --period "${{ inputs.period }}" --universe "${{ inputs.universe }}" --signal-path "${{ inputs.signal_path }}" --max-new-entries-per-day "${{ inputs.max_new_entries_per_day }}" --min-target-to-cost "${{ inputs.min_target_to_cost }}" --breakeven-after-r "${{ inputs.breakeven_after_r }}" --random-seeds "${RS%%,*}" --random-candidates-per-day "${RS##*,}" ${{ inputs.buy_only && '--buy-only' || '' }} ${{ inputs.realistic_costs && '--realistic-costs' || '' }}
 
       - name: Run Regression Check (compare against baseline)
         if: ${{ inputs.set_baseline == false }}
