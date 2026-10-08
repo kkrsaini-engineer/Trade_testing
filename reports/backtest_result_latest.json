@@ -134,6 +134,7 @@
     "slippage_pct": 0.05
   },
   "signal_path": "live",
+  "random_control": null,
   "dropped_incomplete_bars": 0,
   "experiments": {
     "buy_only": false,
@@ -177,6 +178,7 @@
     "buy_only": false,
     "max_new_entries_per_day": 10,
     "min_target_to_cost": 0.0,
-    "breakeven_after_r": 0.0
+    "breakeven_after_r": 0.0,
+    "random_seeds": null
   }
 }
