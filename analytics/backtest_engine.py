@@ -113,6 +113,8 @@ class BacktestResult:
             f"Signal path          : {m.get('signal_path', '?')}"
             + ("  (= production nightly scan)" if m.get("signal_path") == "live" else "  (NOT what production runs)"),
             f"Experiments          : {_experiments_line(m)}",
+            *([f"Data                 : {m['dropped_incomplete_bars']} incomplete bar(s) (NaN price) dropped"]
+              if m.get("dropped_incomplete_bars") else []),
             f"False Positives      : {m.get('false_positives', 0)}",
             f"False Negatives      : {m.get('false_negatives', 0)} (see note below)",
             "",
@@ -323,13 +325,25 @@ class BacktestEngine:
             )
 
         data: dict[str, pd.DataFrame] = {}
+        dropped_bars = 0
         for sym, df in historical_data.items():
             frame = df.copy()
             frame["timestamp"] = pd.to_datetime(frame["timestamp"])
             if getattr(frame["timestamp"].dt, "tz", None) is not None:
                 frame["timestamp"] = frame["timestamp"].dt.tz_localize(None)
+            # 2026-10-07: yfinance can return an unfinished/empty bar (e.g.
+            # today's row with an open but a NaN close). The first Run-1
+            # backtest closed 6 open positions at such a NaN close, so their
+            # P&L was NaN and poisoned expectancy, avg R and total costs.
+            # A bar without a full OHLC is not tradeable: drop it.
+            price_cols = [c for c in ("open", "high", "low", "close") if c in frame.columns]
+            before = len(frame)
+            frame = frame.dropna(subset=price_cols)
+            dropped_bars += before - len(frame)
             frame = frame.sort_values("timestamp").reset_index(drop=True)
             data[sym] = frame
+        if dropped_bars:
+            logger.warning("Dropped %d incomplete bar(s) (NaN open/high/low/close) from the input data.", dropped_bars)
 
         longest = max(len(df) for df in data.values())
         if longest <= min_history:
@@ -779,6 +793,7 @@ class BacktestEngine:
             "cost_pct_per_side": cost_pct_per_side,
             "cost_model": vars(costs) if hasattr(costs, "__dict__") else str(costs),
             "signal_path": signal_path,
+            "dropped_incomplete_bars": dropped_bars,
             "experiments": {
                 "buy_only": bool(buy_only),
                 "max_new_entries_per_day": int(max_new_entries_per_day or 0),
