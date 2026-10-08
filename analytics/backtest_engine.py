@@ -522,9 +522,16 @@ class BacktestEngine:
                         entry_skips["capital/portfolio check"] += 1
                         continue
                     entry_price = fill(open_price, direction, opening=True)
+                    # Same split as scripts/morning_executor.entry_allocation():
+                    # over the positions that can actually open when a daily
+                    # cap is on (2026-10-08), over every candidate otherwise.
+                    slots = (
+                        min(len(todays_orders), max_new_entries_per_day)
+                        if max_new_entries_per_day else len(todays_orders)
+                    )
                     allocation = min(
                         snap.get("available_capital", 0.0) * 0.05,
-                        initial_capital / max(len(todays_orders), 1),
+                        initial_capital / max(slots, 1),
                     )
                     quantity = int(allocation / entry_price) if entry_price > 0 else 0
                     if quantity <= 0:
