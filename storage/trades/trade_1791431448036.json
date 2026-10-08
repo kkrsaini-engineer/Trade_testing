@@ -1,0 +1,18 @@
+{
+  "symbol": "ARFIN.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 63,
+  "entry_price": 88.05000305175781,
+  "exit_price": 102.5,
+  "status": "CLOSED",
+  "realized_pnl": 1508.7626741221466,
+  "realized_pnl_percent": 15.775894797034093,
+  "max_profit_percent": 18.11470345874538,
+  "max_drawdown_percent": 1.8512263785548604,
+  "regime": "BULL",
+  "confidence": 58.71,
+  "reasons": "Break-even stop activated.; Final profit target reached.; Excellent risk/reward profile.; Final target achieved (previous session).; Profit protection activated.; costs Rs 35.24 deducted",
+  "id": "trade_1791431448036",
+  "timestamp": 1791431448.0363586
+}

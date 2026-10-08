@@ -1,0 +1,18 @@
+{
+  "symbol": "HAL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 1,
+  "entry_price": 4756.7001953125,
+  "exit_price": 4719.5,
+  "status": "CLOSED",
+  "realized_pnl": -68.42757244238237,
+  "realized_pnl_percent": -1.4385512988565994,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.78205885981965,
+  "regime": "SIDEWAYS",
+  "confidence": 50.58,
+  "reasons": "Below preferred risk/reward profile.; Trend reversal detected.; Trend reversal confirmed.; costs Rs 31.23 deducted",
+  "id": "trade_1791431488218",
+  "timestamp": 1791431488.218096
+}

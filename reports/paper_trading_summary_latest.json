@@ -1,12 +1,25 @@
 {
-  "date": "2026-10-07",
-  "opening_balance": 349045.0339896011,
-  "total_capital_in_positions": 133275.73000000004,
-  "remaining_balance": 361479.4487621208,
-  "portfolio_value": 494755.17876212084,
-  "realized_pnl": -4957.901147242007,
-  "portfolio_return_percent": -1.0489642475758332,
+  "date": "2026-10-08",
+  "opening_balance": 113759.8476077934,
+  "total_capital_in_positions": 357117.62000000005,
+  "remaining_balance": 134744.8440867386,
+  "portfolio_value": 491862.46408673865,
+  "realized_pnl": -7018.815169242875,
+  "portfolio_return_percent": -1.6275071826522702,
   "opened_today": [],
-  "closed_today": [],
-  "open_positions_now": 19
+  "closed_today": [
+    {
+      "symbol": "CGPOWER.NS",
+      "pnl": -105.73326060000045
+    },
+    {
+      "symbol": "ARFIN.NS",
+      "pnl": 1508.7626741221466
+    },
+    {
+      "symbol": "HAL.NS",
+      "pnl": -68.42757244238237
+    }
+  ],
+  "open_positions_now": 62
 }

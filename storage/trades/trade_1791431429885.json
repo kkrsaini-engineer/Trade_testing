@@ -1,0 +1,18 @@
+{
+  "symbol": "CGPOWER.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 6,
+  "entry_price": 894.0,
+  "exit_price": 881.9,
+  "status": "CLOSED",
+  "realized_pnl": -105.73326060000045,
+  "realized_pnl_percent": -1.9711644407158921,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 1.3534675615212555,
+  "regime": "SIDEWAYS",
+  "confidence": 48.86,
+  "reasons": "Below preferred risk/reward profile.; Trend reversal detected.; Trend reversal confirmed.; costs Rs 33.13 deducted",
+  "id": "trade_1791431429885",
+  "timestamp": 1791431429.885538
+}
