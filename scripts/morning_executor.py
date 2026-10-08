@@ -30,6 +30,7 @@ an intraday-confirmation system.
 from __future__ import annotations
 
 import json
+import os
 import time
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -74,6 +75,30 @@ BAND_WARNING = 1.75
 # — the stock usually gave the gap back. Mirrored for SELL (gap-down).
 # 1.0% comes from that data bucket, not from a backtest.
 GAP_CHASE_PCT = 1.0
+
+# 2026-10-08 (user-approved): at most this many NEW positions per morning,
+# best-ranked first (candidates_order.json is sorted by ranking). On
+# 2026-10-08 the executor opened 46 positions in one morning (62 open,
+# median size ~Rs 5.5k), and in two top50 backtests the days with >= 5
+# entries lost Rs 15.5k / Rs 10.9k while all other trades were ~break-even.
+# One day's entries are one correlated bet on the same market move.
+# 0 = no cap. Override with the MAX_NEW_ENTRIES_PER_DAY env var.
+MAX_NEW_ENTRIES_PER_DAY = int(os.getenv("MAX_NEW_ENTRIES_PER_DAY", "5"))
+SIZING_CAPITAL = 500000.0
+SIZING_FRACTION = 0.05
+
+
+def entry_allocation(available: float, n_candidates: int, cap: int = MAX_NEW_ENTRIES_PER_DAY) -> float:
+    """
+    Rupees to put into ONE new position. Same rule as before — the smaller
+    of 5% of available capital and SIZING_CAPITAL split across the
+    candidates — except the split is over the positions that can actually
+    be opened (min(candidates, cap)), not over every candidate. Otherwise a
+    cap of 5 on 88 candidates would still size each position at 1/88 of the
+    capital (~Rs 5.7k) and deploy only ~6% of it.
+    """
+    slots = min(n_candidates, cap) if cap else n_candidates
+    return min(available * SIZING_FRACTION, SIZING_CAPITAL / max(slots, 1))
 
 
 def _signed_news_bias(scored_item: dict[str, Any]) -> float:
@@ -418,6 +443,7 @@ def main() -> None:
     trade_store = TradeStore()
 
     executed, skipped = [], []
+    cap_skipped = 0   # counted, not listed — 80+ lines would swamp the Telegram summary
 
     for c in candidates:
         symbol = c["symbol"]
@@ -426,6 +452,10 @@ def main() -> None:
         atr_14 = c.get("atr_14")
         target1 = c.get("target1")
         stop_loss = c.get("stop_loss")
+
+        if MAX_NEW_ENTRIES_PER_DAY and len(executed) >= MAX_NEW_ENTRIES_PER_DAY:
+            cap_skipped += 1
+            continue
 
         open_price, fetch_status = fetch_open_price(symbol)
         if open_price is None or not prev_close:
@@ -486,7 +516,7 @@ def main() -> None:
         # per the "no re-scan" design). No size-reduction tier — see
         # module-level comment on why REDUCE was removed.
         available = snap.get("available_capital", 0.0)
-        allocation = min(available * 0.05, 500000.0 / max(len(candidates), 1))
+        allocation = entry_allocation(available, len(candidates))
         quantity = int(allocation / open_price) if open_price > 0 else 0
         if quantity <= 0:
             skipped.append((symbol, direction, "Insufficient capital for even 1 share at this allocation."))
@@ -557,7 +587,9 @@ def main() -> None:
         "🌅 Morning Execution Complete",
         f"Signals from: {scan_date}",
         f"Candidates processed: {len(candidates)}",
-        f"Executed: {len(executed)} | Skipped: {len(skipped)}",
+        f"Executed: {len(executed)} | Skipped: {len(skipped) + cap_skipped}",
+        *([f"Daily entry cap ({MAX_NEW_ENTRIES_PER_DAY}/morning, best-ranked first): {cap_skipped} lower-ranked candidate(s) not traded."]
+          if cap_skipped else []),
         "",
     ]
     if executed:
