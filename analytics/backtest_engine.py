@@ -25,6 +25,7 @@ Usage:
 from __future__ import annotations
 
 import math
+import random
 from collections import Counter
 from dataclasses import dataclass, field
 from typing import Any
@@ -58,6 +59,57 @@ def _cost_line(m: dict[str, Any]) -> str:
     if not parts:
         return "NONE (gross P&L)"
     return " + ".join(parts) + f"; total Rs {m.get('total_costs', 0):.2f}"
+
+
+def _atr14(market: pd.DataFrame) -> float | None:
+    """ATR(14) with Wilder's smoothing — the same definition as
+    features/indicators/volatility.py, so a random candidate gets the same
+    stop/target distances a scanned one would at the same price/volatility."""
+    from features.indicators.smoothing import wilders_smoothing
+
+    prev_close = market["close"].shift(1)
+    true_range = pd.concat(
+        [
+            market["high"] - market["low"],
+            (market["high"] - prev_close).abs(),
+            (market["low"] - prev_close).abs(),
+        ],
+        axis=1,
+    ).max(axis=1)
+    atr = float(wilders_smoothing(true_range, 14).iloc[-1])
+    return atr if atr == atr and atr > 0 else None
+
+
+def random_candidates(
+    rng: random.Random, bundles: dict[str, Any], count: int, sell_share: float,
+) -> list[dict[str, Any]]:
+    """CONTROL signal (2026-10-08): `count` random symbols from today's
+    tradeable set, each randomly BUY (1 - sell_share) or SELL (sell_share),
+    in the same candidate format the scan produces. No indicator, score or
+    fundamental is looked at — only today's close and ATR, which the exit
+    levels need. Deterministic for a given rng state."""
+    from risk import stop_target
+
+    symbols = sorted(bundles)
+    out: list[dict[str, Any]] = []
+    for sym in rng.sample(symbols, min(max(count, 0), len(symbols))):
+        market = bundles[sym].market
+        close = float(market.iloc[-1]["close"])
+        atr = _atr14(market)
+        direction = "SELL" if rng.random() < sell_share else "BUY"
+        ranking = rng.random() * 100.0          # random order, so any daily cap is random too
+        if not close > 0 or atr is None:
+            continue
+        stop, target1, _target2 = stop_target.compute_stop_loss_targets(
+            direction=direction, close_price=close, atr=atr,
+        )
+        out.append({
+            "symbol": sym, "direction": direction, "prev_close": close, "atr_14": round(atr, 2),
+            "stop_loss": stop, "target1": target1,
+            "ranking": ranking, "score": None, "probability": None, "confidence": None,
+            "market_regime": "RANDOM_CONTROL",
+        })
+    return out
 
 
 def _experiments_line(m: dict[str, Any]) -> str:
@@ -115,7 +167,16 @@ class BacktestResult:
             f"P&L before costs     : Rs {m.get('pnl_before_costs', 0):.2f}"
             f" (profit factor {_fmt(m.get('profit_factor_before_costs'))})",
             f"Signal path          : {m.get('signal_path', '?')}"
-            + ("  (= production nightly scan)" if m.get("signal_path") == "live" else "  (NOT what production runs)"),
+            + (
+                "  (= production nightly scan)" if m.get("signal_path") == "live"
+                else "  (CONTROL: random entries, NOT the scan)" if m.get("signal_path") == "random"
+                else "  (NOT what production runs)"
+            ),
+            *([
+                f"Random control       : seed {m['random_control']['seed']}, "
+                f"{m['random_control']['candidates_per_day']} candidates/day, "
+                f"{m['random_control']['sell_share']:.0%} SELL"
+            ] if m.get("random_control") else []),
             f"Experiments          : {_experiments_line(m)}",
             *([f"Data                 : {m['dropped_incomplete_bars']} incomplete bar(s) (NaN price) dropped"]
               if m.get("dropped_incomplete_bars") else []),
@@ -223,6 +284,9 @@ class BacktestEngine:
         max_new_entries_per_day: int = DEFAULT_MAX_NEW_ENTRIES_PER_DAY,
         min_target_to_cost: float = 0.0,
         breakeven_after_r: float = 0.0,
+        random_seed: int = 0,
+        random_candidates_per_day: int = 2,
+        random_sell_share: float = 0.1,
     ) -> BacktestResult:
         """
         REWRITTEN 2026-10-06 (BUG_AUDIT_2026-10-05_PROFITABILITY.md M9).
@@ -301,6 +365,14 @@ class BacktestEngine:
             exit engine already does this at +1.5 ATR on the CLOSE; this
             tests an earlier, intraday-aware trigger. Mirrored for SELL.
 
+        signal_path "random" (2026-10-08) is a CONTROL, not a strategy: each
+        day `random_candidates_per_day` random symbols are picked, each
+        BUY or SELL at random (`random_sell_share` SELL; the scan's own mix
+        is ~90/10), and everything after that — gap filters, sizing, the
+        real exit engine, costs — is identical. Compare its P&L (over
+        several seeds) with signal_path="live": if they are alike, the
+        scan's stock choice adds nothing and the result comes from the exits.
+
         ENTRY SIZING (2026-10-08, user-approved "A-plan"; not a switch —
         same rules as the live Morning Executor, from risk/entry_sizing.py):
         5% of total capital per position (min Rs 10k), exposure stops at
@@ -326,8 +398,9 @@ class BacktestEngine:
             is_gap_chase,
         )
 
-        if signal_path not in ("live", "universe"):
-            raise ValueError(f"signal_path must be 'live' or 'universe', got {signal_path!r}")
+        if signal_path not in ("live", "universe", "random"):
+            raise ValueError(f"signal_path must be 'live', 'universe' or 'random', got {signal_path!r}")
+        rng = random.Random(random_seed)
         fundamentals = fundamentals or {}
         symbols = list(historical_data.keys())
 
@@ -735,7 +808,7 @@ class BacktestEngine:
                 )
 
             scan_results = []
-            if bundles:
+            if bundles and signal_path != "random":
                 if signal_path == "universe":
                     scan_results = self.scanner.scan_symbols(
                         symbols=list(bundles.keys()),
@@ -797,6 +870,12 @@ class BacktestEngine:
                     for r in candidates
                 ]
 
+            elif bundles:
+                pending = sorted(
+                    random_candidates(rng, bundles, random_candidates_per_day, random_sell_share),
+                    key=lambda c: c["ranking"], reverse=True,
+                )[:max_candidates_per_day]
+
             # ---------------- mark to market at D's close
             portfolio.mark_to_market()
             portfolio.update_equity_tracking(day_str)
@@ -855,6 +934,10 @@ class BacktestEngine:
             "cost_pct_per_side": cost_pct_per_side,
             "cost_model": vars(costs) if hasattr(costs, "__dict__") else str(costs),
             "signal_path": signal_path,
+            "random_control": (
+                {"seed": random_seed, "candidates_per_day": random_candidates_per_day,
+                 "sell_share": random_sell_share} if signal_path == "random" else None
+            ),
             "dropped_incomplete_bars": dropped_bars,
             "experiments": {
                 "buy_only": bool(buy_only),
