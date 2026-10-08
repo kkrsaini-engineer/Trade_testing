@@ -164,3 +164,31 @@ def test_cli_and_workflow_pass_the_switches():
     assert "inputs.buy_only && '--buy-only'" in run
     for name in ("buy_only:", "max_new_entries_per_day:", "min_target_to_cost:"):
         assert f"      {name}" in wf
+
+
+# ==========================================================
+# Incomplete (NaN) bars must never reach a trade or a P&L
+# ==========================================================
+
+@pytest.mark.parametrize("direction", ["BUY", "SELL"])
+def test_nan_last_bar_does_not_poison_the_open_at_end_trade(direction):
+    # Position still open on the last row, whose close is NaN (unfinished
+    # day). Run-1 on 2026-10-07 produced NaN P&L / costs for exactly this.
+    df = _series([(100.0, 100.5, 99.5, 100.0)] + [(100.0, 100.6, 99.6, 100.2)] * 3)
+    last = len(df) - 1
+    df.loc[last, "close"] = float("nan")
+    result = _run({"X.NS": df}, FakeScanner({_day(df, 4): ("X.NS", direction)}), cost_model=SIMPLE)
+
+    trades = result.closed_trades
+    assert trades and all(t["realized_pnl"] == t["realized_pnl"] for t in trades)   # no NaN
+    assert trades[-1]["exit_category"] == "open_at_end"
+    assert result.metrics["dropped_incomplete_bars"] == 1
+    for key in ("expectancy", "avg_r_multiple", "total_costs", "pnl_before_costs"):
+        assert result.metrics[key] == result.metrics[key], key
+
+
+def test_complete_data_reports_no_dropped_bars():
+    df = _flat_then_up()
+    result = _run({"X.NS": df}, FakeScanner({_day(df, 4): ("X.NS", "BUY")}))
+    assert result.metrics["dropped_incomplete_bars"] == 0
+    assert "incomplete bar" not in result.report()
