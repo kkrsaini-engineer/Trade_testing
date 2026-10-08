@@ -1,0 +1,13 @@
+{
+  "id": "paper_MIDHANI_NS_1791431253028",
+  "symbol": "MIDHANI.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 12,
+  "entry_price": 453.79998779296875,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 69.52,
+  "reasons": "Morning Executor: gap -1.85% (0.50x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1791431253.0300922
+}

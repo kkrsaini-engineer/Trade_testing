@@ -1,0 +1,13 @@
+{
+  "id": "paper_GREAVESCOT_NS_1791431268290",
+  "symbol": "GREAVESCOT.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 26,
+  "entry_price": 211.10000610351562,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 71.03,
+  "reasons": "Morning Executor: gap -5.24% (1.42x ATR, WARNING band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1791431268.2923965
+}

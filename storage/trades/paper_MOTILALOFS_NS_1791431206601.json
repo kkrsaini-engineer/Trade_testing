@@ -1,0 +1,13 @@
+{
+  "id": "paper_MOTILALOFS_NS_1791431206601",
+  "symbol": "MOTILALOFS.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 5,
+  "entry_price": 1066.9000244140625,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 80.75,
+  "reasons": "Morning Executor: gap -1.32% (0.47x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1791431206.602782
+}

@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_ETERNAL_NS_1791431303047",
+  "symbol": "ETERNAL.NS",
+  "direction": "BUY",
+  "entry_date": "2026-10-08",
+  "entry_price": 328.0,
+  "buy_probability": 78.78,
+  "buy_confidence": 66.41,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap -0.30% (0.12x ATR, NORMAL band)",
+    "No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1791431303.0474296,
+  "updated_at": 1791431303.0474296
+}

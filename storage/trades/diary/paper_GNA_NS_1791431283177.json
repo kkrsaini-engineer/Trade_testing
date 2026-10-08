@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_GNA_NS_1791431283177",
+  "symbol": "GNA.NS",
+  "direction": "BUY",
+  "entry_date": "2026-10-08",
+  "entry_price": 583.6500244140625,
+  "buy_probability": 80.77,
+  "buy_confidence": 69.72,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap -5.22% (1.24x ATR, WARNING band)",
+    "No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1791431283.1779447,
+  "updated_at": 1791431283.177945
+}

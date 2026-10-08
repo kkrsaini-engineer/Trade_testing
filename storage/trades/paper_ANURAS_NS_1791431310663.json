@@ -1,0 +1,13 @@
+{
+  "id": "paper_ANURAS_NS_1791431310663",
+  "symbol": "ANURAS.NS",
+  "direction": "SELL",
+  "action": "OPEN",
+  "quantity": 4,
+  "entry_price": 1165.199951171875,
+  "status": "OPEN",
+  "regime": "BEAR",
+  "confidence": 67.62,
+  "reasons": "Morning Executor: gap -0.43% (0.19x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1791431310.6651978
+}

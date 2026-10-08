@@ -1,0 +1,13 @@
+{
+  "id": "paper_YATRA_NS_1791431285662",
+  "symbol": "YATRA.NS",
+  "direction": "SELL",
+  "action": "OPEN",
+  "quantity": 56,
+  "entry_price": 101.37000274658203,
+  "status": "OPEN",
+  "regime": "BEAR",
+  "confidence": 69.29,
+  "reasons": "Morning Executor: gap -0.11% (0.02x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1791431285.6638904
+}

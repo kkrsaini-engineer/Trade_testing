@@ -1,0 +1,13 @@
+{
+  "id": "paper_SINDHUTRAD_NS_1791431231442",
+  "symbol": "SINDHUTRAD.NS",
+  "direction": "SELL",
+  "action": "OPEN",
+  "quantity": 260,
+  "entry_price": 21.84000015258789,
+  "status": "OPEN",
+  "regime": "BEAR",
+  "confidence": 72.88,
+  "reasons": "Morning Executor: gap -0.73% (0.17x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1791431231.4434612
+}

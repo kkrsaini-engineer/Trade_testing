@@ -1,0 +1,13 @@
+{
+  "id": "paper_MANKIND_NS_1791431315933",
+  "symbol": "MANKIND.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 2,
+  "entry_price": 2501.10009765625,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 67.81,
+  "reasons": "Morning Executor: gap +0.04% (0.02x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1791431315.9350364
+}

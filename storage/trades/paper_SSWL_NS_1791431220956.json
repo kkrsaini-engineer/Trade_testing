@@ -1,0 +1,13 @@
+{
+  "id": "paper_SSWL_NS_1791431220956",
+  "symbol": "SSWL.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 13,
+  "entry_price": 425.95001220703125,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 75.04,
+  "reasons": "Morning Executor: gap +0.29% (0.06x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1791431220.9580638
+}

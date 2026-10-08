@@ -1,0 +1,13 @@
+{
+  "id": "paper_SYNGENE_NS_1791431288100",
+  "symbol": "SYNGENE.NS",
+  "direction": "SELL",
+  "action": "OPEN",
+  "quantity": 15,
+  "entry_price": 363.70001220703125,
+  "status": "OPEN",
+  "regime": "BEAR",
+  "confidence": 69.51,
+  "reasons": "Morning Executor: gap +0.14% (0.05x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1791431288.101404
+}

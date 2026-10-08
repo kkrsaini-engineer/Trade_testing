@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_ROLEXRINGS_NS_1791431211160",
+  "symbol": "ROLEXRINGS.NS",
+  "direction": "BUY",
+  "entry_date": "2026-10-08",
+  "entry_price": 183.1999969482422,
+  "buy_probability": 90.52,
+  "buy_confidence": 78.43,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap -2.65% (0.70x ATR, NORMAL band)",
+    "No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1791431211.1605303,
+  "updated_at": 1791431211.1605308
+}

@@ -1,0 +1,13 @@
+{
+  "id": "paper_JASH_NS_1791431319179",
+  "symbol": "JASH.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 9,
+  "entry_price": 592.5999755859375,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 67.08,
+  "reasons": "Morning Executor: gap -0.39% (0.11x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1791431319.181081
+}

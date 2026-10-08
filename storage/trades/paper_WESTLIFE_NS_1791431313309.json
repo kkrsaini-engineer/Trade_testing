@@ -1,0 +1,13 @@
+{
+  "id": "paper_WESTLIFE_NS_1791431313309",
+  "symbol": "WESTLIFE.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 9,
+  "entry_price": 586.4000244140625,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 66.96,
+  "reasons": "Morning Executor: gap -1.38% (0.38x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1791431313.3107924
+}

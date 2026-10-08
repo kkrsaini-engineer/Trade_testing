@@ -1,0 +1,13 @@
+{
+  "id": "paper_ACMESOLAR_NS_1791431290518",
+  "symbol": "ACMESOLAR.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 13,
+  "entry_price": 436.3999938964844,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 69.81,
+  "reasons": "Morning Executor: gap -2.63% (0.68x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1791431290.5204463
+}

@@ -1,0 +1,13 @@
+{
+  "id": "paper_KFINTECH_NS_1791431305625",
+  "symbol": "KFINTECH.NS",
+  "direction": "SELL",
+  "action": "OPEN",
+  "quantity": 6,
+  "entry_price": 863.9500122070312,
+  "status": "OPEN",
+  "regime": "BEAR",
+  "confidence": 67.36,
+  "reasons": "Morning Executor: gap +0.02% (0.01x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1791431305.626872
+}

@@ -1,0 +1,13 @@
+{
+  "id": "paper_ARIS_NS_1791431228235",
+  "symbol": "ARIS.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 39,
+  "entry_price": 142.5,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 74.62,
+  "reasons": "Morning Executor: gap -0.81% (0.16x ATR, NORMAL band); No company-specific news available. | 20 macro headline(s), bias 0.06 \u2014 not a blocker.",
+  "timestamp": 1791431228.2369428
+}
