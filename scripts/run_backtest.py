@@ -57,6 +57,7 @@ from core.logger import get_logger  # noqa: E402
 from core.notifications import notify  # noqa: E402
 from analytics.backtest_engine import BacktestEngine  # noqa: E402
 from data.fundamental_data import normalize_fundamentals  # noqa: E402
+from risk.entry_sizing import DEFAULT_MAX_NEW_ENTRIES_PER_DAY  # noqa: E402
 from risk.transaction_costs import CostModel  # noqa: E402
 
 logger = get_logger(__name__)
@@ -96,6 +97,7 @@ TRADE_COLUMNS = [
     "risk_per_share", "exit_category", "exit_reason", "gross_pnl", "costs", "realized_pnl",
     "realized_pnl_percent", "r_multiple", "mfe_r", "mae_r",
     "max_profit_percent", "max_drawdown_percent",
+    "position_value", "ranking", "score", "probability", "confidence", "market_regime",
 ]
 UNIVERSE_SIZES = {"default": 0, "top50": 50, "top100": 100}
 
@@ -176,8 +178,13 @@ def main() -> None:
     # 2026-10-07 experiment switches — all off by default (= live rules).
     parser.add_argument("--buy-only", action="store_true", help="Skip every SELL candidate (H14).")
     parser.add_argument(
-        "--max-new-entries-per-day", type=int, default=0,
-        help="Open at most N new positions per morning, best-ranked first (0 = no cap).",
+        "--max-new-entries-per-day", type=int, default=DEFAULT_MAX_NEW_ENTRIES_PER_DAY,
+        help="Open at most N new positions per morning, best-ranked first "
+             f"(default {DEFAULT_MAX_NEW_ENTRIES_PER_DAY} = same as live; 0 = no cap).",
+    )
+    parser.add_argument(
+        "--breakeven-after-r", type=float, default=0.0,
+        help="Move the stop to the entry price once the best price is X R in profit (0 = off, same as live).",
     )
     parser.add_argument(
         "--min-target-to-cost", type=float, default=0.0,
@@ -270,6 +277,7 @@ def main() -> None:
         buy_only=args.buy_only,
         max_new_entries_per_day=args.max_new_entries_per_day,
         min_target_to_cost=args.min_target_to_cost,
+        breakeven_after_r=args.breakeven_after_r,
     )
 
     report_text = result.report()
@@ -285,6 +293,7 @@ def main() -> None:
         "buy_only": bool(args.buy_only),
         "max_new_entries_per_day": args.max_new_entries_per_day,
         "min_target_to_cost": args.min_target_to_cost,
+        "breakeven_after_r": args.breakeven_after_r,
     }
     Path("reports").mkdir(exist_ok=True)
     with open(OUTPUT_PATH, "w") as f:
@@ -299,7 +308,8 @@ def main() -> None:
             f"📈 Backtest Result ({args.period}, {len(historical_data)} symbols, "
             f"universe={args.universe if not args.symbols else 'custom'}, signal={args.signal_path}, "
             f"buy_only={args.buy_only}, max_entries/day={args.max_new_entries_per_day or 'off'}, "
-            f"min_target_to_cost={args.min_target_to_cost or 'off'})\n\n{report_text}"
+            f"min_target_to_cost={args.min_target_to_cost or 'off'}, "
+            f"breakeven_after_r={args.breakeven_after_r or 'off'})\n\n{report_text}"
         ),
         dedup_key=f"backtest_result::{time.strftime('%Y-%m-%d %H:%M:%S')}",
     )

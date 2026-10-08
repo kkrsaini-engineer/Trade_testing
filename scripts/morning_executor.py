@@ -48,6 +48,12 @@ from news.sentiment_engine import SentimentEngine
 from paper_trading.virtual_portfolio import VirtualPortfolio
 from decision.validation_engine import ValidationEngine
 from risk import portfolio_limits
+from risk.entry_sizing import (
+    MAX_EXPOSURE,
+    MAX_NEW_ENTRIES_PER_DAY,
+    entry_allocation,
+    quantity_for,
+)
 from risk.risk_manager import RiskManager
 from storage.trades.trade_diary import TradeDiary
 from storage.trades.trade_store import TradeStore
@@ -76,29 +82,14 @@ BAND_WARNING = 1.75
 # 1.0% comes from that data bucket, not from a backtest.
 GAP_CHASE_PCT = 1.0
 
-# 2026-10-08 (user-approved): at most this many NEW positions per morning,
-# best-ranked first (candidates_order.json is sorted by ranking). On
-# 2026-10-08 the executor opened 46 positions in one morning (62 open,
-# median size ~Rs 5.5k), and in two top50 backtests the days with >= 5
-# entries lost Rs 15.5k / Rs 10.9k while all other trades were ~break-even.
-# One day's entries are one correlated bet on the same market move.
-# 0 = no cap. Override with the MAX_NEW_ENTRIES_PER_DAY env var.
-MAX_NEW_ENTRIES_PER_DAY = int(os.getenv("MAX_NEW_ENTRIES_PER_DAY", "5"))
-SIZING_CAPITAL = 500000.0
-SIZING_FRACTION = 0.05
-
-
-def entry_allocation(available: float, n_candidates: int, cap: int = MAX_NEW_ENTRIES_PER_DAY) -> float:
-    """
-    Rupees to put into ONE new position. Same rule as before — the smaller
-    of 5% of available capital and SIZING_CAPITAL split across the
-    candidates — except the split is over the positions that can actually
-    be opened (min(candidates, cap)), not over every candidate. Otherwise a
-    cap of 5 on 88 candidates would still size each position at 1/88 of the
-    capital (~Rs 5.7k) and deploy only ~6% of it.
-    """
-    slots = min(n_candidates, cap) if cap else n_candidates
-    return min(available * SIZING_FRACTION, SIZING_CAPITAL / max(slots, 1))
+# 2026-10-08 (user-approved "A-plan"): entry limits and sizing live in
+# risk/entry_sizing.py so the backtest uses the identical rules —
+# at most MAX_NEW_ENTRIES_PER_DAY (10) new positions per morning, best-ranked
+# first; each gets 5% of TOTAL capital (min Rs 10k); total exposure stops at
+# 85% (15% stays cash); one morning deploys at most 40%. History: on
+# 2026-10-08 the old rule opened 46 positions in one morning (median size
+# ~Rs 5.5k, ~0.6% round-trip cost), and in two top50 backtests the days with
+# >= 5 entries lost Rs 15.5k / Rs 10.9k while all other trades were ~break-even.
 
 
 def _signed_news_bias(scored_item: dict[str, Any]) -> float:
@@ -332,46 +323,31 @@ def check_capital_portfolio_risk(portfolio_snapshot: dict[str, Any]) -> tuple[bo
     state) — deliberately does NOT call the full RiskManager, which
     also evaluates ATR/liquidity/volatility/market/news dimensions
     that would otherwise have to be fed FAKE placeholder values here
-    (no fresh scan has run this morning). Formulas/thresholds copied
-    from risk/risk_manager.py's PORTFOLIO RISK and CAPITAL RISK
-    sections for consistency — not reinvented."""
+    (no fresh scan has run this morning).
+
+    2026-10-08 (user-approved "A-plan"): the only blocks are
+      - available cash <= 5% of total capital, and
+      - exposure (money in positions / total capital) >= MAX_EXPOSURE (85%).
+    The old open-position-count score (5/10/15 positions -> +10/+20/+35) and
+    the 75%/85%/95% exposure bands are gone: the count points could never
+    reach RiskManager.MAX_PORTFOLIO_RISK (40) alone, so with the 75% band
+    the real limit was "15+ positions AND 75% invested" — an accident, not a
+    rule. There is deliberately no open-position-count limit: 85% exposure
+    with 5%-of-capital positions settles at ~17-25 positions by itself.
+    """
     total_capital = float(portfolio_snapshot.get("total_capital", 1.0))
     available_capital = float(portfolio_snapshot.get("available_capital", 0.0))
-    open_positions_count = len(portfolio_snapshot.get("open_positions", {}))
     exposure = float(portfolio_snapshot.get("exposure", 0.0))
 
     capital_ratio = available_capital / max(total_capital, 1.0)
     if capital_ratio <= 0.05:
         return False, f"Capital critically low (available capital ratio {capital_ratio:.1%})."
 
-    portfolio_risk = 0.0
-    if open_positions_count >= 15:
-        portfolio_risk += 35.0
-    elif open_positions_count >= 10:
-        portfolio_risk += 20.0
-    elif open_positions_count >= 5:
-        portfolio_risk += 10.0
-    # Exposure bands shifted up 2026-08-21 (user-requested): capital
-    # utilization should be able to reach 75%+ before ANY risk-score
-    # penalty kicks in. Previously the middle band started at 0.50,
-    # which — combined with the open_positions>=15 band's +35 — was
-    # blocking new trades at just ~51% exposure in production (mirror
-    # of the same threshold in PRO_TRADER, currently dormant here
-    # since open_positions is 0 pending the breadth-bug fix). Position-
-    # count bands above are UNCHANGED — this is a capital-utilization
-    # fix only, not a position-limit or risk-management change.
-    if exposure >= 0.95:
-        portfolio_risk += 40.0
-    elif exposure >= 0.85:
-        portfolio_risk += 25.0
-    elif exposure >= 0.75:
-        portfolio_risk += 10.0
-
-    if portfolio_risk >= RiskManager.MAX_PORTFOLIO_RISK:
+    if exposure >= MAX_EXPOSURE:
+        open_positions_count = len(portfolio_snapshot.get("open_positions", {}))
         return False, (
-            f"Portfolio risk {portfolio_risk:.0f} exceeds threshold "
-            f"({RiskManager.MAX_PORTFOLIO_RISK:.0f}) — {open_positions_count} "
-            f"open positions, {exposure:.1%} exposure."
+            f"Exposure {exposure:.1%} has reached the {MAX_EXPOSURE:.0%} limit "
+            f"({open_positions_count} open positions)."
         )
 
     return True, "Capital/portfolio check passed."
@@ -444,6 +420,8 @@ def main() -> None:
 
     executed, skipped = [], []
     cap_skipped = 0   # counted, not listed — 80+ lines would swamp the Telegram summary
+    room_skipped: dict[str, int] = {}   # same, keyed by the limit that ran out
+    deployed_this_morning = 0.0
 
     for c in candidates:
         symbol = c["symbol"]
@@ -455,6 +433,18 @@ def main() -> None:
 
         if MAX_NEW_ENTRIES_PER_DAY and len(executed) >= MAX_NEW_ENTRIES_PER_DAY:
             cap_skipped += 1
+            continue
+
+        # No room left for even a minimum-size position (85% exposure, 40%
+        # per-morning deploy, or cash): stop before spending a network call
+        # on this candidate's open price. Counted, not listed.
+        pre_snap = portfolio.snapshot()
+        allocation, no_room = entry_allocation(
+            pre_snap.get("total_capital", 0.0), pre_snap.get("available_capital", 0.0),
+            pre_snap.get("used_capital", 0.0), deployed_this_morning,
+        )
+        if no_room:
+            room_skipped[no_room] = room_skipped.get(no_room, 0) + 1
             continue
 
         open_price, fetch_status = fetch_open_price(symbol)
@@ -510,16 +500,15 @@ def main() -> None:
             skipped.append((symbol, direction, f"Risk check failed: {risk_reason}"))
             continue
 
-        # Position sizing — simple, fixed-fraction allocation (a full
-        # Kelly-based size would need a fresh FinalDecision object,
-        # which would mean re-running the scan — explicitly avoided
-        # per the "no re-scan" design). No size-reduction tier — see
+        # Position sizing — fixed fraction of TOTAL capital (risk/entry_sizing.py;
+        # computed above, before the open-price fetch; nothing has been added
+        # since). A full Kelly-based size would need a fresh FinalDecision
+        # object, which would mean re-running the scan — explicitly avoided
+        # per the "no re-scan" design. No size-reduction tier — see
         # module-level comment on why REDUCE was removed.
-        available = snap.get("available_capital", 0.0)
-        allocation = entry_allocation(available, len(candidates))
-        quantity = int(allocation / open_price) if open_price > 0 else 0
+        quantity = quantity_for(allocation, open_price)
         if quantity <= 0:
-            skipped.append((symbol, direction, "Insufficient capital for even 1 share at this allocation."))
+            skipped.append((symbol, direction, f"One share (Rs {open_price:,.0f}) costs more than the Rs {allocation:,.0f} position size."))
             continue
 
         added = portfolio.engine.add_position(
@@ -580,6 +569,7 @@ def main() -> None:
         })
 
         executed.append((symbol, direction, open_price, quantity, gap_pct, band, ratio))
+        deployed_this_morning += quantity * open_price
 
     portfolio.save()
 
@@ -587,9 +577,11 @@ def main() -> None:
         "🌅 Morning Execution Complete",
         f"Signals from: {scan_date}",
         f"Candidates processed: {len(candidates)}",
-        f"Executed: {len(executed)} | Skipped: {len(skipped) + cap_skipped}",
+        f"Executed: {len(executed)} | Skipped: {len(skipped) + cap_skipped + sum(room_skipped.values())}",
+        f"Deployed this morning: Rs {deployed_this_morning:,.0f}",
         *([f"Daily entry cap ({MAX_NEW_ENTRIES_PER_DAY}/morning, best-ranked first): {cap_skipped} lower-ranked candidate(s) not traded."]
           if cap_skipped else []),
+        *([f"No room left ({reason}): {n} candidate(s) not traded." for reason, n in room_skipped.items()]),
         "",
     ]
     if executed:
