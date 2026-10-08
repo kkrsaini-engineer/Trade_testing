@@ -35,6 +35,7 @@ from core.logger import get_logger
 from data.data_engine import DataBundle
 from execution.scanner import MarketScanner
 from portfolio.portfolio import PortfolioEngine, PortfolioState
+from risk.entry_sizing import DEFAULT_MAX_NEW_ENTRIES_PER_DAY, entry_allocation, quantity_for
 
 logger = get_logger(__name__)
 
@@ -64,8 +65,11 @@ def _experiments_line(m: dict[str, Any]) -> str:
     on = []
     if e.get("buy_only"):
         on.append("BUY only")
-    if e.get("max_new_entries_per_day"):
-        on.append(f"max {e['max_new_entries_per_day']} new entries/day")
+    if e.get("max_new_entries_per_day") != DEFAULT_MAX_NEW_ENTRIES_PER_DAY:
+        n = e.get("max_new_entries_per_day")
+        on.append(f"max {n} new entries/day" if n else "NO daily entry cap")
+    if e.get("breakeven_after_r"):
+        on.append(f"stop to entry after +{e['breakeven_after_r']:g}R")
     if e.get("min_target_to_cost"):
         on.append(f"target >= {e['min_target_to_cost']:g}x costs")
     return ", ".join(on) if on else "none (same rules as live)"
@@ -216,8 +220,9 @@ class BacktestEngine:
         cost_model: Any = None,
         signal_path: str = "live",
         buy_only: bool = False,
-        max_new_entries_per_day: int = 0,
+        max_new_entries_per_day: int = DEFAULT_MAX_NEW_ENTRIES_PER_DAY,
         min_target_to_cost: float = 0.0,
+        breakeven_after_r: float = 0.0,
     ) -> BacktestResult:
         """
         REWRITTEN 2026-10-06 (BUG_AUDIT_2026-10-05_PROFITABILITY.md M9).
@@ -283,12 +288,23 @@ class BacktestEngine:
           buy_only: skip every SELL candidate at the open (delivery
             accounts cannot hold a short overnight — audit H14).
           max_new_entries_per_day: open at most N new positions per
-            morning, best-ranked first (0 = no cap). The top50 run lost
-            most of its money on the 11 days with >= 5 entries.
+            morning, best-ranked first (default = the live cap, 10;
+            0 = no cap). The top50 run lost most of its money on the
+            11 days with >= 5 entries.
           min_target_to_cost: skip an entry whose move to target2 is less
             than this many times its round-trip cost (0 = off; needs a
             cost model). In practice this drops low-volatility, tight-stop
             setups, where costs are a large share of the risk.
+          breakeven_after_r: once a position's best price (incl. today's
+            high/low) has moved this many R in its favour, move its stop to
+            the entry price from the NEXT monitoring run (0 = off). The
+            exit engine already does this at +1.5 ATR on the CLOSE; this
+            tests an earlier, intraday-aware trigger. Mirrored for SELL.
+
+        ENTRY SIZING (2026-10-08, user-approved "A-plan"; not a switch —
+        same rules as the live Morning Executor, from risk/entry_sizing.py):
+        5% of total capital per position (min Rs 10k), exposure stops at
+        85%, one morning deploys at most 40%.
 
         fundamentals: still a static snapshot for every simulated day —
         point-in-time historical fundamentals are not available from
@@ -465,6 +481,12 @@ class BacktestEngine:
                 # net P&L in units of the risk taken at entry (1R = entry->initial stop)
                 "r_multiple": round(pnl / risk_rupees, 3) if risk_rupees else None,
                 # incl. the exit day's high/low (2026-10-07)
+                "position_value": info.get("position_value"),
+                "ranking": info.get("ranking"),
+                "score": info.get("score"),
+                "probability": info.get("probability"),
+                "confidence": info.get("confidence"),
+                "market_regime": info.get("market_regime"),
                 "mfe_r": full_range_r("best_price", closed.max_profit_percent),
                 "mae_r": full_range_r("worst_price", closed.max_drawdown_percent),
             })
@@ -477,6 +499,7 @@ class BacktestEngine:
             if pending:
                 todays_orders, pending = pending, []
                 entered_this_morning = 0
+                deployed_this_morning = 0.0
                 for c in todays_orders:
                     sym, direction = c["symbol"], c["direction"]
                     if buy_only and direction == "SELL":
@@ -487,6 +510,14 @@ class BacktestEngine:
                         and sym not in portfolio.state.open_positions
                     ):
                         entry_skips["daily entry cap reached"] += 1
+                        continue
+                    state = portfolio.state
+                    allocation, no_room = entry_allocation(
+                        state.total_capital, state.available_capital,
+                        state.used_capital, deployed_this_morning,
+                    )
+                    if no_room:
+                        entry_skips[f"no room ({no_room})"] += 1
                         continue
                     row, _ = bar_on(sym, day)
                     if row is None:
@@ -522,20 +553,11 @@ class BacktestEngine:
                         entry_skips["capital/portfolio check"] += 1
                         continue
                     entry_price = fill(open_price, direction, opening=True)
-                    # Same split as scripts/morning_executor.entry_allocation():
-                    # over the positions that can actually open when a daily
-                    # cap is on (2026-10-08), over every candidate otherwise.
-                    slots = (
-                        min(len(todays_orders), max_new_entries_per_day)
-                        if max_new_entries_per_day else len(todays_orders)
-                    )
-                    allocation = min(
-                        snap.get("available_capital", 0.0) * 0.05,
-                        initial_capital / max(slots, 1),
-                    )
-                    quantity = int(allocation / entry_price) if entry_price > 0 else 0
+                    # Same sizing as the live Morning Executor (risk/entry_sizing.py);
+                    # `allocation` was computed above, before any state change.
+                    quantity = quantity_for(allocation, entry_price)
                     if quantity <= 0:
-                        entry_skips["insufficient capital"] += 1
+                        entry_skips["one share costs more than the position size"] += 1
                         continue
                     if min_target_to_cost > 0 and sym not in portfolio.state.open_positions:
                         _s, _t1, t2 = stop_target.compute_stop_loss_targets(
@@ -562,8 +584,13 @@ class BacktestEngine:
                         "target2": round(init_t2, 2) if init_t2 else None,
                         "risk_per_share": abs(entry_price - init_stop) if init_stop else None,
                         "best_price": entry_price, "worst_price": entry_price,
+                        "position_value": round(quantity * entry_price, 2),
+                        "ranking": c.get("ranking"), "score": c.get("score"),
+                        "probability": c.get("probability"), "confidence": c.get("confidence"),
+                        "market_regime": c.get("market_regime"),
                     }
                     entered_this_morning += 1
+                    deployed_this_morning += quantity * entry_price
                     if direction == "BUY":
                         counters["opened_buy"] += 1
                     else:
@@ -673,6 +700,27 @@ class BacktestEngine:
                     if exit_eval.diagnostics.get("partial_exit"):
                         portfolio.state.open_positions[sym].partial_taken = True
 
+                # Experiment (default off): stop to entry once the best price has
+                # moved breakeven_after_r in the trade's favour. Takes effect from
+                # the next monitoring run — no same-bar look-ahead. SELL mirrored.
+                if breakeven_after_r > 0 and sym in portfolio.state.open_positions:
+                    risk_ps = info.get("risk_per_share")
+                    held = portfolio.state.open_positions[sym]
+                    if risk_ps:
+                        is_short = held.direction == "SELL"
+                        moved = (
+                            held.entry_price - info["best_price"] if is_short
+                            else info["best_price"] - held.entry_price
+                        )
+                        if moved / risk_ps >= breakeven_after_r:
+                            current = held.stop_level
+                            if current is None:
+                                held.stop_level = held.entry_price
+                            elif is_short:
+                                held.stop_level = min(current, held.entry_price)
+                            else:
+                                held.stop_level = max(current, held.entry_price)
+
                 portfolio.observe_range(sym, diag.get("latest_high"), diag.get("latest_low"))
 
             # ---------------- 3. CLOSE: scan -> tomorrow's orders
@@ -738,6 +786,13 @@ class BacktestEngine:
                         "atr_14": r.diagnostics.get("atr_14"),
                         "stop_loss": r.diagnostics.get("stop_loss"),
                         "target1": r.diagnostics.get("target1"),
+                        # carried into the trade log (2026-10-08) so signal
+                        # quality can be tested against the outcome
+                        "ranking": r.ranking,
+                        "score": r.score,
+                        "probability": r.probability,
+                        "confidence": r.confidence,
+                        "market_regime": r.diagnostics.get("market_regime"),
                     }
                     for r in candidates
                 ]
@@ -805,8 +860,9 @@ class BacktestEngine:
                 "buy_only": bool(buy_only),
                 "max_new_entries_per_day": int(max_new_entries_per_day or 0),
                 "min_target_to_cost": float(min_target_to_cost or 0.0),
+                "breakeven_after_r": float(breakeven_after_r or 0.0),
             },
-            "engine_version": "2026-10-07-trade-log-v2",
+            "engine_version": "2026-10-08-a-plan-v3",
         })
         result.metrics.update(self._trade_quality_metrics(result.closed_trades))
         return result
