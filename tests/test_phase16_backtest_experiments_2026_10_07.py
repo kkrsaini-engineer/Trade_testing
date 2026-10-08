@@ -63,7 +63,8 @@ def test_switches_are_off_by_default():
     df = _flat_then_up()
     result = _run({"X.NS": df}, FakeScanner({_day(df, 4): ("X.NS", "SELL")}))
     assert result.metrics["experiments"] == {
-        "buy_only": False, "max_new_entries_per_day": 0, "min_target_to_cost": 0.0,
+        "buy_only": False, "max_new_entries_per_day": 10, "min_target_to_cost": 0.0,
+        "breakeven_after_r": 0.0,
     }
     assert result.closed_trades                      # SELL still traded
     assert "Experiments          : none (same rules as live)" in result.report()
@@ -101,11 +102,11 @@ def test_daily_cap_keeps_the_best_ranked_entries(direction):
     assert result.metrics["entry_skips"]["daily entry cap reached"] == 1
 
 
-def test_no_cap_takes_every_entry():
+def test_cap_zero_means_no_cap():
     df = _flat_then_up()
     data = {"A.NS": df, "B.NS": df.copy(), "C.NS": df.copy()}
     signals = {_day(df, 4): [("A.NS", "BUY", 60.0), ("B.NS", "BUY", 90.0), ("C.NS", "BUY", 75.0)]}
-    assert len(_run(data, MultiScanner(signals)).closed_trades) == 3
+    assert len(_run(data, MultiScanner(signals), max_new_entries_per_day=0).closed_trades) == 3
 
 
 # ==========================================================
