@@ -145,6 +145,60 @@ def top_liquid_symbols(n: int, watchlist: list[str] | None = None, history: dict
     return order_by_liquidity(eligible, history)[:n]
 
 
+def summarize_random_runs(results: list) -> dict:
+    """Per-seed and averaged P&L of the random-entry control runs."""
+    rows = []
+    for seed, res in enumerate(results):
+        trades = res.closed_trades
+        net = sum(t["realized_pnl"] for t in trades)
+        costs = sum(t["costs"] for t in trades)
+        wins = sum(t["realized_pnl"] for t in trades if t["realized_pnl"] > 0)
+        losses = -sum(t["realized_pnl"] for t in trades if t["realized_pnl"] < 0)
+        rows.append({
+            "seed": seed, "trades": len(trades), "net_pnl": round(net, 2),
+            "gross_pnl": round(net + costs, 2), "costs": round(costs, 2),
+            "profit_factor": round(wins / losses, 3) if losses else None,
+            "win_rate": round(sum(1 for t in trades if t["realized_pnl"] > 0) / len(trades) * 100, 2) if trades else 0.0,
+        })
+
+    def mean(key):
+        return sum(r[key] for r in rows) / len(rows)
+
+    def sd(key):
+        if len(rows) < 2:
+            return 0.0
+        m = mean(key)
+        return (sum((r[key] - m) ** 2 for r in rows) / (len(rows) - 1)) ** 0.5
+
+    return {
+        "seeds": len(rows), "per_seed": rows,
+        "mean_trades": round(mean("trades"), 1),
+        "mean_net_pnl": round(mean("net_pnl"), 2), "sd_net_pnl": round(sd("net_pnl"), 2),
+        "mean_gross_pnl": round(mean("gross_pnl"), 2), "sd_gross_pnl": round(sd("gross_pnl"), 2),
+        "mean_costs": round(mean("costs"), 2),
+    }
+
+
+def random_summary_text(summary: dict) -> str:
+    lines = [
+        f"=== RANDOM-ENTRY CONTROL: {summary['seeds']} seed(s) ===",
+        "seed  trades   net P&L  before costs   costs   PF    win%",
+    ]
+    for r in summary["per_seed"]:
+        pf = f"{r['profit_factor']:.2f}" if r["profit_factor"] is not None else " n/a"
+        lines.append(
+            f"{r['seed']:>4}  {r['trades']:>6}  {r['net_pnl']:>8.0f}  {r['gross_pnl']:>12.0f}  "
+            f"{r['costs']:>6.0f}  {pf:>4}  {r['win_rate']:>5.1f}"
+        )
+    lines.append(
+        f"MEAN  {summary['mean_trades']:>6}  {summary['mean_net_pnl']:>8.0f}  {summary['mean_gross_pnl']:>12.0f}  "
+        f"{summary['mean_costs']:>6.0f}   (spread between seeds: net +/-{summary['sd_net_pnl']:.0f}, "
+        f"before costs +/-{summary['sd_gross_pnl']:.0f})"
+    )
+    lines.append("Compare with the same setup on signal=live. The first table above is seed 0 only.")
+    return "\n".join(lines)
+
+
 def write_trades_csv(trades: list[dict], path: str = TRADES_PATH) -> None:
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", newline="") as f:
@@ -172,8 +226,9 @@ def main() -> None:
         help="default = 11-stock sample; topN = N most liquid watchlist symbols. Ignored with --symbols.",
     )
     parser.add_argument(
-        "--signal-path", default="live", choices=["live", "universe"],
-        help="live = same per-symbol scan as the production nightly scan (default).",
+        "--signal-path", default="live", choices=["live", "universe", "random"],
+        help="live = same per-symbol scan as the production nightly scan (default). "
+             "random = CONTROL: random stocks/directions instead of the scan, same exits/costs/sizing.",
     )
     # 2026-10-07 experiment switches — all off by default (= live rules).
     parser.add_argument("--buy-only", action="store_true", help="Skip every SELL candidate (H14).")
@@ -190,6 +245,10 @@ def main() -> None:
         "--min-target-to-cost", type=float, default=0.0,
         help="Skip entries whose move to target2 is < X times the round-trip cost (0 = off; needs --realistic-costs).",
     )
+    # 2026-10-08 random-entry control (only used with --signal-path random)
+    parser.add_argument("--random-seeds", type=int, default=5, help="How many random runs to average (seeds 0..N-1).")
+    parser.add_argument("--random-candidates-per-day", type=int, default=2, help="Random candidates generated per day.")
+    parser.add_argument("--random-sell-share", type=float, default=0.1, help="Share of random candidates that are SELL (the scan's own mix is ~0.1).")
     args = parser.parse_args()
 
     if args.symbols:
@@ -267,20 +326,32 @@ def main() -> None:
         return
 
     engine = BacktestEngine()
-    result = engine.run(
-        historical_data=historical_data,
-        fundamentals=fundamentals,
-        initial_capital=args.initial_capital,
-        cost_pct_per_side=args.cost_per_side_pct,
-        cost_model=CostModel.from_config() if args.realistic_costs else None,
-        signal_path=args.signal_path,
-        buy_only=args.buy_only,
-        max_new_entries_per_day=args.max_new_entries_per_day,
-        min_target_to_cost=args.min_target_to_cost,
-        breakeven_after_r=args.breakeven_after_r,
-    )
+    seeds = range(max(args.random_seeds, 1)) if args.signal_path == "random" else [0]
+    results = [
+        engine.run(
+            historical_data=historical_data,
+            fundamentals=fundamentals,
+            initial_capital=args.initial_capital,
+            cost_pct_per_side=args.cost_per_side_pct,
+            cost_model=CostModel.from_config() if args.realistic_costs else None,
+            signal_path=args.signal_path,
+            buy_only=args.buy_only,
+            max_new_entries_per_day=args.max_new_entries_per_day,
+            min_target_to_cost=args.min_target_to_cost,
+            breakeven_after_r=args.breakeven_after_r,
+            random_seed=seed,
+            random_candidates_per_day=args.random_candidates_per_day,
+            random_sell_share=args.random_sell_share,
+        )
+        for seed in seeds
+    ]
+    result = results[0]
 
     report_text = result.report()
+    if args.signal_path == "random":
+        summary = summarize_random_runs(results)
+        result.metrics["random_control_summary"] = summary
+        report_text += "\n\n" + random_summary_text(summary)
     print(report_text)
 
     result.metrics["run_config"] = {
@@ -294,6 +365,7 @@ def main() -> None:
         "max_new_entries_per_day": args.max_new_entries_per_day,
         "min_target_to_cost": args.min_target_to_cost,
         "breakeven_after_r": args.breakeven_after_r,
+        "random_seeds": args.random_seeds if args.signal_path == "random" else None,
     }
     Path("reports").mkdir(exist_ok=True)
     with open(OUTPUT_PATH, "w") as f:
