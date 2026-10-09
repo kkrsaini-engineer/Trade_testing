@@ -1,0 +1,13 @@
+{
+  "id": "paper_BBOX_NS_1791517610730",
+  "symbol": "BBOX.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 17,
+  "entry_price": 858.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 77.65,
+  "reasons": "Morning Executor: gap -3.03% (0.69x ATR, NORMAL band); No company-specific news available. | No macro headlines available.",
+  "timestamp": 1791517610.731481
+}

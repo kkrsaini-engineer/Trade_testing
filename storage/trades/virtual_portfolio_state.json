@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 134744.8440867386,
-  "used_capital": 360246.9105453491,
-  "total_pnl": -7018.815169242875,
-  "total_pnl_percent": -1.403763033848575,
-  "exposure": 0.7204938210906983,
+  "available_capital": 70554.04458722688,
+  "used_capital": 424437.71004486084,
+  "total_pnl": -7018.815169242874,
+  "total_pnl_percent": -1.4037630338485747,
+  "exposure": 0.8488754200897217,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 495042.098852758,
@@ -1191,6 +1191,63 @@
       "updated_at": 1791431495.6955123,
       "partial_taken": false,
       "stop_level": 550.37
+    },
+    "GANDHAR.NS": {
+      "symbol": "GANDHAR.NS",
+      "quantity": 82,
+      "entry_price": 301.3999938964844,
+      "current_price": 301.3999938964844,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 301.3999938964844,
+      "lowest_price": 301.3999938964844,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1791517601.6064415,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "EPACKPEB.NS": {
+      "symbol": "EPACKPEB.NS",
+      "quantity": 95,
+      "entry_price": 262.0,
+      "current_price": 262.0,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 262.0,
+      "lowest_price": 262.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1791517606.1478903,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "BBOX.NS": {
+      "symbol": "BBOX.NS",
+      "quantity": 17,
+      "entry_price": 858.0,
+      "current_price": 858.0,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 858.0,
+      "lowest_price": 858.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1791517610.730074,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -11593,5 +11650,5 @@
     "GATEWAY.NS": "Industrials",
     "LLOYDSENT.NS": "Basic Materials"
   },
-  "saved_at": 1791431517.1202044
+  "saved_at": 1791517610.7352364
 }

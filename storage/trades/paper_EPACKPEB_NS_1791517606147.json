@@ -1,0 +1,13 @@
+{
+  "id": "paper_EPACKPEB_NS_1791517606147",
+  "symbol": "EPACKPEB.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 95,
+  "entry_price": 262.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 77.96,
+  "reasons": "Morning Executor: gap -2.03% (0.47x ATR, NORMAL band); No company-specific news available. | No macro headlines available.",
+  "timestamp": 1791517606.149488
+}
