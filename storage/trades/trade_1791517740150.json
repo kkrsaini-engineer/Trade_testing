@@ -1,0 +1,18 @@
+{
+  "symbol": "BHEL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 12,
+  "entry_price": 448.79998779296875,
+  "exit_price": 425.24,
+  "status": "CLOSED",
+  "realized_pnl": -315.5994639882131,
+  "realized_pnl_percent": -5.860061507952458,
+  "max_profit_percent": 0.5904689140243371,
+  "max_drawdown_percent": 5.5369849529568285,
+  "regime": "BULL",
+  "confidence": 52.18,
+  "reasons": "Healthy risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.; costs Rs 32.88 deducted",
+  "id": "trade_1791517740150",
+  "timestamp": 1791517740.1506858
+}

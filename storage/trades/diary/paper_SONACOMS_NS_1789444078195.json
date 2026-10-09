@@ -235,16 +235,29 @@
         "Excellent risk/reward profile.",
         "Continue holding position."
       ]
+    },
+    {
+      "date": "2026-10-09",
+      "current_price": 779.1,
+      "current_pnl": -17.799999999999955,
+      "current_buy_confidence": 46.05,
+      "current_sell_confidence": 44.56,
+      "current_exit_score": 56.12,
+      "recommendation": "HOLD",
+      "notes": [
+        "Excellent risk/reward profile.",
+        "Continue holding position."
+      ]
     }
   ],
   "status": "OPEN",
   "exit_date": null,
   "exit_price": null,
   "exit_reason": null,
-  "holding_days": 17,
+  "holding_days": 18,
   "max_profit_percent": 0.0,
   "max_drawdown_percent": 0.0,
   "final_pnl": null,
   "created_at": 1789444078.1956747,
-  "updated_at": 1791431431.3484344
+  "updated_at": 1791517735.3303716
 }

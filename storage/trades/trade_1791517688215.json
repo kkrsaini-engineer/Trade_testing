@@ -1,0 +1,18 @@
+{
+  "symbol": "PCBL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 25,
+  "entry_price": 338.1499938964844,
+  "exit_price": 319.23,
+  "status": "CLOSED",
+  "realized_pnl": -515.4906051543876,
+  "realized_pnl_percent": -6.09777453152569,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 6.106755661455319,
+  "regime": "SIDEWAYS",
+  "confidence": 46.71,
+  "reasons": "Below preferred risk/reward profile.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 42.49 deducted",
+  "id": "trade_1791517688215",
+  "timestamp": 1791517688.2154796
+}

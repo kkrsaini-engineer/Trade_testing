@@ -1,0 +1,18 @@
+{
+  "symbol": "ROLEXRINGS.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 31,
+  "entry_price": 183.1999969482422,
+  "exit_price": 169.09,
+  "status": "CLOSED",
+  "realized_pnl": -470.9991888457205,
+  "realized_pnl_percent": -8.293407463932533,
+  "max_profit_percent": 1.6658066877552957e-06,
+  "max_drawdown_percent": 9.868996797070178,
+  "regime": "SIDEWAYS",
+  "confidence": 45.36,
+  "reasons": "Below preferred risk/reward profile.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 33.59 deducted",
+  "id": "trade_1791517736762",
+  "timestamp": 1791517736.7627172
+}

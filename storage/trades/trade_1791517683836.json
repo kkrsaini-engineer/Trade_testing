@@ -1,0 +1,18 @@
+{
+  "symbol": "MANKIND.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 2,
+  "entry_price": 2501.10009765625,
+  "exit_price": 2389.28,
+  "status": "CLOSED",
+  "realized_pnl": -255.37311528238206,
+  "realized_pnl_percent": -5.105215811268191,
+  "max_profit_percent": 0.39181977149508235,
+  "max_drawdown_percent": 6.137299348548383,
+  "regime": "SIDEWAYS",
+  "confidence": 43.97,
+  "reasons": "Healthy risk/reward profile.; Active stop-loss triggered.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 31.73 deducted",
+  "id": "trade_1791517683836",
+  "timestamp": 1791517683.8366187
+}

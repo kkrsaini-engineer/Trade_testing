@@ -1,0 +1,18 @@
+{
+  "symbol": "AARTIPHARM.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 5,
+  "entry_price": 956.0,
+  "exit_price": 874.11,
+  "status": "CLOSED",
+  "realized_pnl": -440.17969644999994,
+  "realized_pnl_percent": -9.20878026046025,
+  "max_profit_percent": 0.2144351464435099,
+  "max_drawdown_percent": 9.178870292887028,
+  "regime": "BULL",
+  "confidence": 50.51,
+  "reasons": "Below preferred risk/reward profile.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 30.73 deducted",
+  "id": "trade_1791517716249",
+  "timestamp": 1791517716.2499647
+}

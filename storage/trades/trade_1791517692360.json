@@ -1,0 +1,18 @@
+{
+  "symbol": "SHAREINDIA.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 27,
+  "entry_price": 207.5,
+  "exit_price": 190.7,
+  "status": "CLOSED",
+  "realized_pnl": -486.9167796000001,
+  "realized_pnl_percent": -8.691062554216868,
+  "max_profit_percent": 0.7180749364646084,
+  "max_drawdown_percent": 11.522893331137048,
+  "regime": "BULL",
+  "confidence": 52.47,
+  "reasons": "Healthy risk/reward profile.; Active stop-loss triggered.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 33.32 deducted",
+  "id": "trade_1791517692360",
+  "timestamp": 1791517692.3608267
+}

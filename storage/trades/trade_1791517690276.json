@@ -1,0 +1,18 @@
+{
+  "symbol": "CIPLA.NS",
+  "direction": "SELL",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 3,
+  "entry_price": 1362.5,
+  "exit_price": 1311.18,
+  "status": "OPEN",
+  "realized_pnl": 141.02558843999964,
+  "realized_pnl_percent": 3.4501673012843943,
+  "max_profit_percent": 5.174311926605505,
+  "max_drawdown_percent": 2.8110091743119234,
+  "regime": "BEAR",
+  "confidence": 53.67,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved (previous session).; costs Rs 12.93 deducted",
+  "id": "trade_1791517690276",
+  "timestamp": 1791517690.2768614
+}

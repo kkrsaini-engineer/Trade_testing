@@ -1,25 +1,45 @@
 {
-  "date": "2026-10-08",
-  "opening_balance": 113759.8476077934,
-  "total_capital_in_positions": 357117.62000000005,
-  "remaining_balance": 134744.8440867386,
-  "portfolio_value": 491862.46408673865,
-  "realized_pnl": -7018.815169242875,
-  "portfolio_return_percent": -1.6275071826522702,
+  "date": "2026-10-09",
+  "opening_balance": 70554.04458722688,
+  "total_capital_in_positions": 356461.83000000013,
+  "remaining_balance": 128618.68592352048,
+  "portfolio_value": 485080.5159235206,
+  "realized_pnl": -12043.603137148482,
+  "portfolio_return_percent": -2.9838968152958785,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "CGPOWER.NS",
-      "pnl": -105.73326060000045
+      "symbol": "EDELWEISS.NS",
+      "pnl": -1067.50243567804
     },
     {
-      "symbol": "ARFIN.NS",
-      "pnl": 1508.7626741221466
+      "symbol": "MANKIND.NS",
+      "pnl": -255.37311528238206
     },
     {
-      "symbol": "HAL.NS",
-      "pnl": -68.42757244238237
+      "symbol": "PCBL.NS",
+      "pnl": -515.4906051543876
+    },
+    {
+      "symbol": "SHAREINDIA.NS",
+      "pnl": -486.9167796000001
+    },
+    {
+      "symbol": "ENGINERSIN.NS",
+      "pnl": -457.0618090023195
+    },
+    {
+      "symbol": "AARTIPHARM.NS",
+      "pnl": -440.17969644999994
+    },
+    {
+      "symbol": "ROLEXRINGS.NS",
+      "pnl": -470.9991888457205
+    },
+    {
+      "symbol": "BHEL.NS",
+      "pnl": -315.5994639882131
     }
   ],
-  "open_positions_now": 62
+  "open_positions_now": 57
 }

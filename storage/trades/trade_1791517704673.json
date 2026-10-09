@@ -1,0 +1,18 @@
+{
+  "symbol": "ENGINERSIN.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 18,
+  "entry_price": 307.79998779296875,
+  "exit_price": 284.25,
+  "status": "CLOSED",
+  "realized_pnl": -457.0618090023195,
+  "realized_pnl_percent": -8.249617845803934,
+  "max_profit_percent": 3.96589725324464e-06,
+  "max_drawdown_percent": 9.76282942973372,
+  "regime": "BULL",
+  "confidence": 52.94,
+  "reasons": "Below preferred risk/reward profile.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 33.16 deducted",
+  "id": "trade_1791517704673",
+  "timestamp": 1791517704.6731367
+}
