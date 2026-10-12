@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 128618.68592352048,
-  "used_capital": 362652.6608505249,
-  "total_pnl": -12043.603137148482,
-  "total_pnl_percent": -2.4087206274296964,
-  "exposure": 0.7253053217010498,
+  "available_capital": 67749.99673261121,
+  "used_capital": 423521.35004143417,
+  "total_pnl": -12043.603137148486,
+  "total_pnl_percent": -2.408720627429697,
+  "exposure": 0.8470427000828683,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 492981.18483075703,
@@ -1096,6 +1096,63 @@
       "updated_at": 1791517743.2968633,
       "partial_taken": false,
       "stop_level": 773.56
+    },
+    "DHARAN.NS": {
+      "symbol": "DHARAN.NS",
+      "quantity": 178571,
+      "entry_price": 0.14000000059604645,
+      "current_price": 0.14000000059604645,
+      "direction": "SELL",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 0.14000000059604645,
+      "lowest_price": 0.14000000059604645,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1791776804.1334174,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "HINDPETRO.NS": {
+      "symbol": "HINDPETRO.NS",
+      "quantity": 75,
+      "entry_price": 329.04998779296875,
+      "current_price": 329.04998779296875,
+      "direction": "SELL",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 329.04998779296875,
+      "lowest_price": 329.04998779296875,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1791776806.8041553,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "HINDUNILVR.NS": {
+      "symbol": "HINDUNILVR.NS",
+      "quantity": 6,
+      "entry_price": 1865.0,
+      "current_price": 1865.0,
+      "direction": "SELL",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 1865.0,
+      "lowest_price": 1865.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1791776809.653988,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -11652,5 +11709,5 @@
     "EPACKPEB.NS": "Industrials",
     "BBOX.NS": "Technology"
   },
-  "saved_at": 1791517756.323387
+  "saved_at": 1791776809.6598494
 }

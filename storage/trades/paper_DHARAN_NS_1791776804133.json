@@ -1,0 +1,13 @@
+{
+  "id": "paper_DHARAN_NS_1791776804133",
+  "symbol": "DHARAN.NS",
+  "direction": "SELL",
+  "action": "OPEN",
+  "quantity": 178571,
+  "entry_price": 0.14000000059604645,
+  "status": "OPEN",
+  "regime": "BEAR",
+  "confidence": 74.12,
+  "reasons": "Morning Executor: gap +7.69% (1.00x ATR, WARNING band); No company-specific news available. | No macro headlines available.",
+  "timestamp": 1791776804.135119
+}

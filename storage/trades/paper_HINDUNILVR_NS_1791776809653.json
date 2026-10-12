@@ -1,0 +1,13 @@
+{
+  "id": "paper_HINDUNILVR_NS_1791776809653",
+  "symbol": "HINDUNILVR.NS",
+  "direction": "SELL",
+  "action": "OPEN",
+  "quantity": 6,
+  "entry_price": 1865.0,
+  "status": "OPEN",
+  "regime": "BEAR",
+  "confidence": 70.91,
+  "reasons": "Morning Executor: gap +1.11% (0.61x ATR, NORMAL band); No company-specific news available. | No macro headlines available.",
+  "timestamp": 1791776809.656244
+}
