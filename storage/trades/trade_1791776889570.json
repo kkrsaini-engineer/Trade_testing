@@ -1,0 +1,18 @@
+{
+  "symbol": "REDINGTON.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 13,
+  "entry_price": 406.20001220703125,
+  "exit_price": 379.29,
+  "status": "CLOSED",
+  "realized_pnl": -382.26754738943566,
+  "realized_pnl_percent": -7.239092828497093,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 6.954701908182511,
+  "regime": "BULL",
+  "confidence": 59.49,
+  "reasons": "Below preferred risk/reward profile.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 32.44 deducted",
+  "id": "trade_1791776889570",
+  "timestamp": 1791776889.5708232
+}

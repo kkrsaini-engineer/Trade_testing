@@ -1,0 +1,18 @@
+{
+  "symbol": "MOTILALOFS.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 5,
+  "entry_price": 1066.9000244140625,
+  "exit_price": 1008.31,
+  "status": "CLOSED",
+  "realized_pnl": -325.64903822648944,
+  "realized_pnl_percent": -6.104583949284933,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 6.195523020762479,
+  "regime": "BULL",
+  "confidence": 70.85,
+  "reasons": "Below preferred risk/reward profile.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 32.70 deducted",
+  "id": "trade_1791776936271",
+  "timestamp": 1791776936.2714791
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "PARADEEP.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 37,
+  "entry_price": 154.5,
+  "exit_price": 146.27,
+  "status": "CLOSED",
+  "realized_pnl": -338.4242211099995,
+  "realized_pnl_percent": -5.920129819120082,
+  "max_profit_percent": 1.9029142015574434,
+  "max_drawdown_percent": 5.695794855506675,
+  "regime": "SIDEWAYS",
+  "confidence": 51.98,
+  "reasons": "Healthy risk/reward profile.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 33.91 deducted",
+  "id": "trade_1791776906219",
+  "timestamp": 1791776906.21983
+}
