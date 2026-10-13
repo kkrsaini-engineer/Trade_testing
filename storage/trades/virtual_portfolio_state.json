@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 88131.85531173361,
-  "used_capital": 401608.8996935338,
-  "total_pnl": -10967.085367116813,
-  "total_pnl_percent": -2.1934170734233627,
-  "exposure": 0.8032177993870676,
+  "available_capital": 64813.304469448456,
+  "used_capital": 424927.45053581893,
+  "total_pnl": -10967.085367116817,
+  "total_pnl_percent": -2.1934170734233636,
+  "exposure": 0.8498549010716379,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 487956.3968628517,
@@ -1077,6 +1077,25 @@
       "updated_at": 1791776880.8132885,
       "partial_taken": false,
       "stop_level": 1928.08
+    },
+    "NYKAA.NS": {
+      "symbol": "NYKAA.NS",
+      "quantity": 69,
+      "entry_price": 337.95001220703125,
+      "current_price": 337.95001220703125,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 337.95001220703125,
+      "lowest_price": 337.95001220703125,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1791863208.3019943,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -11711,5 +11730,5 @@
     "DHARAN.NS": "Real Estate",
     "HINDPETRO.NS": "Energy"
   },
-  "saved_at": 1791776945.1219258
+  "saved_at": 1791863208.3066974
 }
