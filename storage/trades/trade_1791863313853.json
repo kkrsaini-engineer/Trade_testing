@@ -1,0 +1,18 @@
+{
+  "symbol": "USHAMART.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 10,
+  "entry_price": 519.0,
+  "exit_price": 486.55,
+  "status": "CLOSED",
+  "realized_pnl": -356.6839145,
+  "realized_pnl_percent": -6.872522437379576,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 6.840077071290944,
+  "regime": "SIDEWAYS",
+  "confidence": 54.51,
+  "reasons": "Healthy risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.; costs Rs 32.18 deducted",
+  "id": "trade_1791863313853",
+  "timestamp": 1791863313.8532386
+}

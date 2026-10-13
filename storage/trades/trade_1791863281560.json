@@ -1,0 +1,18 @@
+{
+  "symbol": "LLOYDSENT.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 72,
+  "entry_price": 78.80999755859375,
+  "exit_price": 71.8,
+  "status": "CLOSED",
+  "realized_pnl": -538.189764801856,
+  "realized_pnl_percent": -9.48465686591705,
+  "max_profit_percent": 3.0978382539075665e-06,
+  "max_drawdown_percent": 10.125615792159838,
+  "regime": "SIDEWAYS",
+  "confidence": 43.57,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.; costs Rs 33.47 deducted",
+  "id": "trade_1791863281560",
+  "timestamp": 1791863281.5606644
+}

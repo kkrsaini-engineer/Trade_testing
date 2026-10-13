@@ -1,0 +1,18 @@
+{
+  "symbol": "GNA.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 9,
+  "entry_price": 583.6500244140625,
+  "exit_price": 532.41,
+  "status": "CLOSED",
+  "realized_pnl": -493.3366946576806,
+  "realized_pnl_percent": -9.391790628352645,
+  "max_profit_percent": 0.23986559194320553,
+  "max_drawdown_percent": 8.50681441569494,
+  "regime": "SIDEWAYS",
+  "confidence": 42.98,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.; costs Rs 32.18 deducted",
+  "id": "trade_1791863288154",
+  "timestamp": 1791863288.1545904
+}

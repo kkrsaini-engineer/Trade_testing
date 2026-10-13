@@ -1,0 +1,18 @@
+{
+  "symbol": "SYNGENE.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 15,
+  "entry_price": 363.70001220703125,
+  "exit_price": 374.83,
+  "status": "CLOSED",
+  "realized_pnl": -184.84214972633055,
+  "realized_pnl_percent": -3.3881796997963196,
+  "max_profit_percent": 5.292823578197243,
+  "max_drawdown_percent": 1.1822897026797572,
+  "regime": "BEAR",
+  "confidence": 54.85,
+  "reasons": "Excellent risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.; costs Rs 17.89 deducted",
+  "id": "trade_1791863340885",
+  "timestamp": 1791863340.8853061
+}
