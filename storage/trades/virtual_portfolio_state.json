@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 84812.92217281333,
-  "used_capital": 403354.78030876815,
-  "total_pnl": -11817.798872247991,
-  "total_pnl_percent": -2.363559774449598,
-  "exposure": 0.8067095606175363,
+  "available_capital": 63301.92217281333,
+  "used_capital": 424865.78030876815,
+  "total_pnl": -11817.798872247995,
+  "total_pnl_percent": -2.363559774449599,
+  "exposure": 0.8497315606175363,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 489032.91463288333,
@@ -1020,6 +1020,25 @@
       "updated_at": 1791863300.229154,
       "partial_taken": false,
       "stop_level": 318.43
+    },
+    "KOTAKBANK.NS": {
+      "symbol": "KOTAKBANK.NS",
+      "quantity": 49,
+      "entry_price": 439.0,
+      "current_price": 439.0,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 439.0,
+      "lowest_price": 439.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1791949602.216199,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -11730,5 +11749,5 @@
     "DHARAN.NS": "Real Estate",
     "HINDPETRO.NS": "Energy"
   },
-  "saved_at": 1791863352.8183255
+  "saved_at": 1791949602.2185636
 }

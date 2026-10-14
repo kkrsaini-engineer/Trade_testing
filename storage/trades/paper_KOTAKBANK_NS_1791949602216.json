@@ -1,0 +1,13 @@
+{
+  "id": "paper_KOTAKBANK_NS_1791949602216",
+  "symbol": "KOTAKBANK.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 49,
+  "entry_price": 439.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 82.51,
+  "reasons": "Morning Executor: gap -0.99% (0.46x ATR, NORMAL band); No company-specific news available. | No macro headlines available.",
+  "timestamp": 1791949602.2174106
+}
