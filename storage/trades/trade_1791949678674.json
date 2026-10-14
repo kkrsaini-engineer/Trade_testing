@@ -1,0 +1,18 @@
+{
+  "symbol": "KIRIINDUS.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 10,
+  "entry_price": 556.7000122070312,
+  "exit_price": 513.91,
+  "status": "CLOSED",
+  "realized_pnl": -461.14186017648933,
+  "realized_pnl_percent": -8.283489313181391,
+  "max_profit_percent": 0.12573877808869327,
+  "max_drawdown_percent": 8.110297004497218,
+  "regime": "BULL",
+  "confidence": 61.36,
+  "reasons": "Below preferred risk/reward profile.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 33.24 deducted",
+  "id": "trade_1791949678674",
+  "timestamp": 1791949678.6741228
+}

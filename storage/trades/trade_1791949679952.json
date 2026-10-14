@@ -1,0 +1,18 @@
+{
+  "symbol": "LXCHEM.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 27,
+  "entry_price": 176.0,
+  "exit_price": 176.0,
+  "status": "CLOSED",
+  "realized_pnl": 316.76643728999966,
+  "realized_pnl_percent": -0.6580272727272755,
+  "max_profit_percent": 10.096593336625533,
+  "max_drawdown_percent": 1.4204545454545454,
+  "regime": "BULL",
+  "confidence": 57.36,
+  "reasons": "Excellent risk/reward profile.; Active stop-loss triggered.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 31.27 deducted",
+  "id": "trade_1791949679952",
+  "timestamp": 1791949679.9523585
+}

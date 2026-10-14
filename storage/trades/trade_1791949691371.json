@@ -1,0 +1,18 @@
+{
+  "symbol": "GNFC.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 9,
+  "entry_price": 618.0,
+  "exit_price": 579.16,
+  "status": "CLOSED",
+  "realized_pnl": -382.90616316000046,
+  "realized_pnl_percent": -6.884325119741108,
+  "max_profit_percent": 0.008090614886724032,
+  "max_drawdown_percent": 8.090614886731391,
+  "regime": "BULL",
+  "confidence": 69.77,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 33.35 deducted",
+  "id": "trade_1791949691371",
+  "timestamp": 1791949691.3714488
+}

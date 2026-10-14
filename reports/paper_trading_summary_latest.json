@@ -1,29 +1,33 @@
 {
-  "date": "2026-10-13",
-  "opening_balance": 64813.304469448456,
-  "total_capital_in_positions": 398021.7799999999,
-  "remaining_balance": 84812.92217281333,
-  "portfolio_value": 482834.70217281324,
-  "realized_pnl": -11817.798872247991,
-  "portfolio_return_percent": -3.4330595654373526,
+  "date": "2026-10-14",
+  "opening_balance": 63301.92217281333,
+  "total_capital_in_positions": 399216.81,
+  "remaining_balance": 85549.38984101475,
+  "portfolio_value": 484766.19984101475,
+  "realized_pnl": -13475.441008734088,
+  "portfolio_return_percent": -3.0467600317970502,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "LLOYDSENT.NS",
-      "pnl": -538.189764801856
+      "symbol": "KIRIINDUS.NS",
+      "pnl": -461.14186017648933
     },
     {
-      "symbol": "GNA.NS",
-      "pnl": -493.3366946576806
+      "symbol": "LXCHEM.NS",
+      "pnl": 316.76643728999966
     },
     {
-      "symbol": "USHAMART.NS",
-      "pnl": -356.6839145
+      "symbol": "GNFC.NS",
+      "pnl": -382.90616316000046
     },
     {
-      "symbol": "SYNGENE.NS",
-      "pnl": -184.84214972633055
+      "symbol": "ANURAS.NS",
+      "pnl": 108.82360432808582
+    },
+    {
+      "symbol": "TFCILTD.NS",
+      "pnl": 873.7022868885581
     }
   ],
-  "open_positions_now": 53
+  "open_positions_now": 49
 }
