@@ -1,33 +1,21 @@
 {
-  "date": "2026-10-14",
-  "opening_balance": 63301.92217281333,
-  "total_capital_in_positions": 399216.81,
-  "remaining_balance": 85549.38984101475,
-  "portfolio_value": 484766.19984101475,
-  "realized_pnl": -13475.441008734088,
-  "portfolio_return_percent": -3.0467600317970502,
+  "date": "2026-10-15",
+  "opening_balance": 62911.38984101475,
+  "total_capital_in_positions": 401310.14000000013,
+  "remaining_balance": 86448.68506550533,
+  "portfolio_value": 487758.82506550546,
+  "realized_pnl": -14260.415784243489,
+  "portfolio_return_percent": -2.448234986898908,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "KIRIINDUS.NS",
-      "pnl": -461.14186017648933
+      "symbol": "JASH.NS",
+      "pnl": -412.6310673723193
     },
     {
-      "symbol": "LXCHEM.NS",
-      "pnl": 316.76643728999966
-    },
-    {
-      "symbol": "GNFC.NS",
-      "pnl": -382.90616316000046
-    },
-    {
-      "symbol": "ANURAS.NS",
-      "pnl": 108.82360432808582
-    },
-    {
-      "symbol": "TFCILTD.NS",
-      "pnl": 873.7022868885581
+      "symbol": "HINDUNILVR.NS",
+      "pnl": -366.0776766000008
     }
   ],
-  "open_positions_now": 49
+  "open_positions_now": 48
 }

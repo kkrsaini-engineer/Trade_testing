@@ -1,0 +1,18 @@
+{
+  "symbol": "SHYAMMETL.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 6,
+  "entry_price": 1054.0,
+  "exit_price": 1119.57,
+  "status": "OPEN",
+  "realized_pnl": 356.4706546199991,
+  "realized_pnl_percent": 5.636790870018961,
+  "max_profit_percent": 9.108159392789373,
+  "max_drawdown_percent": 3.700189753320683,
+  "regime": "BULL",
+  "confidence": 72.3,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved (previous session).; costs Rs 36.95 deducted",
+  "id": "trade_1792036133742",
+  "timestamp": 1792036133.7425773
+}
