@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 85549.38984101475,
-  "used_capital": 402323.6803789586,
-  "total_pnl": -13475.441008734088,
-  "total_pnl_percent": -2.6950882017468176,
-  "exposure": 0.8046473607579172,
+  "available_capital": 62911.38984101475,
+  "used_capital": 424961.6803789586,
+  "total_pnl": -13475.441008734091,
+  "total_pnl_percent": -2.695088201746818,
+  "exposure": 0.8499233607579172,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 488182.20112775214,
@@ -944,6 +944,25 @@
       "updated_at": 1791949709.0576897,
       "partial_taken": false,
       "stop_level": 421.13
+    },
+    "KARURVYSYA.NS": {
+      "symbol": "KARURVYSYA.NS",
+      "quantity": 66,
+      "entry_price": 343.0,
+      "current_price": 343.0,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 343.0,
+      "lowest_price": 343.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1792036002.4597995,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -11749,5 +11768,5 @@
     "DHARAN.NS": "Real Estate",
     "HINDPETRO.NS": "Energy"
   },
-  "saved_at": 1791949743.5671606
+  "saved_at": 1792036002.4631612
 }
