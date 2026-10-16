@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 86448.68506550533,
-  "used_capital": 401051.560627982,
-  "total_pnl": -14260.415784243489,
-  "total_pnl_percent": -2.8520831568486975,
-  "exposure": 0.8021031212559641,
+  "available_capital": 62557.18506550533,
+  "used_capital": 424943.060627982,
+  "total_pnl": -14260.41578424349,
+  "total_pnl_percent": -2.852083156848698,
+  "exposure": 0.8498861212559641,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 486524.5589912659,
@@ -925,6 +925,25 @@
       "updated_at": 1792036080.7237267,
       "partial_taken": false,
       "stop_level": 323.6
+    },
+    "GPPL.NS": {
+      "symbol": "GPPL.NS",
+      "quantity": 142,
+      "entry_price": 168.25,
+      "current_price": 168.25,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 168.25,
+      "lowest_price": 168.25,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1792122410.670216,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -11768,5 +11787,5 @@
     "DHARAN.NS": "Real Estate",
     "HINDPETRO.NS": "Energy"
   },
-  "saved_at": 1792036139.429026
+  "saved_at": 1792122410.6759067
 }
