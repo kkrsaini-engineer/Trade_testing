@@ -1,0 +1,18 @@
+{
+  "symbol": "ACMESOLAR.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 13,
+  "entry_price": 436.3999938964844,
+  "exit_price": 403.07,
+  "status": "CLOSED",
+  "realized_pnl": -466.86617681028196,
+  "realized_pnl_percent": -8.22932707008213,
+  "max_profit_percent": 0.3551801386787555,
+  "max_drawdown_percent": 8.065993214663965,
+  "regime": "SIDEWAYS",
+  "confidence": 46.04,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.; costs Rs 33.58 deducted",
+  "id": "trade_1792122533902",
+  "timestamp": 1792122533.9027476
+}

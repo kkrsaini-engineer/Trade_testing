@@ -1,0 +1,18 @@
+{
+  "symbol": "SOUTHBANK.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 1,
+  "entry_price": 45.88999938964844,
+  "exit_price": 51.65,
+  "status": "CLOSED",
+  "realized_pnl": 273.65862628981125,
+  "realized_pnl_percent": -22.503807116953354,
+  "max_profit_percent": 13.83743886425929,
+  "max_drawdown_percent": 0.5883621556755669,
+  "regime": "BULL",
+  "confidence": 62.32,
+  "reasons": "Break-even stop activated.; Final profit target reached.; Excellent risk/reward profile.; Final target achieved (previous session).; Profit protection activated.; costs Rs 16.09 deducted",
+  "id": "trade_1792122506563",
+  "timestamp": 1792122506.5636435
+}

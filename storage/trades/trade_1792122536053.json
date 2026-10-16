@@ -1,0 +1,18 @@
+{
+  "symbol": "URBANCO.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 33,
+  "entry_price": 167.8000030517578,
+  "exit_price": 154.41,
+  "status": "CLOSED",
+  "realized_pnl": -474.9947901481036,
+  "realized_pnl_percent": -8.57793877107365,
+  "max_profit_percent": 0.11918769046774008,
+  "max_drawdown_percent": 8.462453331340052,
+  "regime": "SIDEWAYS",
+  "confidence": 47.44,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 33.12 deducted",
+  "id": "trade_1792122536053",
+  "timestamp": 1792122536.0536048
+}

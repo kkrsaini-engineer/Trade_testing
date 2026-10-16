@@ -1,0 +1,18 @@
+{
+  "symbol": "HINDPETRO.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 75,
+  "entry_price": 329.04998779296875,
+  "exit_price": 346.02,
+  "status": "CLOSED",
+  "realized_pnl": -1354.5635938683474,
+  "realized_pnl_percent": -5.4887854697652,
+  "max_profit_percent": 1.413157291897562,
+  "max_drawdown_percent": 5.97174445921143,
+  "regime": "BEAR",
+  "confidence": 47.84,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 81.81 deducted",
+  "id": "trade_1792122525902",
+  "timestamp": 1792122525.9027674
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "EPACKPEB.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 95,
+  "entry_price": 262.0,
+  "exit_price": 239.61,
+  "status": "CLOSED",
+  "realized_pnl": -2220.051390049998,
+  "realized_pnl_percent": -8.919451145239044,
+  "max_profit_percent": 0.19083969465648853,
+  "max_drawdown_percent": 8.396946564885496,
+  "regime": "SIDEWAYS",
+  "confidence": 47.63,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.; costs Rs 93.00 deducted",
+  "id": "trade_1792122487791",
+  "timestamp": 1792122487.7913017
+}
