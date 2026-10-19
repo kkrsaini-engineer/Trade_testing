@@ -1,0 +1,18 @@
+{
+  "symbol": "PARAGMILK.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 18,
+  "entry_price": 310.0,
+  "exit_price": 282.98,
+  "status": "CLOSED",
+  "realized_pnl": -519.5537319599994,
+  "realized_pnl_percent": -9.31099878064515,
+  "max_profit_percent": 2.258064516129032,
+  "max_drawdown_percent": 11.403225806451621,
+  "regime": "BULL",
+  "confidence": 51.15,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 33.19 deducted",
+  "id": "trade_1792381697966",
+  "timestamp": 1792381697.9665005
+}

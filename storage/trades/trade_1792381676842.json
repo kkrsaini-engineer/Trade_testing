@@ -1,0 +1,18 @@
+{
+  "symbol": "RAYMONDREL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 8,
+  "entry_price": 705.4500122070312,
+  "exit_price": 640.96,
+  "status": "CLOSED",
+  "realized_pnl": -549.2736377411911,
+  "realized_pnl_percent": -9.732681767606122,
+  "max_profit_percent": 1.7790045468573408,
+  "max_drawdown_percent": 9.610888232167715,
+  "regime": "BULL",
+  "confidence": 48.78,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.; costs Rs 33.35 deducted",
+  "id": "trade_1792381676842",
+  "timestamp": 1792381676.842529
+}

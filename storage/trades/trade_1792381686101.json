@@ -1,0 +1,18 @@
+{
+  "symbol": "ANGELONE.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 83,
+  "entry_price": 301.0,
+  "exit_price": 302.1,
+  "status": "CLOSED",
+  "realized_pnl": -5.4156346999984635,
+  "realized_pnl_percent": -0.02167727934995182,
+  "max_profit_percent": 0.36544850498339626,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 55.36,
+  "reasons": "Below preferred risk/reward profile.; Trend reversal detected.; Trend reversal confirmed.; costs Rs 96.72 deducted",
+  "id": "trade_1792381686101",
+  "timestamp": 1792381686.1013918
+}

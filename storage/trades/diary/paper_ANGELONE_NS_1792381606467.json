@@ -6,20 +6,40 @@
   "entry_price": 301.0,
   "buy_probability": 93.23,
   "buy_confidence": 81.0,
-  "entry_thesis_confidence": null,
+  "entry_thesis_confidence": 55.36,
   "entry_reasons": [
     "Morning Executor: gap -3.83% (1.23x ATR, WARNING band)",
     "No company-specific news available. | No macro headlines available."
   ],
-  "daily_log": [],
-  "status": "OPEN",
-  "exit_date": null,
-  "exit_price": null,
-  "exit_reason": null,
-  "holding_days": 0,
-  "max_profit_percent": 0.0,
+  "daily_log": [
+    {
+      "date": "2026-10-19",
+      "current_price": 302.1,
+      "current_pnl": 91.30000000000189,
+      "current_buy_confidence": 55.36,
+      "current_sell_confidence": 30.28,
+      "current_exit_score": 86.17,
+      "recommendation": "FULL_EXIT",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "Trend reversal detected.",
+        "Trend reversal confirmed."
+      ]
+    }
+  ],
+  "status": "CLOSED",
+  "exit_date": "2026-10-19",
+  "exit_price": 302.1,
+  "exit_reason": "Trend reversal confirmed.",
+  "holding_days": 1,
+  "max_profit_percent": 0.36544850498339626,
   "max_drawdown_percent": 0.0,
-  "final_pnl": null,
+  "final_pnl": -5.4156346999984635,
   "created_at": 1792381606.4672492,
-  "updated_at": 1792381606.4672494
+  "updated_at": 1792381686.1016543,
+  "final_pnl_percent": -0.02167727934995182,
+  "exit_score": 86.17,
+  "target1_status": "NOT REACHED",
+  "target2_status": "NOT REACHED",
+  "stop_loss_status": "NOT HIT"
 }

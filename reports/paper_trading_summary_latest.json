@@ -1,49 +1,33 @@
 {
-  "date": "2026-10-16",
-  "opening_balance": 62557.18506550533,
-  "total_capital_in_positions": 325623.37,
-  "remaining_balance": 156374.74130081735,
-  "portfolio_value": 481998.11130081734,
-  "realized_pnl": -18479.307808514037,
-  "portfolio_return_percent": -3.6003777398365315,
+  "date": "2026-10-19",
+  "opening_balance": 56988.94223999581,
+  "total_capital_in_positions": 368841.2,
+  "remaining_balance": 112254.49515159026,
+  "portfolio_value": 481095.6951515903,
+  "realized_pnl": -16253.283957741127,
+  "portfolio_return_percent": -3.780860969681945,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "EPACKPEB.NS",
-      "pnl": -2220.051390049998
+      "symbol": "RAYMONDREL.NS",
+      "pnl": -549.2736377411911
     },
     {
-      "symbol": "BBOX.NS",
-      "pnl": -63.01360799999941
+      "symbol": "ANGELONE.NS",
+      "pnl": -5.4156346999984635
     },
     {
-      "symbol": "SOUTHBANK.NS",
-      "pnl": 273.65862628981125
+      "symbol": "NAZARA.NS",
+      "pnl": 353.8476222797095
     },
     {
-      "symbol": "MSUMI.NS",
-      "pnl": 154.62351302492337
+      "symbol": "PARAGMILK.NS",
+      "pnl": -519.5537319599994
     },
     {
-      "symbol": "WELSPUNLIV.NS",
-      "pnl": -441.841541164966
-    },
-    {
-      "symbol": "HINDPETRO.NS",
-      "pnl": -1354.5635938683474
-    },
-    {
-      "symbol": "ACMESOLAR.NS",
-      "pnl": -466.86617681028196
-    },
-    {
-      "symbol": "URBANCO.NS",
-      "pnl": -474.9947901481036
-    },
-    {
-      "symbol": "MIDHANI.NS",
-      "pnl": -420.99099494821303
+      "symbol": "SHYAMMETL.NS",
+      "pnl": 1097.9678400599987
     }
   ],
-  "open_positions_now": 40
+  "open_positions_now": 39
 }

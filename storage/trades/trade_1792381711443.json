@@ -1,0 +1,18 @@
+{
+  "symbol": "SAMBHV.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 4,
+  "entry_price": 154.0,
+  "exit_price": 168.74,
+  "status": "OPEN",
+  "realized_pnl": 331.45081255999975,
+  "realized_pnl_percent": 6.647859181818188,
+  "max_profit_percent": 13.96103896103896,
+  "max_drawdown_percent": 0.487012987012987,
+  "regime": "BULL",
+  "confidence": 69.13,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved (previous session).; Profit protection activated.; costs Rs 18.01 deducted",
+  "id": "trade_1792381711443",
+  "timestamp": 1792381711.4434009
+}
