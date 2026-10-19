@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_JAMNAAUTO_NS_1792381610822",
+  "symbol": "JAMNAAUTO.NS",
+  "direction": "BUY",
+  "entry_date": "2026-10-19",
+  "entry_price": 140.9499969482422,
+  "buy_probability": 87.86,
+  "buy_confidence": 77.05,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap -1.12% (0.25x ATR, NORMAL band)",
+    "No company-specific news available. | No macro headlines available."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1792381610.8225331,
+  "updated_at": 1792381610.8225331
+}

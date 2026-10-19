@@ -1,0 +1,13 @@
+{
+  "id": "paper_ANGELONE_NS_1792381606467",
+  "symbol": "ANGELONE.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 83,
+  "entry_price": 301.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 81.0,
+  "reasons": "Morning Executor: gap -3.83% (1.23x ATR, WARNING band); No company-specific news available. | No macro headlines available.",
+  "timestamp": 1792381606.4688358
+}

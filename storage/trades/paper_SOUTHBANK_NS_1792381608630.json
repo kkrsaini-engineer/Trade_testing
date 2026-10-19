@@ -1,0 +1,13 @@
+{
+  "id": "paper_SOUTHBANK_NS_1792381608630",
+  "symbol": "SOUTHBANK.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 485,
+  "entry_price": 51.45000076293945,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 78.53,
+  "reasons": "Morning Executor: gap -0.06% (0.02x ATR, NORMAL band); No company-specific news available. | No macro headlines available.",
+  "timestamp": 1792381608.6321044
+}

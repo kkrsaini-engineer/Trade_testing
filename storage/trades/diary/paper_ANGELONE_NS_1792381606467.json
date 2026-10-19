@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_ANGELONE_NS_1792381606467",
+  "symbol": "ANGELONE.NS",
+  "direction": "BUY",
+  "entry_date": "2026-10-19",
+  "entry_price": 301.0,
+  "buy_probability": 93.23,
+  "buy_confidence": 81.0,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap -3.83% (1.23x ATR, WARNING band)",
+    "No company-specific news available. | No macro headlines available."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1792381606.4672492,
+  "updated_at": 1792381606.4672494
+}
