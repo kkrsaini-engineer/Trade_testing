@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 112254.49515159026,
-  "used_capital": 370076.7004137486,
+  "available_capital": 63202.395542215265,
+  "used_capital": 419128.8000231236,
   "total_pnl": -16253.283957741127,
   "total_pnl_percent": -3.2506567915482254,
-  "exposure": 0.7401534008274973,
+  "exposure": 0.8382576000462473,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 481520.69219148596,
@@ -754,6 +754,44 @@
       "updated_at": 1792381672.474912,
       "partial_taken": false,
       "stop_level": 161.83
+    },
+    "INDHOTEL.NS": {
+      "symbol": "INDHOTEL.NS",
+      "quantity": 32,
+      "entry_price": 760.2999877929688,
+      "current_price": 760.2999877929688,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 760.2999877929688,
+      "lowest_price": 760.2999877929688,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1792554404.321975,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "APOLLO.NS": {
+      "symbol": "APOLLO.NS",
+      "quantity": 58,
+      "entry_price": 426.25,
+      "current_price": 426.25,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 426.25,
+      "lowest_price": 426.25,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1792554406.3320212,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -11867,5 +11905,5 @@
     "JAMNAAUTO.NS": "Consumer Cyclical",
     "ANGELONE.NS": "Financial Services"
   },
-  "saved_at": 1792381720.882834
+  "saved_at": 1792554406.337979
 }

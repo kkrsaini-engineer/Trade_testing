@@ -1,0 +1,13 @@
+{
+  "id": "paper_INDHOTEL_NS_1792554404321",
+  "symbol": "INDHOTEL.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 32,
+  "entry_price": 760.2999877929688,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 78.51,
+  "reasons": "Morning Executor: gap -1.53% (0.66x ATR, NORMAL band); No company-specific news available. | No macro headlines available.",
+  "timestamp": 1792554404.3234324
+}
