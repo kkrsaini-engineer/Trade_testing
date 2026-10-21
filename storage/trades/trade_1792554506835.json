@@ -1,0 +1,18 @@
+{
+  "symbol": "WESTLIFE.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 9,
+  "entry_price": 586.4000244140625,
+  "exit_price": 549.32,
+  "status": "CLOSED",
+  "realized_pnl": -366.17271781768045,
+  "realized_pnl_percent": -6.938242810605541,
+  "max_profit_percent": 4.791946523879379,
+  "max_drawdown_percent": 7.401095260428798,
+  "regime": "SIDEWAYS",
+  "confidence": 48.49,
+  "reasons": "Healthy risk/reward profile.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 32.45 deducted",
+  "id": "trade_1792554506835",
+  "timestamp": 1792554506.8350642
+}

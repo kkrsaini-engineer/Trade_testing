@@ -1,0 +1,18 @@
+{
+  "symbol": "BEPL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 94,
+  "entry_price": 124.95999908447266,
+  "exit_price": 118.31,
+  "status": "CLOSED",
+  "realized_pnl": -677.9847476150746,
+  "realized_pnl_percent": -5.771930018306904,
+  "max_profit_percent": 5.473754815460049,
+  "max_drawdown_percent": 7.962545631515261,
+  "regime": "SIDEWAYS",
+  "confidence": 45.69,
+  "reasons": "Healthy risk/reward profile.; Active stop-loss triggered.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 52.88 deducted",
+  "id": "trade_1792554480669",
+  "timestamp": 1792554480.669427
+}

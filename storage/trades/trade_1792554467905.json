@@ -1,0 +1,18 @@
+{
+  "symbol": "MARKSANS.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 17,
+  "entry_price": 326.1000061035156,
+  "exit_price": 302.23,
+  "status": "CLOSED",
+  "realized_pnl": -438.99065672501587,
+  "realized_pnl_percent": -7.918730243493695,
+  "max_profit_percent": 0.045996287542773504,
+  "max_drawdown_percent": 7.3903727851711345,
+  "regime": "SIDEWAYS",
+  "confidence": 51.79,
+  "reasons": "Below preferred risk/reward profile.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 33.20 deducted",
+  "id": "trade_1792554467905",
+  "timestamp": 1792554467.9055662
+}

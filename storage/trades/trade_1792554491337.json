@@ -1,0 +1,18 @@
+{
+  "symbol": "MFSL.NS",
+  "direction": "SELL",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 2,
+  "entry_price": 1350.0,
+  "exit_price": 1265.78,
+  "status": "OPEN",
+  "realized_pnl": 160.00889516000007,
+  "realized_pnl_percent": 5.926255376296298,
+  "max_profit_percent": 6.474075882523148,
+  "max_drawdown_percent": 0.8444462528935185,
+  "regime": "BEAR",
+  "confidence": 54.49,
+  "reasons": "Break-even stop activated.; Excellent risk/reward profile.; Partial target achieved (previous session).; costs Rs 8.43 deducted",
+  "id": "trade_1792554491337",
+  "timestamp": 1792554491.3376217
+}

@@ -1,33 +1,37 @@
 {
-  "date": "2026-10-19",
-  "opening_balance": 56988.94223999581,
-  "total_capital_in_positions": 368841.2,
-  "remaining_balance": 112254.49515159026,
-  "portfolio_value": 481095.6951515903,
-  "realized_pnl": -16253.283957741127,
-  "portfolio_return_percent": -3.780860969681945,
+  "date": "2026-10-21",
+  "opening_balance": 63202.395542215265,
+  "total_capital_in_positions": 338076.89999999997,
+  "remaining_balance": 139251.0478821533,
+  "portfolio_value": 477327.94788215327,
+  "realized_pnl": -19847.471217412436,
+  "portfolio_return_percent": -4.534410423569346,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "RAYMONDREL.NS",
-      "pnl": -549.2736377411911
+      "symbol": "MARKSANS.NS",
+      "pnl": -438.99065672501587
     },
     {
-      "symbol": "ANGELONE.NS",
-      "pnl": -5.4156346999984635
+      "symbol": "ICIL.NS",
+      "pnl": -519.26815068
     },
     {
-      "symbol": "NAZARA.NS",
-      "pnl": 353.8476222797095
+      "symbol": "BEPL.NS",
+      "pnl": -677.9847476150746
     },
     {
-      "symbol": "PARAGMILK.NS",
-      "pnl": -519.5537319599994
+      "symbol": "GANDHAR.NS",
+      "pnl": -1793.7715265463928
     },
     {
-      "symbol": "SHYAMMETL.NS",
-      "pnl": 1097.9678400599987
+      "symbol": "AUROPHARMA.NS",
+      "pnl": -221.88793642410656
+    },
+    {
+      "symbol": "WESTLIFE.NS",
+      "pnl": -366.17271781768045
     }
   ],
-  "open_positions_now": 39
+  "open_positions_now": 35
 }
