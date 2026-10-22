@@ -1,0 +1,18 @@
+{
+  "symbol": "RKFORGE.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 7,
+  "entry_price": 715.2999877929688,
+  "exit_price": 630.5,
+  "status": "CLOSED",
+  "realized_pnl": -624.7792828064577,
+  "realized_pnl_percent": -12.477867297811065,
+  "max_profit_percent": 0.09786274555814148,
+  "max_drawdown_percent": 12.407380023422556,
+  "regime": "SIDEWAYS",
+  "confidence": 47.67,
+  "reasons": "Healthy risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.; costs Rs 31.18 deducted",
+  "id": "trade_1792640914997",
+  "timestamp": 1792640914.9979498
+}

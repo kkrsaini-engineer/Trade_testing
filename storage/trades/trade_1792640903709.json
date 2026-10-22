@@ -1,0 +1,18 @@
+{
+  "symbol": "YATRA.NS",
+  "direction": "SELL",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 28,
+  "entry_price": 101.37000274658203,
+  "exit_price": 89.8,
+  "status": "OPEN",
+  "realized_pnl": 315.3450191459414,
+  "realized_pnl_percent": 11.110113255604888,
+  "max_profit_percent": 12.0745806599031,
+  "max_drawdown_percent": 0.6116159617134911,
+  "regime": "BEAR",
+  "confidence": 59.4,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved.; Profit protection activated.; costs Rs 8.62 deducted",
+  "id": "trade_1792640903709",
+  "timestamp": 1792640903.7096531
+}

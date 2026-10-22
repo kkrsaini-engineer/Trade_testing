@@ -1,0 +1,18 @@
+{
+  "symbol": "PETRONET.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 16,
+  "entry_price": 287.0,
+  "exit_price": 298.45,
+  "status": "OPEN",
+  "realized_pnl": 152.16507920000004,
+  "realized_pnl_percent": 3.3136994599303145,
+  "max_profit_percent": 4.250875333460366,
+  "max_drawdown_percent": 1.2717770034843126,
+  "regime": "BULL",
+  "confidence": 65.93,
+  "reasons": "Excellent risk/reward profile.; Partial target achieved (previous session).; costs Rs 31.03 deducted",
+  "id": "trade_1792640878165",
+  "timestamp": 1792640878.165248
+}

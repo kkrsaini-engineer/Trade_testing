@@ -1,0 +1,18 @@
+{
+  "symbol": "ETERNAL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 17,
+  "entry_price": 328.0,
+  "exit_price": 312.13,
+  "status": "CLOSED",
+  "realized_pnl": -303.30412118999993,
+  "realized_pnl_percent": -5.439456979734576,
+  "max_profit_percent": 0.18292869009622714,
+  "max_drawdown_percent": 6.859756097560976,
+  "regime": "SIDEWAYS",
+  "confidence": 46.34,
+  "reasons": "Healthy risk/reward profile.; Active stop-loss triggered.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 33.51 deducted",
+  "id": "trade_1792640893869",
+  "timestamp": 1792640893.869793
+}

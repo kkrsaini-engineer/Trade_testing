@@ -1,0 +1,18 @@
+{
+  "symbol": "HERITGFOOD.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 14,
+  "entry_price": 399.6499938964844,
+  "exit_price": 366.95,
+  "status": "CLOSED",
+  "realized_pnl": -491.08634300645735,
+  "realized_pnl_percent": -8.777079060363583,
+  "max_profit_percent": 7.4064823109149085,
+  "max_drawdown_percent": 8.432376932604987,
+  "regime": "SIDEWAYS",
+  "confidence": 49.17,
+  "reasons": "Excellent risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.; costs Rs 33.29 deducted",
+  "id": "trade_1792640897036",
+  "timestamp": 1792640897.0363345
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "IRISDOREME.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 216,
+  "entry_price": 60.349998474121094,
+  "exit_price": 56.12,
+  "status": "CLOSED",
+  "realized_pnl": -970.28243313348,
+  "realized_pnl_percent": -7.443327945517912,
+  "max_profit_percent": 9.362057446118586,
+  "max_drawdown_percent": 5.484670352627212,
+  "regime": "SIDEWAYS",
+  "confidence": 44.39,
+  "reasons": "Excellent risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.; costs Rs 56.60 deducted",
+  "id": "trade_1792640911652",
+  "timestamp": 1792640911.652089
+}

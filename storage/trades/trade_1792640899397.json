@@ -1,0 +1,18 @@
+{
+  "symbol": "APOLLO.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 58,
+  "entry_price": 426.25,
+  "exit_price": 394.17,
+  "status": "CLOSED",
+  "realized_pnl": -1953.5107050399993,
+  "realized_pnl_percent": -7.901752270361004,
+  "max_profit_percent": 0.4574808696847507,
+  "max_drawdown_percent": 7.542520562225073,
+  "regime": "SIDEWAYS",
+  "confidence": 47.95,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 92.87 deducted",
+  "id": "trade_1792640899397",
+  "timestamp": 1792640899.397869
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "SONACOMS.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 2,
+  "entry_price": 788.0,
+  "exit_price": 765.07,
+  "status": "CLOSED",
+  "realized_pnl": -66.80674945999999,
+  "realized_pnl_percent": -4.239006945431472,
+  "max_profit_percent": 5.0761421319796955,
+  "max_drawdown_percent": 4.1307106598984715,
+  "regime": "SIDEWAYS",
+  "confidence": 46.17,
+  "reasons": "Excellent risk/reward profile.; Active stop-loss triggered.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 20.95 deducted",
+  "id": "trade_1792640875836",
+  "timestamp": 1792640875.8361058
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "BLACKBUCK.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 22,
+  "entry_price": 612.1500244140625,
+  "exit_price": 550.5,
+  "status": "CLOSED",
+  "realized_pnl": -1413.6156367165522,
+  "realized_pnl_percent": -10.496651744136178,
+  "max_profit_percent": 1.1190027465071422,
+  "max_drawdown_percent": 10.201751518974184,
+  "regime": "SIDEWAYS",
+  "confidence": 46.14,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.; costs Rs 57.32 deducted",
+  "id": "trade_1792640900477",
+  "timestamp": 1792640900.4774914
+}

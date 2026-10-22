@@ -1,0 +1,18 @@
+{
+  "symbol": "GREAVESCOT.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 26,
+  "entry_price": 211.10000610351562,
+  "exit_price": 195.16,
+  "status": "CLOSED",
+  "realized_pnl": -447.4495365994361,
+  "realized_pnl_percent": -8.152343469416019,
+  "max_profit_percent": 2.321171840270625,
+  "max_drawdown_percent": 10.516345552652215,
+  "regime": "SIDEWAYS",
+  "confidence": 45.7,
+  "reasons": "Below preferred risk/reward profile.; Trend reversal detected.; Active stop-loss triggered.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 33.01 deducted",
+  "id": "trade_1792640902627",
+  "timestamp": 1792640902.627264
+}

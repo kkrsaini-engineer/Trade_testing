@@ -1,0 +1,18 @@
+{
+  "symbol": "KARURVYSYA.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 33,
+  "entry_price": 343.0,
+  "exit_price": 386.93,
+  "status": "CLOSED",
+  "realized_pnl": 2087.834661150001,
+  "realized_pnl_percent": 12.324332494831708,
+  "max_profit_percent": 13.935856499407798,
+  "max_drawdown_percent": 2.0408163265306123,
+  "regime": "BULL",
+  "confidence": 67.91,
+  "reasons": "Excellent risk/reward profile.; High market volatility.; Final target achieved (previous session).; costs Rs 54.70 deducted",
+  "id": "trade_1792640912741",
+  "timestamp": 1792640912.7416687
+}

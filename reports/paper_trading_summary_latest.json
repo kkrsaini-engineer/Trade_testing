@@ -1,37 +1,61 @@
 {
-  "date": "2026-10-21",
-  "opening_balance": 63202.395542215265,
-  "total_capital_in_positions": 338076.89999999997,
-  "remaining_balance": 139251.0478821533,
-  "portfolio_value": 477327.94788215327,
-  "realized_pnl": -19847.471217412436,
-  "portfolio_return_percent": -4.534410423569346,
+  "date": "2026-10-22",
+  "opening_balance": 54737.248870922835,
+  "total_capital_in_positions": 280330.2,
+  "remaining_balance": 186074.41647768044,
+  "portfolio_value": 466404.61647768045,
+  "realized_pnl": -26246.822897764185,
+  "portfolio_return_percent": -6.71907670446391,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "MARKSANS.NS",
-      "pnl": -438.99065672501587
+      "symbol": "SONACOMS.NS",
+      "pnl": -66.80674945999999
     },
     {
-      "symbol": "ICIL.NS",
-      "pnl": -519.26815068
+      "symbol": "SSWL.NS",
+      "pnl": -497.83947450943606
     },
     {
-      "symbol": "BEPL.NS",
-      "pnl": -677.9847476150746
+      "symbol": "ETERNAL.NS",
+      "pnl": -303.30412118999993
     },
     {
-      "symbol": "GANDHAR.NS",
-      "pnl": -1793.7715265463928
+      "symbol": "HERITGFOOD.NS",
+      "pnl": -491.08634300645735
     },
     {
-      "symbol": "AUROPHARMA.NS",
-      "pnl": -221.88793642410656
+      "symbol": "APOLLO.NS",
+      "pnl": -1953.5107050399993
     },
     {
-      "symbol": "WESTLIFE.NS",
-      "pnl": -366.17271781768045
+      "symbol": "BLACKBUCK.NS",
+      "pnl": -1413.6156367165522
+    },
+    {
+      "symbol": "GREAVESCOT.NS",
+      "pnl": -447.4495365994361
+    },
+    {
+      "symbol": "GAEL.NS",
+      "pnl": -2067.3796082581152
+    },
+    {
+      "symbol": "IRISDOREME.NS",
+      "pnl": -970.28243313348
+    },
+    {
+      "symbol": "KARURVYSYA.NS",
+      "pnl": 2087.834661150001
+    },
+    {
+      "symbol": "MCX.NS",
+      "pnl": -685.9037790000007
+    },
+    {
+      "symbol": "RKFORGE.NS",
+      "pnl": -624.7792828064577
     }
   ],
-  "open_positions_now": 35
+  "open_positions_now": 27
 }

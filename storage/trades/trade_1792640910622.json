@@ -1,0 +1,18 @@
+{
+  "symbol": "ICICIPRULI.NS",
+  "direction": "SELL",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 6,
+  "entry_price": 458.0,
+  "exit_price": 427.0,
+  "status": "OPEN",
+  "realized_pnl": 177.44361000000004,
+  "realized_pnl_percent": 6.457191048034935,
+  "max_profit_percent": 7.521834061135369,
+  "max_drawdown_percent": 1.7139737991266426,
+  "regime": "BEAR",
+  "confidence": 55.0,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved.; costs Rs 8.56 deducted",
+  "id": "trade_1792640910622",
+  "timestamp": 1792640910.622355
+}
