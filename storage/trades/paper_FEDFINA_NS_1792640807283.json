@@ -1,0 +1,13 @@
+{
+  "id": "paper_FEDFINA_NS_1792640807283",
+  "symbol": "FEDFINA.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 162,
+  "entry_price": 153.89999389648438,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 79.21,
+  "reasons": "Morning Executor: gap -4.26% (1.20x ATR, WARNING band); No company-specific news available. | No macro headlines available.",
+  "timestamp": 1792640807.3570912
+}

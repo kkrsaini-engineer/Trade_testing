@@ -1,0 +1,13 @@
+{
+  "id": "paper_SUNTV_NS_1792640803054",
+  "symbol": "SUNTV.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 39,
+  "entry_price": 626.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 82.28,
+  "reasons": "Morning Executor: gap -2.18% (0.53x ATR, NORMAL band); No company-specific news available. | No macro headlines available.",
+  "timestamp": 1792640803.0555358
+}

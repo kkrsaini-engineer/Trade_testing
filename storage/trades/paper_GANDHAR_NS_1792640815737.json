@@ -1,0 +1,13 @@
+{
+  "id": "paper_GANDHAR_NS_1792640815737",
+  "symbol": "GANDHAR.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 40,
+  "entry_price": 280.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 78.91,
+  "reasons": "Morning Executor: gap -5.96% (1.39x ATR, WARNING band); No company-specific news available. | No macro headlines available.",
+  "timestamp": 1792640815.7498744
+}

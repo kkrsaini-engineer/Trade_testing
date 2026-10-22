@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_FEDFINA_NS_1792640807283",
+  "symbol": "FEDFINA.NS",
+  "direction": "BUY",
+  "entry_date": "2026-10-22",
+  "entry_price": 153.89999389648438,
+  "buy_probability": 90.83,
+  "buy_confidence": 79.21,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap -4.26% (1.20x ATR, WARNING band)",
+    "No company-specific news available. | No macro headlines available."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1792640807.2838013,
+  "updated_at": 1792640807.2838016
+}
