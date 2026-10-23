@@ -1,0 +1,18 @@
+{
+  "symbol": "LAURUSLABS.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 2,
+  "entry_price": 2055.0,
+  "exit_price": 1966.54,
+  "status": "CLOSED",
+  "realized_pnl": -205.84480011999995,
+  "realized_pnl_percent": -5.0083892973236,
+  "max_profit_percent": 1.654501216545012,
+  "max_drawdown_percent": 4.78832235591545,
+  "regime": "BULL",
+  "confidence": 51.17,
+  "reasons": "Healthy risk/reward profile.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 28.92 deducted",
+  "id": "trade_1792727268269",
+  "timestamp": 1792727268.2694173
+}

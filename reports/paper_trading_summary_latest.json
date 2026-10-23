@@ -1,61 +1,33 @@
 {
-  "date": "2026-10-22",
-  "opening_balance": 54737.248870922835,
-  "total_capital_in_positions": 280330.2,
-  "remaining_balance": 186074.41647768044,
-  "portfolio_value": 466404.61647768045,
-  "realized_pnl": -26246.822897764185,
-  "portfolio_return_percent": -6.71907670446391,
+  "date": "2026-10-23",
+  "opening_balance": 47388.916233539814,
+  "total_capital_in_positions": 340480.73000000004,
+  "remaining_balance": 126674.11969212652,
+  "portfolio_value": 467154.84969212656,
+  "realized_pnl": -30381.14978677274,
+  "portfolio_return_percent": -6.569030061574688,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "SONACOMS.NS",
-      "pnl": -66.80674945999999
+      "symbol": "LAURUSLABS.NS",
+      "pnl": -205.84480011999995
     },
     {
-      "symbol": "SSWL.NS",
-      "pnl": -497.83947450943606
+      "symbol": "YATRA.NS",
+      "pnl": 744.2815708918827
     },
     {
-      "symbol": "ETERNAL.NS",
-      "pnl": -303.30412118999993
+      "symbol": "JAMNAAUTO.NS",
+      "pnl": -2360.3426046965365
     },
     {
-      "symbol": "HERITGFOOD.NS",
-      "pnl": -491.08634300645735
+      "symbol": "NYKAA.NS",
+      "pnl": -1243.1076095877743
     },
     {
-      "symbol": "APOLLO.NS",
-      "pnl": -1953.5107050399993
-    },
-    {
-      "symbol": "BLACKBUCK.NS",
-      "pnl": -1413.6156367165522
-    },
-    {
-      "symbol": "GREAVESCOT.NS",
-      "pnl": -447.4495365994361
-    },
-    {
-      "symbol": "GAEL.NS",
-      "pnl": -2067.3796082581152
-    },
-    {
-      "symbol": "IRISDOREME.NS",
-      "pnl": -970.28243313348
-    },
-    {
-      "symbol": "KARURVYSYA.NS",
-      "pnl": 2087.834661150001
-    },
-    {
-      "symbol": "MCX.NS",
-      "pnl": -685.9037790000007
-    },
-    {
-      "symbol": "RKFORGE.NS",
-      "pnl": -624.7792828064577
+      "symbol": "GATEWAY.NS",
+      "pnl": 381.3924221005501
     }
   ],
-  "open_positions_now": 27
+  "open_positions_now": 28
 }
