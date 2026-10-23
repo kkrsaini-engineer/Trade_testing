@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_SHYAMMETL_NS_1792727205402",
+  "symbol": "SHYAMMETL.NS",
+  "direction": "BUY",
+  "entry_date": "2026-10-23",
+  "entry_price": 1193.0999755859375,
+  "buy_probability": 86.92,
+  "buy_confidence": 74.38,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap -0.21% (0.06x ATR, NORMAL band)",
+    "No company-specific news available. | No macro headlines available."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1792727205.4021404,
+  "updated_at": 1792727205.4021404
+}

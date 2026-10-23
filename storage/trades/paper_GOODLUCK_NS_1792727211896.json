@@ -1,0 +1,13 @@
+{
+  "id": "paper_GOODLUCK_NS_1792727211896",
+  "symbol": "GOODLUCK.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 44,
+  "entry_price": 562.5499877929688,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 71.92,
+  "reasons": "Morning Executor: gap -2.89% (0.59x ATR, NORMAL band); No company-specific news available. | No macro headlines available.",
+  "timestamp": 1792727211.8998222
+}

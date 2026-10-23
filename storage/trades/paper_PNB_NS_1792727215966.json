@@ -1,0 +1,13 @@
+{
+  "id": "paper_PNB_NS_1792727215966",
+  "symbol": "PNB.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 132,
+  "entry_price": 122.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 68.65,
+  "reasons": "Morning Executor: gap -0.41% (0.15x ATR, NORMAL band); No company-specific news available. | No macro headlines available.",
+  "timestamp": 1792727215.9681349
+}

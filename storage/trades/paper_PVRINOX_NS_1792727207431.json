@@ -1,0 +1,13 @@
+{
+  "id": "paper_PVRINOX_NS_1792727207431",
+  "symbol": "PVRINOX.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 17,
+  "entry_price": 1419.9000244140625,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 73.8,
+  "reasons": "Morning Executor: gap +0.14% (0.04x ATR, NORMAL band); No company-specific news available. | No macro headlines available.",
+  "timestamp": 1792727207.4327395
+}
