@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 126674.11969212652,
-  "used_capital": 342041.3191996068,
-  "total_pnl": -30381.14978677274,
-  "total_pnl_percent": -6.076229957354548,
-  "exposure": 0.6840826383992136,
+  "available_capital": 51845.6779673493,
+  "used_capital": 416869.760924384,
+  "total_pnl": -30381.149786772738,
+  "total_pnl_percent": -6.076229957354547,
+  "exposure": 0.833739521848768,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 473753.1771022358,
@@ -545,6 +545,63 @@
       "updated_at": 1792727297.328167,
       "partial_taken": false,
       "stop_level": 115.84
+    },
+    "SAGILITY.NS": {
+      "symbol": "SAGILITY.NS",
+      "quantity": 566,
+      "entry_price": 44.150001525878906,
+      "current_price": 44.150001525878906,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 44.150001525878906,
+      "lowest_price": 44.150001525878906,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1792986408.9456344,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "MGEL.NS": {
+      "symbol": "MGEL.NS",
+      "quantity": 1469,
+      "entry_price": 17.010000228881836,
+      "current_price": 17.010000228881836,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 17.010000228881836,
+      "lowest_price": 17.010000228881836,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1792986410.673466,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "THELEELA.NS": {
+      "symbol": "THELEELA.NS",
+      "quantity": 43,
+      "entry_price": 577.9500122070312,
+      "current_price": 577.9500122070312,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 577.9500122070312,
+      "lowest_price": 577.9500122070312,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1792986412.516019,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -12096,5 +12153,5 @@
     "ANGELONE.NS": "Financial Services",
     "SUNTV.NS": "Communication Services"
   },
-  "saved_at": 1792727305.3580894
+  "saved_at": 1792986412.5193377
 }

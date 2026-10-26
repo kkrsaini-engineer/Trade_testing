@@ -1,0 +1,13 @@
+{
+  "id": "paper_MGEL_NS_1792986410673",
+  "symbol": "MGEL.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 1469,
+  "entry_price": 17.010000228881836,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 78.97,
+  "reasons": "Morning Executor: gap -0.12% (0.03x ATR, NORMAL band); No company-specific news available. | No macro headlines available.",
+  "timestamp": 1792986410.675073
+}
