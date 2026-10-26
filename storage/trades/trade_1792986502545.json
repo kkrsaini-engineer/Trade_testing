@@ -1,0 +1,18 @@
+{
+  "symbol": "ARIS.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 39,
+  "entry_price": 142.5,
+  "exit_price": 129.17,
+  "status": "CLOSED",
+  "realized_pnl": -552.93953007,
+  "realized_pnl_percent": -9.949429241025642,
+  "max_profit_percent": 3.684210526315789,
+  "max_drawdown_percent": 9.642109118009868,
+  "regime": "SIDEWAYS",
+  "confidence": 50.92,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 33.07 deducted",
+  "id": "trade_1792986502545",
+  "timestamp": 1792986502.545845
+}

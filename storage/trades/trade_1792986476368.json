@@ -1,0 +1,18 @@
+{
+  "symbol": "CASTROLIND.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 28,
+  "entry_price": 196.5,
+  "exit_price": 190.05,
+  "status": "CLOSED",
+  "realized_pnl": -214.01251259999935,
+  "realized_pnl_percent": -3.889722148309694,
+  "max_profit_percent": 1.6386774660066792,
+  "max_drawdown_percent": 4.223918575063619,
+  "regime": "SIDEWAYS",
+  "confidence": 46.45,
+  "reasons": "Healthy risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.; costs Rs 33.41 deducted",
+  "id": "trade_1792986476368",
+  "timestamp": 1792986476.368405
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "GPPL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 71,
+  "entry_price": 168.25,
+  "exit_price": 158.48,
+  "status": "CLOSED",
+  "realized_pnl": -890.1976176200001,
+  "realized_pnl_percent": -6.254051213778962,
+  "max_profit_percent": 0.6359627484212481,
+  "max_drawdown_percent": 7.69687782956445,
+  "regime": "SIDEWAYS",
+  "confidence": 48.05,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 53.42 deducted",
+  "id": "trade_1792986514117",
+  "timestamp": 1792986514.1170301
+}

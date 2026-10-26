@@ -1,33 +1,69 @@
 {
-  "date": "2026-10-23",
-  "opening_balance": 47388.916233539814,
-  "total_capital_in_positions": 340480.73000000004,
-  "remaining_balance": 126674.11969212652,
-  "portfolio_value": 467154.84969212656,
-  "realized_pnl": -30381.14978677274,
-  "portfolio_return_percent": -6.569030061574688,
+  "date": "2026-10-26",
+  "opening_balance": 51845.6779673493,
+  "total_capital_in_positions": 251034.07999999996,
+  "remaining_balance": 209395.5726398182,
+  "portfolio_value": 460429.65263981814,
+  "realized_pnl": -36804.24718050359,
+  "portfolio_return_percent": -7.914069472036371,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "LAURUSLABS.NS",
-      "pnl": -205.84480011999995
+      "symbol": "CASTROLIND.NS",
+      "pnl": -214.01251259999935
     },
     {
-      "symbol": "YATRA.NS",
-      "pnl": 744.2815708918827
+      "symbol": "PETRONET.NS",
+      "pnl": 121.41210320000027
     },
     {
-      "symbol": "JAMNAAUTO.NS",
-      "pnl": -2360.3426046965365
+      "symbol": "SUNTV.NS",
+      "pnl": -2110.661104829999
     },
     {
-      "symbol": "NYKAA.NS",
-      "pnl": -1243.1076095877743
+      "symbol": "SWANCORP.NS",
+      "pnl": 551.709344582446
     },
     {
-      "symbol": "GATEWAY.NS",
-      "pnl": 381.3924221005501
+      "symbol": "FEDFINA.NS",
+      "pnl": -1172.050895260437
+    },
+    {
+      "symbol": "MFSL.NS",
+      "pnl": 436.73459260000027
+    },
+    {
+      "symbol": "MUFIN.NS",
+      "pnl": 30.48193590442014
+    },
+    {
+      "symbol": "SAMBHV.NS",
+      "pnl": 313.0352525599998
+    },
+    {
+      "symbol": "ARIS.NS",
+      "pnl": -552.93953007
+    },
+    {
+      "symbol": "SHYAMMETL.NS",
+      "pnl": -1978.0504148940418
+    },
+    {
+      "symbol": "KARURVYSYA.NS",
+      "pnl": -1160.8448379354245
+    },
+    {
+      "symbol": "GPPL.NS",
+      "pnl": -890.1976176200001
+    },
+    {
+      "symbol": "IIFLCAPS.NS",
+      "pnl": -167.51410511999984
+    },
+    {
+      "symbol": "SINDHUTRAD.NS",
+      "pnl": 645.7899714117948
     }
   ],
-  "open_positions_now": 28
+  "open_positions_now": 17
 }

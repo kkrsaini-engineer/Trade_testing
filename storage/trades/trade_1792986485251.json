@@ -1,0 +1,18 @@
+{
+  "symbol": "SWANCORP.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 10,
+  "entry_price": 271.8500061035156,
+  "exit_price": 235.5,
+  "status": "CLOSED",
+  "realized_pnl": 551.709344582446,
+  "realized_pnl_percent": 13.071130640545817,
+  "max_profit_percent": 15.357733699701425,
+  "max_drawdown_percent": 1.0299752547743422,
+  "regime": "BEAR",
+  "confidence": 54.04,
+  "reasons": "Break-even stop activated.; Excellent risk/reward profile.; Final target achieved (previous session).; Profit protection activated.; costs Rs 8.16 deducted",
+  "id": "trade_1792986485251",
+  "timestamp": 1792986485.2518508
+}

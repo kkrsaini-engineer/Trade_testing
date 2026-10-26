@@ -1,0 +1,18 @@
+{
+  "symbol": "DHARAN.NS",
+  "direction": "SELL",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 89286,
+  "entry_price": 0.14000000059604645,
+  "exit_price": 0.12,
+  "status": "OPEN",
+  "realized_pnl": 1748.3860050966998,
+  "realized_pnl_percent": 13.987043222685614,
+  "max_profit_percent": 14.285716566504256,
+  "max_drawdown_percent": 7.1428609441737585,
+  "regime": "BEAR",
+  "confidence": 53.88,
+  "reasons": "Partial profit target reached.; Healthy risk/reward profile.; Partial target achieved (previous session).; costs Rs 37.33 deducted",
+  "id": "trade_1792986515144",
+  "timestamp": 1792986515.1442466
+}

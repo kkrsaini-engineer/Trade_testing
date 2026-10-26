@@ -1,0 +1,18 @@
+{
+  "symbol": "SINDHUTRAD.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 130,
+  "entry_price": 21.84000015258789,
+  "exit_price": 18.55,
+  "status": "CLOSED",
+  "realized_pnl": 645.7899714117948,
+  "realized_pnl_percent": 14.76674642775088,
+  "max_profit_percent": 16.62088389539276,
+  "max_drawdown_percent": 0.4120872105463091,
+  "regime": "BEAR",
+  "confidence": 57.91,
+  "reasons": "Break-even stop activated.; Final profit target reached.; Excellent risk/reward profile.; Final target achieved (previous session).; Profit protection activated.; costs Rs 8.44 deducted",
+  "id": "trade_1792986518158",
+  "timestamp": 1792986518.158115
+}

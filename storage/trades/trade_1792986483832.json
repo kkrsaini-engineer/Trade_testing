@@ -1,0 +1,18 @@
+{
+  "symbol": "SUNTV.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 39,
+  "entry_price": 626.0,
+  "exit_price": 574.23,
+  "status": "CLOSED",
+  "realized_pnl": -2110.661104829999,
+  "realized_pnl_percent": -8.64529001732612,
+  "max_profit_percent": 0.607028753993603,
+  "max_drawdown_percent": 8.594247251272963,
+  "regime": "BULL",
+  "confidence": 65.13,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 91.63 deducted",
+  "id": "trade_1792986483832",
+  "timestamp": 1792986483.832165
+}

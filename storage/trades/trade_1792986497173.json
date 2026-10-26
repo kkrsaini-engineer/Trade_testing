@@ -1,0 +1,18 @@
+{
+  "symbol": "SAMBHV.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 5,
+  "entry_price": 154.0,
+  "exit_price": 154.0,
+  "status": "CLOSED",
+  "realized_pnl": 313.0352525599998,
+  "realized_pnl_percent": -2.391631168831165,
+  "max_profit_percent": 13.96103896103896,
+  "max_drawdown_percent": 1.948051948051948,
+  "regime": "BULL",
+  "confidence": 61.47,
+  "reasons": "Excellent risk/reward profile.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 18.42 deducted",
+  "id": "trade_1792986497173",
+  "timestamp": 1792986497.1733036
+}
