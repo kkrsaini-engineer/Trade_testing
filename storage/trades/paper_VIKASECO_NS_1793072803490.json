@@ -1,0 +1,13 @@
+{
+  "id": "paper_VIKASECO_NS_1793072803490",
+  "symbol": "VIKASECO.NS",
+  "direction": "SELL",
+  "action": "OPEN",
+  "quantity": 25000,
+  "entry_price": 1.0,
+  "status": "OPEN",
+  "regime": "BEAR",
+  "confidence": 72.47,
+  "reasons": "Morning Executor: gap +2.04% (0.67x ATR, NORMAL band); No company-specific news available. | No macro headlines available.",
+  "timestamp": 1793072803.4921107
+}

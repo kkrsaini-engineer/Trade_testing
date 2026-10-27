@@ -1,0 +1,13 @@
+{
+  "id": "paper_BAJAJHFL_NS_1793072811534",
+  "symbol": "BAJAJHFL.NS",
+  "direction": "SELL",
+  "action": "OPEN",
+  "quantity": 318,
+  "entry_price": 78.56999969482422,
+  "status": "OPEN",
+  "regime": "BEAR",
+  "confidence": 71.11,
+  "reasons": "Morning Executor: gap +1.45% (0.57x ATR, NORMAL band); No company-specific news available. | No macro headlines available.",
+  "timestamp": 1793072811.5368133
+}

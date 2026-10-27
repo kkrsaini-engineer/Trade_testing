@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_SITINET_NS_1793072820583",
+  "symbol": "SITINET.NS",
+  "direction": "SELL",
+  "entry_date": "2026-10-27",
+  "entry_price": 0.23999999463558197,
+  "buy_probability": 78.95,
+  "buy_confidence": 67.51,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap -0.00% (0.00x ATR, NORMAL band)",
+    "No company-specific news available. | No macro headlines available."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1793072820.5836399,
+  "updated_at": 1793072820.5836399
+}
