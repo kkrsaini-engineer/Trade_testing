@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 62059.05887507979,
-  "used_capital": 400130.5406666845,
-  "total_pnl": -32117.381326127645,
-  "total_pnl_percent": -6.4234762652255295,
-  "exposure": 0.800261081333369,
+  "available_capital": 37749.05887507979,
+  "used_capital": 424440.5406666845,
+  "total_pnl": -32117.381326127637,
+  "total_pnl_percent": -6.423476265225528,
+  "exposure": 0.848881081333369,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 463195.75281949644,
@@ -450,6 +450,25 @@
       "updated_at": 1793072900.5004556,
       "partial_taken": false,
       "stop_level": 36.67
+    },
+    "HYUNDAI.NS": {
+      "symbol": "HYUNDAI.NS",
+      "quantity": 13,
+      "entry_price": 1870.0,
+      "current_price": 1870.0,
+      "direction": "SELL",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 1870.0,
+      "lowest_price": 1870.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1793159216.5953603,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -12290,5 +12309,5 @@
     "ANANDRATHI.NS": "Financial Services",
     "VIKASECO.NS": "Basic Materials"
   },
-  "saved_at": 1793072919.9894915
+  "saved_at": 1793159216.5991294
 }
