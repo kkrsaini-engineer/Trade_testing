@@ -1,17 +1,25 @@
 {
-  "date": "2026-10-27",
-  "opening_balance": 38958.07390447974,
-  "total_capital_in_positions": 403110.14,
-  "remaining_balance": 62059.05887507979,
-  "portfolio_value": 465169.1988750798,
-  "realized_pnl": -32117.381326127645,
-  "portfolio_return_percent": -6.966160224984039,
+  "date": "2026-10-28",
+  "opening_balance": 37749.05887507979,
+  "total_capital_in_positions": 384806.98,
+  "remaining_balance": 81806.03804543265,
+  "portfolio_value": 466613.01804543263,
+  "realized_pnl": -31912.482229016947,
+  "portfolio_return_percent": -6.677396390913473,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "CUB.NS",
-      "pnl": -1759.0150294
+      "symbol": "KFINTECH.NS",
+      "pnl": 126.00777202946779
+    },
+    {
+      "symbol": "MGEL.NS",
+      "pnl": -96.59060011530343
+    },
+    {
+      "symbol": "CIPLA.NS",
+      "pnl": 127.83113843999968
     }
   ],
-  "open_positions_now": 23
+  "open_positions_now": 21
 }

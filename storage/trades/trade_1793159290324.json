@@ -1,0 +1,18 @@
+{
+  "symbol": "GANDHAR.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 20,
+  "entry_price": 280.0,
+  "exit_price": 308.8,
+  "status": "OPEN",
+  "realized_pnl": 541.1067360000004,
+  "realized_pnl_percent": 9.662620285714294,
+  "max_profit_percent": 10.28571428571429,
+  "max_drawdown_percent": 2.3035757882254466,
+  "regime": "BULL",
+  "confidence": 71.07,
+  "reasons": "Partial profit target reached.; Excellent risk/reward profile.; High market volatility.; Partial target achieved.; costs Rs 34.89 deducted",
+  "id": "trade_1793159290324",
+  "timestamp": 1793159290.3249784
+}

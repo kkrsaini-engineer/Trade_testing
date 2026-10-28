@@ -1,0 +1,18 @@
+{
+  "symbol": "CIPLA.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 3,
+  "entry_price": 1362.5,
+  "exit_price": 1362.5,
+  "status": "CLOSED",
+  "realized_pnl": 127.83113843999968,
+  "realized_pnl_percent": -0.32279999999999903,
+  "max_profit_percent": 5.174311926605505,
+  "max_drawdown_percent": 2.8110091743119234,
+  "regime": "BEAR",
+  "confidence": 49.26,
+  "reasons": "Excellent risk/reward profile.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 13.19 deducted",
+  "id": "trade_1793159285188",
+  "timestamp": 1793159285.1880634
+}

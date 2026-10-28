@@ -1,0 +1,18 @@
+{
+  "symbol": "INDHOTEL.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 8,
+  "entry_price": 760.2999877929688,
+  "exit_price": 802.28,
+  "status": "OPEN",
+  "realized_pnl": 402.7176965035742,
+  "realized_pnl_percent": 4.928305564809773,
+  "max_profit_percent": 6.911743869089502,
+  "max_drawdown_percent": 2.216227259828101,
+  "regime": "BULL",
+  "confidence": 71.49,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved (previous session).; costs Rs 36.08 deducted",
+  "id": "trade_1793159288534",
+  "timestamp": 1793159288.534005
+}
