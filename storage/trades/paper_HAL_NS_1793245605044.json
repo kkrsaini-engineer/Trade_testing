@@ -1,0 +1,13 @@
+{
+  "id": "paper_HAL_NS_1793245605044",
+  "symbol": "HAL.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 5,
+  "entry_price": 4838.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 76.03,
+  "reasons": "Morning Executor: gap -0.35% (0.14x ATR, NORMAL band); No company-specific news available. | No macro headlines available.",
+  "timestamp": 1793245605.046134
+}

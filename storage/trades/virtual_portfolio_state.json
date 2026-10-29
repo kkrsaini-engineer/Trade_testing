@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 81806.03804543265,
-  "used_capital": 381091.10039149225,
+  "available_capital": 38037.17850258597,
+  "used_capital": 424859.9599343389,
   "total_pnl": -31912.482229016947,
   "total_pnl_percent": -6.38249644580339,
-  "exposure": 0.7621822007829845,
+  "exposure": 0.8497199198686779,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 467882.6186738724,
@@ -412,6 +412,44 @@
       "updated_at": 1793159286.3435209,
       "partial_taken": false,
       "stop_level": 1979.7
+    },
+    "HAL.NS": {
+      "symbol": "HAL.NS",
+      "quantity": 5,
+      "entry_price": 4838.0,
+      "current_price": 4838.0,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 4838.0,
+      "lowest_price": 4838.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1793245605.044798,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "UNIONBANK.NS": {
+      "symbol": "UNIONBANK.NS",
+      "quantity": 107,
+      "entry_price": 182.97999572753906,
+      "current_price": 182.97999572753906,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 182.97999572753906,
+      "lowest_price": 182.97999572753906,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1793245608.9015925,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -12310,5 +12348,5 @@
     "VIKASECO.NS": "Basic Materials",
     "HYUNDAI.NS": "Consumer Cyclical"
   },
-  "saved_at": 1793159295.655801
+  "saved_at": 1793245608.9040391
 }
