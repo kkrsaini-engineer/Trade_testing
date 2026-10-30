@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 70409.98801723955,
-  "used_capital": 392151.8602028936,
+  "available_capital": 45712.63758388994,
+  "used_capital": 416849.2106362432,
   "total_pnl": -30082.502257210028,
   "total_pnl_percent": -6.016500451442005,
-  "exposure": 0.7843037204057872,
+  "exposure": 0.8336984212724865,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 468087.5177709831,
@@ -393,6 +393,25 @@
       "updated_at": 1793245667.5027637,
       "partial_taken": false,
       "stop_level": 173.07
+    },
+    "FEDERALBNK.NS": {
+      "symbol": "FEDERALBNK.NS",
+      "quantity": 71,
+      "entry_price": 347.8500061035156,
+      "current_price": 347.8500061035156,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 347.8500061035156,
+      "lowest_price": 347.8500061035156,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1793332012.770343,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -12349,5 +12368,5 @@
     "HYUNDAI.NS": "Consumer Cyclical",
     "UNIONBANK.NS": "Financial Services"
   },
-  "saved_at": 1793245689.6299136
+  "saved_at": 1793332012.7742238
 }

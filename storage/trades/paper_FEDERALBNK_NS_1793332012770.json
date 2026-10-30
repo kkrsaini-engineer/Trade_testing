@@ -1,0 +1,13 @@
+{
+  "id": "paper_FEDERALBNK_NS_1793332012770",
+  "symbol": "FEDERALBNK.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 71,
+  "entry_price": 347.8500061035156,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 79.8,
+  "reasons": "Morning Executor: gap +0.53% (0.20x ATR, NORMAL band); No company-specific news available. | No macro headlines available.",
+  "timestamp": 1793332012.7721357
+}
