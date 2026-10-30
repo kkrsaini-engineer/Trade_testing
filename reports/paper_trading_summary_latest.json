@@ -1,25 +1,12 @@
 {
-  "date": "2026-10-29",
-  "opening_balance": 38037.17850258597,
-  "total_capital_in_positions": 396289.25000000006,
-  "remaining_balance": 70409.98801723955,
-  "portfolio_value": 466699.2380172396,
-  "realized_pnl": -30082.502257210028,
-  "portfolio_return_percent": -6.660152396552078,
+  "date": "2026-10-30",
+  "opening_balance": 45712.63758388994,
+  "total_capital_in_positions": 393721.35000000003,
+  "remaining_balance": 74342.33333039389,
+  "portfolio_value": 468063.6833303939,
+  "realized_pnl": -27896.63694405571,
+  "portfolio_return_percent": -6.387263333921216,
   "opened_today": [],
-  "closed_today": [
-    {
-      "symbol": "GANDHAR.NS",
-      "pnl": 507.09993600000075
-    },
-    {
-      "symbol": "GOODLUCK.NS",
-      "pnl": -1516.0550216434485
-    },
-    {
-      "symbol": "ICICIPRULI.NS",
-      "pnl": 441.49325094000017
-    }
-  ],
-  "open_positions_now": 20
+  "closed_today": [],
+  "open_positions_now": 21
 }
