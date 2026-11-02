@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 74342.33333039389,
-  "used_capital": 390098.5103188604,
+  "available_capital": 39971.53315949545,
+  "used_capital": 424469.31048975885,
   "total_pnl": -27896.63694405571,
   "total_pnl_percent": -5.5793273888111425,
-  "exposure": 0.7801970206377208,
+  "exposure": 0.8489386209795177,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 469917.4977427899,
@@ -412,6 +412,44 @@
       "updated_at": 1793332090.5614533,
       "partial_taken": false,
       "stop_level": 330.7
+    },
+    "IIFLCAPS.NS": {
+      "symbol": "IIFLCAPS.NS",
+      "quantity": 71,
+      "entry_price": 348.0,
+      "current_price": 348.0,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 348.0,
+      "lowest_price": 348.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1793591213.2560468,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "DLF.NS": {
+      "symbol": "DLF.NS",
+      "quantity": 14,
+      "entry_price": 690.2000122070312,
+      "current_price": 690.2000122070312,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 690.2000122070312,
+      "lowest_price": 690.2000122070312,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1793591218.1725204,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -12369,5 +12407,5 @@
     "UNIONBANK.NS": "Financial Services",
     "FEDERALBNK.NS": "Financial Services"
   },
-  "saved_at": 1793332108.4763312
+  "saved_at": 1793591218.1816294
 }

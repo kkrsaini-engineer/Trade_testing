@@ -1,0 +1,13 @@
+{
+  "id": "paper_IIFLCAPS_NS_1793591213256",
+  "symbol": "IIFLCAPS.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 71,
+  "entry_price": 348.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 77.34,
+  "reasons": "Morning Executor: gap +0.07% (0.05x ATR, NORMAL band); No company-specific news available. | No macro headlines available.",
+  "timestamp": 1793591213.2578807
+}
