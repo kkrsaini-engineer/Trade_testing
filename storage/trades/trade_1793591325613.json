@@ -1,0 +1,18 @@
+{
+  "symbol": "MSUMI.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 610,
+  "entry_price": 34.95000076293945,
+  "exit_price": 38.0,
+  "status": "CLOSED",
+  "realized_pnl": -1932.4612658231722,
+  "realized_pnl_percent": -9.064289611100621,
+  "max_profit_percent": 1.7167447087857988,
+  "max_drawdown_percent": 11.87410342337147,
+  "regime": "SIDEWAYS",
+  "confidence": 54.92,
+  "reasons": "Healthy risk/reward profile.; High market volatility.; Active stop-loss triggered.; Stop-loss triggered.; costs Rs 71.96 deducted",
+  "id": "trade_1793591325613",
+  "timestamp": 1793591325.6135428
+}
