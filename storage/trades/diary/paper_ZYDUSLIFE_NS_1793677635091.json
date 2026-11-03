@@ -6,20 +6,34 @@
   "entry_price": 1244.699951171875,
   "buy_probability": 89.96,
   "buy_confidence": 76.97,
-  "entry_thesis_confidence": null,
+  "entry_thesis_confidence": 64.56,
   "entry_reasons": [
     "Morning Executor: gap -0.06% (0.02x ATR, NORMAL band)",
-    "Company news check unavailable (Unable to fetch news for 'ZYDUSLIFE.NS'.) \u2014 proceeded without it. | No macro headlines available."
+    "Company news check unavailable (Unable to fetch news for 'ZYDUSLIFE.NS'.) — proceeded without it. | No macro headlines available."
   ],
-  "daily_log": [],
+  "daily_log": [
+    {
+      "date": "2026-11-03",
+      "current_price": 1231.1,
+      "current_pnl": -271.9990234375018,
+      "current_buy_confidence": 64.56,
+      "current_sell_confidence": 24.54,
+      "current_exit_score": 57.23,
+      "recommendation": "HOLD",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "Continue holding position."
+      ]
+    }
+  ],
   "status": "OPEN",
   "exit_date": null,
   "exit_price": null,
   "exit_reason": null,
-  "holding_days": 0,
+  "holding_days": 1,
   "max_profit_percent": 0.0,
   "max_drawdown_percent": 0.0,
   "final_pnl": null,
   "created_at": 1793677635.0912793,
-  "updated_at": 1793677635.0912795
+  "updated_at": 1793677762.927945
 }

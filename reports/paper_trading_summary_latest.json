@@ -1,21 +1,25 @@
 {
-  "date": "2026-11-02",
-  "opening_balance": 39971.53315949545,
-  "total_capital_in_positions": 384723.56,
-  "remaining_balance": 82968.03552638664,
-  "portfolio_value": 467691.59552638663,
-  "realized_pnl": -31435.185678849084,
-  "portfolio_return_percent": -6.461680894722672,
+  "date": "2026-11-03",
+  "opening_balance": 37806.03650294914,
+  "total_capital_in_positions": 363694.05,
+  "remaining_balance": 99598.28889713052,
+  "portfolio_value": 463292.3388971305,
+  "realized_pnl": -32230.522308105195,
+  "portfolio_return_percent": -7.341532220573897,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "SAGILITY.NS",
-      "pnl": -1379.4376963261607
+      "symbol": "THELEELA.NS",
+      "pnl": 3358.268600111096
     },
     {
-      "symbol": "MSUMI.NS",
-      "pnl": -1932.4612658231722
+      "symbol": "SHYAMMETL.NS",
+      "pnl": -96.22671516689206
+    },
+    {
+      "symbol": "HYUNDAI.NS",
+      "pnl": -1506.9813629000018
     }
   ],
-  "open_positions_now": 21
+  "open_positions_now": 20
 }
