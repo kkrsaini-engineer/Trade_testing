@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 82968.03552638664,
-  "used_capital": 378160.9091607183,
+  "available_capital": 37806.03650294914,
+  "used_capital": 423322.9081841558,
   "total_pnl": -31435.185678849084,
   "total_pnl_percent": -6.287037135769817,
-  "exposure": 0.7563218183214366,
+  "exposure": 0.8466458163683116,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 472103.36305594427,
@@ -412,6 +412,44 @@
       "updated_at": 1793591305.7021146,
       "partial_taken": false,
       "stop_level": 658.16
+    },
+    "ZYDUSLIFE.NS": {
+      "symbol": "ZYDUSLIFE.NS",
+      "quantity": 20,
+      "entry_price": 1244.699951171875,
+      "current_price": 1244.699951171875,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 1244.699951171875,
+      "lowest_price": 1244.699951171875,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1793677635.0912547,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "AUROPHARMA.NS": {
+      "symbol": "AUROPHARMA.NS",
+      "quantity": 12,
+      "entry_price": 1689.0,
+      "current_price": 1689.0,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 1689.0,
+      "lowest_price": 1689.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1793677659.3925343,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -12407,5 +12445,5 @@
     "UNIONBANK.NS": "Financial Services",
     "FEDERALBNK.NS": "Financial Services"
   },
-  "saved_at": 1793591334.4855464
+  "saved_at": 1793677659.4002476
 }

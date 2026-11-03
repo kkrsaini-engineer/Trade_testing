@@ -1,0 +1,13 @@
+{
+  "id": "paper_AUROPHARMA_NS_1793677659392",
+  "symbol": "AUROPHARMA.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 12,
+  "entry_price": 1689.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 73.7,
+  "reasons": "Morning Executor: gap +0.45% (0.18x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'AUROPHARMA.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1793677659.398612
+}
