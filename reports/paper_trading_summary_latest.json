@@ -1,25 +1,21 @@
 {
-  "date": "2026-11-03",
-  "opening_balance": 37806.03650294914,
-  "total_capital_in_positions": 363694.05,
-  "remaining_balance": 99598.28889713052,
-  "portfolio_value": 463292.3388971305,
-  "realized_pnl": -32230.522308105195,
-  "portfolio_return_percent": -7.341532220573897,
+  "date": "2026-11-04",
+  "opening_balance": 37667.77812061075,
+  "total_capital_in_positions": 382487.92999999993,
+  "remaining_balance": 79801.30861598387,
+  "portfolio_value": 462289.2386159838,
+  "realized_pnl": -32137.582589251837,
+  "portfolio_return_percent": -7.54215227680324,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "THELEELA.NS",
-      "pnl": 3358.268600111096
+      "symbol": "INDHOTEL.NS",
+      "pnl": 915.9079727247654
     },
     {
-      "symbol": "SHYAMMETL.NS",
-      "pnl": -96.22671516689206
-    },
-    {
-      "symbol": "HYUNDAI.NS",
-      "pnl": -1506.9813629000018
+      "symbol": "FEDERALBNK.NS",
+      "pnl": -1311.4295165315395
     }
   ],
-  "open_positions_now": 20
+  "open_positions_now": 21
 }

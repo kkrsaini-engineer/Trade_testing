@@ -6,20 +6,34 @@
   "entry_price": 659.25,
   "buy_probability": 88.01,
   "buy_confidence": 74.64,
-  "entry_thesis_confidence": null,
+  "entry_thesis_confidence": 66.28,
   "entry_reasons": [
     "Morning Executor: gap -1.76% (0.39x ATR, NORMAL band)",
-    "Company news check unavailable (Unable to fetch news for 'THELEELA.NS'.) \u2014 proceeded without it. | No macro headlines available."
+    "Company news check unavailable (Unable to fetch news for 'THELEELA.NS'.) — proceeded without it. | No macro headlines available."
   ],
-  "daily_log": [],
+  "daily_log": [
+    {
+      "date": "2026-11-04",
+      "current_price": 647.15,
+      "current_pnl": -447.70000000000084,
+      "current_buy_confidence": 66.28,
+      "current_sell_confidence": 24.47,
+      "current_exit_score": 54.26,
+      "recommendation": "HOLD",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "Continue holding position."
+      ]
+    }
+  ],
   "status": "OPEN",
   "exit_date": null,
   "exit_price": null,
   "exit_reason": null,
-  "holding_days": 0,
+  "holding_days": 1,
   "max_profit_percent": 0.0,
   "max_drawdown_percent": 0.0,
   "final_pnl": null,
   "created_at": 1793764026.9478364,
-  "updated_at": 1793764026.9478366
+  "updated_at": 1793764153.195194
 }
