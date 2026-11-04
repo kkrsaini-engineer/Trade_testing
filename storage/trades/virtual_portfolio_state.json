@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 99598.28889713052,
-  "used_capital": 362000.5590020269,
+  "available_capital": 37667.77812061075,
+  "used_capital": 423931.0697785467,
   "total_pnl": -32230.522308105195,
   "total_pnl_percent": -6.44610446162104,
-  "exposure": 0.7240011180040539,
+  "exposure": 0.8478621395570933,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 468564.8143211509,
@@ -393,6 +393,63 @@
       "updated_at": 1793677798.2557397,
       "partial_taken": false,
       "stop_level": 1606.94
+    },
+    "THELEELA.NS": {
+      "symbol": "THELEELA.NS",
+      "quantity": 37,
+      "entry_price": 659.25,
+      "current_price": 659.25,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 659.25,
+      "lowest_price": 659.25,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1793764026.9478164,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "MGEL.NS": {
+      "symbol": "MGEL.NS",
+      "quantity": 1454,
+      "entry_price": 17.190000534057617,
+      "current_price": 17.190000534057617,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 17.190000534057617,
+      "lowest_price": 17.190000534057617,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1793764047.771474,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "TECHM.NS": {
+      "symbol": "TECHM.NS",
+      "quantity": 7,
+      "entry_price": 1792.0,
+      "current_price": 1792.0,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 1792.0,
+      "lowest_price": 1792.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1793764067.9380765,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -12445,5 +12502,5 @@
     "UNIONBANK.NS": "Financial Services",
     "FEDERALBNK.NS": "Financial Services"
   },
-  "saved_at": 1793677804.647012
+  "saved_at": 1793764067.9408927
 }

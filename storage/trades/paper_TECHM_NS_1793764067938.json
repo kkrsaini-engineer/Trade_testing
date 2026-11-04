@@ -1,0 +1,13 @@
+{
+  "id": "paper_TECHM_NS_1793764067938",
+  "symbol": "TECHM.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 7,
+  "entry_price": 1792.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 74.34,
+  "reasons": "Morning Executor: gap +0.29% (0.10x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'TECHM.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1793764067.9393017
+}

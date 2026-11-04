@@ -1,0 +1,13 @@
+{
+  "id": "paper_MGEL_NS_1793764047771",
+  "symbol": "MGEL.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 1454,
+  "entry_price": 17.190000534057617,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 73.61,
+  "reasons": "Morning Executor: gap -0.75% (0.16x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'MGEL.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1793764047.774946
+}

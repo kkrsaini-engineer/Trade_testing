@@ -1,0 +1,13 @@
+{
+  "id": "paper_THELEELA_NS_1793764026947",
+  "symbol": "THELEELA.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 37,
+  "entry_price": 659.25,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 74.64,
+  "reasons": "Morning Executor: gap -1.76% (0.39x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'THELEELA.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1793764026.949518
+}
