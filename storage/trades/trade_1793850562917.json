@@ -1,0 +1,18 @@
+{
+  "symbol": "BAJAJHFL.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 318,
+  "entry_price": 78.56999969482422,
+  "exit_price": 83.0,
+  "status": "CLOSED",
+  "realized_pnl": -1491.771878036547,
+  "realized_pnl_percent": -5.97060780568534,
+  "max_profit_percent": 2.227313232527963,
+  "max_drawdown_percent": 5.549192213453709,
+  "regime": "SIDEWAYS",
+  "confidence": 49.53,
+  "reasons": "Healthy risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.; costs Rs 83.03 deducted",
+  "id": "trade_1793850562917",
+  "timestamp": 1793850562.917448
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "ADANIPORTS.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 1,
+  "entry_price": 1749.9000244140625,
+  "exit_price": 1947.2,
+  "status": "CLOSED",
+  "realized_pnl": 351.91623277410645,
+  "realized_pnl_percent": 10.024438607767838,
+  "max_profit_percent": 10.57203114491544,
+  "max_drawdown_percent": 4.325965608665841,
+  "regime": "BULL",
+  "confidence": 63.13,
+  "reasons": "Break-even stop activated.; Final profit target reached.; Excellent risk/reward profile.; Final target achieved.; Profit protection activated.; costs Rs 21.88 deducted",
+  "id": "trade_1793850553510",
+  "timestamp": 1793850553.5104766
+}

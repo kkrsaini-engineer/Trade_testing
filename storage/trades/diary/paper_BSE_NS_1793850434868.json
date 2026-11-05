@@ -6,20 +6,34 @@
   "entry_price": 3665.0,
   "buy_probability": 94.34,
   "buy_confidence": 83.34,
-  "entry_thesis_confidence": null,
+  "entry_thesis_confidence": 67.55,
   "entry_reasons": [
     "Morning Executor: gap -0.02% (0.01x ATR, NORMAL band)",
-    "Company news check unavailable (Unable to fetch news for 'BSE.NS'.) \u2014 proceeded without it. | No macro headlines available."
+    "Company news check unavailable (Unable to fetch news for 'BSE.NS'.) — proceeded without it. | No macro headlines available."
   ],
-  "daily_log": [],
+  "daily_log": [
+    {
+      "date": "2026-11-05",
+      "current_price": 3689.7,
+      "current_pnl": 148.1999999999989,
+      "current_buy_confidence": 67.55,
+      "current_sell_confidence": 19.01,
+      "current_exit_score": 57.23,
+      "recommendation": "HOLD",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "Continue holding position."
+      ]
+    }
+  ],
   "status": "OPEN",
   "exit_date": null,
   "exit_price": null,
   "exit_reason": null,
-  "holding_days": 0,
+  "holding_days": 1,
   "max_profit_percent": 0.0,
   "max_drawdown_percent": 0.0,
   "final_pnl": null,
   "created_at": 1793850434.8685725,
-  "updated_at": 1793850434.8685727
+  "updated_at": 1793850536.9856179
 }

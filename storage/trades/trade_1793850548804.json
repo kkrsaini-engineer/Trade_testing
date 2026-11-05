@@ -1,0 +1,18 @@
+{
+  "symbol": "PVRINOX.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 9,
+  "entry_price": 1419.9000244140625,
+  "exit_price": 1621.46,
+  "status": "CLOSED",
+  "realized_pnl": 2546.8862422199363,
+  "realized_pnl_percent": 13.726060578464198,
+  "max_profit_percent": 13.867171786773538,
+  "max_drawdown_percent": 3.077686632213477,
+  "regime": "BULL",
+  "confidence": 61.61,
+  "reasons": "Break-even stop activated.; Final profit target reached.; Excellent risk/reward profile.; Final target achieved.; Profit protection activated.; costs Rs 59.97 deducted",
+  "id": "trade_1793850548804",
+  "timestamp": 1793850548.8040931
+}
