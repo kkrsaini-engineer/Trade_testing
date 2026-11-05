@@ -1,0 +1,13 @@
+{
+  "id": "paper_GVKPIL_NS_1793850460179",
+  "symbol": "GVKPIL.NS",
+  "direction": "SELL",
+  "action": "OPEN",
+  "quantity": 10299,
+  "entry_price": 2.059999942779541,
+  "status": "OPEN",
+  "regime": "BEAR",
+  "confidence": 68.79,
+  "reasons": "Morning Executor: gap +3.52% (1.40x ATR, WARNING band); Company news check unavailable (Unable to fetch news for 'GVKPIL.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1793850460.182548
+}

@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 79801.30861598387,
-  "used_capital": 381792.11924754083,
-  "total_pnl": -32137.582589251837,
-  "total_pnl_percent": -6.427516517850368,
-  "exposure": 0.7635842384950816,
+  "available_capital": 36595.36920529738,
+  "used_capital": 424998.0586582273,
+  "total_pnl": -32137.582589251844,
+  "total_pnl_percent": -6.4275165178503695,
+  "exposure": 0.8499961173164546,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 467769.47769189486,
@@ -412,6 +412,44 @@
       "updated_at": 1793764198.6397057,
       "partial_taken": false,
       "stop_level": 1695.32
+    },
+    "BSE.NS": {
+      "symbol": "BSE.NS",
+      "quantity": 6,
+      "entry_price": 3665.0,
+      "current_price": 3665.0,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 3665.0,
+      "lowest_price": 3665.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1793850434.8685443,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "GVKPIL.NS": {
+      "symbol": "GVKPIL.NS",
+      "quantity": 10299,
+      "entry_price": 2.059999942779541,
+      "current_price": 2.059999942779541,
+      "direction": "SELL",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 2.059999942779541,
+      "lowest_price": 2.059999942779541,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1793850460.179688,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -12503,5 +12541,5 @@
     "FEDERALBNK.NS": "Financial Services",
     "TECHM.NS": "Technology"
   },
-  "saved_at": 1793764207.4753578
+  "saved_at": 1793850460.184214
 }
