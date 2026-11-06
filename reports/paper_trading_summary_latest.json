@@ -1,33 +1,25 @@
 {
-  "date": "2026-11-05",
-  "opening_balance": 36595.36920529738,
-  "total_capital_in_positions": 313622.77,
-  "remaining_balance": 153210.58854259766,
-  "portfolio_value": 466833.3585425977,
-  "realized_pnl": -29297.62364717326,
-  "portfolio_return_percent": -6.633328291480464,
+  "date": "2026-11-06",
+  "opening_balance": 36154.28858532227,
+  "total_capital_in_positions": 363246.0,
+  "remaining_balance": 103120.42809314444,
+  "portfolio_value": 466366.42809314444,
+  "realized_pnl": -32374.17409662653,
+  "portfolio_return_percent": -6.726714381371113,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "PVRINOX.NS",
-      "pnl": 2546.8862422199363
+      "symbol": "GESHIP.NS",
+      "pnl": 665.0178938400004
     },
     {
-      "symbol": "ADANIPORTS.NS",
-      "pnl": 351.91623277410645
+      "symbol": "UNIONBANK.NS",
+      "pnl": 105.695013555452
     },
     {
-      "symbol": "BAJAJHFL.NS",
-      "pnl": -1491.771878036547
-    },
-    {
-      "symbol": "ZYDUSLIFE.NS",
-      "pnl": -1348.7563321880862
-    },
-    {
-      "symbol": "VIKASECO.NS",
-      "pnl": -831.9667500000016
+      "symbol": "NAZARA.NS",
+      "pnl": -123.89149589999988
     }
   ],
-  "open_positions_now": 18
+  "open_positions_now": 20
 }

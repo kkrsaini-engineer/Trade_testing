@@ -6,20 +6,34 @@
   "entry_price": 499.79998779296875,
   "buy_probability": 88.98,
   "buy_confidence": 76.13,
-  "entry_thesis_confidence": null,
+  "entry_thesis_confidence": 60.17,
   "entry_reasons": [
     "Morning Executor: gap -4.86% (1.01x ATR, WARNING band)",
-    "Company news check unavailable (Unable to fetch news for 'ICIL.NS'.) \u2014 proceeded without it. | No macro headlines available."
+    "Company news check unavailable (Unable to fetch news for 'ICIL.NS'.) — proceeded without it. | No macro headlines available."
   ],
-  "daily_log": [],
+  "daily_log": [
+    {
+      "date": "2026-11-06",
+      "current_price": 483.25,
+      "current_pnl": -827.4993896484375,
+      "current_buy_confidence": 60.17,
+      "current_sell_confidence": 18.76,
+      "current_exit_score": 52.76,
+      "recommendation": "HOLD",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "Continue holding position."
+      ]
+    }
+  ],
   "status": "OPEN",
   "exit_date": null,
   "exit_price": null,
   "exit_reason": null,
-  "holding_days": 0,
+  "holding_days": 1,
   "max_profit_percent": 0.0,
   "max_drawdown_percent": 0.0,
   "final_pnl": null,
   "created_at": 1793936885.3083835,
-  "updated_at": 1793936885.3083837
+  "updated_at": 1793937032.6275496
 }

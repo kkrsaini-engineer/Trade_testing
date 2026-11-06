@@ -1,0 +1,18 @@
+{
+  "symbol": "NAZARA.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 62,
+  "entry_price": 400.25,
+  "exit_price": 399.8,
+  "status": "CLOSED",
+  "realized_pnl": -123.89149589999988,
+  "realized_pnl_percent": -0.49925045193528195,
+  "max_profit_percent": 6.2460961898813245,
+  "max_drawdown_percent": 3.410368519675197,
+  "regime": "BULL",
+  "confidence": 68.32,
+  "reasons": "Excellent risk/reward profile.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 95.99 deducted",
+  "id": "trade_1793937064582",
+  "timestamp": 1793937064.583001
+}

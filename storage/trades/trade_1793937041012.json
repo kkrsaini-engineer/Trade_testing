@@ -1,0 +1,18 @@
+{
+  "symbol": "UNIONBANK.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 107,
+  "entry_price": 182.97999572753906,
+  "exit_price": 184.71,
+  "status": "CLOSED",
+  "realized_pnl": 105.695013555452,
+  "realized_pnl_percent": 0.5398425445779791,
+  "max_profit_percent": 3.235325340022584,
+  "max_drawdown_percent": 1.1476614349983327,
+  "regime": "BULL",
+  "confidence": 71.19,
+  "reasons": "Healthy risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Circuit breaker active.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Circuit breaker active.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; costs Rs 79.42 deducted",
+  "id": "trade_1793937041012",
+  "timestamp": 1793937041.0128818
+}

@@ -1,0 +1,18 @@
+{
+  "symbol": "GESHIP.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 8,
+  "entry_price": 1498.0,
+  "exit_price": 1504.39,
+  "status": "CLOSED",
+  "realized_pnl": 665.0178938400004,
+  "realized_pnl_percent": -0.02981496728971773,
+  "max_profit_percent": 9.946595460614152,
+  "max_drawdown_percent": 5.687583444592794,
+  "regime": "SIDEWAYS",
+  "confidence": 45.81,
+  "reasons": "Excellent risk/reward profile.; High market volatility.; Active stop-loss triggered.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 54.69 deducted",
+  "id": "trade_1793937029806",
+  "timestamp": 1793937029.8068433
+}
