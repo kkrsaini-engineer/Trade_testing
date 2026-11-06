@@ -1,0 +1,13 @@
+{
+  "id": "paper_ENGINERSIN_NS_1793936929188",
+  "symbol": "ENGINERSIN.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 62,
+  "entry_price": 294.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 76.71,
+  "reasons": "Morning Executor: gap -2.28% (0.46x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'ENGINERSIN.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1793936929.1900728
+}

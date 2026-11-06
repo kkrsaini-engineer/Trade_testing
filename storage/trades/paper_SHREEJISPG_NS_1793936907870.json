@@ -1,0 +1,13 @@
+{
+  "id": "paper_SHREEJISPG_NS_1793936907870",
+  "symbol": "SHREEJISPG.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 28,
+  "entry_price": 864.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 75.75,
+  "reasons": "Morning Executor: gap -0.82% (0.27x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'SHREEJISPG.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1793936907.8720117
+}

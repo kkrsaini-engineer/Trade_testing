@@ -1,0 +1,13 @@
+{
+  "id": "paper_PETRONET_NS_1793936841536",
+  "symbol": "PETRONET.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 80,
+  "entry_price": 309.95001220703125,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 78.6,
+  "reasons": "Morning Executor: gap -0.34% (0.14x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'PETRONET.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1793936841.5399616
+}

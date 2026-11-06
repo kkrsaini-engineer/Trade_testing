@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_ENGINERSIN_NS_1793936929188",
+  "symbol": "ENGINERSIN.NS",
+  "direction": "BUY",
+  "entry_date": "2026-11-06",
+  "entry_price": 294.0,
+  "buy_probability": 88.05,
+  "buy_confidence": 76.71,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap -2.28% (0.46x ATR, NORMAL band)",
+    "Company news check unavailable (Unable to fetch news for 'ENGINERSIN.NS'.) \u2014 proceeded without it. | No macro headlines available."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1793936929.1883328,
+  "updated_at": 1793936929.188333
+}

@@ -1,0 +1,13 @@
+{
+  "id": "paper_ICIL_NS_1793936885308",
+  "symbol": "ICIL.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 50,
+  "entry_price": 499.79998779296875,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 76.13,
+  "reasons": "Morning Executor: gap -4.86% (1.01x ATR, WARNING band); Company news check unavailable (Unable to fetch news for 'ICIL.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1793936885.3101802
+}

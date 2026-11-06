@@ -1,0 +1,13 @@
+{
+  "id": "paper_GAIL_NS_1793936863369",
+  "symbol": "GAIL.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 134,
+  "entry_price": 185.4499969482422,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 78.74,
+  "reasons": "Morning Executor: gap -0.41% (0.17x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'GAIL.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1793936863.373084
+}

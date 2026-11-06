@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_PETRONET_NS_1793936841536",
+  "symbol": "PETRONET.NS",
+  "direction": "BUY",
+  "entry_date": "2026-11-06",
+  "entry_price": 309.95001220703125,
+  "buy_probability": 91.63,
+  "buy_confidence": 78.6,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap -0.34% (0.14x ATR, NORMAL band)",
+    "Company news check unavailable (Unable to fetch news for 'PETRONET.NS'.) \u2014 proceeded without it. | No macro headlines available."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1793936841.5361173,
+  "updated_at": 1793936841.5361173
+}
