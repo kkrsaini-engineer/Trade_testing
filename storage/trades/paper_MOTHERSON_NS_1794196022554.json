@@ -1,0 +1,13 @@
+{
+  "id": "paper_MOTHERSON_NS_1794196022554",
+  "symbol": "MOTHERSON.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 156,
+  "entry_price": 160.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 84.85,
+  "reasons": "Morning Executor: gap -4.76% (1.62x ATR, WARNING band); Company news check unavailable (Unable to fetch news for 'MOTHERSON.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1794196022.560889
+}

@@ -1,0 +1,13 @@
+{
+  "id": "paper_SONACOMS_NS_1794196072321",
+  "symbol": "SONACOMS.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 19,
+  "entry_price": 908.9500122070312,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 77.51,
+  "reasons": "Morning Executor: gap -0.69% (0.22x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'SONACOMS.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1794196072.32229
+}

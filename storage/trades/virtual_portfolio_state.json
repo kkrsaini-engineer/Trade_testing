@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 103120.42809314444,
-  "used_capital": 358294.3398166746,
+  "available_capital": 36570.57830066397,
+  "used_capital": 424844.18960915506,
   "total_pnl": -32374.17409662653,
   "total_pnl_percent": -6.474834819325307,
-  "exposure": 0.7165886796333492,
+  "exposure": 0.8496883792183101,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 470702.3763528267,
@@ -393,6 +393,63 @@
       "updated_at": 1793937010.543565,
       "partial_taken": false,
       "stop_level": 265.93
+    },
+    "MOTHERSON.NS": {
+      "symbol": "MOTHERSON.NS",
+      "quantity": 156,
+      "entry_price": 160.0,
+      "current_price": 160.0,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 160.0,
+      "lowest_price": 160.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1794196022.5547829,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "JSWSTEEL.NS": {
+      "symbol": "JSWSTEEL.NS",
+      "quantity": 18,
+      "entry_price": 1351.0999755859375,
+      "current_price": 1351.0999755859375,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 1351.0999755859375,
+      "lowest_price": 1351.0999755859375,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1794196047.3941238,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "SONACOMS.NS": {
+      "symbol": "SONACOMS.NS",
+      "quantity": 19,
+      "entry_price": 908.9500122070312,
+      "current_price": 908.9500122070312,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 908.9500122070312,
+      "lowest_price": 908.9500122070312,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1794196072.321146,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -12637,5 +12694,5 @@
     "TECHM.NS": "Technology",
     "BSE.NS": "Financial Services"
   },
-  "saved_at": 1793937069.803098
+  "saved_at": 1794196072.3235013
 }
