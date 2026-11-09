@@ -1,25 +1,41 @@
 {
-  "date": "2026-11-06",
-  "opening_balance": 36154.28858532227,
-  "total_capital_in_positions": 363246.0,
-  "remaining_balance": 103120.42809314444,
-  "portfolio_value": 466366.42809314444,
-  "realized_pnl": -32374.17409662653,
-  "portfolio_return_percent": -6.726714381371113,
+  "date": "2026-11-09",
+  "opening_balance": 36570.57830066397,
+  "total_capital_in_positions": 347986.06999999995,
+  "remaining_balance": 119248.36302498775,
+  "portfolio_value": 467234.4330249877,
+  "realized_pnl": -30682.248092592185,
+  "portfolio_return_percent": -6.553113395002461,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "GESHIP.NS",
-      "pnl": 665.0178938400004
+      "symbol": "SOUTHBANK.NS",
+      "pnl": 1721.4593099993922
     },
     {
-      "symbol": "UNIONBANK.NS",
-      "pnl": 105.695013555452
+      "symbol": "ANANDRATHI.NS",
+      "pnl": 1134.7614138399995
     },
     {
-      "symbol": "NAZARA.NS",
-      "pnl": -123.89149589999988
+      "symbol": "KOTAKBANK.NS",
+      "pnl": 1251.8667622499995
+    },
+    {
+      "symbol": "DLF.NS",
+      "pnl": 594.2152174929147
+    },
+    {
+      "symbol": "HAL.NS",
+      "pnl": 413.24824399999943
+    },
+    {
+      "symbol": "DHARAN.NS",
+      "pnl": 1708.036381032803
+    },
+    {
+      "symbol": "GVKPIL.NS",
+      "pnl": -1306.4530440465571
     }
   ],
-  "open_positions_now": 20
+  "open_positions_now": 16
 }

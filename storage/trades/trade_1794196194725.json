@@ -1,0 +1,18 @@
+{
+  "symbol": "DHARAN.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 89285,
+  "entry_price": 0.14000000059604645,
+  "exit_price": 0.14,
+  "status": "CLOSED",
+  "realized_pnl": 1708.036381032803,
+  "realized_pnl_percent": -0.3227995735334618,
+  "max_profit_percent": 14.285716566504256,
+  "max_drawdown_percent": 7.1428609441737585,
+  "regime": "SIDEWAYS",
+  "confidence": 44.86,
+  "reasons": "Excellent risk/reward profile.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 40.35 deducted",
+  "id": "trade_1794196194725",
+  "timestamp": 1794196194.725418
+}

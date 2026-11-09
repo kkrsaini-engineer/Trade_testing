@@ -1,0 +1,18 @@
+{
+  "symbol": "ANANDRATHI.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 5,
+  "entry_price": 2222.0,
+  "exit_price": 2372.92,
+  "status": "CLOSED",
+  "realized_pnl": 1134.7614138399995,
+  "realized_pnl_percent": 6.315441859585967,
+  "max_profit_percent": 7.560756075607561,
+  "max_drawdown_percent": 0.0,
+  "regime": "BULL",
+  "confidence": 54.3,
+  "reasons": "Break-even stop activated.; Final profit target reached.; Excellent risk/reward profile.; Final target achieved (previous session).; costs Rs 52.95 deducted",
+  "id": "trade_1794196162538",
+  "timestamp": 1794196162.5384283
+}

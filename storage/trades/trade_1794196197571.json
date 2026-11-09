@@ -1,0 +1,18 @@
+{
+  "symbol": "GVKPIL.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 10299,
+  "entry_price": 2.059999942779541,
+  "exit_price": 2.18,
+  "status": "CLOSED",
+  "realized_pnl": -1306.4530440465571,
+  "realized_pnl_percent": -6.157884497862466,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 5.825245657946187,
+  "regime": "BEAR",
+  "confidence": 48.06,
+  "reasons": "Below preferred risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.; costs Rs 70.57 deducted",
+  "id": "trade_1794196197571",
+  "timestamp": 1794196197.5711079
+}
