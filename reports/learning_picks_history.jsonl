@@ -88,3 +88,5 @@
 {"date": "2026-11-06", "symbol": "TECILCHEM.NS", "direction": "SELL", "entry_price": 8.1}
 {"date": "2026-11-09", "symbol": "CONSOFINVT.NS", "direction": "BUY", "entry_price": 320.65}
 {"date": "2026-11-09", "symbol": "AGRITECH.NS", "direction": "SELL", "entry_price": 82.45}
+{"date": "2026-11-11", "symbol": "CONSOFINVT.NS", "direction": "BUY", "entry_price": 320.15}
+{"date": "2026-11-11", "symbol": "SIMBHALS.NS", "direction": "SELL", "entry_price": 6.19}
