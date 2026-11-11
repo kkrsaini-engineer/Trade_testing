@@ -1,0 +1,13 @@
+{
+  "id": "paper_INDIANB_NS_1794368857268",
+  "symbol": "INDIANB.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 26,
+  "entry_price": 940.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 74.55,
+  "reasons": "Morning Executor: gap +0.67% (0.26x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'INDIANB.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1794368857.2725053
+}

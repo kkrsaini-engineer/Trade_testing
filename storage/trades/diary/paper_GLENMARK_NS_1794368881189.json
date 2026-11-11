@@ -1,0 +1,25 @@
+{
+  "trade_id": "paper_GLENMARK_NS_1794368881189",
+  "symbol": "GLENMARK.NS",
+  "direction": "BUY",
+  "entry_date": "2026-11-11",
+  "entry_price": 2670.0,
+  "buy_probability": 86.07,
+  "buy_confidence": 72.74,
+  "entry_thesis_confidence": null,
+  "entry_reasons": [
+    "Morning Executor: gap -0.04% (0.01x ATR, NORMAL band)",
+    "Company news check unavailable (Unable to fetch news for 'GLENMARK.NS'.) \u2014 proceeded without it. | No macro headlines available."
+  ],
+  "daily_log": [],
+  "status": "OPEN",
+  "exit_date": null,
+  "exit_price": null,
+  "exit_reason": null,
+  "holding_days": 0,
+  "max_profit_percent": 0.0,
+  "max_drawdown_percent": 0.0,
+  "final_pnl": null,
+  "created_at": 1794368881.1895194,
+  "updated_at": 1794368881.1895196
+}

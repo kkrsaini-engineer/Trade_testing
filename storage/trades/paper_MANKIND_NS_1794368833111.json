@@ -1,0 +1,13 @@
+{
+  "id": "paper_MANKIND_NS_1794368833111",
+  "symbol": "MANKIND.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 9,
+  "entry_price": 2682.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 74.96,
+  "reasons": "Morning Executor: gap +0.51% (0.18x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'MANKIND.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1794368833.117647
+}

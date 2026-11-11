@@ -1,0 +1,13 @@
+{
+  "id": "paper_GLENMARK_NS_1794368881189",
+  "symbol": "GLENMARK.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 9,
+  "entry_price": 2670.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 72.74,
+  "reasons": "Morning Executor: gap -0.04% (0.01x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'GLENMARK.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1794368881.1914885
+}

@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 119248.36302498775,
-  "used_capital": 343472.49996748567,
+  "available_capital": 46640.363024987746,
+  "used_capital": 416080.49996748567,
   "total_pnl": -30682.248092592185,
   "total_pnl_percent": -6.136449618518437,
-  "exposure": 0.6869449999349714,
+  "exposure": 0.8321609999349713,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 467625.8259033735,
@@ -317,6 +317,63 @@
       "updated_at": 1794196172.2210305,
       "partial_taken": false,
       "stop_level": 854.02
+    },
+    "MANKIND.NS": {
+      "symbol": "MANKIND.NS",
+      "quantity": 9,
+      "entry_price": 2682.0,
+      "current_price": 2682.0,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 2682.0,
+      "lowest_price": 2682.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1794368833.1118507,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "INDIANB.NS": {
+      "symbol": "INDIANB.NS",
+      "quantity": 26,
+      "entry_price": 940.0,
+      "current_price": 940.0,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 940.0,
+      "lowest_price": 940.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1794368857.268907,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "GLENMARK.NS": {
+      "symbol": "GLENMARK.NS",
+      "quantity": 9,
+      "entry_price": 2670.0,
+      "current_price": 2670.0,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 2670.0,
+      "lowest_price": 2670.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1794368881.189495,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -12694,5 +12751,5 @@
     "TECHM.NS": "Technology",
     "BSE.NS": "Financial Services"
   },
-  "saved_at": 1794196219.3490207
+  "saved_at": 1794368881.1944413
 }
