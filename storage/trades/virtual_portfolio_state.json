@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 76723.52019840776,
-  "used_capital": 387214.49996748567,
+  "available_capital": 43229.22051579057,
+  "used_capital": 420708.79965010285,
   "total_pnl": -28881.870919172175,
   "total_pnl_percent": -5.776374183834435,
-  "exposure": 0.7744289999349714,
+  "exposure": 0.8414175993002057,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 469317.7519074078,
@@ -355,6 +355,44 @@
       "updated_at": 1794368962.4667037,
       "partial_taken": false,
       "stop_level": 2493.55
+    },
+    "AUROPHARMA.NS": {
+      "symbol": "AUROPHARMA.NS",
+      "quantity": 13,
+      "entry_price": 1813.0999755859375,
+      "current_price": 1813.0999755859375,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 1813.0999755859375,
+      "lowest_price": 1813.0999755859375,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1794455228.2345996,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "HAL.NS": {
+      "symbol": "HAL.NS",
+      "quantity": 2,
+      "entry_price": 4962.0,
+      "current_price": 4962.0,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 4962.0,
+      "lowest_price": 4962.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1794455248.5717251,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -12753,5 +12791,5 @@
     "GLENMARK.NS": "Healthcare",
     "INDIANB.NS": "Financial Services"
   },
-  "saved_at": 1794369018.6560924
+  "saved_at": 1794455248.5834181
 }
