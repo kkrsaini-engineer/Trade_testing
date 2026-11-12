@@ -12,6 +12,9 @@
     "learning_summary::2026-11-12::09:20:00.913602",
     "optimizer_recommendation::2026-11-12::09:20:01.833719",
     "mi_summary::2026-11-12 16:14:01.380380",
-    "mi_summary::2026-11-13 00:31:08.549054"
+    "mi_summary::2026-11-13 00:31:08.549054",
+    "scan_started::2026-11-12::03:16:15.056278",
+    "watchlist_symbol_unavailable::2026-11-12",
+    "scan_completed::2026-11-12::05:27:25.303438"
   ]
 }
