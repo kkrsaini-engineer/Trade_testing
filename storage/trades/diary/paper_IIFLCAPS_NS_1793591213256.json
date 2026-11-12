@@ -102,16 +102,29 @@
         "Healthy risk/reward profile.",
         "Continue holding position."
       ]
+    },
+    {
+      "date": "2026-11-12",
+      "current_price": 351.95,
+      "current_pnl": 280.4499999999992,
+      "current_buy_confidence": 63.99,
+      "current_sell_confidence": 23.17,
+      "current_exit_score": 58.58,
+      "recommendation": "HOLD",
+      "notes": [
+        "Healthy risk/reward profile.",
+        "Continue holding position."
+      ]
     }
   ],
   "status": "OPEN",
   "exit_date": null,
   "exit_price": null,
   "exit_reason": null,
-  "holding_days": 7,
+  "holding_days": 8,
   "max_profit_percent": 0.0,
   "max_drawdown_percent": 0.0,
   "final_pnl": null,
   "created_at": 1793591213.256071,
-  "updated_at": 1794368977.6926048
+  "updated_at": 1794455356.1263623
 }

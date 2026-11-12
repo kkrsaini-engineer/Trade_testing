@@ -1,0 +1,18 @@
+{
+  "symbol": "ENGINERSIN.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 31,
+  "entry_price": 294.0,
+  "exit_price": 322.64,
+  "status": "OPEN",
+  "realized_pnl": 841.1236222399991,
+  "realized_pnl_percent": 9.228918391924502,
+  "max_profit_percent": 10.08503193757972,
+  "max_drawdown_percent": 2.295918367346939,
+  "regime": "BULL",
+  "confidence": 71.29,
+  "reasons": "Break-even stop activated.; Excellent risk/reward profile.; Partial target achieved (previous session).; costs Rs 46.72 deducted",
+  "id": "trade_1794455352987",
+  "timestamp": 1794455352.9873588
+}

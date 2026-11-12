@@ -90,3 +90,5 @@
 {"date": "2026-11-09", "symbol": "AGRITECH.NS", "direction": "SELL", "entry_price": 82.45}
 {"date": "2026-11-11", "symbol": "CONSOFINVT.NS", "direction": "BUY", "entry_price": 320.15}
 {"date": "2026-11-11", "symbol": "SIMBHALS.NS", "direction": "SELL", "entry_price": 6.19}
+{"date": "2026-11-12", "symbol": "CONSOFINVT.NS", "direction": "BUY", "entry_price": 320.15}
+{"date": "2026-11-12", "symbol": "SIMBHALS.NS", "direction": "SELL", "entry_price": 6.19}

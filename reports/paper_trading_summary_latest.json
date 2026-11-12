@@ -1,17 +1,17 @@
 {
-  "date": "2026-11-11",
-  "opening_balance": 46640.363024987746,
-  "total_capital_in_positions": 398561.25,
-  "remaining_balance": 76723.52019840776,
-  "portfolio_value": 475284.77019840776,
-  "realized_pnl": -28881.870919172175,
-  "portfolio_return_percent": -4.9430459603184485,
+  "date": "2026-11-12",
+  "opening_balance": 43229.22051579057,
+  "total_capital_in_positions": 371275.88000000006,
+  "remaining_balance": 105594.61541931127,
+  "portfolio_value": 476870.49541931134,
+  "realized_pnl": -27296.145698268643,
+  "portfolio_return_percent": -4.6259009161377325,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "AUROPHARMA.NS",
-      "pnl": 1323.0656069399997
+      "symbol": "PNB.NS",
+      "pnl": 1131.9822477000007
     }
   ],
-  "open_positions_now": 18
+  "open_positions_now": 19
 }

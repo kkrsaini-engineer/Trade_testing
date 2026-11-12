@@ -1,0 +1,18 @@
+{
+  "symbol": "PNB.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 66,
+  "entry_price": 122.0,
+  "exit_price": 133.87,
+  "status": "CLOSED",
+  "realized_pnl": 1131.9822477000007,
+  "realized_pnl_percent": 9.193895437406857,
+  "max_profit_percent": 13.934426229508196,
+  "max_drawdown_percent": 3.1147565998014857,
+  "regime": "BULL",
+  "confidence": 63.16,
+  "reasons": "Break-even stop activated.; Final profit target reached.; Below preferred risk/reward profile.; Final target achieved (previous session).; Profit protection activated.; costs Rs 43.13 deducted",
+  "id": "trade_1794455337386",
+  "timestamp": 1794455337.3860319
+}

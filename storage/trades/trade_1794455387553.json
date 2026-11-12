@@ -1,0 +1,18 @@
+{
+  "symbol": "GLENMARK.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 2,
+  "entry_price": 2670.0,
+  "exit_price": 2660.4,
+  "status": "OPEN",
+  "realized_pnl": -74.38671879999947,
+  "realized_pnl_percent": -0.9801118202247121,
+  "max_profit_percent": 0.2808988764044944,
+  "max_drawdown_percent": 0.5955056179775314,
+  "regime": "BULL",
+  "confidence": 51.57,
+  "reasons": "Below preferred risk/reward profile.; High market volatility.; High market volatility.; costs Rs 33.14 deducted",
+  "id": "trade_1794455387553",
+  "timestamp": 1794455387.553449
+}

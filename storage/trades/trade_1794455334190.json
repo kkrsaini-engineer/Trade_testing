@@ -1,0 +1,18 @@
+{
+  "symbol": "BSE.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 3,
+  "entry_price": 3665.0,
+  "exit_price": 3875.74,
+  "status": "OPEN",
+  "realized_pnl": 579.8251534199999,
+  "realized_pnl_percent": 5.273534819645293,
+  "max_profit_percent": 7.211461086715552,
+  "max_drawdown_percent": 0.36289355601978174,
+  "regime": "BULL",
+  "confidence": 68.05,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved (previous session).; costs Rs 52.39 deducted",
+  "id": "trade_1794455334190",
+  "timestamp": 1794455334.1904106
+}

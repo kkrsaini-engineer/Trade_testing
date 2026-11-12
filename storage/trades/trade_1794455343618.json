@@ -1,0 +1,18 @@
+{
+  "symbol": "ICIL.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 25,
+  "entry_price": 499.79998779296875,
+  "exit_price": 546.75,
+  "status": "OPEN",
+  "realized_pnl": 1115.6800444412227,
+  "realized_pnl_percent": 8.9290121783946,
+  "max_profit_percent": 10.044020294739484,
+  "max_drawdown_percent": 4.141653100245301,
+  "regime": "BULL",
+  "confidence": 62.79,
+  "reasons": "Break-even stop activated.; Excellent risk/reward profile.; High market volatility.; High market volatility.; costs Rs 58.07 deducted",
+  "id": "trade_1794455343618",
+  "timestamp": 1794455343.6189132
+}
