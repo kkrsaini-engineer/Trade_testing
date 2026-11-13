@@ -1,17 +1,12 @@
 {
-  "date": "2026-11-12",
-  "opening_balance": 43229.22051579057,
-  "total_capital_in_positions": 371275.88000000006,
-  "remaining_balance": 105594.61541931127,
-  "portfolio_value": 476870.49541931134,
-  "realized_pnl": -27296.145698268643,
-  "portfolio_return_percent": -4.6259009161377325,
+  "date": "2026-11-13",
+  "opening_balance": 46713.415223998774,
+  "total_capital_in_positions": 422639.01,
+  "remaining_balance": 53347.88891664619,
+  "portfolio_value": 475986.8989166462,
+  "realized_pnl": -28179.742200933728,
+  "portfolio_return_percent": -4.8026202166707606,
   "opened_today": [],
-  "closed_today": [
-    {
-      "symbol": "PNB.NS",
-      "pnl": 1131.9822477000007
-    }
-  ],
-  "open_positions_now": 19
+  "closed_today": [],
+  "open_positions_now": 22
 }
