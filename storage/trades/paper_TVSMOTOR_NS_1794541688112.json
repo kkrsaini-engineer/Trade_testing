@@ -1,0 +1,13 @@
+{
+  "id": "paper_TVSMOTOR_NS_1794541688112",
+  "symbol": "TVSMOTOR.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 2,
+  "entry_price": 4481.10009765625,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 71.9,
+  "reasons": "Morning Executor: gap -1.73% (0.68x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'TVSMOTOR.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1794541688.1138954
+}

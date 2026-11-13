@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 105594.61541931127,
-  "used_capital": 362314.7994669974,
-  "total_pnl": -27296.145698268643,
-  "total_pnl_percent": -5.459229139653728,
-  "exposure": 0.7246295989339948,
+  "available_capital": 46713.415223998774,
+  "used_capital": 421195.9996623099,
+  "total_pnl": -27296.14569826864,
+  "total_pnl_percent": -5.459229139653727,
+  "exposure": 0.8423919993246197,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 471118.1290808278,
@@ -374,6 +374,63 @@
       "updated_at": 1794455365.2975476,
       "partial_taken": false,
       "stop_level": 4714.18
+    },
+    "FEDERALBNK.NS": {
+      "symbol": "FEDERALBNK.NS",
+      "quantity": 69,
+      "entry_price": 362.0,
+      "current_price": 362.0,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 362.0,
+      "lowest_price": 362.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1794541643.398288,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "KIRIINDUS.NS": {
+      "symbol": "KIRIINDUS.NS",
+      "quantity": 49,
+      "entry_price": 509.0,
+      "current_price": 509.0,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 509.0,
+      "lowest_price": 509.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1794541665.5828156,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "TVSMOTOR.NS": {
+      "symbol": "TVSMOTOR.NS",
+      "quantity": 2,
+      "entry_price": 4481.10009765625,
+      "current_price": 4481.10009765625,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 4481.10009765625,
+      "lowest_price": 4481.10009765625,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1794541688.1123443,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -12791,5 +12848,5 @@
     "GLENMARK.NS": "Healthcare",
     "INDIANB.NS": "Financial Services"
   },
-  "saved_at": 1794455396.1006255
+  "saved_at": 1794541688.1170819
 }

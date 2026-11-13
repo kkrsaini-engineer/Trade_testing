@@ -1,0 +1,13 @@
+{
+  "id": "paper_KIRIINDUS_NS_1794541665582",
+  "symbol": "KIRIINDUS.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 49,
+  "entry_price": 509.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 78.94,
+  "reasons": "Morning Executor: gap -0.80% (0.17x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'KIRIINDUS.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1794541665.592019
+}

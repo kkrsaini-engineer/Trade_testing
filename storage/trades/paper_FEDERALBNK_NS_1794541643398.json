@@ -1,0 +1,13 @@
+{
+  "id": "paper_FEDERALBNK_NS_1794541643398",
+  "symbol": "FEDERALBNK.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 69,
+  "entry_price": 362.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 77.37,
+  "reasons": "Morning Executor: gap +0.11% (0.04x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'FEDERALBNK.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1794541643.4005504
+}
