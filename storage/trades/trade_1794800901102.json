@@ -1,0 +1,18 @@
+{
+  "symbol": "SHREEJISPG.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 14,
+  "entry_price": 864.0,
+  "exit_price": 912.26,
+  "status": "OPEN",
+  "realized_pnl": 619.6243020399993,
+  "realized_pnl_percent": 5.122555407076714,
+  "max_profit_percent": 5.833336159035012,
+  "max_drawdown_percent": 0.740743566442419,
+  "regime": "BULL",
+  "confidence": 73.53,
+  "reasons": "Break-even stop activated.; Excellent risk/reward profile.; Partial target achieved (previous session).; costs Rs 56.02 deducted",
+  "id": "trade_1794800901102",
+  "timestamp": 1794800901.1020179
+}
