@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 78834.92076532618,
-  "used_capital": 390574.39980879426,
+  "available_capital": 54017.60149042384,
+  "used_capital": 415391.7190836966,
   "total_pnl": -26843.590352253734,
   "total_pnl_percent": -5.368718070450747,
-  "exposure": 0.7811487996175885,
+  "exposure": 0.8307834381673932,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 471820.25779906625,
@@ -431,6 +431,25 @@
       "updated_at": 1794800919.330969,
       "partial_taken": false,
       "stop_level": 4264.51
+    },
+    "RALLIS.NS": {
+      "symbol": "RALLIS.NS",
+      "quantity": 132,
+      "entry_price": 188.00999450683594,
+      "current_price": 188.00999450683594,
+      "direction": "SELL",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 188.00999450683594,
+      "lowest_price": 188.00999450683594,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1794887221.835423,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -12849,5 +12868,5 @@
     "INDIANB.NS": "Financial Services",
     "TVSMOTOR.NS": "Consumer Cyclical"
   },
-  "saved_at": 1794800944.7634902
+  "saved_at": 1794887221.866989
 }
