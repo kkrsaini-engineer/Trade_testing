@@ -1,12 +1,17 @@
 {
-  "date": "2026-11-16",
-  "opening_balance": 53347.88891664619,
-  "total_capital_in_positions": 396404.81,
-  "remaining_balance": 78834.92076532618,
-  "portfolio_value": 475239.7307653262,
-  "realized_pnl": -26843.590352253734,
-  "portfolio_return_percent": -4.952053846934764,
+  "date": "2026-11-17",
+  "opening_balance": 54017.60149042384,
+  "total_capital_in_positions": 394109.83999999997,
+  "remaining_balance": 76849.90216270392,
+  "portfolio_value": 470959.7421627039,
+  "realized_pnl": -29005.939287491412,
+  "portfolio_return_percent": -5.808051567459223,
   "opened_today": [],
-  "closed_today": [],
+  "closed_today": [
+    {
+      "symbol": "SITINET.NS",
+      "pnl": -2167.5387689299905
+    }
+  ],
   "open_positions_now": 22
 }

@@ -1,0 +1,18 @@
+{
+  "symbol": "SITINET.NS",
+  "direction": "SELL",
+  "action": "CLOSE",
+  "quantity": 104166,
+  "entry_price": 0.23999999463558197,
+  "exit_price": 0.26,
+  "status": "CLOSED",
+  "realized_pnl": -2167.5387689299905,
+  "realized_pnl_percent": -8.67021075886189,
+  "max_profit_percent": 8.333331781129008,
+  "max_drawdown_percent": 8.333335754772085,
+  "regime": "BEAR",
+  "confidence": 48.47,
+  "reasons": "Healthy risk/reward profile.; Stop-loss was touched in the previous session.; Stop-loss triggered (previous session).; costs Rs 84.22 deducted",
+  "id": "trade_1794887346381",
+  "timestamp": 1794887346.3811922
+}
