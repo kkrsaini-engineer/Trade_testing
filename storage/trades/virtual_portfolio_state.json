@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 76849.90216270392,
-  "used_capital": 390391.8796424866,
-  "total_pnl": -29005.939287491412,
-  "total_pnl_percent": -5.801187857498282,
-  "exposure": 0.7807837592849731,
+  "available_capital": 51916.15216270392,
+  "used_capital": 415325.6296424866,
+  "total_pnl": -29005.9392874914,
+  "total_pnl_percent": -5.80118785749828,
+  "exposure": 0.8306512592849732,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 473156.40964774624,
@@ -431,6 +431,25 @@
       "updated_at": 1794887310.8129003,
       "partial_taken": false,
       "stop_level": 197.33
+    },
+    "ABCAPITAL.NS": {
+      "symbol": "ABCAPITAL.NS",
+      "quantity": 61,
+      "entry_price": 408.75,
+      "current_price": 408.75,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 408.75,
+      "lowest_price": 408.75,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1794973628.8536317,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -12869,5 +12888,5 @@
     "TVSMOTOR.NS": "Consumer Cyclical",
     "RALLIS.NS": "Basic Materials"
   },
-  "saved_at": 1794887368.9567134
+  "saved_at": 1794973628.8617423
 }

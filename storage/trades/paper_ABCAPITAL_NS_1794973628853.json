@@ -1,0 +1,13 @@
+{
+  "id": "paper_ABCAPITAL_NS_1794973628853",
+  "symbol": "ABCAPITAL.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 61,
+  "entry_price": 408.75,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 76.68,
+  "reasons": "Morning Executor: gap +0.06% (0.02x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'ABCAPITAL.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1794973628.8599918
+}
