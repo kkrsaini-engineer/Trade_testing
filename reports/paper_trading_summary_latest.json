@@ -1,17 +1,25 @@
 {
-  "date": "2026-11-18",
-  "opening_balance": 51916.15216270392,
-  "total_capital_in_positions": 405969.12999999995,
-  "remaining_balance": 64056.28142210393,
-  "portfolio_value": 470025.4114221039,
-  "realized_pnl": -30407.550028091406,
-  "portfolio_return_percent": -5.994917715579224,
+  "date": "2026-11-19",
+  "opening_balance": 42331.28142210393,
+  "total_capital_in_positions": 379402.95999999996,
+  "remaining_balance": 88607.61933546391,
+  "portfolio_value": 468010.5793354639,
+  "realized_pnl": -32018.462114731403,
+  "portfolio_return_percent": -6.397884132907225,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "IIFLCAPS.NS",
-      "pnl": 203.53680603999993
+      "symbol": "MOTHERSON.NS",
+      "pnl": -96.50088000000073
+    },
+    {
+      "symbol": "HAL.NS",
+      "pnl": -538.8480380399997
+    },
+    {
+      "symbol": "TECHM.NS",
+      "pnl": -516.313168599999
     }
   ],
-  "open_positions_now": 22
+  "open_positions_now": 20
 }

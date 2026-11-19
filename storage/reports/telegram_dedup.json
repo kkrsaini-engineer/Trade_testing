@@ -3,6 +3,16 @@
     "watchlist_symbol_unavailable::2026-11-18",
     "scan_completed::2026-11-19::05:41:12.169835",
     "mi_summary::2026-11-19 08:14:00.137627",
-    "morning_exec::2026-11-19::09:17:06.060534"
+    "morning_exec::2026-11-19::09:17:06.060534",
+    "paper_trading_started::2026-11-19::09:17:52.159636",
+    "monitoring_summary::2026-11-19::09:19:27.826758",
+    "holding_status::2026-11-19::part1::09:19:28.475706",
+    "holding_status::2026-11-19::part2::09:19:29.388797",
+    "holding_status::2026-11-19::part3::09:19:30.020126",
+    "holding_status::2026-11-19::part4::09:19:30.643445",
+    "portfolio_summary::2026-11-19::09:19:31.331113",
+    "analysis_summary::2026-11-19::09:19:32.511802",
+    "learning_summary::2026-11-19::09:19:35.330726",
+    "optimizer_recommendation::2026-11-19::09:19:36.185168"
   ]
 }
