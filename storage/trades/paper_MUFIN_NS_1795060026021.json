@@ -1,0 +1,13 @@
+{
+  "id": "paper_MUFIN_NS_1795060026021",
+  "symbol": "MUFIN.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 158,
+  "entry_price": 137.5,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 75.32,
+  "reasons": "Morning Executor: gap -1.27% (0.46x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'MUFIN.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1795060026.0484533
+}

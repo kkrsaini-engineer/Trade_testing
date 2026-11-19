@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 64056.28142210393,
-  "used_capital": 403145.6296424866,
-  "total_pnl": -30407.550028091406,
-  "total_pnl_percent": -6.081510005618282,
-  "exposure": 0.8062912592849731,
+  "available_capital": 42331.28142210393,
+  "used_capital": 424870.6296424866,
+  "total_pnl": -30407.5500280914,
+  "total_pnl_percent": -6.08151000561828,
+  "exposure": 0.8497412592849731,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 470994.0607125086,
@@ -431,6 +431,25 @@
       "updated_at": 1794973729.4462392,
       "partial_taken": false,
       "stop_level": 386.2
+    },
+    "MUFIN.NS": {
+      "symbol": "MUFIN.NS",
+      "quantity": 158,
+      "entry_price": 137.5,
+      "current_price": 137.5,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 137.5,
+      "lowest_price": 137.5,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1795060026.021093,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -12888,5 +12907,5 @@
     "TVSMOTOR.NS": "Consumer Cyclical",
     "RALLIS.NS": "Basic Materials"
   },
-  "saved_at": 1794973798.0236042
+  "saved_at": 1795060026.0500016
 }
