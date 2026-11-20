@@ -1,0 +1,18 @@
+{
+  "symbol": "JSWSTEEL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 18,
+  "entry_price": 1351.0999755859375,
+  "exit_price": 1295.9,
+  "status": "CLOSED",
+  "realized_pnl": -1086.5047238046363,
+  "realized_pnl_percent": -4.46757269154156,
+  "max_profit_percent": 1.1546129722319172,
+  "max_drawdown_percent": 4.085558180992386,
+  "regime": "BULL",
+  "confidence": 56.68,
+  "reasons": "Below preferred risk/reward profile.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Circuit breaker active.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; Risk engine flagged this symbol as unsafe (grade: REJECT, total_risk: 100/100). ValidationEngine rejected this HELD position during monitoring (upstream of RiskManager, which then forces an all-100 REJECT with no per-factor breakdown): 'Circuit breaker active.'. Raw components (0-100 each): atr=100 gap=100 overnight=100 news=100 liquidity=100 volatility=100 portfolio=100 sector=100 correlation=100 capital=100.; costs Rs 92.91 deducted",
+  "id": "trade_1795146557728",
+  "timestamp": 1795146557.7286773
+}

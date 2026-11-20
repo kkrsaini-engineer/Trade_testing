@@ -1,24 +1,20 @@
 {
-  "date": "2026-11-19",
-  "opening_balance": 42331.28142210393,
-  "total_capital_in_positions": 379402.95999999996,
-  "remaining_balance": 88607.61933546391,
-  "portfolio_value": 468010.5793354639,
-  "realized_pnl": -32018.462114731403,
-  "portfolio_return_percent": -6.397884132907225,
+  "date": "2026-11-20",
+  "opening_balance": 41737.61933546391,
+  "total_capital_in_positions": 379989.5,
+  "remaining_balance": 88844.32153255615,
+  "portfolio_value": 468833.82153255615,
+  "realized_pnl": -31065.859917639165,
+  "portfolio_return_percent": -6.233235693488771,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "MOTHERSON.NS",
-      "pnl": -96.50088000000073
+      "symbol": "KIRIINDUS.NS",
+      "pnl": -1067.5926396500006
     },
     {
-      "symbol": "HAL.NS",
-      "pnl": -538.8480380399997
-    },
-    {
-      "symbol": "TECHM.NS",
-      "pnl": -516.313168599999
+      "symbol": "JSWSTEEL.NS",
+      "pnl": -1086.5047238046363
     }
   ],
   "open_positions_now": 20

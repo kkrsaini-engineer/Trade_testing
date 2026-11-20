@@ -1,0 +1,18 @@
+{
+  "symbol": "KIRIINDUS.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 49,
+  "entry_price": 509.0,
+  "exit_price": 489.15,
+  "status": "CLOSED",
+  "realized_pnl": -1067.5926396500006,
+  "realized_pnl_percent": -4.280472473637788,
+  "max_profit_percent": 0.9823182711198428,
+  "max_drawdown_percent": 4.214147781342092,
+  "regime": "SIDEWAYS",
+  "confidence": 49.12,
+  "reasons": "Below preferred risk/reward profile.; Trend reversal detected.; Trend reversal confirmed.; costs Rs 94.94 deducted",
+  "id": "trade_1795146538771",
+  "timestamp": 1795146538.771353
+}
