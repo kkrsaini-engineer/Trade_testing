@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 88607.61933546391,
-  "used_capital": 377442.6296424866,
+  "available_capital": 41737.61933546391,
+  "used_capital": 424312.6296424866,
   "total_pnl": -32018.462114731403,
   "total_pnl_percent": -6.40369242294628,
-  "exposure": 0.7548852592849732,
+  "exposure": 0.8486252592849731,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 469592.4499719086,
@@ -393,6 +393,44 @@
       "updated_at": 1795060134.5511925,
       "partial_taken": false,
       "stop_level": 129.98
+    },
+    "AXISBANK.NS": {
+      "symbol": "AXISBANK.NS",
+      "quantity": 18,
+      "entry_price": 1373.0,
+      "current_price": 1373.0,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 1373.0,
+      "lowest_price": 1373.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1795146432.78735,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "DLF.NS": {
+      "symbol": "DLF.NS",
+      "quantity": 29,
+      "entry_price": 764.0,
+      "current_price": 764.0,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 764.0,
+      "lowest_price": 764.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1795146454.4295409,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -12907,5 +12945,5 @@
     "TVSMOTOR.NS": "Consumer Cyclical",
     "RALLIS.NS": "Basic Materials"
   },
-  "saved_at": 1795060171.290221
+  "saved_at": 1795146454.434163
 }

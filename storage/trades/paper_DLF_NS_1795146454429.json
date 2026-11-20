@@ -1,0 +1,13 @@
+{
+  "id": "paper_DLF_NS_1795146454429",
+  "symbol": "DLF.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 29,
+  "entry_price": 764.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 74.54,
+  "reasons": "Morning Executor: gap -0.04% (0.02x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'DLF.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1795146454.432201
+}

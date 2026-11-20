@@ -1,0 +1,13 @@
+{
+  "id": "paper_AXISBANK_NS_1795146432787",
+  "symbol": "AXISBANK.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 18,
+  "entry_price": 1373.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 77.45,
+  "reasons": "Morning Executor: gap +0.96% (0.47x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'AXISBANK.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1795146432.7941234
+}
