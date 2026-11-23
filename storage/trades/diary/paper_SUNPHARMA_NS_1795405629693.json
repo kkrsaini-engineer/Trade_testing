@@ -6,20 +6,34 @@
   "entry_price": 1892.300048828125,
   "buy_probability": 83.79,
   "buy_confidence": 72.28,
-  "entry_thesis_confidence": null,
+  "entry_thesis_confidence": 61.46,
   "entry_reasons": [
     "Morning Executor: gap -0.41% (0.18x ATR, NORMAL band)",
-    "Company news check unavailable (Unable to fetch news for 'SUNPHARMA.NS'.) \u2014 proceeded without it. | No macro headlines available."
+    "Company news check unavailable (Unable to fetch news for 'SUNPHARMA.NS'.) — proceeded without it. | No macro headlines available."
   ],
-  "daily_log": [],
+  "daily_log": [
+    {
+      "date": "2026-11-23",
+      "current_price": 1891.7,
+      "current_pnl": -7.800634765624409,
+      "current_buy_confidence": 61.46,
+      "current_sell_confidence": 27.68,
+      "current_exit_score": 57.23,
+      "recommendation": "HOLD",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "Continue holding position."
+      ]
+    }
+  ],
   "status": "OPEN",
   "exit_date": null,
   "exit_price": null,
   "exit_reason": null,
-  "holding_days": 0,
+  "holding_days": 1,
   "max_profit_percent": 0.0,
   "max_drawdown_percent": 0.0,
   "final_pnl": null,
   "created_at": 1795405629.6931448,
-  "updated_at": 1795405629.6931448
+  "updated_at": 1795405742.2791362
 }

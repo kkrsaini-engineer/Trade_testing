@@ -1,0 +1,18 @@
+{
+  "symbol": "AXISBANK.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 9,
+  "entry_price": 1373.0,
+  "exit_price": 1434.1,
+  "status": "OPEN",
+  "realized_pnl": 493.2353079000002,
+  "realized_pnl_percent": 3.9915457465404236,
+  "max_profit_percent": 6.256372906045163,
+  "max_drawdown_percent": 0.3058994901675197,
+  "regime": "BULL",
+  "confidence": 70.68,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved (previous session).; costs Rs 56.66 deducted",
+  "id": "trade_1795405748444",
+  "timestamp": 1795405748.444299
+}

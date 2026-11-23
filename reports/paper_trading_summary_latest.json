@@ -1,21 +1,17 @@
 {
-  "date": "2026-11-20",
-  "opening_balance": 41737.61933546391,
-  "total_capital_in_positions": 379989.5,
-  "remaining_balance": 88844.32153255615,
-  "portfolio_value": 468833.82153255615,
-  "realized_pnl": -31065.859917639165,
-  "portfolio_return_percent": -6.233235693488771,
+  "date": "2026-11-23",
+  "opening_balance": 41012.42089779052,
+  "total_capital_in_positions": 410741.9899999999,
+  "remaining_balance": 61499.01016462856,
+  "portfolio_value": 472241.00016462844,
+  "realized_pnl": -27460.681285566756,
+  "portfolio_return_percent": -5.551799967074313,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "KIRIINDUS.NS",
-      "pnl": -1067.5926396500006
-    },
-    {
-      "symbol": "JSWSTEEL.NS",
-      "pnl": -1086.5047238046363
+      "symbol": "ICIL.NS",
+      "pnl": 2891.5080012024455
     }
   ],
-  "open_positions_now": 20
+  "open_positions_now": 21
 }
