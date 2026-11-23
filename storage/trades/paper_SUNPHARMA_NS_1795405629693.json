@@ -1,0 +1,13 @@
+{
+  "id": "paper_SUNPHARMA_NS_1795405629693",
+  "symbol": "SUNPHARMA.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 13,
+  "entry_price": 1892.300048828125,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 72.28,
+  "reasons": "Morning Executor: gap -0.41% (0.18x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'SUNPHARMA.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1795405629.6952386
+}

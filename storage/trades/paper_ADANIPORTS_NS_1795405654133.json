@@ -1,0 +1,13 @@
+{
+  "id": "paper_ADANIPORTS_NS_1795405654133",
+  "symbol": "ADANIPORTS.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 12,
+  "entry_price": 1936.0,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 71.19,
+  "reasons": "Morning Executor: gap +0.99% (0.41x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'ADANIPORTS.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1795405654.1357758
+}

@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 88844.32153255615,
-  "used_capital": 375051.8300819397,
+  "available_capital": 41012.42089779052,
+  "used_capital": 422883.7307167053,
   "total_pnl": -31065.859917639165,
   "total_pnl_percent": -6.2131719835278325,
-  "exposure": 0.7501036601638794,
+  "exposure": 0.8457674614334106,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 467981.53788526845,
@@ -393,6 +393,44 @@
       "updated_at": 1795146585.1915886,
       "partial_taken": false,
       "stop_level": 729.97
+    },
+    "SUNPHARMA.NS": {
+      "symbol": "SUNPHARMA.NS",
+      "quantity": 13,
+      "entry_price": 1892.300048828125,
+      "current_price": 1892.300048828125,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 1892.300048828125,
+      "lowest_price": 1892.300048828125,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1795405629.693127,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "ADANIPORTS.NS": {
+      "symbol": "ADANIPORTS.NS",
+      "quantity": 12,
+      "entry_price": 1936.0,
+      "current_price": 1936.0,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 1936.0,
+      "lowest_price": 1936.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1795405654.133169,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -12946,5 +12984,5 @@
     "RALLIS.NS": "Basic Materials",
     "AXISBANK.NS": "Financial Services"
   },
-  "saved_at": 1795146593.8717706
+  "saved_at": 1795405654.1372259
 }
