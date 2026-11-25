@@ -1,0 +1,18 @@
+{
+  "symbol": "GAIL.NS",
+  "direction": "BUY",
+  "action": "CLOSE",
+  "quantity": 134,
+  "entry_price": 185.4499969482422,
+  "exit_price": 185.45,
+  "status": "CLOSED",
+  "realized_pnl": -96.14635877376418,
+  "realized_pnl_percent": -0.3869022118684477,
+  "max_profit_percent": 3.6937213352596676,
+  "max_drawdown_percent": 1.0407078498469309,
+  "regime": "BULL",
+  "confidence": 48.28,
+  "reasons": "Excellent risk/reward profile.; Active stop-loss triggered.; Stop-loss triggered.; costs Rs 96.15 deducted",
+  "id": "trade_1795578523046",
+  "timestamp": 1795578523.046515
+}

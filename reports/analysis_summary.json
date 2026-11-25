@@ -130,12 +130,12 @@
     "rejected_by_insufficient_history": 0,
     "rejected_by_other": 0,
     "other_reasons_breakdown": {},
-    "executed": 2
+    "executed": 0
   },
   "execution_summary": {
     "buy_generated": 7,
-    "buy_executed": 2,
-    "buy_rejected": 5,
+    "buy_executed": 0,
+    "buy_rejected": 7,
     "reasons": {
       "Liquidity": 5,
       "Risk Engine (execution stage)": 2

@@ -1,17 +1,17 @@
 {
-  "date": "2026-11-23",
-  "opening_balance": 41012.42089779052,
-  "total_capital_in_positions": 410741.9899999999,
-  "remaining_balance": 61499.01016462856,
-  "portfolio_value": 472241.00016462844,
-  "realized_pnl": -27460.681285566756,
-  "portfolio_return_percent": -5.551799967074313,
+  "date": "2026-11-25",
+  "opening_balance": 61499.01016462856,
+  "total_capital_in_positions": 377850.69,
+  "remaining_balance": 91910.39865211921,
+  "portfolio_value": 469761.0886521192,
+  "realized_pnl": -30114.832798076066,
+  "portfolio_return_percent": -6.047782269576157,
   "opened_today": [],
   "closed_today": [
     {
-      "symbol": "ICIL.NS",
-      "pnl": 2891.5080012024455
+      "symbol": "GAIL.NS",
+      "pnl": -96.14635877376418
     }
   ],
-  "open_positions_now": 21
+  "open_positions_now": 20
 }

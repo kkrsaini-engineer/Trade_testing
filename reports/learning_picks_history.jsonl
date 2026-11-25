@@ -106,3 +106,5 @@
 {"date": "2026-11-20", "symbol": "CURAA.NS", "direction": "SELL", "entry_price": 65.5}
 {"date": "2026-11-23", "symbol": "UYFINCORP.NS", "direction": "BUY", "entry_price": 30.41}
 {"date": "2026-11-23", "symbol": "SABEVENTS.NS", "direction": "SELL", "entry_price": 132.6}
+{"date": "2026-11-25", "symbol": "UYFINCORP.NS", "direction": "BUY", "entry_price": 30.41}
+{"date": "2026-11-25", "symbol": "SABEVENTS.NS", "direction": "SELL", "entry_price": 132.6}
