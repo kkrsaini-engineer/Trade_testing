@@ -6,20 +6,34 @@
   "entry_price": 1028.0,
   "buy_probability": 89.94,
   "buy_confidence": 78.41,
-  "entry_thesis_confidence": null,
+  "entry_thesis_confidence": 68.95,
   "entry_reasons": [
     "Morning Executor: gap +0.72% (0.16x ATR, NORMAL band)",
-    "Company news check unavailable (Unable to fetch news for 'AARTIPHARM.NS'.) \u2014 proceeded without it. | No macro headlines available."
+    "Company news check unavailable (Unable to fetch news for 'AARTIPHARM.NS'.) — proceeded without it. | No macro headlines available."
   ],
-  "daily_log": [],
+  "daily_log": [
+    {
+      "date": "2026-11-26",
+      "current_price": 1018.2,
+      "current_pnl": -235.1999999999989,
+      "current_buy_confidence": 68.95,
+      "current_sell_confidence": 21.22,
+      "current_exit_score": 56.17,
+      "recommendation": "HOLD",
+      "notes": [
+        "Below preferred risk/reward profile.",
+        "Continue holding position."
+      ]
+    }
+  ],
   "status": "OPEN",
   "exit_date": null,
   "exit_price": null,
   "exit_reason": null,
-  "holding_days": 0,
+  "holding_days": 1,
   "max_profit_percent": 0.0,
   "max_drawdown_percent": 0.0,
   "final_pnl": null,
   "created_at": 1795664849.7423148,
-  "updated_at": 1795664849.742315
+  "updated_at": 1795664957.7118974
 }
