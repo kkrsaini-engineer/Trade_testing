@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 91910.39865211921,
-  "used_capital": 373687.0312843323,
+  "available_capital": 42240.89865211921,
+  "used_capital": 423356.5312843323,
   "total_pnl": -30114.832798076066,
   "total_pnl_percent": -6.022966559615213,
-  "exposure": 0.7473740625686646,
+  "exposure": 0.8467130625686645,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 472539.31871443323,
@@ -393,6 +393,44 @@
       "updated_at": 1795578489.1276233,
       "partial_taken": false,
       "stop_level": 1848.94
+    },
+    "KARURVYSYA.NS": {
+      "symbol": "KARURVYSYA.NS",
+      "quantity": 66,
+      "entry_price": 378.75,
+      "current_price": 378.75,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 378.75,
+      "lowest_price": 378.75,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1795664828.6410737,
+      "partial_taken": false,
+      "stop_level": null
+    },
+    "AARTIPHARM.NS": {
+      "symbol": "AARTIPHARM.NS",
+      "quantity": 24,
+      "entry_price": 1028.0,
+      "current_price": 1028.0,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 1028.0,
+      "lowest_price": 1028.0,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1795664849.742292,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -12985,5 +13023,5 @@
     "AXISBANK.NS": "Financial Services",
     "SUNPHARMA.NS": "Healthcare"
   },
-  "saved_at": 1795578566.3045285
+  "saved_at": 1795664849.7549167
 }
