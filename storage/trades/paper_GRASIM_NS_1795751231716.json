@@ -1,0 +1,13 @@
+{
+  "id": "paper_GRASIM_NS_1795751231716",
+  "symbol": "GRASIM.NS",
+  "direction": "BUY",
+  "action": "OPEN",
+  "quantity": 4,
+  "entry_price": 3178.89990234375,
+  "status": "OPEN",
+  "regime": "BULL",
+  "confidence": 68.77,
+  "reasons": "Morning Executor: gap +0.53% (0.24x ATR, NORMAL band); Company news check unavailable (Unable to fetch news for 'GRASIM.NS'.) \u2014 proceeded without it. | No macro headlines available.",
+  "timestamp": 1795751231.7198038
+}

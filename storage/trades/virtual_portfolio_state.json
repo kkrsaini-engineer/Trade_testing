@@ -1,10 +1,10 @@
 {
   "total_capital": 500000.0,
-  "available_capital": 54159.35634891922,
-  "used_capital": 411496.5312843323,
-  "total_pnl": -28984.09510127607,
-  "total_pnl_percent": -5.796819020255215,
-  "exposure": 0.8229930625686646,
+  "available_capital": 41443.75673954422,
+  "used_capital": 424212.1308937073,
+  "total_pnl": -28984.095101276063,
+  "total_pnl_percent": -5.796819020255213,
+  "exposure": 0.8484242617874146,
   "risk_score": 0.0,
   "peak_equity": 503919.392473488,
   "day_start_equity": 469885.1672019239,
@@ -412,6 +412,25 @@
       "updated_at": 1795664957.7099745,
       "partial_taken": false,
       "stop_level": 940.33
+    },
+    "GRASIM.NS": {
+      "symbol": "GRASIM.NS",
+      "quantity": 4,
+      "entry_price": 3178.89990234375,
+      "current_price": 3178.89990234375,
+      "direction": "BUY",
+      "unrealized_pnl": 0.0,
+      "unrealized_pnl_percent": 0.0,
+      "realized_pnl": 0.0,
+      "realized_pnl_percent": 0.0,
+      "highest_price": 3178.89990234375,
+      "lowest_price": 3178.89990234375,
+      "max_profit_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "status": "OPEN",
+      "updated_at": 1795751231.7165003,
+      "partial_taken": false,
+      "stop_level": null
     }
   },
   "closed_positions": [
@@ -13023,5 +13042,5 @@
     "AXISBANK.NS": "Financial Services",
     "SUNPHARMA.NS": "Healthcare"
   },
-  "saved_at": 1795664977.3497007
+  "saved_at": 1795751231.720857
 }
