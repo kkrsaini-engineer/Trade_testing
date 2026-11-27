@@ -1,0 +1,18 @@
+{
+  "symbol": "DLF.NS",
+  "direction": "BUY",
+  "action": "PARTIAL_CLOSE",
+  "quantity": 14,
+  "entry_price": 764.0,
+  "exit_price": 799.2,
+  "status": "OPEN",
+  "realized_pnl": 441.5848928000005,
+  "realized_pnl_percent": 4.128504981301425,
+  "max_profit_percent": 6.623036649214662,
+  "max_drawdown_percent": 0.3926701570680628,
+  "regime": "BULL",
+  "confidence": 62.93,
+  "reasons": "Break-even stop activated.; Partial profit target reached.; Excellent risk/reward profile.; Partial target achieved (previous session).; costs Rs 51.22 deducted",
+  "id": "trade_1795751357771",
+  "timestamp": 1795751357.771024
+}

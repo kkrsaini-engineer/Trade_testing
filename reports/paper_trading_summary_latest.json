@@ -1,17 +1,12 @@
 {
-  "date": "2026-11-26",
-  "opening_balance": 42240.89865211921,
-  "total_capital_in_positions": 417368.70999999996,
-  "remaining_balance": 54159.35634891922,
-  "portfolio_value": 471528.0663489192,
-  "realized_pnl": -28984.09510127607,
-  "portfolio_return_percent": -5.694386730216164,
+  "date": "2026-11-27",
+  "opening_balance": 41443.75673954422,
+  "total_capital_in_positions": 419527.27999999997,
+  "remaining_balance": 52581.341632344236,
+  "portfolio_value": 472108.6216323442,
+  "realized_pnl": -27777.859817851066,
+  "portfolio_return_percent": -5.5782756735311585,
   "opened_today": [],
-  "closed_today": [
-    {
-      "symbol": "ENGINERSIN.NS",
-      "pnl": 795.7736302399999
-    }
-  ],
-  "open_positions_now": 21
+  "closed_today": [],
+  "open_positions_now": 22
 }
