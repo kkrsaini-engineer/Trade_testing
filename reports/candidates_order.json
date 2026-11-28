@@ -1,27 +1,9 @@
 {
-  "scan_date": "2026-11-26",
-  "scan_timestamp": "2026-11-27T05:02:04.063295+05:30",
+  "scan_date": "2026-11-27",
+  "scan_timestamp": "2026-11-28T04:45:52.225173+05:30",
   "scanned_symbols": 2395,
   "watchlist_symbols": 2395,
   "scan_truncated": false,
-  "fundamentals_cache_hits": 65,
-  "candidates": [
-    {
-      "symbol": "GRASIM.NS",
-      "direction": "BUY",
-      "prev_close": 3162.0,
-      "atr_14": 70.18,
-      "atr_percent": null,
-      "stop_loss": 3021.64,
-      "target1": 3302.36,
-      "target2": 3407.63,
-      "overall_score": 63.57,
-      "ranking": 71.55,
-      "probability": 79.53,
-      "confidence": 68.77,
-      "market_regime": "BULL",
-      "sector": "Basic Materials",
-      "scan_date": "2026-11-26"
-    }
-  ]
+  "fundamentals_cache_hits": 2325,
+  "candidates": []
 }
